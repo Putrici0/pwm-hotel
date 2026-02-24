@@ -1,0 +1,141 @@
+/* --- Reset básico para empezar de cero --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif; /* Fuente limpia y sencilla */
+    background-color: #f9f9f9;
+}
+
+/* --- Estilos del Contenedor Principal (Header) --- */
+.main-header {
+    display: flex; /* Usamos Flexbox para alinear los elementos */
+    justify-content: space-between; /* Separa los tres bloques principales */
+    align-items: center; /* Centra verticalmente todos los elementos */
+    padding: 1rem 2rem; /* Espacio interno */
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0; /* Una línea sutil abajo */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra suave */
+}
+
+/* --- 1. Estilos de la Parte Izquierda (Logo) --- */
+.logo-container {
+    display: flex;
+    align-items: center;
+    text-decoration: none; /* Quita el subrayado del enlace */
+    color: #000000; /* Texto en negro */
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px; /* Espacio entre la imagen y el texto */
+    border-radius: 4px; /* Un pequeño redondeo a la imagen */
+}
+
+.hotel-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* --- Estilos Generales de Botones --- */
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase; /* Texto en mayúsculas */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+    cursor: pointer;
+}
+
+.btn-primary {
+    background-color: #000000; /* Fondo negro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #333333; /* Gris oscuro al pasar el ratón */
+}
+
+/* --- 2. Estilos de la Parte Central (Botón Grande) --- */
+.btn-large {
+    padding: 1rem 3rem; /* Relleno grande para que destaque */
+    font-size: 1.1rem;
+}
+
+/* --- 3. Estilos de la Parte Derecha (Menú) --- */
+.nav-list {
+    display: flex; /* Alinea los ítems del menú horizontalmente */
+    list-style: none; /* Quita los puntos de la lista */
+    align-items: center; /* Centra los ítems verticalmente */
+}
+
+/* Espacio entre los elementos del menú principal */
+.nav-list > li {
+    margin-left: 1.5rem;
+    position: relative; /* ¡IMPORTANTE! Necesario para posicionar el dropdown */
+}
+
+/* Estilo de los enlaces normales del menú */
+.nav-link {
+    text-decoration: none;
+    color: #000000;
+    font-weight: 500;
+    padding: 0.5rem;
+    display: block; /* Para que el área clicable sea más grande */
+}
+
+.nav-link:hover {
+    color: #555555; /* Cambia de color al pasar el ratón */
+}
+
+/* Botón pequeño de "Acceder" */
+.btn-small {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+}
+
+/* --- ESTILOS PARA LOS MENÚS DESPLEGABLES (DROPDOWNS) --- */
+
+/* Ocultamos el submenú por defecto */
+.dropdown-menu {
+    display: none; /* No se ve inicialmente */
+    position: absolute; /* Se posiciona en relación a su padre (el <li>) */
+    top: 100%; /* Justo debajo del elemento padre */
+    left: 0;
+    background-color: #ffffff;
+    min-width: 180px; /* Ancho mínimo para que se vea bien */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra para que flote */
+    border: 1px solid #e0e0e0;
+    list-style: none;
+    z-index: 100; /* Para que siempre esté por encima del contenido */
+}
+
+/* El truco de magia: Muestra el menú al pasar el ratón sobre el <li> padre */
+.dropdown-item:hover .dropdown-menu {
+    display: block;
+}
+
+/* Estilos para los enlaces dentro del submenú */
+.dropdown-menu li a {
+    display: block;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    color: #000000;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Cambia el fondo al pasar el ratón sobre las opciones del submenú */
+.dropdown-menu li a:hover {
+    background-color: #f4f4f4;
+}
+
+/* Ajuste opcional para alinear el menú de Login a la derecha si fuera necesario */
+.dropdown-right {
+    left: auto;
+    right: 0;
+}
