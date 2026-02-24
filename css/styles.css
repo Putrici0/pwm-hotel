@@ -43,3 +43,33 @@
     display: flex;
     gap: 2rem;
 }
+
+/* footer*/
+.footer {
+    background: #e6e6e6;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+}
+
+.footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.footer__left h3 {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.footer__socials {
+    display: flex;
+    gap: 1.2rem;
+    font-size: 1.2rem;
+}
+.footer__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    row-gap: 1.2rem;
+    column-gap: 3rem;
+}
+
