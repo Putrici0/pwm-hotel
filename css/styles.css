@@ -146,3 +146,16 @@
     padding: 4rem 2rem;
     align-items: center;
 }
+
+.button-box {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+button {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+}
