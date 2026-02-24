@@ -122,3 +122,20 @@
     background: #ccc;
 }
 
+/* text image horizontal*/
+.text-image-horizontal {
+    display: flex;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    align-items: center;
+}
+
+.text-image-horizontal__text {
+    flex: 1;
+}
+
+.text-image-horizontal__image {
+    flex: 1;
+    height: 250px;
+    background: #ccc;
+}
