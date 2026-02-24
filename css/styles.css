@@ -1,0 +1,45 @@
+/*header */
+
+.header {
+    background: #e6e6e6;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header__logo {
+    width: 60px;
+    height: 60px;
+    background: #ccc;
+}
+
+.header__center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.header__highlight {
+    background: black;
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header__nav {
+    display: flex;
+    gap: 2rem;
+}
