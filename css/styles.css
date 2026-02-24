@@ -106,5 +106,19 @@
     border: none;
     border-radius: 4px;
 }
+/*image grid*/
+.image-grid-section {
+    padding: 4rem 2rem;
+}
 
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.image-grid__item img{
+    height: 200px;
+    background: #ccc;
+}
 
