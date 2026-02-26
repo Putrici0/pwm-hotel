@@ -520,3 +520,61 @@ button {
     font-weight: 600;
     width: 40%;
 }
+
+/* AUTH FORM */
+
+.auth-section {
+    padding: 6rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 420px;
+    padding: 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-card input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+}
+
+.auth-btn-primary {
+    background: black;
+    color: white;
+    padding: 0.9rem;
+    border: none;
+}
+
+.auth-btn-secondary {
+    background: #333;
+    color: white;
+    padding: 0.9rem;
+    border: none;
+}
+
+.auth-link {
+    text-align: right;
+    font-size: 0.9rem;
+    color: #333;
+    text-decoration: underline;
+}
+
+.auth-checkbox {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.9rem;
+}
+
+.auth-checkbox span {
+    color: #666;
+}
