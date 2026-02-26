@@ -2,13 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Cuenta Personal</title>
 
     <link rel="stylesheet" href="../css/styles.css">
-
     <script src="../js/xlu-include-file.js"></script>
 </head>
 <body>
+
+    <header class="header" xlu-include-file="../templates/header.html"></header>
+
+    <main>
+
+        <div xlu-include-file="../templates/title-subtitle.html"></div>
+
+        <div xlu-include-file="../templates/reservations-table.html"></div>
+
+        <section class="account-actions">
+            <button class="account-actions__btn">Lorem Ipsum</button>
+            <button class="account-actions__btn">Lorem Ipsum</button>
+            <button class="account-actions__btn">Lorem Ipsum</button>
+        </section>
+
+    </main>
+
+    <footer class="footer" xlu-include-file="../templates/footer.html"></footer>
+
+    <script> xLuIncludeFile() </script>
 
 </body>
 </html>
