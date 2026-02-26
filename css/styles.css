@@ -176,3 +176,25 @@ button {
     height: 20px;
     accent-color: #000000;
 }
+
+/* title-subtitle (hero)*/
+
+.hero {
+    padding: 4rem 2rem 60px 2rem;
+}
+
+.hero__content {
+    width: 100%;
+}
+
+.hero__title {
+    font-size: 56px;
+    font-weight: 700;
+    margin-bottom: 24px;
+}
+
+.hero__description {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #666;
+}
