@@ -2,13 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Administration</title>
 
     <link rel="stylesheet" href="../css/styles.css">
-
     <script src="../js/xlu-include-file.js"></script>
 </head>
 <body>
+
+    <header class="header" xlu-include-file="../templates/header.html"></header>
+
+    <main>
+
+        <div xlu-include-file="../templates/title-subtitle.html"></div>
+
+        <h2 class="admin-section-title">Manage Rooms</h2>
+        <div xlu-include-file="../templates/admin-table.html"></div>
+
+        <div class="admin-forms-group">
+            <div xlu-include-file="../templates/admin-form.html"></div>
+            <div xlu-include-file="../templates/admin-form.html"></div>
+        </div>
+
+        <h2 class="admin-section-title">Manage Activities</h2>
+        <div xlu-include-file="../templates/admin-table.html"></div>
+
+        <div class="admin-forms-group">
+            <div xlu-include-file="../templates/admin-form.html"></div>
+            <div xlu-include-file="../templates/admin-form.html"></div>
+        </div>
+
+    </main>
+
+    <footer class="footer" xlu-include-file="../templates/footer.html"></footer>
+
+    <script> xLuIncludeFile() </script>
 
 </body>
 </html>

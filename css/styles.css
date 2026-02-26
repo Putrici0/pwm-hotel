@@ -287,3 +287,127 @@ button {
 .account-actions__btn:hover {
     opacity: 0.8;
 }
+
+/* ===== Admin Tables ===== */
+
+.admin-table {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.admin-table__container {
+    width: 100%;
+    max-width: 1000px;
+    border: 2px solid #333;
+    border-radius: 40px;
+    overflow: hidden;
+}
+
+.admin-table__title {
+    text-align: center;
+    padding: 2rem;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.admin-table__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table__table th,
+.admin-table__table td {
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.admin-table__table thead {
+    background: #f0f0f0;
+}
+
+
+/* admin table */
+
+.admin-table {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.admin-table__container {
+    width: 100%;
+    max-width: 1000px;
+    border: 2px solid #333;
+    border-radius: 40px;
+    overflow: hidden;
+}
+
+.admin-table__title {
+    text-align: center;
+    padding: 2rem;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.admin-table__table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin-table__table th,
+.admin-table__table td {
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid #333;
+}
+
+.admin-table__table thead {
+    background: #f0f0f0;
+}
+
+/* form admin */
+
+.admin-form {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.admin-form__card {
+    width: 100%;
+    max-width: 450px;
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+}
+
+.admin-form__card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.admin-form__card input {
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+}
+
+.admin-form__card button {
+    padding: 0.8rem;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.admin-forms-group {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding-bottom: 4rem;
+    flex-wrap: wrap;
+}
