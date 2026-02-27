@@ -59,10 +59,11 @@ En la carpeta [examples](./examples) se encuentra el diseño de cada template qu
 En cuanto a **path traversal** usamos el relativo, es decir como se insistió en clase de teoría usamos la ruta relativa y no la absoluta (../ ./).
 
 ## Mockups
-Nosotros guardamos los mockups diseñados en figma individualmente en formato png en [carpeta mockups](./mockups)
+Nosotros guardamos los mockups diseñados en figma individualmente en formato pdf en [carpeta mockups](./mockups)
 
 ## Templates
 Tenemos los templates html en la [carpeta templates](./templates)
+
 
 ## Navegabilidad de la página web
 Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad.
@@ -70,13 +71,14 @@ Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que dur
 # Entendimiento del story-board
 Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
 1. [Home](./pages/index.html)  
-2. [Bookings](./pages/bookings.html)  
-3. [Services](./pages/services.html) Que si no se hace click despliega las siguientes opciones
+2. [Bookings](./pages/bookings.html)
+3. [Rooms](./pages/rooms.html)  
+4. [Services](./pages/services.html) Que si no se hace click despliega las siguientes opciones
    - [Restaurant](./pages/restaurant.html)  
    - [Wellness Facilities](./pages/wellness-facilities.html)  
    - [Activities](./pages/activities.html)  
-4. [Contact](./pages/contact.html)  
-5. [Account](./pages/account.html) Que si no se hace click despliega las siguientes opciones
+5. [Contact](./pages/contact.html)  
+6. [Account](./pages/account.html) Que si no se hace click despliega las siguientes opciones
    - [Login](./pages/login.html)  
    - [Register](./pages/register.html)  
    - [Recover Password](./pages/change-password.html)  
