@@ -66,6 +66,7 @@ Nosotros guardamos los mockups diseñados en figma individualmente en formato pd
 ## Templates
 Tenemos los templates html en la [carpeta templates](./templates).
 Nosotros identificamos que para cada uno de los siguientes mockups los templates asociados son:
+<br>
 <sub>Los siguientes enlaces te llevan al pdf del mockup</sub>
 1. [Home](./mockups/01.%20home.pdf), que se identifica con el index.html, la página principal.
    Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
@@ -99,7 +100,8 @@ Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que dur
 
 # Entendimiento del story-board
 Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
-<sub> Los enlaces llevan al html de cada una de las páginas </sub>
+<br>
+<sub> Los siguientes enlaces llevan al html de cada una de las páginas </sub>
 1. [Home](./pages/index.html)  
 2. [Bookings](./pages/bookings.html)
 3. [Rooms](./pages/rooms.html)  
