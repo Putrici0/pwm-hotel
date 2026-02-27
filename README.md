@@ -65,32 +65,32 @@ Nosotros guardamos los mockups diseñados en figma individualmente en formato pd
 Tenemos los templates html en la [carpeta templates](./templates)
 Nosotros identificamos que para cada uno de los siguientes mockups los templates asociados son:
 
-1. [Home](./mockups/1.%20home.pdf)
+1. [Home](./mockups/01.%20home.pdf)
    Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
-2. [Booking](./mockups/2.%20booking.pdf)
+2. [Booking](./mockups/02.%20booking.pdf)
    Usa los templates: header.html, title-subtitle.html, table-availability.html, form.html y footer.html
-3. [Rooms](./mockups/3.%20rooms.pdf)
+3. [Rooms](./mockups/03.%20rooms.pdf)
    Usa los templates: header.html, text-image-right.html, text-image-left.html y footer.html
-4. [Services](./mockups/4.%20services.pdf)
+4. [Services](./mockups/04.%20services.pdf)
    Usa los templates: header.html, title-subtitle.html, text-image-right.html y footer.html
-5. [Restaurant](./mockups/5.%20restaurant.pdf)
-   Usa los templates:
-6. [Wellness-facilities](./mockups/6.%20wellness-facilities.pdf)
-   Usa los templates:
-7. [Activities](./mockups/7.%20activities.pdf)
-   Usa los templates:
-8. [Contact](./mockups/8.%20contact.pdf)
-   Usa los templates:
-9. [Account](./mockups/9.%20account.pdf)
-   Usa los templates:
+5. [Restaurant](./mockups/05.%20restaurant.pdf)
+   Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
+6. [Wellness-facilities](./mockups/06.%20wellness-facilities.pdf)
+   Usa los templates: header.html, title-subtitle.html, text-image-left.html y footer.html
+7. [Activities](./mockups/07.%20activities.pdf)
+   Usa los templates: header.html, title-subtitle.html, text-image-right.html y footer.html
+8. [Contact](./mockups/08.%20contact.pdf)
+   Usa los templates: header.html, title-subtitle.html, text-image-right.html, auth-register.html, table.html y footer.html   
+9. [Account](./mockups/09.%20account.pdf)
+   Usa los templates: header.html, title-subtitle.html, table-card.html y footer.html
 10. [Login](./mockups/10.%20login.pdf)
-   Usa los templates:
+   Usa los templates: header.html, auth-register.html y footer.html
 11. [Register](./mockups/11.%20register.pdf)
-   Usa los templates:
+   Usa los templates: header.html, auth-register.html y footer.html
 12. [Change-password](./mockups/12.%20change-password.pdf)
-   Usa los templates:
+   Usa los templates: header.html, forget-password.html y footer.html
 13. [Admin](./mockups/13.%20admin.pdf)
-   Usa los templates:
+   Usa los templates:header.html, title-subtitle.html, table.html, form.html y footer.html
 
 ## Navegabilidad de la página web
 Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad.
