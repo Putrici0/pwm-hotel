@@ -66,3 +66,18 @@ Tenemos los templates html en la [carpeta templates](./templates)
 
 ## Navegabilidad de la página web
 Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad.
+
+# Entendimiento del story-board
+Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
+1. [Home](./pages/index.html)  
+2. [Bookings](./pages/bookings.html)  
+3. [Services](./pages/services.html) Que si no se hace click despliega las siguientes opciones
+   - [Restaurant](./pages/restaurant.html)  
+   - [Wellness Facilities](./pages/wellness-facilities.html)  
+   - [Activities](./pages/activities.html)  
+4. [Contact](./pages/contact.html)  
+5. [Account](./pages/account.html) Que si no se hace click despliega las siguientes opciones
+   - [Login](./pages/login.html)  
+   - [Register](./pages/register.html)  
+   - [Recover Password](./pages/change-password.html)  
+**Siguiendo las indicaciones sobre dos tipos de cuentas (privilegiadas y no privilegiadas)** hemos decidido que si un usuario registrado accede a su cuenta se redirigirá hacia [admin.html](./pages/admin.html)
