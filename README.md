@@ -1,13 +1,14 @@
 # Proyecto 'Isla Dorada'
 ### Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
-### Fedele, Joan y Pablo.
+Integrantes: Fedele Zuccaro, Joan Martinez Perdomo, Pablo Llopis Parrilla
 
-## Descripción del proyecto
+
+## 1. Descripción del proyecto
 Desarrollar una plataforma web y móvil para 'Isla Dorada', especializada en la reserva directa de habitaciones del hotel, eliminando intermediarios para ofrecer a los huéspedes una experiencia fluida, rápida y visualmente impactante
 
-## Definición y especificación de los requisitos
-### Requisitos funcionales del usuario
-#### 1. Módulo de Consulta y Catálogo (Público)
+## 2. Definición y especificación de los requisitos funcionales
+### 2.1 Requisitos funcionales del usuario
+#### A. Módulo de Consulta y Catálogo (Público)
 
 RFU1: El sistema permitirá a los usuarios consultar el catálogo completo de tipos de habitaciones del hotel (descripciones, fotos y características).
 
@@ -24,7 +25,7 @@ RFU6: El sistema mostrará la oferta detallada del hotel organizada por categor�
 •	Bienestar: Información sobre gimnasio, spa y piscinas.
 •	Actividades: Información sobre excursiones y espectáculos.
 
-#### 2. Módulo de Gestión de Usuarios y Cuentas
+#### B. Módulo de Gestión de Usuarios y Cuentas
 
 RFU7: Los usuarios no registrados podrán crear una cuenta aportando un identificador y una clave.
 
@@ -35,12 +36,12 @@ RFU9: Los usuarios registrados podrán modificar sus datos de perfil (excepto lo
 RFU10: El sistema permitirá solicitar el cambio de contraseña en caso de olvido.
 
 
-#### 3. Módulo de Reservas y Pagos
+#### C. Módulo de Reservas y Pagos
    RFU11: Los usuarios (registrados o invitados) podrán reservar una o varias habitaciones disponibles.
 
 RFU12: El proceso de reserva incluirá una pasarela de pago externa al sitio web para completar la transacción.
 
-### Requisitos funcionales del administrador.
+### 2.2 Requisitos funcionales del administrador.
 
 RFA1: El administrador podrá crear, consultar, modificar y eliminar las habitaciones.
 
@@ -50,6 +51,7 @@ RFA3: El administrador podrá crear, consultar, modificar y eliminar las reserva
 
 RFA4: El sistema requerirá autenticación para el acceso al panel de administración.
 
+## 3. Mockups y StoryBoard
 
 ## Estructuración del código
 El código se divide en las carpetas [pages](./pages) (paginas finales usando el xlu para los templates), [css](./css) (de momento lo tenemos todo compactado en un único css) y [js](./js) que en este sprint1 solo contiene el código xlu proporcionado por los profesores.
