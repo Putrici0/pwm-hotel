@@ -1,7 +1,7 @@
 # Proyecto 'Isla Dorada'
 ## Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
 ### Fedele, Joan y Pablo.
-
+Crear una página web y aplicación móvil que permita a un hotel mejorar las relaciones con los clientes (CRM), permitiendo reservas y un administrador que gestionará los recursos (habitaciones, actividades y demás). 
 # Estructuración del código
 El código se divide en las carpetas [pages](./pages) (paginas finales usando el xlu para los templates), [css](./css) (de momento lo tenemos todo compactado en un único css) y [js](./js) que en este sprint1 solo contiene el código xlu proporcionado por los profesores.
 En la carpeta [examples](./examples) se encuentra el diseño de **casi** todos los templates que se pueden abrir en el navegador para demostrar cual es nuestra intención con éstos. Los separamos de pages por el cambio que había que hacer con respecto al xlu, es decir los examples tienen, entre otros, <body> mientras que los templates no, de ahí que se puedan visualizar.
