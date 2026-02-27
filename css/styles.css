@@ -1,4 +1,4 @@
-/* ================= HEADER ================= */
+/* HEADER */
 
 .header {
     background: #e6e6e6;
@@ -44,7 +44,7 @@
     gap: 2rem;
 }
 
-/* ================= FOOTER ================= */
+/* FOOTER */
 
 .footer {
     background: #e6e6e6;
@@ -74,7 +74,7 @@
     gap: 1.2rem 3rem;
 }
 
-/* ================= HERO ================= */
+/* HERO */
 
 .hero {
     padding: 4rem 2rem 60px 2rem;
@@ -92,7 +92,7 @@
     color: #666;
 }
 
-/* ================= TEXT IMAGE ================= */
+/* TEXT IMAGE */
 
 .text-image-right {
     display: flex;
@@ -115,7 +115,7 @@
     padding: 4rem 2rem;
 }
 
-/* ================= IMAGE GRID ================= */
+/* IMAGE GRID */
 
 .image-grid-section {
     padding: 4rem 2rem;
@@ -132,7 +132,7 @@
     background: #ccc;
 }
 
-/* ================= FORM BASE ================= */
+/* FORM BASE */
 
 .form-section {
     padding: 4rem 2rem;
@@ -168,7 +168,7 @@
     border: none;
 }
 
-/* ================= AUTH ================= */
+/* AUTH */
 
 .auth-section {
     padding: 6rem 2rem;
@@ -221,7 +221,7 @@
     align-items: flex-start;
 }
 
-/* ================= ACCOUNT ACTIONS ================= */
+/* ACCOUNT ACTIONS */
 
 .account-actions {
     padding: 3rem 2rem;
@@ -240,7 +240,7 @@
     border-radius: 8px;
 }
 
-/* ================= TABLE GENERICA ================= */
+/* TABLE GENERICA */
 
 .table-section {
     padding: 4rem 2rem;
@@ -270,7 +270,7 @@
     text-align: center;
 }
 
-/* ================= TABLE CARD ================= */
+/* TABLE CARD */
 
 .table-card-section {
     padding: 4rem 2rem;
@@ -307,7 +307,7 @@
     border-bottom: none;
 }
 
-/* ================= BOOKING ================= */
+/* BOOKING */
 
 .booking-image {
     height: 300px;
@@ -347,7 +347,7 @@
     background: #f8d7da;
 }
 
-/* ================= RESTAURANT ================= */
+/* RESTAURANT */
 
 .restaurant-hero-image {
     width: 100%;
