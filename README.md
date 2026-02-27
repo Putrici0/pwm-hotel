@@ -8,7 +8,7 @@ En la carpeta [examples](./examples) se encuentra el diseño de **casi** todos l
 En cuanto a **path traversal** usamos el relativo, es decir como se insistió en clase de teoría usamos la ruta relativa (../ ./) y no la absoluta.
 
 ## Mockups
-Nosotros guardamos los mockups diseñados en figma individualmente en formato png en [carpeta mockups](./mockups)
+Nosotros guardamos los mockups diseñados en figma individualmente en formato png en [carpeta mockups](./mockups), además cada archivo de la [carpeta pages](./pages) tiene su relativo en la [carpeta mockups](./mockups) con **el mismo nombre**
 
 ## Templates
 Tenemos los templates html en la [carpeta templates](./templates)
