@@ -53,6 +53,8 @@ RFA4: El sistema requerirá autenticación para el acceso al panel de administra
 
 ## 3. Mockups y StoryBoard
 
+Las [páginas](./pages) tienen el mismo nombre que el [mockup](./mockups) que implementan.
+
 ## Estructuración del código
 El código se divide en las carpetas [pages](./pages) (paginas finales usando el xlu para los templates), [css](./css) (de momento lo tenemos todo compactado en un único css) y [js](./js) que en este sprint1 solo contiene el código xlu proporcionado por los profesores.
 En la carpeta [examples](./examples) se encuentra el diseño de cada template que se puede abrir en el navegador para demostrar cual es nuestra intención con los templates. Los separamos de pages por el cambio que había que hacer con respecto al xlu, es decir los examples tienen, entre otros, <body> mientras que los templates no, de ahí que se puedan visualizar.
@@ -62,10 +64,10 @@ En cuanto a **path traversal** usamos el relativo, es decir como se insistió en
 Nosotros guardamos los mockups diseñados en figma individualmente en formato pdf en [carpeta mockups](./mockups)
 
 ## Templates
-Tenemos los templates html en la [carpeta templates](./templates)
+Tenemos los templates html en la [carpeta templates](./templates).
 Nosotros identificamos que para cada uno de los siguientes mockups los templates asociados son:
-
-1. [Home](./mockups/01.%20home.pdf)
+<sub>Los siguientes enlaces te llevan al pdf del mockup</sub>
+1. [Home](./mockups/01.%20home.pdf), que se identifica con el index.html, la página principal.
    Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
 2. [Booking](./mockups/02.%20booking.pdf)
    Usa los templates: header.html, title-subtitle.html, table-availability.html, form.html y footer.html
@@ -97,6 +99,7 @@ Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que dur
 
 # Entendimiento del story-board
 Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
+<sub> Los enlaces llevan al html de cada una de las páginas </sub>
 1. [Home](./pages/index.html)  
 2. [Bookings](./pages/bookings.html)
 3. [Rooms](./pages/rooms.html)  
@@ -108,5 +111,6 @@ Desde cualquier página a través del header se podrá acceder en este orden seg
 6. [Account](./pages/account.html) Que si no se hace click despliega las siguientes opciones
    - [Login](./pages/login.html)  
    - [Register](./pages/register.html)  
-   - [Recover Password](./pages/change-password.html)  
+   - [Recover Password](./pages/change-password.html)
+
 **Siguiendo las indicaciones sobre dos tipos de cuentas (privilegiadas y no privilegiadas)** hemos decidido que si un usuario registrado accede a su cuenta se redirigirá hacia [admin.html](./pages/admin.html)
