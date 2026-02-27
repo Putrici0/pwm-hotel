@@ -90,10 +90,10 @@ Nosotros identificamos que para cada uno de los siguientes mockups los templates
 12. [Change-password](./mockups/12.%20change-password.pdf)
    Usa los templates: header.html, forget-password.html y footer.html
 13. [Admin](./mockups/13.%20admin.pdf)
-   Usa los templates:header.html, title-subtitle.html, table.html, form.html y footer.html
+   Usa los templates: header.html, title-subtitle.html, table.html, form.html y footer.html
 
 ## Navegabilidad de la página web
-Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad.
+Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad. También hay enlaces entre algunas páginas con, por ejemplo imagenes. 
 
 # Entendimiento del story-board
 Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
