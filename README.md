@@ -1,6 +1,6 @@
 # Proyecto 'Isla Dorada'
 ### Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
-Integrantes: Fedele Zuccaro, Joan Martinez Perdomo, Pablo Llopis Parrilla
+Integrantes: Fedele Zuccaro (github:fedele24), Joan Martinez Perdomo (github:Doffensmirthz), Pablo Llopis Parrilla (github:putrici0)
 
 
 ## 1. Descripción del proyecto
