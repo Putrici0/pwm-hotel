@@ -1,4 +1,4 @@
-### Proyecto 'Isla Dorada'
+# Proyecto 'Isla Dorada'
 ## Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
 
 
