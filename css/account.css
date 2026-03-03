@@ -1,0 +1,17 @@
+/* css por pagina ACCOUNT ACTIONS  */
+.account-actions {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.account-actions__btn {
+    width: 300px;
+    padding: 1rem;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}

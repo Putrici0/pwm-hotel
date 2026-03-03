@@ -1,0 +1,28 @@
+/* css por template TABLE GENERICA  (table.html)*/
+.table-section {
+    padding: 4rem 2rem;
+}
+
+.table-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    border: 1px solid #333;
+    padding: 1.2rem;
+    text-align: center;
+}
+
+.table-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    text-align: center;
+}

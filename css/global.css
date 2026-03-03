@@ -1,0 +1,76 @@
+/* GLOBAL CSS */
+/* En este fichero css ponemos el css comun a todas las paginas */
+
+/* HEADER */
+.header {
+    background: #e6e6e6;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header__logo {
+    width: 60px;
+    height: 60px;
+    background: #ccc;
+}
+
+.header__center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.header__highlight {
+    background: black;
+    color: white;
+    padding: 1rem 3rem;
+    border-radius: 8px;
+}
+
+.header__right {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.header__nav {
+    display: flex;
+    gap: 2rem;
+}
+
+/* FOOTER */
+.footer {
+    background: #e6e6e6;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+}
+
+.footer__container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.footer__left h3 {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+}
+
+.footer__socials {
+    display: flex;
+    gap: 1.2rem;
+}
+
+.footer__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.2rem 3rem;
+}

@@ -1,0 +1,15 @@
+/* css por template IMAGE GRID (image-grid.html)*/
+.image-grid-section {
+    padding: 4rem 2rem;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+}
+
+.image-grid__item {
+    height: 200px;
+    background: #ccc;
+}

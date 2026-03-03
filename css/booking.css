@@ -1,0 +1,38 @@
+/* css por template BOOKING & AVAILABILITY (table.availability.html y la imagen de cabecera de la página booking.html.) */
+.booking-image {
+    height: 300px;
+    background: #ccc;
+    margin: 3rem auto;
+    max-width: 1100px;
+}
+
+.availability-section {
+    padding: 4rem 2rem;
+    text-align: center;
+}
+
+.availability-wrapper {
+    max-width: 1100px;
+    margin: 2rem auto;
+    overflow-x: auto;
+}
+
+.availability-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.availability-table th,
+.availability-table td {
+    border: 1px solid #333;
+    padding: 1rem;
+    text-align: center;
+}
+
+.available {
+    background: #d4edda;
+}
+
+.occupied {
+    background: #f8d7da;
+}

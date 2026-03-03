@@ -1,0 +1,21 @@
+/* css por TEXT IMAGE COMPONENTS (text-image-right.html, text-image-left.html, text-image-vertical.html)  */
+.text-image-right {
+    display: flex;
+    gap: 2rem;
+    padding: 4rem 2rem;
+    align-items: center;
+}
+
+.text-image-right__text {
+    flex: 1;
+}
+
+.text-image-right__image {
+    flex: 1;
+    height: 400px;
+    background: #ccc;
+}
+
+.text-image-vertical {
+    padding: 4rem 2rem;
+}

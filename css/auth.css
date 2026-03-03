@@ -1,0 +1,51 @@
+/* css por template AUTHENTICATION (auth-login.html, auth-register.html)*/
+.auth-section {
+    padding: 6rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 420px;
+    padding: 2.5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.auth-card form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.auth-card input {
+    padding: 0.8rem;
+    border: 1px solid #ccc;
+}
+
+.auth-btn-primary,
+.auth-btn-secondary {
+    padding: 0.9rem;
+    border: none;
+    color: white;
+}
+
+.auth-btn-primary {
+    background: black;
+}
+
+.auth-btn-secondary {
+    background: #333;
+}
+
+.auth-link {
+    text-align: right;
+    font-size: 0.9rem;
+    text-decoration: underline;
+}
+
+.auth-checkbox {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
