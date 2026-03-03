@@ -1,5 +1,10 @@
 /* GLOBAL CSS */
 /* En este fichero css ponemos el css comun a todas las paginas */
+body {
+    font-family: sans-serif; /* basic standard font */
+    line-height: 1.6;
+    color: #333;
+}
 
 /* HEADER */
 .header {
@@ -14,6 +19,11 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+.header__left a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .header__logo {
@@ -33,6 +43,8 @@
     color: white;
     padding: 1rem 3rem;
     border-radius: 8px;
+    text-decoration: none;
+    display: block;
 }
 
 .header__right {
@@ -41,10 +53,112 @@
     gap: 2rem;
 }
 
-.header__nav {
+.header__button {
+
+}
+
+
+.nav-links {
+    list-style: none;
     display: flex;
     gap: 2rem;
 }
+
+
+.nav-links > li > a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+
+.drop-btn {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    position: relative;
+}
+
+
+.header__button.dropdown .drop-btn {
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0.8rem 2.5rem 0.8rem 1.2rem;
+}
+
+
+.header__nav .nav-links .dropdown .drop-btn {
+    padding-right: 1rem;
+}
+
+
+.dropdown .drop-btn::after {
+    content: "\25BC";
+    font-size: 0.7em;
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1000;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+}
+
+
+.header__button .dropdown-content {
+    min-width: 250px;
+    border: 1px solid #333;
+    padding: 1rem;
+    right: 0;
+}
+
+
+.header__nav .dropdown-content {
+    left: 0;
+}
+
+
+.dropdown-content a {
+    color: #333;
+    padding: 0.8rem 1rem;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+
+.header__button .dropdown-content a {
+    padding: 0.5rem 1rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* FIN HEADER */
 
 /* FOOTER */
 .footer {
