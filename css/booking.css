@@ -1,4 +1,4 @@
-/* css por template BOOKING & AVAILABILITY (table.availability.html y la imagen de cabecera de la página booking.html.) */
+/* css por template BOOKING & AVAILABILITY (booking-table.html y la imagen de cabecera de la página booking.html.) */
 .booking-image {
     height: 300px;
     background: #ccc;
@@ -37,9 +37,7 @@
     background: #f8d7da;
 }
 
-/* =========================================
-   WIDGET DE RESERVAS (CALENDARIO EN NAVY)
-   ========================================= */
+/* tabla para reservar */
 
 .booking-widget-section {
     padding: 4rem 2rem;
@@ -48,11 +46,10 @@
 }
 
 .booking-widget-container {
-    background-color: var(--mar-navy); /* Fondo de la tarjeta en Azul Navy */
+    background-color: var(--mar-navy);
     padding: 3rem;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra un poco más oscura */
-    border-top: 5px solid var(--sol-amarillo); /* Un toque de sol arriba para contrastar */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     max-width: 1000px;
     width: 100%;
 }
@@ -61,10 +58,10 @@
     text-align: center;
     margin-bottom: 2.5rem;
     font-size: 2.2rem;
-    color: var(--arena-sable); /* Título en color arena */
+    color: var(--arena-sable);
 }
 
-/* Usamos CSS Grid para poner todo en una sola fila en pantallas grandes */
+
 .booking-form {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -80,35 +77,31 @@
 
 .form-group label {
     font-weight: 600;
-    color: var(--arena-sable); /* Etiquetas en color arena */
+    color: var(--arena-sable);
     font-size: 0.95rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
-/* Estilos de los inputs (Calendarios y Número) en Sable */
+
 .form-group input[type="date"],
 .form-group input[type="number"] {
     padding: 0.8rem;
     border: 1px solid var(--arena-hover);
     border-radius: 6px;
-    font-family: var(--font-textos);
     font-size: 1rem;
-    color: var(--mar-navy); /* El texto que escribes dentro sigue siendo navy para leerse bien */
-    background-color: var(--arena-sable); /* Fondo de los campos en arena */
+    color: var(--mar-navy);
+    background-color: var(--arena-sable);
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
-/* Efecto al hacer clic en un campo (Focus) */
 .form-group input:focus {
     outline: none;
-    border-color: var(--sol-amarillo);
-    background-color: var(--arena-clara); /* Se aclara un poco al hacer clic */
-    box-shadow: 0 0 0 3px rgba(222, 158, 54, 0.3); /* Resplandor amarillo */
+    background-color: var(--arena-clara);
+    box-shadow: 0 0 0 3px rgba(222, 158, 54, 0.3);
 }
 
-/* Checkbox de Suite Familiar */
 .checkbox-group label {
     display: flex;
     align-items: center;
@@ -117,22 +110,21 @@
     cursor: pointer;
     line-height: 1.2;
     text-transform: none;
-    color: var(--arena-sable); /* Texto del checkbox en arena */
+    color: var(--arena-sable);
 }
 
 .checkbox-group small {
     font-weight: 400;
-    color: var(--arena-clara); /* Texto pequeño un poco más claro */
+    color: var(--arena-clara);
 }
 
 .checkbox-group input[type="checkbox"] {
     width: 20px;
     height: 20px;
-    accent-color: var(--sol-amarillo); /* La palomita del checkbox en amarillo sol */
     cursor: pointer;
 }
 
-/* Botón de envío (Se queda como estaba, heredando de .btn-primary) */
+
 .form-submit {
     justify-content: flex-end;
 }
@@ -146,7 +138,7 @@
     justify-content: center;
 }
 
-/* === RESPONSIVE: Para móviles y tablets === */
+/* Responsive */
 @media (max-width: 900px) {
     .booking-form {
         grid-template-columns: repeat(2, 1fr);
