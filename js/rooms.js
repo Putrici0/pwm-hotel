@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-    waitForRoomTemplates(() => {
+    waitForRoomTemplate(() => {
         loadRoomData("../data/rooms.json", renderRooms);
     });
 }
@@ -22,23 +22,20 @@ function loadRoomData(fileName, callback) {
         .catch((error) => console.error(error));
 }
 
-function waitForRoomTemplates(callback) {
-    const roomIds = ["room1", "room2", "room3", "room4"];
+function waitForRoomTemplate(callback) {
     let tries = 0;
     const maxTries = 120;
 
     const timer = setInterval(() => {
         tries += 1;
 
-        const allReady = roomIds.every((roomId) => {
-            const room = document.getElementById(roomId);
-            if (!room) {
-                return false;
-            }
-            return room.querySelector("h2") && room.querySelector("p") && room.querySelector(".text-image-right__image");
-        });
+        const firstRoom = document.getElementById("room1");
+        const isReady = firstRoom &&
+            firstRoom.querySelector("h2") &&
+            firstRoom.querySelector("p") &&
+            firstRoom.querySelector(".text-image-right__image");
 
-        if (allReady) {
+        if (isReady) {
             clearInterval(timer);
             callback();
         }
@@ -56,8 +53,34 @@ function renderRooms(data) {
         return;
     }
 
+    const main = document.querySelector("main");
+    if (!main) {
+        console.error("No se encontro el contenedor principal de habitaciones.");
+        return;
+    }
+
+    let roomSections = Array.from(main.querySelectorAll("section[id^='room']"));
+    if (roomSections.length === 0) {
+        console.error("No hay una seccion base de habitaciones para clonar.");
+        return;
+    }
+
+    const baseSection = roomSections[0];
+
+    while (roomSections.length < data.rooms.length) {
+        const newSection = baseSection.cloneNode(true);
+        newSection.id = `room${roomSections.length + 1}`;
+        main.appendChild(newSection);
+        roomSections.push(newSection);
+    }
+
+    while (roomSections.length > data.rooms.length) {
+        const sectionToRemove = roomSections.pop();
+        sectionToRemove.remove();
+    }
+
     data.rooms.forEach((room, index) => {
-        const roomSection = document.getElementById(`room${index + 1}`);
+        const roomSection = roomSections[index];
         if (!roomSection) {
             return;
         }
