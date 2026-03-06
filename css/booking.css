@@ -36,3 +36,134 @@
 .occupied {
     background: #f8d7da;
 }
+
+/* =========================================
+   WIDGET DE RESERVAS (CALENDARIO EN NAVY)
+   ========================================= */
+
+.booking-widget-section {
+    padding: 4rem 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.booking-widget-container {
+    background-color: var(--mar-navy); /* Fondo de la tarjeta en Azul Navy */
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Sombra un poco más oscura */
+    border-top: 5px solid var(--sol-amarillo); /* Un toque de sol arriba para contrastar */
+    max-width: 1000px;
+    width: 100%;
+}
+
+.booking-widget__title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    color: var(--arena-sable); /* Título en color arena */
+}
+
+/* Usamos CSS Grid para poner todo en una sola fila en pantallas grandes */
+.booking-form {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--arena-sable); /* Etiquetas en color arena */
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Estilos de los inputs (Calendarios y Número) en Sable */
+.form-group input[type="date"],
+.form-group input[type="number"] {
+    padding: 0.8rem;
+    border: 1px solid var(--arena-hover);
+    border-radius: 6px;
+    font-family: var(--font-textos);
+    font-size: 1rem;
+    color: var(--mar-navy); /* El texto que escribes dentro sigue siendo navy para leerse bien */
+    background-color: var(--arena-sable); /* Fondo de los campos en arena */
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+/* Efecto al hacer clic en un campo (Focus) */
+.form-group input:focus {
+    outline: none;
+    border-color: var(--sol-amarillo);
+    background-color: var(--arena-clara); /* Se aclara un poco al hacer clic */
+    box-shadow: 0 0 0 3px rgba(222, 158, 54, 0.3); /* Resplandor amarillo */
+}
+
+/* Checkbox de Suite Familiar */
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    cursor: pointer;
+    line-height: 1.2;
+    text-transform: none;
+    color: var(--arena-sable); /* Texto del checkbox en arena */
+}
+
+.checkbox-group small {
+    font-weight: 400;
+    color: var(--arena-clara); /* Texto pequeño un poco más claro */
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--sol-amarillo); /* La palomita del checkbox en amarillo sol */
+    cursor: pointer;
+}
+
+/* Botón de envío (Se queda como estaba, heredando de .btn-primary) */
+.form-submit {
+    justify-content: flex-end;
+}
+
+.booking-form .btn {
+    width: 100%;
+    padding: 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === RESPONSIVE: Para móviles y tablets === */
+@media (max-width: 900px) {
+    .booking-form {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .form-submit {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .booking-form {
+        grid-template-columns: 1fr;
+    }
+    .form-submit {
+        grid-column: span 1;
+    }
+    .booking-widget-container {
+        padding: 1.5rem;
+    }
+}
