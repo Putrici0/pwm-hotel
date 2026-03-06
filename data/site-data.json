@@ -1,0 +1,33 @@
+{
+  "index": {
+
+    "vertical": [
+
+      {
+        "title": "Isla Dorada Hotel",
+        "text": "Disfruta de una experiencia única en Gran Canaria con vistas al océano y servicios exclusivos."
+      },
+
+      {
+        "title": "Experiencias únicas",
+        "text": "Excursiones, actividades y experiencias inolvidables en la isla."
+      },
+
+      {
+        "title": "Reserva ahora",
+        "text": "Planifica tu estancia en Isla Dorada y vive una experiencia inolvidable."
+      }
+
+    ],
+
+    "right": [
+
+      {
+        "title": "Sostenibilidad",
+        "text": "Nuestro hotel utiliza energías renovables y prácticas sostenibles."
+      }
+
+    ]
+
+  }
+}
