@@ -1,0 +1,23 @@
+{
+  "intro": {
+    "title": "Activities & Experiences",
+    "description": "Completa tu estancia con planes para todos los gustos: actividades culturales, bienestar y ocio dentro y fuera del hotel."
+  },
+  "activities": [
+    {
+      "title": "Tour guiado por la ciudad",
+      "description": "Recorre los puntos mas emblematicos con un guia local y descubre la historia, cultura y rincones recomendados para sacar el maximo partido a tu viaje.",
+      "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+    },
+    {
+      "title": "Yoga al amanecer",
+      "description": "Empieza el dia con una sesion de yoga en terraza para mejorar movilidad, respiracion y energia antes del desayuno.",
+      "imageGradient": "linear-gradient(135deg, #0f8b8d, #56cfe1)"
+    },
+    {
+      "title": "Cata de vinos y productos locales",
+      "description": "Disfruta de una experiencia gastronomica guiada con seleccion de vinos regionales y degustacion de quesos, aceites y productos artesanales.",
+      "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
+    }
+  ]
+}
