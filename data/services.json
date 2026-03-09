@@ -1,0 +1,23 @@
+{
+  "intro": {
+    "title": "Servicios del Hotel",
+    "description": "Disfruta de una experiencia completa con zonas de bienestar, propuesta gastronomica y actividades pensadas para todos los perfiles de viajero."
+  },
+  "services": [
+    {
+      "title": "Wellness Facilities",
+      "description": "Accede a nuestro espacio wellness con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
+      "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+    },
+    {
+      "title": "Restauracion",
+      "description": "Saborea una oferta gastronomica variada con menu diario, cocina local y opciones internacionales preparadas con producto fresco.",
+      "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
+    },
+    {
+      "title": "Actividades",
+      "description": "Completa tu viaje con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
+      "imageGradient": "linear-gradient(135deg, #365b3b, #6aa56f)"
+    }
+  ]
+}
