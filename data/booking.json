@@ -1,0 +1,20 @@
+{
+  "header": {
+    "title": "Reserva tu estancia en Isla Dorada",
+    "description": "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinacion de confort, ubicacion y servicios.",
+    "imageGradient": "linear-gradient(135deg, #0b4f6c, #2f89b5)"
+  },
+  "availability": {
+    "title": "Sistema de disponibilidad de habitaciones",
+    "checkinLabel": "Fecha de entrada",
+    "checkoutLabel": "Fecha de salida",
+    "guestsLabel": "Numero de huespedes",
+    "familySuiteLabel": "Incluir opcion de suite familiar",
+    "submitText": "Comprobar disponibilidad",
+    "defaultCheckin": "2026-04-15",
+    "defaultCheckout": "2026-04-18",
+    "defaultGuests": 2,
+    "minGuests": 1,
+    "maxGuests": 6
+  }
+}
