@@ -56,7 +56,7 @@ function waitForRestaurantTemplates(callback) {
 }
 
 function isDailyMenuReady() {
-    const section = document.getElementById("daily-menu");
+    const section = getDailyMenuSection();
     return Boolean(
         section &&
         section.querySelector("h2") &&
@@ -88,7 +88,7 @@ function renderDailyMenu(dailyMenu) {
         return;
     }
 
-    const section = document.getElementById("daily-menu");
+    const section = getDailyMenuSection();
     if (!section) {
         return;
     }
@@ -110,6 +110,15 @@ function renderDailyMenu(dailyMenu) {
     if (imageEl && dailyMenu.imageGradient) {
         imageEl.style.background = dailyMenu.imageGradient;
     }
+}
+
+function getDailyMenuSection() {
+    const byId = document.getElementById("daily-menu");
+    if (byId) {
+        return byId;
+    }
+
+    return document.querySelector("main > .text-image-vertical");
 }
 
 function renderCategoryTable(sectionId, categoryData) {
