@@ -1,0 +1,29 @@
+{
+  "header": {
+    "title": "Contacta con Isla Dorada Hotel",
+    "subtitle": "Estamos aqui para resolver tus dudas antes, durante y despues de tu estancia."
+  },
+  "commitment": {
+    "title": "Compromiso de atencion al huesped",
+    "description": "Nuestro equipo de recepcion y administracion responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
+    "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+  },
+  "form": {
+    "labels": {
+      "name": "Nombre",
+      "lastName": "Apellidos",
+      "email": "Email",
+      "subject": "Asunto",
+      "question": "Duda o mensaje"
+    },
+    "placeholders": {
+      "name": "Introduce tu nombre",
+      "lastName": "Introduce tus apellidos",
+      "email": "Introduce tu email",
+      "subject": "Motivo de la consulta",
+      "question": "Escribe aqui tu duda"
+    },
+    "privacyText": "Acepto la politica de privacidad",
+    "submitText": "Enviar consulta"
+  }
+}
