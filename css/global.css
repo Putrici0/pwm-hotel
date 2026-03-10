@@ -35,8 +35,16 @@ body {
     text-decoration: none;
 }
 
-.logo-container:hover .hotel-name {
-    color: var(--arena-hover);
+.logo-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-right: 10px;
+}
+
+
+.logo-container:hover .logo-img {
+    transform: scale(1.05);
 }
 
 .logo-placeholder {
