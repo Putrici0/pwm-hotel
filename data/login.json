@@ -1,0 +1,16 @@
+{
+  "form": {
+    "labels": {
+      "email": "Email",
+      "password": "Contraseña"
+    },
+    "placeholders": {
+      "email": "Introduce tu email",
+      "password": "Introduce tu contraseña"
+    },
+    "primaryButtonText": "Iniciar sesioó",
+    "secondaryButtonText": "Crear cuenta",
+    "forgotPasswordText": "¿Has olvidado tu contraseña?",
+    "forgotPasswordHref": "change-password.html"
+  }
+}
