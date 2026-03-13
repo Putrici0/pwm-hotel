@@ -1,0 +1,19 @@
+account.html:
+    cambiar contenido dinamicamente
+    cambiar tabla de reservas
+admin.html:
+    cambiar contenido dinamicamente
+    cambiar las dos tablas
+    poner los forms mas bonitos
+booking.html:
+    cambiar form de booking
+change-password.html:
+    cambiar form
+contact.html:
+    cambiar tabla de FAQ
+Responsive:
+    tablet
+    movil
+Mockups:
+    tablet
+    movil
