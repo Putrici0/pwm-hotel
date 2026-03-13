@@ -107,5 +107,15 @@ function renderRegisterPage(data) {
     if (submitButton && data.form.submitText) {
         submitButton.textContent = data.form.submitText;
     }
+
+    function validarPasswords() {
+        if (inputs[3].value !== inputs[4].value) {
+            inputs[4].setCustomValidity("Las contraseñas no coinciden");
+        } else {
+            inputs[4].setCustomValidity("");
+        }
+    }
+    inputs[3].addEventListener("input", validarPasswords);
+    inputs[4].addEventListener("input", validarPasswords);
 }
 
