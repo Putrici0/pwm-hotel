@@ -8,7 +8,7 @@
     "title": "Sistema de disponibilidad de habitaciones",
     "checkinLabel": "Fecha de entrada",
     "checkoutLabel": "Fecha de salida",
-    "guestsLabel": "Numero de huespedes",
+    "guestsLabel": "Huespedes",
     "familySuiteLabel": "Incluir opcion de suite familiar",
     "submitText": "Comprobar disponibilidad",
     "defaultCheckin": "2026-04-15",
