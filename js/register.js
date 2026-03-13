@@ -1,16 +1,16 @@
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-    waitForRestaurantTemplates(() => {
-        loadRestaurantData("../data/restaurant.json", renderRestaurantPage);
+    waitForRegisterTemplate(() => {
+        loadRegisterData("../data/register.json", renderRegisterPage);
     });
 }
 
-function loadRestaurantData(fileName, callback) {
+function loadRegisterData(fileName, callback) {
     fetch(fileName)
         .then((response) => {
             if (!response.ok) {
-                throw new Error("No se pudo cargar el archivo de restaurante.");
+                throw new Error("No se pudo cargar el archivo de registro.");
             }
             return response.json();
         })
@@ -22,7 +22,7 @@ function loadRestaurantData(fileName, callback) {
         .catch((error) => console.error(error));
 }
 
-function waitForRestaurantTemplates(callback) {
+function waitForRegisterTemplate(callback) {
     let tries = 0;
     const maxTries = 120;
 
@@ -30,151 +30,77 @@ function waitForRestaurantTemplates(callback) {
         tries += 1;
 
         const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
-        const dailyMenuReady = isDailyMenuReady();
-        const startersReady = isMenuTableReady("starters");
-        const firstDishReady = isMenuTableReady("first-dish");
-        const secondDishReady = isMenuTableReady("second-dish");
-        const dessertReady = isMenuTableReady("dessert-dish");
+        const formReady = isRegisterFormReady();
 
-        if (
-            pendingIncludes === 0 &&
-            dailyMenuReady &&
-            startersReady &&
-            firstDishReady &&
-            secondDishReady &&
-            dessertReady
-        ) {
+        if (pendingIncludes === 0 && formReady) {
             clearInterval(timer);
             callback();
         }
 
         if (tries >= maxTries) {
             clearInterval(timer);
-            console.error("No se pudieron cargar las secciones de restaurante.");
+            console.error("No se pudieron cargar las secciones de registro.");
         }
     }, 50);
 }
 
-function isDailyMenuReady() {
-    const section = getDailyMenuSection();
+function isRegisterFormReady() {
+    const section = document.getElementById("register-form");
     return Boolean(
         section &&
-        section.querySelector("h2") &&
-        section.querySelector("p") &&
-        section.querySelector(".text-image-right__image")
+        section.querySelectorAll("label").length >= 5 &&
+        section.querySelectorAll("input").length >= 6 &&
+        section.querySelector(".auth-checkbox strong") &&
+        section.querySelector(".auth-btn-primary")
     );
 }
 
-function isMenuTableReady(sectionId) {
-    const section = document.getElementById(sectionId);
-    return Boolean(
-        section &&
-        section.querySelector("h2") &&
-        section.querySelector("tbody") &&
-        section.querySelector("tr")
-    );
-}
-
-function renderRestaurantPage(data) {
-    renderDailyMenu(data.dailyMenu);
-    renderCategoryTable("starters", data.starters);
-    renderCategoryTable("first-dish", data.firstDishes);
-    renderCategoryTable("second-dish", data.secondDishes);
-    renderCategoryTable("dessert-dish", data.desserts);
-}
-
-function renderDailyMenu(dailyMenu) {
-    if (!dailyMenu) {
+function renderRegisterPage(data) {
+    if (!data || !data.form) {
         return;
     }
 
-    const section = getDailyMenuSection();
+    const section = document.getElementById("register-form");
     if (!section) {
         return;
     }
 
-    const titleEl = section.querySelector("h2");
-    const descriptionEl = section.querySelector("p");
-    const imageEl = section.querySelector(".text-image-right__image");
+    const labels = section.querySelectorAll("label");
+    const inputs = section.querySelectorAll("input");
+    const checkboxText = section.querySelector(".auth-checkbox strong");
+    const submitButton = section.querySelector(".auth-btn-primary");
 
-    if (titleEl && dailyMenu.title) {
-        titleEl.textContent = dailyMenu.title;
+    if (labels.length >= 5 && data.form.labels) {
+        labels[0].textContent = data.form.labels.name || labels[0].textContent;
+        labels[1].textContent = data.form.labels.lastName || labels[1].textContent;
+        labels[2].textContent = data.form.labels.email || labels[2].textContent;
+        labels[3].textContent = data.form.labels.password || labels[3].textContent;
+        labels[4].textContent = data.form.labels.confirmPassword || labels[4].textContent;
     }
 
-    if (descriptionEl) {
-        const menuPrice = dailyMenu.price ? `Precio: ${dailyMenu.price}` : "";
-        const menuDescription = dailyMenu.description || "";
-        descriptionEl.textContent = [menuDescription, menuPrice].filter(Boolean).join(" ");
+    if (inputs.length >= 5 && data.form.placeholders) {
+        inputs[0].type = "text";
+        inputs[0].placeholder = data.form.placeholders.name || inputs[0].placeholder;
+
+        inputs[1].type = "text";
+        inputs[1].placeholder = data.form.placeholders.lastName || inputs[1].placeholder;
+
+        inputs[2].type = "email";
+        inputs[2].placeholder = data.form.placeholders.email || inputs[2].placeholder;
+
+        inputs[3].type = "password";
+        inputs[3].placeholder = data.form.placeholders.password || inputs[3].placeholder;
+
+        inputs[4].type = "password";
+        inputs[4].placeholder = data.form.placeholders.confirmPassword || inputs[4].placeholder;
     }
 
-    if (imageEl && dailyMenu.imageGradient) {
-        imageEl.style.background = dailyMenu.imageGradient;
-    }
-}
-
-function getDailyMenuSection() {
-    const byId = document.getElementById("daily-menu");
-    if (byId) {
-        return byId;
+    if (checkboxText && data.form.termsText) {
+        checkboxText.textContent = data.form.termsText;
     }
 
-    return document.querySelector("main > .text-image-vertical");
-}
-
-function renderCategoryTable(sectionId, categoryData) {
-    if (!categoryData || !Array.isArray(categoryData.items)) {
-        return;
+    if (submitButton && data.form.submitText) {
+        submitButton.textContent = data.form.submitText;
     }
-
-    const section = document.getElementById(sectionId);
-    if (!section) {
-        return;
-    }
-
-    const titleEl = section.querySelector("h2");
-    const tableBody = section.querySelector("tbody");
-
-    if (!tableBody) {
-        return;
-    }
-
-    if (titleEl && categoryData.title) {
-        titleEl.textContent = categoryData.title;
-    }
-
-    let rows = Array.from(tableBody.querySelectorAll("tr"));
-    if (rows.length === 0) {
-        return;
-    }
-
-    const baseRow = rows[0];
-
-    while (rows.length < categoryData.items.length) {
-        const newRow = baseRow.cloneNode(true);
-        tableBody.appendChild(newRow);
-        rows.push(newRow);
-    }
-
-    while (rows.length > categoryData.items.length) {
-        const rowToRemove = rows.pop();
-        if (rowToRemove) {
-            rowToRemove.remove();
-        }
-    }
-
-    categoryData.items.forEach((item, index) => {
-        const row = rows[index];
-        if (!row) {
-            return;
-        }
-
-        const cells = row.querySelectorAll("td");
-        if (cells.length < 2) {
-            return;
-        }
-
-        cells[0].textContent = item.name || "";
-        cells[1].textContent = item.price || "";
-    });
 }
 

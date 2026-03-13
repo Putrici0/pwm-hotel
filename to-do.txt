@@ -18,4 +18,4 @@ Mockups:
     tablet
     movil
 fix:
-    register no carga los datos
+    register no carga los datos DONE
