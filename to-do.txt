@@ -17,3 +17,5 @@ Responsive:
 Mockups:
     tablet
     movil
+fix:
+    register no carga los datos
