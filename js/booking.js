@@ -187,7 +187,7 @@ setTimeout(function() {
         searchForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // Aqui por el momento, como no tenemos todavia una base de dato padonde de deberà hacer comprobar la disponibilidad, simulamos que se haya encontrado disponibilidad y mostramos el formulario final
+            // Aqui por el momento, como no tenemos todavia una base de dato padonde se deberà  comprobar la disponibilidad, simulamos que se haya encontrado disponibilidad y mostramos el formulario final
             checkoutSection.style.display = 'flex';
 
             checkoutSection.scrollIntoView({ behavior: 'smooth' });
