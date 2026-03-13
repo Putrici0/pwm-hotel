@@ -102,5 +102,7 @@ function renderLoginPage(data) {
             link.href = data.form.forgotPasswordHref;
         }
     }
+
+
 }
 

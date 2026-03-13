@@ -8,7 +8,7 @@
       "email": "Introduce tu email",
       "password": "Introduce tu contraseña"
     },
-    "primaryButtonText": "Iniciar sesioó",
+    "primaryButtonText": "Iniciar sesión",
     "secondaryButtonText": "Crear cuenta",
     "forgotPasswordText": "¿Has olvidado tu contraseña?",
     "forgotPasswordHref": "change-password.html"
