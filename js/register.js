@@ -80,18 +80,23 @@ function renderRegisterPage(data) {
 
     if (inputs.length >= 5 && data.form.placeholders) {
         inputs[0].type = "text";
+        inputs[0].required = true;
         inputs[0].placeholder = data.form.placeholders.name || inputs[0].placeholder;
 
         inputs[1].type = "text";
+        inputs[1].required = true;
         inputs[1].placeholder = data.form.placeholders.lastName || inputs[1].placeholder;
 
         inputs[2].type = "email";
+        inputs[2].required = true;
         inputs[2].placeholder = data.form.placeholders.email || inputs[2].placeholder;
 
         inputs[3].type = "password";
+        inputs[3].required = true;
         inputs[3].placeholder = data.form.placeholders.password || inputs[3].placeholder;
 
         inputs[4].type = "password";
+        inputs[4].required = true;
         inputs[4].placeholder = data.form.placeholders.confirmPassword || inputs[4].placeholder;
     }
 
@@ -102,5 +107,15 @@ function renderRegisterPage(data) {
     if (submitButton && data.form.submitText) {
         submitButton.textContent = data.form.submitText;
     }
+
+    function validarPasswords() {
+        if (inputs[3].value !== inputs[4].value) {
+            inputs[4].setCustomValidity("Las contraseñas no coinciden");
+        } else {
+            inputs[4].setCustomValidity("");
+        }
+    }
+    inputs[3].addEventListener("input", validarPasswords);
+    inputs[4].addEventListener("input", validarPasswords);
 }
 
