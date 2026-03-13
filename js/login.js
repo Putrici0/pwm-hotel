@@ -79,9 +79,11 @@ function renderLoginPage(data) {
 
     if (inputs.length >= 2 && data.form.placeholders) {
         inputs[0].type = "email";
+        inputs[0].required = true;
         inputs[0].placeholder = data.form.placeholders.email || inputs[0].placeholder;
 
         inputs[1].type = "password";
+        inputs[1].required = true;
         inputs[1].placeholder = data.form.placeholders.password || inputs[1].placeholder;
     }
 
