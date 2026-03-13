@@ -174,3 +174,43 @@ function renderAvailabilityWidget(availability) {
         submitButton.textContent = availability.submitText;
     }
 }
+
+
+//funciones para dinamicizar la sección de reserva
+setTimeout(function() {
+
+    // 1. Capturamos el formulario de búsqueda inicial (el widget Navy)
+    const searchForm = document.querySelector('.booking-form');
+    const checkoutSection = document.getElementById('checkout-section');
+
+    if(searchForm) {
+        searchForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Aqui por el momento, como no tenemos todavia una base de dato padonde de deberà hacer comprobar la disponibilidad, simulamos que se haya encontrado disponibilidad y mostramos el formulario final
+            checkoutSection.style.display = 'flex';
+
+            checkoutSection.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // 2. Aqui, capturamos el formulario final de reserva (el que acabamos de crear)
+    const finalForm = document.getElementById('final-booking-form');
+    const successMessage = document.getElementById('success-message');
+
+    if(finalForm) {
+        finalForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Evitamos que se envíe a la pasarela de pago real (por ahora)
+
+            // ahora, despues que se pincha sobre reserva ahora, ocultamos el formulario y el resumen
+            finalForm.style.display = 'none';
+            document.querySelector('.booking-summary').style.display = 'none';
+            document.querySelector('.form-title').style.display = 'none';
+
+            // Mostramos el mensaje de éxito (confirma de la reserva)
+            successMessage.style.display = 'block';
+        });
+    }
+
+}, 500);
+// fine dinamicidad
