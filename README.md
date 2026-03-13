@@ -1,4 +1,4 @@
-# Proyecto 'Isla Dorada'
+# Proyecto 'Isla Dorada' Sprint 2
 ### Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
 Integrantes: Fedele Zuccaro ([fedele24](https://github.com/fedele24)), Joan Martinez Perdomo ([Doffensmirthz](https://github.com/Doffensmirthz)), Pablo Llopis Parrilla ([Putrici0](https://github.com/Putrici0))
 

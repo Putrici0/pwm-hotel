@@ -165,6 +165,13 @@ function renderContactForm(formData) {
         inputs[2].type = "email";
         inputs[3].type = "text";
         inputs[4].type = "text";
+
+        // poner required en todos
+        inputs[0].required = true;
+        inputs[1].required = true;
+        inputs[2].required= true;
+        inputs[3].required = true;
+        inputs[4].required = true;
     }
 
     if (checkboxLabel && formData.privacyText) {
