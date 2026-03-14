@@ -1,4 +1,6 @@
 /* css por template RESTAURANT & MENU (table-menu.html y la imagen de cabecera de la página restaurant.html) */
+
+
 /* =========================================
    RESTAURANT & MENU
    ========================================= */
@@ -6,22 +8,12 @@
 .restaurant-hero-image {
     width: 100%;
     height: 250px;
-    background: var(--arena-sable); /* Sfondo color sabbia invece di grigio */
+    background: var(--arena-sable);
     margin: 40px 0;
-    /* Nota: un'immagine hero di solito tocca i bordi.
-       Se vuoi i margini laterali anche qui, cambia in:
-       margin: 40px 2rem;
-       width: calc(100% - 4rem);
-       border-radius: 12px; */
 }
 
 .menu-section {
-    /* ECCO LA SOLUZIONE: Aggiungiamo 2rem di spazio a destra e sinistra,
-       esattamente come abbiamo fatto nell'header e nel footer! */
     padding: 4rem 2rem;
-
-    /* EXTRA: Mettiamo una larghezza massima e centriamo il menu
-       così non si deforma sugli schermi dei computer grandi */
     max-width: 900px;
     margin: 0 auto;
 }
@@ -30,37 +22,93 @@
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 20px;
-    color: var(--mar-navy); /* Titolo del menu in blu navy */
-}
-
-.menu-table {
-    /* Cambiamo il bordo nero basico con i tuoi colori premium */
-    border: 2px solid var(--mar-navy);
-    border-radius: 12px; /* Un arrotondamento più moderno ed elegante rispetto a 40px */
-    overflow: hidden;
-    background-color: var(--blanco-puro); /* Sfondo bianco per far leggere bene il menu */
-    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.05); /* Ombra leggera */
-}
-
-.menu-table table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.menu-table td {
-    padding: 20px 30px;
-    /* Linea divisoria tra i piatti in color sabbia */
-    border-bottom: 1px solid var(--arena-sable);
     color: var(--mar-navy);
 }
 
-.menu-table tr:last-child td {
+.menu-table {
+    border: 2px solid var(--mar-navy);
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #F8F5F0; /* El sablito claro */
+    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.05);
+}
+
+/* Configuramos la tabla para poder mover los elementos con Flexbox */
+.menu-table table,
+.menu-table tbody {
+    display: block;
+    width: 100%;
+}
+
+.menu-table tr {
+    display: flex;
+    align-items: center; /* Centra todo verticalmente */
+    border-bottom: 1px solid var(--mar-navy); /* El borde ahora va en la fila */
+}
+
+.menu-table tr:last-child {
     border-bottom: none;
 }
 
-/* Lo stile per la colonna dei prezzi */
-.menu-table td:last-child {
+.menu-table td {
+    padding: 15px 30px;
+    color: var(--mar-navy);
+    border-bottom: none; /* Quitamos el borde de la celda, lo hace la fila */
+}
+
+/* LA MAGIA DEL ORDEN VISUAL */
+
+/* 1. Imagen (Aunque es la 3ª en HTML, le decimos que se pinte la 1ª) */
+.menu-item-img {
+    order: 1;
+    width: 100px;
+    padding-right: 15px !important;
+    padding-left: 30px !important;
+}
+
+/* Imagen blanca de placeholder */
+.white-placeholder {
+    width: 80px;
+    height: 80px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid rgba(26, 54, 93, 0.2);
+    display: block;
+}
+
+/* 2. Nombre del plato (Se pinta el 2º) */
+.menu-item-name {
+    order: 2;
+    flex: 1; /* Ocupa todo el espacio sobrante en el centro */
+    text-align: left;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding-left: 0 !important;
+}
+
+/* 3. Precio (Se pinta el 3º, a la derecha del todo) */
+.menu-item-price {
+    order: 3;
     text-align: right;
     font-weight: bold;
-    color: var(--sol-amarillo); /* I prezzi in giallo sol per farli risaltare elegantemente! */
+    color: var(--sol-amarillo);
+    font-size: 1.2rem;
+    white-space: nowrap;
+}
+
+/* === RESPONSIVE: Para móviles === */
+@media (max-width: 600px) {
+    .menu-table td {
+        padding: 15px;
+    }
+    .menu-item-img {
+        padding-left: 15px !important;
+    }
+    .white-placeholder {
+        width: 60px;
+        height: 60px;
+    }
+    .menu-item-name {
+        font-size: 1rem;
+    }
 }
