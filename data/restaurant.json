@@ -1,7 +1,7 @@
 {
   "dailyMenu": {
-    "title": "Menu del dia",
-    "description": "Menu completo con entrante, principal y postre elaborado con producto fresco local.",
+    "title": "Menú del día",
+    "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
     "price": "24,90 EUR",
     "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
   },
@@ -13,7 +13,7 @@
         "price": "9,50 EUR"
       },
       {
-        "name": "Croquetas caseras de jamon iberico",
+        "name": "Croquetas caseras de jamón ibérico",
         "price": "8,90 EUR"
       },
       {
@@ -21,7 +21,7 @@
         "price": "7,80 EUR"
       },
       {
-        "name": "Tosta de aguacate y salmon",
+        "name": "Tosta de aguacate y salmón",
         "price": "10,20 EUR"
       }
     ]
@@ -55,11 +55,11 @@
         "price": "18,90 EUR"
       },
       {
-        "name": "Solomillo de ternera con pure trufado",
+        "name": "Solomillo de ternera con puré trufado",
         "price": "22,50 EUR"
       },
       {
-        "name": "Pollo de corral al limon",
+        "name": "Pollo de corral al limón",
         "price": "16,40 EUR"
       },
       {

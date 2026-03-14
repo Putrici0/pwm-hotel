@@ -4,15 +4,15 @@
       "name": "Nombre",
       "lastName": "Apellidos",
       "email": "Email",
-      "password": "Contrasena",
-      "confirmPassword": "Confirmar contrasena"
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña"
     },
     "placeholders": {
       "name": "Introduce tu nombre",
       "lastName": "Introduce tus apellidos",
       "email": "Introduce tu email",
-      "password": "Crea una contrasena",
-      "confirmPassword": "Repite tu contrasena"
+      "password": "Crea una contraseñaa",
+      "confirmPassword": "Repite tu contraseñaa"
     },
     "termsText": "Acepto los terminos y condiciones",
     "submitText": "Crear cuenta"

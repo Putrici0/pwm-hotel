@@ -2,22 +2,22 @@
   "rooms": [
     {
       "title": "Suite Mar Premium",
-      "description": "La opcion mas exclusiva del hotel, con vistas frontales al oceano, cama king size, zona de estar privada y amenities premium para una estancia de lujo.",
+      "description": "La opción más exclusiva del hotel, con vistas frontales al océano, cama king size, zona de estar privada y amenities premium para una estancia de lujo.",
       "imageGradient": "linear-gradient(135deg, #0b4f6c, #2f89b5)"
     },
     {
-      "title": "Habitacion Deluxe Terraza",
-      "description": "Habitacion amplia y luminosa con terraza privada, ideal para desconectar. Incluye bano completo, escritorio de trabajo y detalle de bienvenida.",
+      "title": "Habitación Deluxe Terraza",
+      "description": "Habitación amplia y luminosa con terraza privada, ideal para desconectar. Incluye baño completo, escritorio de trabajo y detalle de bienvenida.",
       "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
     },
     {
-      "title": "Habitacion Familiar",
-      "description": "Disenada para viajes en familia, con mayor capacidad y distribucion funcional. Dispone de espacio para hasta 4 personas y comodidades para ninos.",
+      "title": "Habitación Familiar",
+      "description": "Diseñada para viajes en familia, con mayor capacidad y distribución funcional. Dispone de espacio para hasta 4 personas y comodidades para niños.",
       "imageGradient": "linear-gradient(135deg, #365b3b, #6aa56f)"
     },
     {
-      "title": "Habitacion Cozy",
-      "description": "Alternativa comoda y practica para estancias cortas, con cama doble, climatizacion, wifi de alta velocidad y todo lo necesario para descansar.",
+      "title": "Habitación Cozy",
+      "description": "Alternativa cómoda y práctica para estancias cortas, con cama doble, climatización, Wi-Fi de alta velocidad y todo lo necesario para descansar.",
       "imageGradient": "linear-gradient(135deg, #4a4a4a, #8d8d8d)"
     }
   ]

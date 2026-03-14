@@ -6,17 +6,17 @@
   "facilities": [
     {
       "title": "Gimnasio",
-      "description": "Espacio equipado con maquinas de cardio y fuerza, zona funcional y material de entrenamiento libre para mantener tu rutina durante la estancia.",
+      "description": "Espacio equipado con máquinas de cardio y fuerza, zona funcional y material de entrenamiento libre para mantener tu rutina durante la estancia.",
       "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
     },
     {
       "title": "Piscina",
-      "description": "Piscina exterior climatizada con area de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del dia.",
+      "description": "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
       "imageGradient": "linear-gradient(135deg, #0f8b8d, #56cfe1)"
     },
     {
       "title": "Spa",
-      "description": "Circuito de bienestar con sauna, bano de vapor y cabinas de masaje para una experiencia de desconexion completa en un ambiente tranquilo.",
+      "description": "Circuito de bienestar con sauna, baño de vapor y cabinas de masaje para una experiencia de desconexión completa en un ambiente tranquilo.",
       "imageGradient": "linear-gradient(135deg, #7b2cbf, #c77dff)"
     }
   ]

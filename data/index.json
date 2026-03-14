@@ -6,32 +6,32 @@
   },
   "islandInfo": {
     "title": "Gran Canaria, la isla del hotel",
-    "description": "Gran Canaria combina playa, naturaleza y cultura en un mismo destino. Puedes disfrutar de dunas, rutas de montana, pueblos con encanto y una oferta gastronomica muy variada durante todo el ano.",
+    "description": "Gran Canaria combina playa, naturaleza y cultura en un mismo destino. Puedes disfrutar de dunas, rutas de montaña, pueblos con encanto y una oferta gastronómica muy variada durante todo el año.",
     "imageGradient": "linear-gradient(135deg, #f4a261, #e76f51)"
   },
   "environment": {
     "title": "Compromiso ambiental del hotel",
     "items": [
       {
-        "title": "Eficiencia energetica",
-        "description": "Uso de iluminacion LED y sistemas de climatizacion optimizados para reducir el consumo.",
+        "title": "Eficiencia energética",
+        "description": "Uso de iluminación LED y sistemas de climatización optimizados para reducir el consumo.",
         "imageGradient": "linear-gradient(135deg, #2a9d8f, #52b788)"
       },
       {
         "title": "Consumo responsable de agua",
-        "description": "Programa de reutilizacion de toallas y control inteligente de caudal en habitaciones y zonas comunes.",
+        "description": "Programa de reutilización de toallas y control inteligente de caudal en habitaciones y zonas comunes.",
         "imageGradient": "linear-gradient(135deg, #457b9d, #48cae4)"
       },
       {
-        "title": "Gestion de residuos",
-        "description": "Separacion selectiva, reduccion de plasticos de un solo uso y colaboracion con proveedores locales.",
+        "title": "Gestión de residuos",
+        "description": "Separación selectiva, reducción de plásticos de un solo uso y colaboración con proveedores locales.",
         "imageGradient": "linear-gradient(135deg, #6d597a, #b56576)"
       }
     ]
   },
   "rooms": {
     "title": "Habitaciones para cada tipo de viaje",
-    "description": "Desde habitaciones cozy para escapadas cortas hasta suites premium con vistas al oceano, todas equipadas para garantizar descanso y comodidad.",
+    "description": "Desde habitaciones acogedoras para escapadas cortas hasta suites premium con vistas al océano, todas equipadas para garantizar descanso y comodidad.",
     "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
   },
   "services": {
@@ -43,8 +43,8 @@
         "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
       },
       {
-        "title": "Restauracion",
-        "description": "Propuesta gastronomica diaria con cocina local e internacional elaborada con producto fresco.",
+        "title": "Restauración",
+        "description": "Propuesta gastronómica diaria con cocina local e internacional elaborada con producto fresco.",
         "imageGradient": "linear-gradient(135deg, #bc6c25, #dda15e)"
       },
       {
@@ -55,8 +55,8 @@
     ]
   },
   "location": {
-    "title": "Localizacion del hotel",
-    "description": "Isla Dorada Hotel se encuentra en la costa sur de Gran Canaria, a pocos minutos de la playa, zonas comerciales y principales puntos de interes turistico.",
+    "title": "Localización del hotel",
+    "description": "Isla Dorada Hotel se encuentra en la costa sur de Gran Canaria, a pocos minutos de la playa, zonas comerciales y principales puntos de interés turístico.",
     "imageGradient": "linear-gradient(135deg, #264653, #2a9d8f)"
   }
 }
