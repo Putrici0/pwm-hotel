@@ -1,6 +1,6 @@
 /* css por template TABLE CARD (table-card.css)*/
 .table-card-section {
-    padding: 4rem 2rem;
+    padding: 2.25rem 1.25rem;
 }
 
 .table-card-container {
@@ -20,7 +20,7 @@
 }
 
 .table-card__row div {
-    padding: 2rem;
+    padding: 1rem;
     text-align: center;
     border-right: 1px solid #333;
     border-bottom: 1px solid #333;
@@ -34,9 +34,9 @@
     border-bottom: none;
 }
 
-@media (max-width: 752px) {
+@media (max-width: 877px) {
     .table-card-section {
-        padding: 3rem 1rem;
+        padding: 1.5rem 0.85rem;
     }
 
     .table-card {
