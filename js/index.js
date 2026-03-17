@@ -29,7 +29,7 @@ function waitForIndexTemplates(callback) {
     const timer = setInterval(() => {
         tries += 1;
 
-        const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
+        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
         const introReady = isTextImageReady("intro-index");
         const islandReady = isTextImageReady("island-info-index");
         const environmentReady = isGridReady("environment-index");

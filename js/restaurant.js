@@ -29,7 +29,7 @@ function waitForRestaurantTemplates(callback) {
     const timer = setInterval(() => {
         tries += 1;
 
-        const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
+        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
         const dailyMenuReady = isDailyMenuReady();
         const startersReady = isMenuTableReady("starters");
         const firstDishReady = isMenuTableReady("first-dish");
