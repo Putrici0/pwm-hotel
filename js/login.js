@@ -139,6 +139,13 @@ function renderLoginPage(data) {
 }
 
 
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+        const loginForm = document.getElementById('login-form-element');
+        if (loginForm) loginForm.reset();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const loginForm = document.getElementById('login-form-element');
@@ -161,7 +168,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const email = document.getElementById('login-email').value;
                 const password = passwordInput.value;
 
-                if (email === 'user@ulpgc.es' && password === 'pruebaPWM26?') {
+                const savedEmail = localStorage.getItem('savedUserEmail');
+                const savedPassword = localStorage.getItem('savedUserPassword');
+
+                const isDefaultUser = (email === 'user@ulpgc.es' && password === 'pruebaPWM26?');
+                const isRegisteredUser = (savedEmail && email === savedEmail && password === savedPassword);
+
+                if (isDefaultUser || isRegisteredUser) {
                     window.location.href = 'account.html';
                 } else {
                     errorMsg.textContent = 'Credenciales incorrectas. Inténtalo de nuevo.';
@@ -177,4 +190,5 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 500);
 });
+
 
