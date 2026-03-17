@@ -7,17 +7,17 @@
     {
       "title": "Gimnasio",
       "description": "Espacio equipado con máquinas de cardio y fuerza, zona funcional y material de entrenamiento libre para mantener tu rutina durante la estancia.",
-      "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1004/1600/900') center/cover no-repeat"
     },
     {
       "title": "Piscina",
       "description": "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
-      "imageGradient": "linear-gradient(135deg, #0f8b8d, #56cfe1)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://picsum.photos/id/101/1600/900') center/cover no-repeat"
     },
     {
       "title": "Spa",
       "description": "Circuito de bienestar con sauna, baño de vapor y cabinas de masaje para una experiencia de desconexión completa en un ambiente tranquilo.",
-      "imageGradient": "linear-gradient(135deg, #7b2cbf, #c77dff)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/119/1600/900') center/cover no-repeat"
     }
   ]
 }
