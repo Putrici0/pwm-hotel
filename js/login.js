@@ -115,6 +115,26 @@ function renderLoginPage(data) {
             validateUser(email, password)
         }))
     }
+    function validateUser(email, password) {
+        fetch("../data/users.json")
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Error cargando usuarios")
+                }
+                return res.json();
+            })
+            .then(data => {
+                const user = data.users.find(user => user.email === email && user.password === password);
+                if (user){
+                    // LÓGICA DE REDIRECCIÓN A PERSONAL ACCOUNT POR EJEMPLO
+                    alert("Credenciales correctas")
+                }
+                else{
+                    alert("Credenciales incorrectas")
+                }
+            });
+
+    }
 
 }
 
@@ -123,15 +143,30 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         const loginForm = document.getElementById('login-form-element');
         const btnRegister = document.getElementById('btn-register');
+        const errorMsg = document.getElementById('login-error');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('login-password');
+
+        if (togglePasswordBtn && passwordInput) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+            });
+        }
 
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
 
                 const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
+                const password = passwordInput.value;
 
-                validateUser(email, password)
+                if (email === 'user@ulpgc.es' && password === 'pruebaPWM26?') {
+                    window.location.href = 'account.html';
+                } else {
+                    errorMsg.textContent = 'Credenciales incorrectas. Inténtalo de nuevo.';
+                    errorMsg.style.display = 'block';
+                }
             });
         }
 
@@ -143,27 +178,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
 });
 
-function validateUser(email, password) {
-    const errorMsg = document.getElementById('login-error');
-    fetch("../data/users.json")
-        .then(res => {
-            if (!res.ok) {
-                throw new Error("Error cargando usuarios");
-            }
-            return res.json();
-        })
-        .then(data => {
-            const user = data.users.find(u =>
-                u.email === email && u.password === password
-            );
-
-            if (user) {
-                console.log("Login correcto");
-                window.location.href = 'account.html';
-            } else {
-                errorMsg.textContent = 'Credenciales incorrectas. Inténtalo de nuevo.';
-                errorMsg.style.display = 'block';
-            }
-        })
-        .catch(err => console.error(err));
-}

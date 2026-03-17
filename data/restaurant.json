@@ -3,7 +3,7 @@
     "title": "Menú del día",
     "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
     "price": "24,90 EUR",
-    "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
+    "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/431/1600/900') center/cover no-repeat"
   },
   "starters": {
     "title": "Entrantes",

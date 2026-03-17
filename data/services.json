@@ -7,17 +7,17 @@
     {
       "title": "Instalaciones Wellness",
       "description": "Accede a nuestro espacio wellness con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
-      "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/433/1600/900') center/cover no-repeat"
     },
     {
       "title": "Restauración",
       "description": "Saborea una oferta gastronómica variada con menú diario, cocina local y opciones internacionales preparadas con producto fresco.",
-      "imageGradient": "linear-gradient(135deg, #8a5a44, #c08a5b)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1080/1600/900') center/cover no-repeat"
     },
     {
       "title": "Actividades",
       "description": "Completa tu viaje con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
-      "imageGradient": "linear-gradient(135deg, #365b3b, #6aa56f)"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1018/1600/900') center/cover no-repeat"
     }
   ]
 }

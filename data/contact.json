@@ -6,7 +6,7 @@
   "commitment": {
     "title": "Compromiso de atención al huesped",
     "description": "Nuestro equipo de recepción y administración responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
-    "imageGradient": "linear-gradient(135deg, #1f3c88, #39a0ed)"
+    "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1068/1600/900') center/cover no-repeat"
   },
   "form": {
     "labels": {
