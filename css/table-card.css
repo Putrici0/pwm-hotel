@@ -33,3 +33,27 @@
 .table-card__row:last-child div {
     border-bottom: none;
 }
+
+@media (max-width: 752px) {
+    .table-card-section {
+        padding: 3rem 1rem;
+    }
+
+    .table-card {
+        border-radius: 20px;
+    }
+
+    .table-card__row div {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-card-container {
+        overflow-x: auto;
+    }
+
+    .table-card {
+        min-width: 520px;
+    }
+}

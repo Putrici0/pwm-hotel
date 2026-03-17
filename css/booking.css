@@ -139,23 +139,46 @@
 }
 
 /* Responsive */
-@media (max-width: 900px) {
+@media (max-width: 752px) {
+    .booking-image {
+        height: 220px;
+        margin: 2rem 1rem;
+    }
+
+    .availability-section,
+    .booking-widget-section {
+        padding: 3rem 1rem;
+    }
+
     .booking-form {
         grid-template-columns: repeat(2, 1fr);
     }
+
     .form-submit {
         grid-column: span 2;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
+    .booking-image {
+        height: 180px;
+    }
+
+    .booking-widget__title {
+        font-size: 1.5rem;
+        margin-bottom: 1.2rem;
+    }
+
     .booking-form {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
+
     .form-submit {
         grid-column: span 1;
     }
+
     .booking-widget-container {
-        padding: 1.5rem;
+        padding: 1rem;
     }
 }

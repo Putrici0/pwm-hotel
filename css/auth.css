@@ -99,3 +99,35 @@
     display: none;
     font-weight: bold;
 }
+
+@media (max-width: 752px) {
+    .auth-section {
+        padding: 4rem 1rem;
+    }
+
+    .auth-card {
+        width: 100%;
+        max-width: 520px;
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .auth-section {
+        padding: 2rem 0.75rem;
+    }
+
+    .auth-card {
+        padding: 1.25rem;
+    }
+
+    .auth-card form {
+        gap: 0.9rem;
+    }
+
+    .auth-btn-primary,
+    .auth-btn-secondary {
+        font-size: 0.9rem;
+        padding: 0.8rem;
+    }
+}

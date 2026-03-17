@@ -124,12 +124,35 @@
 .success-message p {
 }
 
-@media (max-width: 600px) {
+@media (max-width: 752px) {
+    .form-section {
+        padding: 3rem 1rem;
+    }
+
     .form-row {
         flex-direction: column;
         gap: 0;
     }
+
     .booking-checkout-card {
         padding: 2rem 1.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .form-section {
+        padding: 2rem 0.75rem;
+    }
+
+    .booking-checkout-card {
+        padding: 1.25rem 1rem;
+    }
+
+    .form-title {
+        font-size: 1.4rem;
+    }
+
+    .btn-full {
+        font-size: 1rem;
     }
 }

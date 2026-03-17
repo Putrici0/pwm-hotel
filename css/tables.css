@@ -26,3 +26,25 @@
     margin-bottom: 2rem;
     text-align: center;
 }
+
+@media (max-width: 752px) {
+    .table-section {
+        padding: 3rem 1rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 0.85rem;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .table {
+        min-width: 520px;
+    }
+}
