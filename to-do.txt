@@ -2,11 +2,7 @@ account.html:
     cambiar contenido dinamicamente
     cambiar tabla de reservas
 admin.html:
-    cambiar contenido dinamicamente
-    cambiar las dos tablas
-    poner los forms mas bonitos
-booking.html:
-    cambiar form de booking
+    arreglar pagina
 change-password.html:
     cambiar form
 contact.html:
@@ -14,8 +10,3 @@ contact.html:
 Responsive:
     tablet
     movil
-Mockups:
-    tablet
-    movil
-fix:
-    register no carga los datos DONE

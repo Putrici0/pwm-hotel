@@ -32,8 +32,9 @@ function waitForBookingTemplates(callback) {
         const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
         const titleReady = isBookingTitleReady();
         const availabilityReady = isAvailabilityReady();
+        const checkoutReady = isCheckoutReady();
 
-        if (pendingIncludes === 0 && titleReady && availabilityReady) {
+        if (pendingIncludes === 0 && titleReady && availabilityReady && checkoutReady) {
             clearInterval(timer);
             callback();
         }
@@ -66,10 +67,25 @@ function isAvailabilityReady() {
     );
 }
 
+function isCheckoutReady() {
+    const section = document.getElementById("booking-form");
+    return Boolean(
+        section &&
+        section.querySelector(".form-title") &&
+        section.querySelectorAll(".booking-summary .summary-item span").length >= 3 &&
+        section.querySelectorAll("#final-booking-form label").length >= 3 &&
+        section.querySelectorAll("#final-booking-form input").length >= 4 &&
+        section.querySelector("#success-message h3") &&
+        section.querySelector("#success-message p")
+    );
+}
+
 function renderBookingPage(data) {
     renderBookingHeader(data.header);
     renderBookingImage(data.header);
     renderAvailabilityWidget(data.availability);
+    renderCheckoutForm(data.checkout);
+    setupBookingFlow(data.checkout);
 }
 
 function renderBookingHeader(header) {
@@ -175,42 +191,174 @@ function renderAvailabilityWidget(availability) {
     }
 }
 
-
-//funciones para dinamicizar la sección de reserva
-setTimeout(function() {
-
-    // 1. Capturamos el formulario de búsqueda inicial (el widget Navy)
-    const searchForm = document.querySelector('.booking-form');
-    const checkoutSection = document.getElementById('checkout-section');
-
-    if(searchForm) {
-        searchForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Aqui por el momento, como no tenemos todavia una base de dato padonde se deberà  comprobar la disponibilidad, simulamos que se haya encontrado disponibilidad y mostramos el formulario final
-            checkoutSection.style.display = 'flex';
-
-            checkoutSection.scrollIntoView({ behavior: 'smooth' });
-        });
+function renderCheckoutForm(checkout) {
+    if (!checkout) {
+        return;
     }
 
-    // 2. Aqui, capturamos el formulario final de reserva (el que acabamos de crear)
-    const finalForm = document.getElementById('final-booking-form');
-    const successMessage = document.getElementById('success-message');
-
-    if(finalForm) {
-        finalForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Evitamos que se envíe a la pasarela de pago real (por ahora)
-
-            // ahora, despues que se pincha sobre reserva ahora, ocultamos el formulario y el resumen
-            finalForm.style.display = 'none';
-            document.querySelector('.booking-summary').style.display = 'none';
-            document.querySelector('.form-title').style.display = 'none';
-
-            // Mostramos el mensaje de éxito (confirma de la reserva)
-            successMessage.style.display = 'block';
-        });
+    const section = document.getElementById("booking-form");
+    if (!section) {
+        return;
     }
 
-}, 500);
-// fine dinamicidad
+    const titleEl = section.querySelector(".form-title");
+    const summaryLabels = section.querySelectorAll(".booking-summary .summary-item span");
+    const roomValueEl = section.querySelector("#summary-room-value");
+    const labels = section.querySelectorAll("#final-booking-form label");
+    const nameInput = section.querySelector("#final-name");
+    const lastNameInput = section.querySelector("#final-lastname");
+    const emailInput = section.querySelector("#final-email");
+    const policyText = section.querySelector("#booking-policy-text");
+    const submitButton = section.querySelector("#final-booking-form button[type='submit']");
+    const successTitle = section.querySelector("#success-message h3");
+    const successDescription = section.querySelector("#success-message p");
+
+    if (titleEl && checkout.title) {
+        titleEl.textContent = checkout.title;
+    }
+
+    if (summaryLabels.length >= 3 && checkout.summary) {
+        if (checkout.summary.checkinLabel) {
+            summaryLabels[0].textContent = `${checkout.summary.checkinLabel}:`;
+        }
+        if (checkout.summary.checkoutLabel) {
+            summaryLabels[1].textContent = `${checkout.summary.checkoutLabel}:`;
+        }
+        if (checkout.summary.roomLabel) {
+            summaryLabels[2].textContent = `${checkout.summary.roomLabel}:`;
+        }
+        if (roomValueEl && checkout.summary.defaultRoom) {
+            roomValueEl.textContent = checkout.summary.defaultRoom;
+        }
+    }
+
+    if (labels.length >= 3 && checkout.form && checkout.form.labels) {
+        labels[0].textContent = checkout.form.labels.name || labels[0].textContent;
+        labels[1].textContent = checkout.form.labels.lastName || labels[1].textContent;
+        labels[2].textContent = checkout.form.labels.email || labels[2].textContent;
+    }
+
+    if (checkout.form && checkout.form.placeholders) {
+        if (nameInput) {
+            nameInput.placeholder = checkout.form.placeholders.name || nameInput.placeholder;
+            nameInput.required = true;
+            nameInput.type = "text";
+        }
+
+        if (lastNameInput) {
+            lastNameInput.placeholder = checkout.form.placeholders.lastName || lastNameInput.placeholder;
+            lastNameInput.required = true;
+            lastNameInput.type = "text";
+        }
+
+        if (emailInput) {
+            emailInput.placeholder = checkout.form.placeholders.email || emailInput.placeholder;
+            emailInput.required = true;
+            emailInput.type = "email";
+        }
+    }
+
+    if (policyText && checkout.form && checkout.form.privacyText) {
+        policyText.textContent = checkout.form.privacyText;
+    }
+
+    if (submitButton && checkout.form && checkout.form.submitText) {
+        submitButton.textContent = checkout.form.submitText;
+    }
+
+    if (successTitle && checkout.success && checkout.success.title) {
+        successTitle.textContent = checkout.success.title;
+    }
+
+    if (successDescription && checkout.success && checkout.success.description) {
+        successDescription.textContent = checkout.success.description;
+    }
+}
+
+function setupBookingFlow(checkout) {
+    const searchForm = document.querySelector(".booking-form");
+    const checkoutSection = document.getElementById("checkout-section");
+    const finalForm = document.getElementById("final-booking-form");
+    const successMessage = document.getElementById("success-message");
+    const bookingSummary = document.querySelector(".booking-summary");
+    const formTitle = document.querySelector(".form-title");
+
+    if (!searchForm || !checkoutSection || !finalForm || !successMessage) {
+        return;
+    }
+
+    const checkinInput = document.getElementById("checkin");
+    const checkoutInput = document.getElementById("checkout");
+    const familySuiteInput = document.querySelector("input[name='family_suite']");
+    const checkinValue = document.getElementById("summary-checkin-value");
+    const checkoutValue = document.getElementById("summary-checkout-value");
+    const roomValue = document.getElementById("summary-room-value");
+
+    const updateSummary = () => {
+        if (checkinValue && checkinInput) {
+            checkinValue.textContent = formatSummaryDate(checkinInput.value);
+        }
+        if (checkoutValue && checkoutInput) {
+            checkoutValue.textContent = formatSummaryDate(checkoutInput.value);
+        }
+        if (roomValue && checkout && checkout.summary) {
+            roomValue.textContent = familySuiteInput && familySuiteInput.checked
+                ? (checkout.summary.familySuiteRoom || roomValue.textContent)
+                : (checkout.summary.defaultRoom || roomValue.textContent);
+        }
+    };
+
+    updateSummary();
+
+    if (checkinInput) {
+        checkinInput.addEventListener("input", updateSummary);
+    }
+    if (checkoutInput) {
+        checkoutInput.addEventListener("input", updateSummary);
+    }
+    if (familySuiteInput) {
+        familySuiteInput.addEventListener("change", updateSummary);
+    }
+
+    searchForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        updateSummary();
+
+        if (formTitle) {
+            formTitle.style.display = "block";
+        }
+        if (bookingSummary) {
+            bookingSummary.style.display = "block";
+        }
+        finalForm.style.display = "block";
+        successMessage.style.display = "none";
+        checkoutSection.style.display = "flex";
+        checkoutSection.scrollIntoView({ behavior: "smooth" });
+    });
+
+    finalForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        finalForm.style.display = "none";
+        if (bookingSummary) {
+            bookingSummary.style.display = "none";
+        }
+        if (formTitle) {
+            formTitle.style.display = "none";
+        }
+        successMessage.style.display = "block";
+    });
+}
+
+function formatSummaryDate(rawDate) {
+    if (!rawDate) {
+        return "--/--/----";
+    }
+
+    const parsedDate = new Date(rawDate);
+    if (Number.isNaN(parsedDate.getTime())) {
+        return rawDate;
+    }
+
+    return new Intl.DateTimeFormat("es-ES").format(parsedDate);
+}

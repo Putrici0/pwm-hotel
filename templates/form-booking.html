@@ -2,20 +2,20 @@
 
     <div class="form-card booking-checkout-card">
 
-        <h2 class="form-title">Lorem Ipsum (Completa tu reserva)</h2>
+        <h2 class="form-title">Lorem Ipsum</h2>
 
         <div class="booking-summary">
             <div class="summary-item">
-                <span>Lorem (Check-in):</span>
-                <strong>00/00/0000</strong> <!-- acuerdate con js de prender las fechas de entradas/salidas que se ponene en el formulario -->
+                <span>Lorem Ipsum:</span>
+                <strong id="summary-checkin-value">00/00/0000</strong>
             </div>
             <div class="summary-item">
-                <span>Lorem (Check-out):</span>
-                <strong>00/00/0000</strong>
+                <span>Lorem Ipsum:</span>
+                <strong id="summary-checkout-value">00/00/0000</strong>
             </div>
             <div class="summary-item">
-                <span>Lorem (Habitación):</span>
-                <strong>Lorem Ipsum Suite</strong>
+                <span>Lorem Ipsum:</span>
+                <strong id="summary-room-value">Lorem Ipsum</strong>
             </div>
         </div>
 
@@ -23,34 +23,34 @@
 
             <div class="form-row">
                 <div class="form-group-alt">
-                    <label>Lorem (Nombre)</label>
-                    <input type="text" placeholder="Lorem" required>
+                    <label for="final-name">Lorem Ipsum</label>
+                    <input id="final-name" type="text" placeholder="Lorem Ipsum" required>
                 </div>
                 <div class="form-group-alt">
-                    <label>Lorem (Apellido)</label>
-                    <input type="text" placeholder="Lorem" required>
+                    <label for="final-lastname">Lorem Ipsum</label>
+                    <input id="final-lastname" type="text" placeholder="Lorem Ipsum" required>
                 </div>
             </div>
 
             <div class="form-group-alt">
-                <label>Lorem (Email)</label>
-                <input type="email" placeholder="Lorem Ipsum" required>
+                <label for="final-email">Lorem Ipsum</label>
+                <input id="final-email" type="email" placeholder="Lorem Ipsum" required>
             </div>
 
             <div class="checkbox-group-alt">
                 <label>
                     <input type="checkbox" required>
-                    <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
+                    <span id="booking-policy-text">Lorem ipsum dolor sit amet.</span>
                 </label>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">Lorem Ipsum (Reservar)</button>
+            <button type="submit" class="btn btn-primary btn-full">Lorem Ipsum</button>
         </form>
 
         <div id="success-message" class="success-message" style="display: none;">
-            <div class="success-icon">✔️</div>
-            <h3>Lorem Ipsum!</h3>
-            <p>Lorem ipsum dolor sit amet. Reserva efectuada con éxito.</p>
+            <div class="success-icon">&#10004;</div>
+            <h3>Lorem Ipsum</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
         </div>
 
     </div>
