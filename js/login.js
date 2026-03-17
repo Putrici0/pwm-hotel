@@ -105,6 +105,36 @@ function renderLoginPage(data) {
         }
     }
 
+    if(section){
+        section.addEventListener("submit", (e => {
+            e.preventDefault();
+
+            const email = inputs[0].value;
+            const password = inputs[1].value;
+
+            validateUser(email, password)
+        }))
+    }
+    function validateUser(email, password) {
+        fetch("../data/users.json")
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Error cargando usuarios")
+                }
+                return res.json();
+            })
+            .then(data => {
+                const user = data.users.find(user => user.email === email && user.password === password);
+                if (user){
+                    // LÓGICA DE REDIRECCIÓN A PERSONAL ACCOUNT POR EJEMPLO
+                    alert("Credenciales correctas")
+                }
+                else{
+                    alert("Credenciales incorrectas")
+                }
+            });
+
+    }
 
 }
 
