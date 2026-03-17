@@ -8,8 +8,10 @@
 .auth-card {
     width: 420px;
     padding: 2.5rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    background-color: var(--blanco-puro);
+    border: 2px solid var(--mar-navy);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
 }
 
 .auth-card form {
@@ -18,34 +20,82 @@
     gap: 1.2rem;
 }
 
+.auth-card label {
+    font-weight: 600;
+    color: var(--mar-navy);
+    margin-bottom: -0.8rem;
+}
+
 .auth-card input {
     padding: 0.8rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--arena-sable);
+    border-radius: 6px;
+    background-color: var(--arena-clara);
+    color: var(--mar-navy);
+    transition: border-color 0.3s ease;
+}
+
+.auth-card input:focus {
+    outline: none;
+    border-color: var(--mar-navy);
+    background-color: var(--blanco-puro);
 }
 
 .auth-btn-primary,
 .auth-btn-secondary {
     padding: 0.9rem;
     border: none;
-    color: white;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .auth-btn-primary {
-    background: black;
+    background-color: var(--mar-navy);
+    color: var(--blanco-puro);
+}
+
+.auth-btn-primary:hover {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
 }
 
 .auth-btn-secondary {
-    background: #333;
+    background-color: var(--arena-clara);
+    color: var(--mar-navy);
+    border: 1px solid var(--mar-navy);
+}
+
+.auth-btn-secondary:hover {
+    background-color: var(--mar-navy);
+    color: var(--blanco-puro);
 }
 
 .auth-link {
     text-align: right;
     font-size: 0.9rem;
+    color: var(--mar-navy);
     text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: var(--arena-sable);
 }
 
 .auth-checkbox {
     display: flex;
     gap: 10px;
     align-items: flex-start;
+    color: var(--mar-navy);
+}
+
+.error-msg {
+    color: #D8000C;
+    font-size: 0.9rem;
+    text-align: center;
+    display: none;
+    font-weight: bold;
 }

@@ -108,3 +108,34 @@ function renderLoginPage(data) {
 
 }
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const loginForm = document.getElementById('login-form-element');
+        const btnRegister = document.getElementById('btn-register');
+        const errorMsg = document.getElementById('login-error');
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+
+                if (email === 'user@ulpgc.es' && password === 'pruebaPWM26?') {
+                    window.location.href = 'account.html';
+                } else {
+                    errorMsg.textContent = 'Credenciales incorrectas. Inténtalo de nuevo.';
+                    errorMsg.style.display = 'block';
+                }
+            });
+        }
+
+        if (btnRegister) {
+            btnRegister.addEventListener('click', () => {
+                window.location.href = 'register.html';
+            });
+        }
+    }, 500);
+});
+
