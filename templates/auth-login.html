@@ -2,24 +2,26 @@
 
     <div class="auth-card">
 
-        <form>
+        <form id="login-form-element">
 
-            <label>Lorem</label>
-            <input type="email" placeholder="Lorem">
+            <label>Email</label>
+            <input type="email" id="login-email" placeholder="Inserisci email" required>
 
-            <label>Lorem</label>
-            <input type="password" placeholder="Lorem">
+            <label>Password</label>
+            <input type="password" id="login-password" placeholder="Inserisci password" required>
 
-            <button type="submit" class="auth-btn-primary">
-                Lorem
+            <div id="login-error" class="error-msg"></div>
+
+            <button type="submit" id="btn-login" class="auth-btn-primary">
+                Lorem Ipsum
             </button>
 
-            <button type="button" class="auth-btn-secondary">
-                Lorem
+            <button type="button" id="btn-register" class="auth-btn-secondary">
+                Lorem Ipsum
             </button>
 
-            <a href="" class="auth-link">
-                Lorem Ipsum?
+            <a href="#" class="auth-link">
+                Lorem Ipsum
             </a>
 
         </form>
