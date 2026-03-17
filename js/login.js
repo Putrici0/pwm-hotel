@@ -144,13 +144,22 @@ document.addEventListener('DOMContentLoaded', () => {
         const loginForm = document.getElementById('login-form-element');
         const btnRegister = document.getElementById('btn-register');
         const errorMsg = document.getElementById('login-error');
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('login-password');
+
+        if (togglePasswordBtn && passwordInput) {
+            togglePasswordBtn.addEventListener('click', () => {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+            });
+        }
 
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
 
                 const email = document.getElementById('login-email').value;
-                const password = document.getElementById('login-password').value;
+                const password = passwordInput.value;
 
                 if (email === 'user@ulpgc.es' && password === 'pruebaPWM26?') {
                     window.location.href = 'account.html';
