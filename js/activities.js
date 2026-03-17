@@ -32,7 +32,7 @@ function waitForActivitiesTemplate(callback) {
 
         const introSection = document.getElementById("title-subtitle-activities");
         const firstActivity = document.getElementById("activity1");
-        const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
+        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
 
         const introReady = introSection &&
             introSection.querySelector("h1") &&

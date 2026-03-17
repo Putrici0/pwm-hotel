@@ -29,7 +29,7 @@ function waitForLoginTemplate(callback) {
     const timer = setInterval(() => {
         tries += 1;
 
-        const pendingIncludes = document.querySelectorAll("[xlu-include-file]").length;
+        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
         const formReady = isLoginFormReady();
 
         if (pendingIncludes === 0 && formReady) {
