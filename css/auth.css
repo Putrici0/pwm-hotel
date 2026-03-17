@@ -26,19 +26,48 @@
     margin-bottom: -0.8rem;
 }
 
-.auth-card input {
+.auth-card input:not([type="checkbox"]) {
     padding: 0.8rem;
     border: 1px solid var(--arena-sable);
     border-radius: 6px;
     background-color: var(--arena-clara);
     color: var(--mar-navy);
     transition: border-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.auth-card input:focus {
+.auth-card input:not([type="checkbox"]):focus {
     outline: none;
     border-color: var(--mar-navy);
     background-color: var(--blanco-puro);
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-wrapper input {
+    padding-right: 2.5rem;
+}
+
+.toggle-password-btn {
+    position: absolute;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--mar-navy);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.toggle-password-btn:hover {
+    color: var(--arena-sable);
 }
 
 .auth-btn-primary,
@@ -88,8 +117,17 @@
 .auth-checkbox {
     display: flex;
     gap: 10px;
-    align-items: flex-start;
+    align-items: center;
     color: var(--mar-navy);
+    margin-top: 0.5rem;
+}
+
+.auth-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--mar-navy);
+    cursor: pointer;
+    margin: 0;
 }
 
 .error-msg {

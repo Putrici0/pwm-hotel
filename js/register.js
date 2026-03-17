@@ -119,3 +119,68 @@ function renderRegisterPage(data) {
     inputs[4].addEventListener("input", validarPasswords);
 }
 
+window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+        const regForm = document.getElementById('register-form-element');
+        if (regForm) regForm.reset();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        const regForm = document.getElementById('register-form-element');
+        const errorMsg = document.getElementById('register-error');
+
+        const togglePass1 = document.getElementById('toggle-reg-pass');
+        const passInput1 = document.getElementById('reg-password');
+
+        const togglePass2 = document.getElementById('toggle-reg-pass-confirm');
+        const passInput2 = document.getElementById('reg-password-confirm');
+
+        const emailInput = document.querySelector('#register-form-element input[type="email"]');
+
+        if (togglePass1 && passInput1) {
+            togglePass1.addEventListener('click', () => {
+                const type = passInput1.getAttribute('type') === 'password' ? 'text' : 'password';
+                passInput1.setAttribute('type', type);
+            });
+        }
+
+        if (togglePass2 && passInput2) {
+            togglePass2.addEventListener('click', () => {
+                const type = passInput2.getAttribute('type') === 'password' ? 'text' : 'password';
+                passInput2.setAttribute('type', type);
+            });
+        }
+
+        if (regForm) {
+            regForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const pwd1 = passInput1.value;
+                const pwd2 = passInput2.value;
+                const email = emailInput.value;
+
+                const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!*]).{6,}$/;
+
+                if (pwd1 !== pwd2) {
+                    errorMsg.textContent = 'Las contraseñas no coinciden.';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                if (!passwordRegex.test(pwd1)) {
+                    errorMsg.textContent = 'La contraseña debe tener al menos 6 caracteres, una letra mayúscula, un número y un carácter especial entre ? ! * \' ';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                localStorage.setItem('savedUserEmail', email);
+                localStorage.setItem('savedUserPassword', pwd1);
+
+                window.location.href = 'login.html';
+            });
+        }
+    }, 500);
+});
+
