@@ -176,6 +176,12 @@ function renderGridSection(sectionId, sectionData) {
         itemEl.style.display = "flex";
         itemEl.style.flexDirection = "column";
         itemEl.style.justifyContent = "flex-end";
+        itemEl.style.minWidth = "0";
+
+        titleNode.style.overflowWrap = "anywhere";
+        titleNode.style.wordBreak = "break-word";
+        descriptionNode.style.overflowWrap = "anywhere";
+        descriptionNode.style.wordBreak = "break-word";
 
         if (itemData.imageGradient) {
             itemEl.style.background = itemData.imageGradient;
