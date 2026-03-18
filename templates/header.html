@@ -3,18 +3,34 @@
     <span class="hotel-name">Isla Dorada</span>
 </a>
 
+<button id="header-menu-toggle" class="header-menu-toggle" type="button" aria-label="Abrir menu" aria-expanded="false" aria-controls="header-nav-menu">
+    <span class="header-menu-toggle__line"></span>
+    <span class="header-menu-toggle__line"></span>
+    <span class="header-menu-toggle__line"></span>
+</button>
+
 <div id="header-main-action" class="main-action-container">
     <a href="booking.html" class="btn btn-primary btn-large">Reserva ahora</a>
 </div>
 
 <nav id="header-nav-menu" class="nav-menu">
+    <button id="header-menu-close" class="header-menu-close" type="button" aria-label="Cerrar menu">
+        <span class="header-menu-close__line"></span>
+        <span class="header-menu-close__line"></span>
+        <span class="header-menu-close__line"></span>
+    </button>
+
     <ul class="nav-list">
+        <li class="mobile-only"><a href="booking.html" class="nav-link">Reserva ahora</a></li>
         <li><a href="rooms.html" class="nav-link">Habitaciones</a></li>
 
         <li class="dropdown-item">
-            <a href="services.html" class="nav-link">Servicios ▾</a>
+            <div class="dropdown-trigger">
+                <a href="services.html" class="nav-link">Servicios</a>
+                <button type="button" class="dropdown-toggle" aria-label="Abrir submenu de servicios" aria-expanded="false">&#9662;</button>
+            </div>
             <ul class="dropdown-menu">
-                <li><a href="restaurant.html">Restauración</a></li>
+                <li><a href="restaurant.html">Restauracion</a></li>
                 <li><a href="wellness-facilities.html">Bienestar</a></li>
                 <li><a href="activities.html">Actividades</a></li>
             </ul>
@@ -23,12 +39,17 @@
         <li><a href="contact.html" class="nav-link">Faq</a></li>
 
         <li class="dropdown-item">
-            <a href="login.html" class="btn btn-primary btn-small">Tu cuenta ▾</a>
+            <div class="dropdown-trigger">
+                <a href="login.html" class="btn btn-primary btn-small">Tu cuenta</a>
+                <button type="button" class="dropdown-toggle" aria-label="Abrir submenu de cuenta" aria-expanded="false">&#9662;</button>
+            </div>
             <ul class="dropdown-menu dropdown-right">
                 <li><a href="login.html">Login</a></li>
                 <li><a href="register.html">Crea tu cuenta</a></li>
-                <li><a href="change-password.html">Recupera tu contraseña</a></li>
+                <li><a href="change-password.html">Recupera tu contrasena</a></li>
             </ul>
         </li>
     </ul>
 </nav>
+
+<div id="header-menu-backdrop" class="header-menu-backdrop" aria-hidden="true"></div>
