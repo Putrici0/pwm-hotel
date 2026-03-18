@@ -14,6 +14,12 @@
     flex: 1;
 }
 
+.text-image-right__text h2 {
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 0.65rem;
+}
+
 .text-image-right__image {
     flex: 1;
     height: 340px;
@@ -44,6 +50,10 @@
 
     .text-image-vertical {
         padding: 1.75rem 0.85rem;
+    }
+
+    .text-image-right__text h2 {
+        font-size: 1.75rem;
     }
 }
 
@@ -89,7 +99,7 @@
     }
 
     .text-image-right__text h2 {
-        font-size: 1.2rem;
+        font-size: 1.45rem;
         line-height: 1.2;
         margin-bottom: 0.5rem;
     }
