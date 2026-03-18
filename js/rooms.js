@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
+    document.body.classList.add("page-rooms");
+
     waitForRoomTemplate(() => {
         loadRoomData("../data/rooms.json", renderRooms);
     });
