@@ -275,65 +275,106 @@ function renderCheckoutForm(checkout) {
     }
 }
 
+const availableRoomsMock = [
+    { id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=300&q=80' },
+    { id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 3, img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=300&q=80' },
+    { id: 'familiar', name: 'Habitación Familiar', maxGuests: 5, img: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=300&q=80' },
+    { id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=300&q=80' }
+];
+
+let selectedRoomName = "";
+
 function setupBookingFlow(checkout) {
     const searchForm = document.querySelector(".booking-form");
+    const roomListSection = document.getElementById("room-selection-list");
+    const roomContainer = document.querySelector(".room-options-container");
     const checkoutSection = document.getElementById("checkout-section");
     const finalForm = document.getElementById("final-booking-form");
     const successMessage = document.getElementById("success-message");
     const bookingSummary = document.querySelector(".booking-summary");
     const formTitle = document.querySelector(".form-title");
 
-    if (!searchForm || !checkoutSection || !finalForm || !successMessage) {
+    if (!searchForm || !checkoutSection || !finalForm || !successMessage || !roomListSection) {
         return;
     }
 
     const checkinInput = document.getElementById("checkin");
     const checkoutInput = document.getElementById("checkout");
-    const familySuiteInput = document.querySelector("input[name='family_suite']");
+    const guestsInput = document.getElementById("guests");
     const checkinValue = document.getElementById("summary-checkin-value");
     const checkoutValue = document.getElementById("summary-checkout-value");
     const roomValue = document.getElementById("summary-room-value");
 
-    const updateSummary = () => {
+    const updateSummaryDates = () => {
         if (checkinValue && checkinInput) {
             checkinValue.textContent = formatSummaryDate(checkinInput.value);
         }
         if (checkoutValue && checkoutInput) {
             checkoutValue.textContent = formatSummaryDate(checkoutInput.value);
         }
-        if (roomValue && checkout && checkout.summary) {
-            roomValue.textContent = familySuiteInput && familySuiteInput.checked
-                ? (checkout.summary.familySuiteRoom || roomValue.textContent)
-                : (checkout.summary.defaultRoom || roomValue.textContent);
-        }
     };
-
-    updateSummary();
-
-    if (checkinInput) {
-        checkinInput.addEventListener("input", updateSummary);
-    }
-    if (checkoutInput) {
-        checkoutInput.addEventListener("input", updateSummary);
-    }
-    if (familySuiteInput) {
-        familySuiteInput.addEventListener("change", updateSummary);
-    }
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        updateSummary();
 
-        if (formTitle) {
-            formTitle.style.display = "block";
+        checkoutSection.style.display = "none";
+
+        const requestedGuests = parseInt(guestsInput.value) || 1;
+
+        roomContainer.innerHTML = "";
+
+        const filteredRooms = availableRoomsMock.filter(room => room.maxGuests >= requestedGuests);
+
+        if(filteredRooms.length === 0) {
+            roomContainer.innerHTML = `<p style="color:white; text-align:center;">No hay habitaciones para ${requestedGuests} personas.</p>`;
+        } else {
+            filteredRooms.forEach(room => {
+                const card = document.createElement('div');
+                card.className = 'room-option-card';
+                card.innerHTML = `
+                    <div class="room-option-img" style="background-image: url('${room.img}')"></div>
+                    <div class="room-option-details">
+                        <div>
+                            <div class="room-option-title">${room.name}</div>
+                            <div class="room-option-info">Máx. ${room.maxGuests} personas</div>
+                        </div>
+                        <button type="button" class="btn-select-room" data-roomname="${room.name}">Seleccionar</button>
+                    </div>
+                `;
+                roomContainer.appendChild(card);
+            });
+
+            const selectButtons = roomContainer.querySelectorAll('.btn-select-room');
+            selectButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const selectedCard = e.target.closest('.room-option-card');
+
+                    roomContainer.innerHTML = '';
+                    roomContainer.appendChild(selectedCard);
+
+                    e.target.textContent = 'Seleccionada';
+                    e.target.style.backgroundColor = 'var(--arena-sable)';
+                    e.target.style.color = 'var(--mar-navy)';
+                    e.target.style.cursor = 'default';
+                    e.target.disabled = true;
+
+                    selectedRoomName = e.target.getAttribute('data-roomname');
+
+                    updateSummaryDates();
+                    if(roomValue) roomValue.textContent = selectedRoomName;
+
+                    if (formTitle) formTitle.style.display = "block";
+                    if (bookingSummary) bookingSummary.style.display = "block";
+                    finalForm.style.display = "block";
+                    successMessage.style.display = "none";
+
+                    checkoutSection.style.display = "flex";
+                    checkoutSection.scrollIntoView({ behavior: "smooth" });
+                });
+            });
         }
-        if (bookingSummary) {
-            bookingSummary.style.display = "block";
-        }
-        finalForm.style.display = "block";
-        successMessage.style.display = "none";
-        checkoutSection.style.display = "flex";
-        checkoutSection.scrollIntoView({ behavior: "smooth" });
+
+        roomListSection.style.display = "block";
     });
 
     finalForm.addEventListener("submit", (event) => {
