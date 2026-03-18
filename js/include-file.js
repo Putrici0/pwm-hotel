@@ -110,7 +110,7 @@ function initHeaderMenu() {
         }
 
         toggle.addEventListener("click", (event) => {
-            if (window.innerWidth > 520) {
+            if (window.innerWidth > 950) {
                 return;
             }
 
@@ -139,7 +139,7 @@ function initHeaderMenu() {
     });
 
     window.addEventListener("resize", () => {
-        if (window.innerWidth > 520) {
+        if (window.innerWidth > 950) {
             closeMenu();
         }
     });

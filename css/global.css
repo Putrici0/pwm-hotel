@@ -497,7 +497,7 @@ body > div + div {
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 950px) {
     .header {
         position: sticky;
         top: 0;
