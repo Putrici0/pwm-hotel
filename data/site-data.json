@@ -1,366 +1,370 @@
 {
-    "index":  {
-                  "intro":  {
-                                "title":  "Isla Dorada Hotel",
-                                "description":  "Un hotel frente al mar en Gran Canaria con estancias confortables, servicios premium y una experiencia pensada para desconectar.",
-                                "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/1.webp) center/cover no-repeat"
-                            },
-                  "islandInfo":  {
-                                     "title":  "Gran Canaria, la isla del hotel",
-                                     "description":  "Gran Canaria combina playa, naturaleza y cultura en un mismo destino. Puedes disfrutar de dunas, rutas de montaña, pueblos con encanto y una oferta gastronómica muy variada durante todo el año.",
-                                     "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/2.jpg) center/cover no-repeat"
-                                 },
-                  "environment":  {
-                                      "title":  "Compromiso ambiental del hotel",
-                                      "items":  [
-                                                    {
-                                                        "title":  "Eficiencia energética",
-                                                        "description":  "Uso de iluminación LED y sistemas de climatización optimizados para reducir el consumo.",
-                                                        "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/3.png) center/cover no-repeat"
-                                                    },
-                                                    {
-                                                        "title":  "Consumo responsable de agua",
-                                                        "description":  "Programa de reutilización de toallas y control inteligente de caudal en habitaciones y zonas comunes.",
-                                                        "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/4.jpg) center/cover no-repeat"
-                                                    },
-                                                    {
-                                                        "title":  "Gestión de residuos",
-                                                        "description":  "Separación selectiva, reducción de plásticos de un solo uso y colaboración con proveedores locales.",
-                                                        "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/5.jpg) center/cover no-repeat"
-                                                    }
-                                                ]
-                                  },
-                  "rooms":  {
-                                "title":  "Habitaciones para cada tipo de viaje",
-                                "description":  "Desde habitaciones acogedoras para escapadas cortas hasta suites premium con vistas al océano, todas equipadas para garantizar descanso y comodidad.",
-                                "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/6.jpg) center/cover no-repeat"
-                            },
-                  "services":  {
-                                   "title":  "Servicios destacados del hotel",
-                                   "items":  [
-                                                 {
-                                                     "title":  "Wellness",
-                                                     "description":  "Gimnasio, piscina y spa para mantener tu rutina de bienestar durante la estancia.",
-                                                     "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/7.jpg) center/cover no-repeat"
-                                                 },
-                                                 {
-                                                     "title":  "Restauración",
-                                                     "description":  "Propuesta gastronómica diaria con cocina local e internacional elaborada con producto fresco.",
-                                                     "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/8.webp) center/cover no-repeat"
-                                                 },
-                                                 {
-                                                     "title":  "Actividades",
-                                                     "description":  "Experiencias dentro y fuera del hotel: rutas, ocio familiar y planes personalizados.",
-                                                     "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/9.jpg) center/cover no-repeat"
-                                                 }
-                                             ]
-                               },
-      "location": {
-        "title": "Localización del hotel",
-        "description": "Isla Dorada Hotel se encuentra en el exclusivo Paseo de Meloneras 37, Maspalomas, en la costa sur de Gran Canaria, a pocos minutos de la playa y del Faro.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/1.jpg) center/cover no-repeat"
+  "index": {
+    "intro": {
+      "title": "Isla Dorada Hotel",
+      "description": "Un hotel frente al mar en Gran Canaria con estancias confortables, servicios premium y una experiencia pensada para desconectar.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/1.webp) center/cover no-repeat"
+    },
+    "islandInfo": {
+      "title": "Gran Canaria, la isla del hotel",
+      "description": "Gran Canaria combina playa, naturaleza y cultura en un mismo destino. Puedes disfrutar de dunas, rutas de montaña, pueblos con encanto y una oferta gastronómica muy variada durante todo el año.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/2.jpg) center/cover no-repeat"
+    },
+    "environment": {
+      "title": "Compromiso ambiental del hotel",
+      "items": [
+        {
+          "title": "Eficiencia energética",
+          "description": "Uso de iluminación LED y sistemas de climatización optimizados para reducir el consumo.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/3.png) center/cover no-repeat"
+        },
+        {
+          "title": "Consumo responsable de agua",
+          "description": "Programa de reutilización de toallas y control inteligente de caudal en habitaciones y zonas comunes.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/4.jpg) center/cover no-repeat"
+        },
+        {
+          "title": "Gestión de residuos",
+          "description": "Separación selectiva, reducción de plásticos de un solo uso y colaboración con proveedores locales.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/5.jpg) center/cover no-repeat"
+        }
+      ]
+    },
+    "rooms": {
+      "title": "Habitaciones para cada tipo de viaje",
+      "description": "Desde habitaciones acogedoras para escapadas cortas hasta suites premium con vistas al océano, todas equipadas para garantizar descanso y comodidad.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/6.jpg) center/cover no-repeat"
+    },
+    "services": {
+      "title": "Servicios destacados del hotel",
+      "items": [
+        {
+          "title": "Wellness",
+          "description": "Gimnasio, piscina y spa para mantener tu rutina de bienestar durante la estancia.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/7.jpg) center/cover no-repeat"
+        },
+        {
+          "title": "Restauración",
+          "description": "Propuesta gastronómica diaria con cocina local e internacional elaborada con producto fresco.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/8.webp) center/cover no-repeat"
+        },
+        {
+          "title": "Actividades",
+          "description": "Experiencias dentro y fuera del hotel: rutas, ocio familiar y planes personalizados.",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/9.jpg) center/cover no-repeat"
+        }
+      ]
+    },
+    "location": {
+      "title": "Localización del hotel",
+      "description": "Isla Dorada Hotel se encuentra en el exclusivo Paseo de Meloneras 37, Maspalomas, en la costa sur de Gran Canaria, a pocos minutos de la playa y del Faro.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/1.jpg) center/cover no-repeat"
+    }
+  },
+  "activities": {
+    "intro": {
+      "title": "Actividades y Experiencias",
+      "description": "Completa tu estancia con planes para todos los gustos: actividades culturales, bienestar y ocio dentro y fuera del hotel."
+    },
+    "activities": [
+      {
+        "title": "Tour guiado por la ciudad",
+        "description": "Recorre los puntos mas emblematicos con un guia local y descubre la historia, cultura y rincones recomendados para sacar el maximo partido a tu viaje.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://images.interhome.group/travelguide/spain-gran-canaria-las-palmas.jpg\u0027) center/cover no-repeat"
+      },
+      {
+        "title": "Yoga al amanecer",
+        "description": "Empieza el dia con una sesion de yoga en la playa para mejorar movilidad, respiracion y energia antes del desayuno.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://img.freepik.com/fotos-premium/mujer-fitness-alto-contraste-haciendo-yoga-al-amanecer_767466-15728.jpg\u0027) center/cover no-repeat"
+      },
+      {
+        "title": "Cata de vinos y productos locales",
+        "description": "Disfruta de una experiencia gastronomica guiada con seleccion de vinos regionales y degustacion de quesos, aceites y productos artesanales.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://vinostresrios.com/wp-content/uploads/2023/11/cata-de-vinos-guia-9.jpg\u0027) center/cover no-repeat"
       }
-              },
-    "activities":  {
-                       "intro":  {
-                                     "title":  "Actividades y Experiencias",
-                                     "description":  "Completa tu estancia con planes para todos los gustos: actividades culturales, bienestar y ocio dentro y fuera del hotel."
-                                 },
-                       "activities":  [
-                                          {
-                                              "title":  "Tour guiado por la ciudad",
-                                              "description":  "Recorre los puntos mas emblematicos con un guia local y descubre la historia, cultura y rincones recomendados para sacar el maximo partido a tu viaje.",
-                                              "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://images.interhome.group/travelguide/spain-gran-canaria-las-palmas.jpg\u0027) center/cover no-repeat"
-                                          },
-                                          {
-                                              "title":  "Yoga al amanecer",
-                                              "description":  "Empieza el dia con una sesion de yoga en la playa para mejorar movilidad, respiracion y energia antes del desayuno.",
-                                              "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://img.freepik.com/fotos-premium/mujer-fitness-alto-contraste-haciendo-yoga-al-amanecer_767466-15728.jpg\u0027) center/cover no-repeat"
-                                          },
-                                          {
-                                              "title":  "Cata de vinos y productos locales",
-                                              "description":  "Disfruta de una experiencia gastronomica guiada con seleccion de vinos regionales y degustacion de quesos, aceites y productos artesanales.",
-                                              "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://vinostresrios.com/wp-content/uploads/2023/11/cata-de-vinos-guia-9.jpg\u0027) center/cover no-repeat"
-                                          }
-                                      ]
-                   },
-    "booking":  {
-                    "header":  {
-                                   "title":  "Reserva tu estancia en Isla Dorada",
-                                   "description":  "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinacion de confort, ubicacion y servicios.",
-                                   "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/10.jpg) center/cover no-repeat"
-                               },
-                    "availability":  {
-                                         "title":  "Sistema de disponibilidad de habitaciones",
-                                         "checkinLabel":  "Fecha de entrada",
-                                         "checkoutLabel":  "Fecha de salida",
-                                         "guestsLabel":  "Huespedes",
-                                         "familySuiteLabel":  "Incluir opcion de suite familiar",
-                                         "submitText":  "Comprobar disponibilidad",
-                                         "defaultCheckin":  "2026-04-15",
-                                         "defaultCheckout":  "2026-04-18",
-                                         "defaultGuests":  2,
-                                         "minGuests":  1,
-                                         "maxGuests":  6
-                                     },
-                    "checkout":  {
-                                     "title":  "Completa tu reserva",
-                                     "summary":  {
-                                                     "checkinLabel":  "Check-in",
-                                                     "checkoutLabel":  "Check-out",
-                                                     "roomLabel":  "Habitacion",
-                                                     "defaultRoom":  "Habitacion doble",
-                                                     "familySuiteRoom":  "Suite familiar"
-                                                 },
-                                     "form":  {
-                                                  "labels":  {
-                                                                 "name":  "Nombre",
-                                                                 "lastName":  "Apellidos",
-                                                                 "email":  "Email"
-                                                             },
-                                                  "placeholders":  {
-                                                                       "name":  "Introduce tu nombre",
-                                                                       "lastName":  "Introduce tus apellidos",
-                                                                       "email":  "Introduce tu email"
-                                                                   },
-                                                  "privacyText":  "Acepto la politica de privacidad",
-                                                  "submitText":  "Reservar ahora"
-                                              },
-                                     "success":  {
-                                                     "title":  "Reserva confirmada",
-                                                     "description":  "Tu reserva se ha realizado con exito. Hemos enviado la confirmacion a tu correo."
-                                                 }
-                                 }
-                },
-    "contact":  {
-                    "header":  {
-                                   "title":  "Contacta con Isla Dorada Hotel",
-                                   "subtitle":  "Estamos aqui para resolver tus dudas antes, durante y despues de tu estancia."
-                               },
-                    "commitment":  {
-                                       "title":  "Compromiso de atencion al huesped",
-                                       "description":  "Nuestro equipo de recepcion y administracion responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
-                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1068/1600/900\u0027) center/cover no-repeat"
-                                   },
-                    "form":  {
-                                 "labels":  {
-                                                "name":  "Nombre",
-                                                "lastName":  "Apellidos",
-                                                "email":  "Email",
-                                                "subject":  "Asunto",
-                                                "question":  "Duda o mensaje"
-                                            },
-                                 "placeholders":  {
-                                                      "name":  "Introduce tu nombre",
-                                                      "lastName":  "Introduce tus apellidos",
-                                                      "email":  "Introduce tu email",
-                                                      "subject":  "Motivo de la consulta",
-                                                      "question":  "Escribe aqui tu duda"
-                                                  },
-                                 "privacyText":  "Acepto la politica de privacidad",
-                                 "submitText":  "Enviar consulta"
-                             },
-                    "faq":  {
-                                "title":  "Preguntas frecuentes",
-                                "headers":  [
-                                                "Pregunta",
-                                                "Respuesta"
-                                            ],
-                                "items":  [
-                                              {
-                                                  "question":  "¿Cuál es el horario del check-in y del check-out?",
-                                                  "answer":  "El check-in comienza a las 15:00 y el check-out se realiza hasta las 12:00."
-                                              },
-                                                {
-                                                  "question":  "¿Se puede cancelar una reserva?",
-                                                  "answer":  "Si, depende de la tarifa seleccionada. Consulta las condiciones en el momento de reservar."
-                                              },
-                                              {
-                                                  "question":  "¿El hotel ofrece traslado al aeropuerto?",
-                                                  "answer":  "Disponemos de traslado bajo peticion previa con coste adicional."
-                                              },
-                                                {
-                                                  "question":  "¿Hay opciones para dietas especiales en el restaurante?",
-                                                  "answer":  "Si, ofrecemos opciones vegetarianas, veganas y sin gluten."
-                                              }
-                                          ]
-                            }
-                },
-    "login":  {
-                  "form":  {
-                               "labels":  {
-                                              "email":  "Email",
-                                              "password":  "Contraseña"
-                                          },
-                               "placeholders":  {
-                                                    "email":  "Introduce tu email",
-                                                    "password":  "Introduce tu contraseña"
-                                                },
-                               "primaryButtonText":  "Iniciar sesión",
-                               "secondaryButtonText":  "Crear cuenta",
-                               "forgotPasswordText":  "¿Has olvidado tu contraseña?",
-                               "forgotPasswordHref":  "change-password.html"
-                           }
-              },
-    "register":  {
-                     "form":  {
-                                  "labels":  {
-                                                 "name":  "Nombre",
-                                                 "lastName":  "Apellidos",
-                                                 "email":  "Email",
-                                                 "password":  "Contraseña",
-                                                 "confirmPassword":  "Confirmar contraseña"
-                                             },
-                                  "placeholders":  {
-                                                       "name":  "Introduce tu nombre",
-                                                       "lastName":  "Introduce tus apellidos",
-                                                       "email":  "Introduce tu email",
-                                                       "password":  "Crea una contraseñaa",
-                                                       "confirmPassword":  "Repite tu contraseñaa"
-                                                   },
-                                  "termsText":  "Acepto los terminos y condiciones",
-                                  "submitText":  "Crear cuenta"
-                              }
-                 },
-    "restaurant":  {
-                       "dailyMenu":  {
-                                         "title":  "Menú del día",
-                                         "description":  "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
-                                         "price":  "24,90 EUR",
-                                         "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/431/1600/900\u0027) center/cover no-repeat"
-                                     },
-                       "starters":  {
-                                        "title":  "Entrantes",
-                                        "items":  [
-                                                      {
-                                                          "name":  "Ensalada de tomate y burrata",
-                                                          "price":  "9,50 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Croquetas caseras de jamón ibérico",
-                                                          "price":  "8,90 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Crema suave de calabaza",
-                                                          "price":  "7,80 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Tosta de aguacate y salmón",
-                                                          "price":  "10,20 EUR"
-                                                      }
-                                                  ]
-                                    },
-                       "firstDishes":  {
-                                           "title":  "Primeros platos",
-                                           "items":  [
-                                                         {
-                                                             "name":  "Risotto de setas y parmesano",
-                                                             "price":  "13,50 EUR"
-                                                         },
-                                                         {
-                                                             "name":  "Pasta fresca con pesto de albahaca",
-                                                             "price":  "12,90 EUR"
-                                                         },
-                                                         {
-                                                             "name":  "Arroz meloso de marisco",
-                                                             "price":  "14,80 EUR"
-                                                         },
-                                                         {
-                                                             "name":  "Sopa del chef",
-                                                             "price":  "9,90 EUR"
-                                                         }
-                                                     ]
-                                       },
-                       "secondDishes":  {
-                                            "title":  "Segundos platos",
-                                            "items":  [
-                                                          {
-                                                              "name":  "Lubina al horno con verduras",
-                                                              "price":  "18,90 EUR"
-                                                          },
-                                                          {
-                                                              "name":  "Solomillo de ternera con puré trufado",
-                                                              "price":  "22,50 EUR"
-                                                          },
-                                                          {
-                                                              "name":  "Pollo de corral al limón",
-                                                              "price":  "16,40 EUR"
-                                                          },
-                                                          {
-                                                              "name":  "Hamburguesa premium de la casa",
-                                                              "price":  "15,90 EUR"
-                                                          }
-                                                      ]
-                                        },
-                       "desserts":  {
-                                        "title":  "Postres",
-                                        "items":  [
-                                                      {
-                                                          "name":  "Tarta de queso horneada",
-                                                          "price":  "6,50 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Mousse de chocolate negro",
-                                                          "price":  "6,20 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Fruta fresca de temporada",
-                                                          "price":  "5,50 EUR"
-                                                      },
-                                                      {
-                                                          "name":  "Helado artesano",
-                                                          "price":  "5,90 EUR"
-                                                      }
-                                                  ]
-                                    }
-                   },
-    "rooms":  {
-                  "rooms":  [
-                                {
-                                    "title":  "Suite Mar Premium",
-                                    "description":  "La opción más exclusiva del hotel, con vistas frontales al océano, cama king size, zona de estar privada y amenities premium para una estancia de lujo.",
-                                    "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://www.onlyyouhotels.com/content/imgsxml/galerias/panel_habitaciones/3/hab-604-junior-suite-premium-01276.jpg\u0027) center/cover no-repeat"
-                                },
-                                {
-                                    "title":  "Habitación Deluxe Terraza",
-                                    "description":  "Habitación amplia y luminosa con terraza privada, ideal para desconectar. Incluye baño completo, escritorio de trabajo y detalle de bienvenida.",
-                                    "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://tse4.mm.bing.net/th/id/OIP.EIxyNR0EJ6zVbPM-bVU0HgHaEk?rs=1\u0026pid=ImgDetMain\u0026o=7\u0026rm=3\u0027) center/cover no-repeat"
-                                },
-                                {
-                                    "title":  "Habitación Familiar",
-                                    "description":  "Diseñada para viajes en familia, con mayor capacidad y distribución funcional. Dispone de espacio para hasta 4 personas y comodidades para niños.",
-                                    "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://hotelalguer.net/wp-content/uploads/2020/02/habithotel11-586x440-1.jpg\u0027) center/cover no-repeat"
-                                },
-                                {
-                                    "title":  "Habitación Cozy",
-                                    "description":  "Alternativa cómoda y práctica para estancias cortas, con cama doble, climatización, Wi-Fi de alta velocidad y todo lo necesario para descansar.",
-                                    "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://www.hotelmadridrio.com/wp-content/uploads/2023/07/69-4.jpg\u0027) center/cover no-repeat"
-                                }
-                            ]
-              },
-    "services":  {
-                     "intro":  {
-                                   "title":  "Servicios del Hotel",
-                                   "description":  "Disfruta de una experiencia completa con zonas de bienestar, propuesta gastronómica y actividades pensadas para todos los perfiles de viajero."
-                               },
-                     "services":  [
-                                      {
-                                          "title":  "Instalaciones Wellness",
-                                          "description":  "Accede a nuestro espacio wellness con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
-                                          "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/433/1600/900\u0027) center/cover no-repeat"
-                                      },
-                                      {
-                                          "title":  "Restauración",
-                                          "description":  "Saborea una oferta gastronómica variada con menú diario, cocina local y opciones internacionales preparadas con producto fresco.",
-                                          "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1080/1600/900\u0027) center/cover no-repeat"
-                                      },
-                                      {
-                                          "title":  "Actividades",
-                                          "description":  "Completa tu viaje con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
-                                          "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1018/1600/900\u0027) center/cover no-repeat"
-                                      }
-                                  ]
-                 },
+    ]
+  },
+  "booking": {
+    "header": {
+      "title": "Reserva tu estancia en Isla Dorada",
+      "description": "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinacion de confort, ubicacion y servicios.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/10.jpg) center/cover no-repeat"
+    },
+    "availability": {
+      "title": "Sistema de disponibilidad de habitaciones",
+      "checkinLabel": "Fecha de entrada",
+      "checkoutLabel": "Fecha de salida",
+      "guestsLabel": "Huespedes",
+      "familySuiteLabel": "Incluir opcion de suite familiar",
+      "submitText": "Comprobar disponibilidad",
+      "defaultCheckin": "2026-04-15",
+      "defaultCheckout": "2026-04-18",
+      "defaultGuests": 2,
+      "minGuests": 1,
+      "maxGuests": 6
+    },
+    "checkout": {
+      "title": "Completa tu reserva",
+      "summary": {
+        "checkinLabel": "Check-in",
+        "checkoutLabel": "Check-out",
+        "roomLabel": "Habitacion",
+        "defaultRoom": "Habitacion doble",
+        "familySuiteRoom": "Suite familiar"
+      },
+      "form": {
+        "labels": {
+          "name": "Nombre",
+          "lastName": "Apellidos",
+          "email": "Email"
+        },
+        "placeholders": {
+          "name": "Introduce tu nombre",
+          "lastName": "Introduce tus apellidos",
+          "email": "Introduce tu email"
+        },
+        "privacyText": "Acepto la politica de privacidad",
+        "submitText": "Reservar ahora"
+      },
+      "success": {
+        "title": "Reserva confirmada",
+        "description": "Tu reserva se ha realizado con exito. Hemos enviado la confirmacion a tu correo."
+      }
+    }
+  },
+  "contact": {
+    "header": {
+      "title": "Contacta con Isla Dorada Hotel",
+      "subtitle": "Estamos aqui para resolver tus dudas antes, durante y despues de tu estancia."
+    },
+    "commitment": {
+      "title": "Compromiso de atencion al huesped",
+      "description": "Nuestro equipo de recepcion y administracion responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1068/1600/900\u0027) center/cover no-repeat"
+    },
+    "form": {
+      "labels": {
+        "name": "Nombre",
+        "lastName": "Apellidos",
+        "email": "Email",
+        "subject": "Asunto",
+        "question": "Duda o mensaje"
+      },
+      "placeholders": {
+        "name": "Introduce tu nombre",
+        "lastName": "Introduce tus apellidos",
+        "email": "Introduce tu email",
+        "subject": "Motivo de la consulta",
+        "question": "Escribe aqui tu duda"
+      },
+      "privacyText": "Acepto la politica de privacidad",
+      "submitText": "Enviar consulta"
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "headers": [
+        "Pregunta",
+        "Respuesta"
+      ],
+      "items": [
+        {
+          "question": "¿Cuál es el horario del check-in y del check-out?",
+          "answer": "El check-in comienza a las 15:00 y el check-out se realiza hasta las 12:00."
+        },
+        {
+          "question": "¿Se puede cancelar una reserva?",
+          "answer": "Si, depende de la tarifa seleccionada. Consulta las condiciones en el momento de reservar."
+        },
+        {
+          "question": "¿El hotel ofrece traslado al aeropuerto?",
+          "answer": "Disponemos de traslado bajo peticion previa con coste adicional."
+        },
+        {
+          "question": "¿Hay opciones para dietas especiales en el restaurante?",
+          "answer": "Si, ofrecemos opciones vegetarianas, veganas y sin gluten."
+        }
+      ]
+    }
+  },
+  "login": {
+    "form": {
+      "labels": {
+        "email": "Email",
+        "password": "Contraseña"
+      },
+      "placeholders": {
+        "email": "Introduce tu email",
+        "password": "Introduce tu contraseña"
+      },
+      "primaryButtonText": "Iniciar sesión",
+      "secondaryButtonText": "Crear cuenta",
+      "forgotPasswordText": "¿Has olvidado tu contraseña?",
+      "forgotPasswordHref": "change-password.html"
+    }
+  },
+  "register": {
+    "form": {
+      "labels": {
+        "name": "Nombre",
+        "lastName": "Apellidos",
+        "email": "Email",
+        "password": "Contraseña",
+        "confirmPassword": "Confirmar contraseña"
+      },
+      "placeholders": {
+        "name": "Introduce tu nombre",
+        "lastName": "Introduce tus apellidos",
+        "email": "Introduce tu email",
+        "password": "Crea una contraseñaa",
+        "confirmPassword": "Repite tu contraseñaa"
+      },
+      "termsText": "Acepto los terminos y condiciones",
+      "submitText": "Crear cuenta"
+    }
+  },
+  "restaurant": {
+    "dailyMenu": {
+      "title": "Menú del día",
+      "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
+      "price": "24,90 EUR",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/431/1600/900\u0027) center/cover no-repeat"
+    },
+    "starters": {
+      "title": "Entrantes",
+      "items": [
+        {
+          "name": "Ensalada de tomate y burrata",
+          "price": "9,50 EUR"
+        },
+        {
+          "name": "Croquetas caseras de jamón ibérico",
+          "price": "8,90 EUR"
+        },
+        {
+          "name": "Crema suave de calabaza",
+          "price": "7,80 EUR"
+        },
+        {
+          "name": "Tosta de aguacate y salmón",
+          "price": "10,20 EUR"
+        }
+      ]
+    },
+    "firstDishes": {
+      "title": "Primeros platos",
+      "items": [
+        {
+          "name": "Risotto de setas y parmesano",
+          "price": "13,50 EUR"
+        },
+        {
+          "name": "Pasta fresca con pesto de albahaca",
+          "price": "12,90 EUR"
+        },
+        {
+          "name": "Arroz meloso de marisco",
+          "price": "14,80 EUR"
+        },
+        {
+          "name": "Sopa del chef",
+          "price": "9,90 EUR"
+        }
+      ]
+    },
+    "secondDishes": {
+      "title": "Segundos platos",
+      "items": [
+        {
+          "name": "Lubina al horno con verduras",
+          "price": "18,90 EUR"
+        },
+        {
+          "name": "Solomillo de ternera con puré trufado",
+          "price": "22,50 EUR"
+        },
+        {
+          "name": "Pollo de corral al limón",
+          "price": "16,40 EUR"
+        },
+        {
+          "name": "Hamburguesa premium de la casa",
+          "price": "15,90 EUR"
+        }
+      ]
+    },
+    "desserts": {
+      "title": "Postres",
+      "items": [
+        {
+          "name": "Tarta de queso horneada",
+          "price": "6,50 EUR"
+        },
+        {
+          "name": "Mousse de chocolate negro",
+          "price": "6,20 EUR"
+        },
+        {
+          "name": "Fruta fresca de temporada",
+          "price": "5,50 EUR"
+        },
+        {
+          "name": "Helado artesano",
+          "price": "5,90 EUR"
+        }
+      ]
+    }
+  },
+  "rooms": {
+    "rooms": [
+      {
+        "title": "Suite Mar Premium",
+        "guests": 2,
+        "description": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/11.jpg) center/cover no-repeat"
+      },
+      {
+        "title": "Habitación Deluxe Terraza",
+        "guests": 4,
+        "description": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/12.jpg) center/cover no-repeat"
+      },
+      {
+        "title": "Habitación Familiar",
+        "guests": 6,
+        "description": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/13.jpg) center/cover no-repeat"
+      },
+      {
+        "title": "Habitación Cozy",
+        "guests": 2,
+        "description": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/14.jpg) center/cover no-repeat"
+      }
+    ]
+  },
+  "services": {
+    "intro": {
+      "title": "Servicios del Hotel",
+      "description": "Disfruta de una experiencia completa con zonas de bienestar, propuesta gastronómica y actividades pensadas para todos los perfiles de viajero."
+    },
+    "services": [
+      {
+        "title": "Instalaciones Wellness",
+        "description": "Accede a nuestro espacio wellness con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/433/1600/900') center/cover no-repeat"
+      },
+      {
+        "title": "Restauración",
+        "description": "Saborea una oferta gastronómica variada con menú diario, cocina local y opciones internacionales preparadas con producto fresco.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1080/1600/900') center/cover no-repeat"
+      },
+      {
+        "title": "Actividades",
+        "description": "Completa tu viaje con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1018/1600/900') center/cover no-repeat"
+      }
+    ]
+  },
     "wellness-facilities":  {
                                 "intro":  {
                                               "title":  "Wellness \u0026 Relax",
