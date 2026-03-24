@@ -33,7 +33,8 @@
     "rooms": {
       "title": "Habitaciones para cada tipo de viaje",
       "description": "Desde habitaciones acogedoras para escapadas cortas hasta suites premium con vistas al océano, todas equipadas para garantizar descanso y comodidad.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/6.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/6.jpg) center/cover no-repeat",
+      "imageLink": "rooms.html"
     },
     "services": {
       "title": "Servicios destacados del hotel",

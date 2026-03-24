@@ -64,7 +64,7 @@ function isTextImageReady(sectionId) {
         section &&
         section.querySelector("h2") &&
         section.querySelector("p") &&
-        section.querySelector(".text-image-right__image")
+        (section.querySelector(".text-image-right__image") || section.querySelector(".text-image-vertical__image"))
     );
 }
 
@@ -99,7 +99,7 @@ function renderTextImageSection(sectionId, sectionData) {
 
     const titleEl = section.querySelector("h2");
     const descriptionEl = section.querySelector("p");
-    const imageEl = section.querySelector(".text-image-right__image");
+    const imageEl = section.querySelector(".text-image-right__image") || section.querySelector(".text-image-vertical__image");
 
     if (titleEl && sectionData.title) {
         titleEl.textContent = sectionData.title;
@@ -109,8 +109,20 @@ function renderTextImageSection(sectionId, sectionData) {
         descriptionEl.textContent = sectionData.description;
     }
 
-    if (imageEl && sectionData.imageGradient) {
-        imageEl.style.background = sectionData.imageGradient;
+    if (imageEl) {
+        if (sectionData.imageGradient) {
+            imageEl.style.background = sectionData.imageGradient;
+        }
+
+        if (sectionData.imageLink) {
+            imageEl.style.cursor = "pointer";
+            imageEl.onclick = function() {
+                window.location.href = sectionData.imageLink;
+            };
+        } else {
+            imageEl.style.cursor = "default";
+            imageEl.onclick = null;
+        }
     }
 }
 
@@ -190,10 +202,7 @@ function renderGridSection(sectionId, sectionData) {
     });
 }
 
-
 function getSectionKey(fileName) {
     const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
     return cleanName;
 }
-
-
