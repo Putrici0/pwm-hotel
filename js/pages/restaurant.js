@@ -169,9 +169,19 @@ function renderCategoryTable(sectionId, categoryData) {
             return;
         }
 
+        row.classList.add("menu-table__row");
+
         const cells = row.querySelectorAll("td");
         if (cells.length < 2) {
             return;
+        }
+
+        if (cells[0]) {
+            cells[0].setAttribute("data-label", "Plato");
+        }
+
+        if (cells[1]) {
+            cells[1].setAttribute("data-label", "Precio");
         }
 
         cells[0].textContent = item.name || "";
