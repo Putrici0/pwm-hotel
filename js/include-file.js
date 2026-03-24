@@ -14,6 +14,11 @@ async function includeFiles() {
         try {
             const response = await fetch(file);
             if (!response.ok) {
+                console.error(`No se pudo cargar include: ${file}`);
+                clone.removeAttribute("data-include-file");
+                clone.removeAttribute("xlu-include-file");
+                element.parentNode.replaceChild(clone, element);
+                includeFiles();
                 return;
             }
 
@@ -46,6 +51,10 @@ async function includeFiles() {
             includeFiles();
         } catch (error) {
             console.error("Error fetching file:", error);
+            clone.removeAttribute("data-include-file");
+            clone.removeAttribute("xlu-include-file");
+            element.parentNode.replaceChild(clone, element);
+            includeFiles();
         }
 
         return;
@@ -71,6 +80,8 @@ function initHeaderMenu() {
     if (!toggleButton || !closeButton || !backdrop || !navMenu) {
         return;
     }
+
+    applyHeaderAuthState(navMenu);
 
     const closeMenu = () => {
         header.classList.remove("menu-open");
@@ -145,4 +156,36 @@ function initHeaderMenu() {
     });
 
     header.dataset.menuInitialized = "true";
+}
+
+function applyHeaderAuthState(navMenu) {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const isAdmin = localStorage.getItem("userRole") === "admin";
+    const accountButton = navMenu.querySelector(".dropdown-trigger > a.btn");
+
+    navMenu.querySelectorAll(".login-only").forEach((item) => {
+        item.style.display = isLoggedIn ? "none" : "";
+    });
+
+    navMenu.querySelectorAll(".auth-only").forEach((item) => {
+        item.style.display = isLoggedIn ? "" : "none";
+    });
+
+    navMenu.querySelectorAll(".admin-only").forEach((item) => {
+        item.style.display = isLoggedIn && isAdmin ? "" : "none";
+    });
+
+    if (accountButton) {
+        accountButton.href = isLoggedIn ? "account.html" : "login.html";
+    }
+
+    navMenu.querySelectorAll(".logout-link").forEach((link) => {
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            localStorage.removeItem("isLoggedIn");
+            localStorage.removeItem("userRole");
+            localStorage.removeItem("loggedUserEmail");
+            window.location.href = "login.html";
+        });
+    });
 }

@@ -29,6 +29,11 @@ function bootstrapMain() {
     }
 
     const currentPage = window.location.pathname.split("/").pop().toLowerCase();
+    if (currentPage === "admin.html" && !canAccessAdmin()) {
+        window.location.href = "login.html";
+        return;
+    }
+
     const legacyScriptPath = LEGACY_PAGE_SCRIPTS[currentPage];
 
     if (!legacyScriptPath) {
@@ -54,4 +59,10 @@ function loadLegacyScript(src) {
     };
 
     document.body.appendChild(script);
+}
+
+function canAccessAdmin() {
+    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const isAdmin = localStorage.getItem("userRole") === "admin";
+    return isLoggedIn && isAdmin;
 }

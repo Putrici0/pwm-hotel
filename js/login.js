@@ -105,37 +105,6 @@ function renderLoginPage(data) {
         }
     }
 
-    if(section){
-        section.addEventListener("submit", (e => {
-            e.preventDefault();
-
-            const email = inputs[0].value;
-            const password = inputs[1].value;
-
-            validateUser(email, password)
-        }))
-    }
-    function validateUser(email, password) {
-        fetch("../data/users.json")
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Error cargando usuarios")
-                }
-                return res.json();
-            })
-            .then(data => {
-                const user = data.users.find(user => user.email === email && user.password === password);
-                if (user){
-                    // LÓGICA DE REDIRECCIÓN A PERSONAL ACCOUNT POR EJEMPLO
-                    alert("Credenciales correctas")
-                }
-                else{
-                    alert("Credenciales incorrectas")
-                }
-            });
-
-    }
-
 }
 
 
@@ -162,19 +131,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (loginForm) {
-            loginForm.addEventListener('submit', (e) => {
+            loginForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 const email = document.getElementById('login-email').value;
                 const password = passwordInput.value;
+                const user = await authenticateFromJson(email, password);
 
-                const savedEmail = localStorage.getItem('savedUserEmail');
-                const savedPassword = localStorage.getItem('savedUserPassword');
+                if (user) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loggedUserEmail', email);
+                    localStorage.setItem('userRole', user.role === 'admin' ? 'admin' : 'user');
 
-                const isDefaultUser = (email === 'user@ulpgc.es' && password === 'pruebaPWM26?');
-                const isRegisteredUser = (savedEmail && email === savedEmail && password === savedPassword);
-
-                if (isDefaultUser || isRegisteredUser) {
                     window.location.href = 'account.html';
                 } else {
                     errorMsg.textContent = 'Credenciales incorrectas. Inténtalo de nuevo.';
@@ -190,5 +158,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 500);
 });
+
+async function authenticateFromJson(email, password) {
+    try {
+        const response = await fetch('../data/users.json');
+        if (!response.ok) {
+            throw new Error('No se pudo cargar users.json');
+        }
+
+        const data = await response.json();
+        if (!data || !Array.isArray(data.users)) {
+            return null;
+        }
+
+        return data.users.find((user) => user.email === email && user.password === password) || null;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
 
 

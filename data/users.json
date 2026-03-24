@@ -1,8 +1,14 @@
 {
   "users": [
     {
+      "email": "user@ulpgc.es",
+      "password": "pruebaPWM26?",
+      "role": "admin"
+    },
+    {
       "email": "123@123.123",
-      "password": "123"
+      "password": "123",
+      "role": "admin"
     }
   ]
 }
