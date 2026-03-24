@@ -485,5 +485,33 @@
                       "password":  "123",
                       "role":  "admin"
                   }
-              ]
+              ],
+  "legal": {
+    "title": "Aviso Legal y Política de Privacidad",
+    "sections": [
+      {
+        "subtitle": "1. Información General",
+        "paragraphs": [
+          "El titular de este sitio web es el Hotel Isla Dorada, con domicilio en Av. de las Canteras s/n, Las Palmas de Gran Canaria, España.",
+          "El acceso y uso de este sitio web atribuye la condición de usuario e implica la aceptación plena de las presentes condiciones. Le recomendamos leer detenidamente este documento antes de utilizar nuestros servicios de reserva."
+        ]
+      },
+      {
+        "subtitle": "2. Protección de Datos",
+        "paragraphs": [
+          "En cumplimiento de la normativa vigente en protección de datos, le informamos que sus datos personales serán tratados de forma estrictamente confidencial.",
+          "La finalidad principal de la recogida de datos es la gestión de sus reservas, la facturación de los servicios prestados y, si nos da su consentimiento, el envío de ofertas exclusivas de nuestro hotel.",
+          "Usted tiene derecho a acceder, rectificar o eliminar sus datos en cualquier momento enviando un correo a islabonita@grancanaria.es."
+        ]
+      },
+      {
+        "subtitle": "3. Uso de Cookies",
+        "paragraphs": [
+          "Este sitio web utiliza cookies propias y de terceros para mejorar la experiencia de navegación, analizar el tráfico y ofrecer contenido personalizado.",
+          "Al navegar por nuestras páginas, usted acepta el uso de estas cookies. Puede configurar su navegador en cualquier momento para rechazar las cookies, aunque esto podría afectar el funcionamiento óptimo del motor de reservas."
+        ]
+      }
+    ]
+  }
 }
+
