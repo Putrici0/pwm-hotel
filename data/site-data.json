@@ -42,24 +42,28 @@
         {
           "title": "Wellness",
           "description": "Gimnasio, piscina y spa para mantener tu rutina de bienestar durante la estancia.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/7.jpg) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/7.jpg) center/cover no-repeat",
+          "imageLink": "wellness-facilities.html"
         },
         {
           "title": "Restauración",
           "description": "Propuesta gastronómica diaria con cocina local e internacional elaborada con producto fresco.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/8.webp) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/8.webp) center/cover no-repeat",
+          "imageLink": "restaurant.html"
         },
         {
           "title": "Actividades",
           "description": "Experiencias dentro y fuera del hotel: rutas, ocio familiar y planes personalizados.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/9.jpg) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(../img/9.jpg) center/cover no-repeat",
+          "imageLink": "activities.html"
         }
       ]
     },
     "location": {
       "title": "Localización del hotel",
       "description": "Isla Dorada Hotel se encuentra en el exclusivo Paseo de Meloneras 37, Maspalomas, en la costa sur de Gran Canaria, a pocos minutos de la playa y del Faro.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/1.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../img/1.jpg) center/cover no-repeat",
+      "imageLink": "https://www.google.com/maps/dir/?api=1&destination=Paseo+de+Meloneras+37,+Maspalomas"
     }
   },
   "activities": {

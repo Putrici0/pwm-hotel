@@ -117,7 +117,11 @@ function renderTextImageSection(sectionId, sectionData) {
         if (sectionData.imageLink) {
             imageEl.style.cursor = "pointer";
             imageEl.onclick = function() {
-                window.location.href = sectionData.imageLink;
+                if (sectionData.imageLink.startsWith("http")) {
+                    window.open(sectionData.imageLink, "_blank");
+                } else {
+                    window.location.href = sectionData.imageLink;
+                }
             };
         } else {
             imageEl.style.cursor = "default";
@@ -198,6 +202,16 @@ function renderGridSection(sectionId, sectionData) {
 
         if (itemData.imageGradient) {
             itemEl.style.background = itemData.imageGradient;
+        }
+
+        if (itemData.imageLink) {
+            itemEl.style.cursor = "pointer";
+            itemEl.onclick = function() {
+                window.location.href = itemData.imageLink;
+            };
+        } else {
+            itemEl.style.cursor = "default";
+            itemEl.onclick = null;
         }
     });
 }
