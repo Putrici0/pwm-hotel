@@ -1,19 +1,19 @@
 let pwmMainBootstrapped = false;
 
 const LEGACY_PAGE_SCRIPTS = {
-    "activities.html": "../js/activities.js",
-    "booking.html": "../js/booking.js",
-    "change-password.html": "../js/change-password.js",
-    "contact.html": "../js/contact.js",
-    "index.html": "../js/index.js",
-    "login.html": "../js/login.js",
-    "register.html": "../js/register.js",
-    "restaurant.html": "../js/restaurant.js",
-    "rooms.html": "../js/rooms.js",
-    "services.html": "../js/services.js",
-    "wellness-facilities.html": "../js/wellness-facilities.js",
-    "account.html": "../js/account.js",
-    "admin.html": "../js/admin.js"
+    "activities.html": "../js/pages/activities.js",
+    "booking.html": "../js/pages/booking.js",
+    "change-password.html": "../js/pages/change-password.js",
+    "contact.html": "../js/pages/contact.js",
+    "index.html": "../js/pages/index.js",
+    "login.html": "../js/pages/login.js",
+    "register.html": "../js/pages/register.js",
+    "restaurant.html": "../js/pages/restaurant.js",
+    "rooms.html": "../js/pages/rooms.js",
+    "services.html": "../js/pages/services.js",
+    "wellness-facilities.html": "../js/pages/wellness-facilities.js",
+    "account.html": "../js/pages/account.js",
+    "admin.html": "../js/pages/admin.js"
 };
 
 document.addEventListener("DOMContentLoaded", bootstrapMain);

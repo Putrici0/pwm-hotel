@@ -1,0 +1,48 @@
+{
+  "title": {
+    "title": "Tu cuenta",
+    "description": "Aqui puedes ver tus reservas y actualizar tus datos."
+  },
+  "table": {
+    "title": "Reservas del usuario",
+    "headers": {
+      "reservation": "Reserva",
+      "checkin": "Check-in",
+      "checkout": "Check-out"
+    }
+  },
+  "actions": {
+    "buttons": [
+      "Cambiar nombre",
+      "Cambiar correo",
+      "Cambiar contrasena"
+    ]
+  },
+  "users": [
+    {
+      "email": "user@ulpgc.es",
+      "reservations": [
+        {
+          "id": "ID-1001",
+          "checkin": "12/05/2026",
+          "checkout": "15/05/2026"
+        },
+        {
+          "id": "ID-1088",
+          "checkin": "01/08/2026",
+          "checkout": "05/08/2026"
+        }
+      ]
+    },
+    {
+      "email": "123@123.123",
+      "reservations": [
+        {
+          "id": "ID-2201",
+          "checkin": "20/06/2026",
+          "checkout": "25/06/2026"
+        }
+      ]
+    }
+  ]
+}
