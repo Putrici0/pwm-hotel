@@ -33,8 +33,9 @@ function waitForContactTemplates(callback) {
         const titleReady = isContactTitleReady();
         const infoReady = isContactInfoReady();
         const formReady = isContactFormReady();
+        const faqReady = isContactFaqReady();
 
-        if (pendingIncludes === 0 && titleReady && infoReady && formReady) {
+        if (pendingIncludes === 0 && titleReady && infoReady && formReady && faqReady) {
             clearInterval(timer);
             callback();
         }
@@ -75,10 +76,21 @@ function isContactFormReady() {
     );
 }
 
+function isContactFaqReady() {
+    const section = document.getElementById("contact-table");
+    return Boolean(
+        section &&
+        section.querySelector(".table-title") &&
+        section.querySelector(".table thead tr") &&
+        section.querySelector(".table tbody")
+    );
+}
+
 function renderContactPage(data) {
     renderContactTitle(data.header);
     renderContactInfo(data.commitment);
     renderContactForm(data.form);
+    renderContactFaq(data.faq);
 }
 
 function renderContactTitle(header) {
@@ -181,4 +193,54 @@ function renderContactForm(formData) {
     if (submitButton && formData.submitText) {
         submitButton.textContent = formData.submitText;
     }
+}
+
+function renderContactFaq(faqData) {
+    if (!faqData) {
+        return;
+    }
+
+    const section = document.getElementById("contact-table");
+    if (!section) {
+        return;
+    }
+
+    const titleEl = section.querySelector(".table-title");
+    const tableEl = section.querySelector(".table");
+    const headerRow = section.querySelector(".table thead tr");
+    const tbody = section.querySelector(".table tbody");
+
+    if (!tableEl || !headerRow || !tbody) {
+        return;
+    }
+
+    tableEl.classList.add("faq-table");
+
+    if (titleEl && faqData.title) {
+        titleEl.textContent = faqData.title;
+    }
+
+    if (Array.isArray(faqData.headers) && faqData.headers.length > 0) {
+        headerRow.innerHTML = "";
+        faqData.headers.forEach((headerText) => {
+            const th = document.createElement("th");
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+    }
+
+    tbody.innerHTML = "";
+
+    if (!Array.isArray(faqData.items)) {
+        return;
+    }
+
+    faqData.items.forEach((faqItem) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${faqItem.question || ""}</td>
+            <td>${faqItem.answer || ""}</td>
+        `;
+        tbody.appendChild(row);
+    });
 }

@@ -27,6 +27,62 @@
     text-align: center;
 }
 
+#contact-table .faq-table th,
+#contact-table .faq-table td {
+    text-align: left;
+    vertical-align: top;
+}
+
+#contact-table .faq-table th:first-child,
+#contact-table .faq-table td:first-child {
+    width: 38%;
+}
+
+#contact-table .table-section {
+    padding: 2rem 1.25rem;
+}
+
+#contact-table .table-title {
+    font-size: 2rem;
+    color: var(--mar-navy);
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto 0.9rem auto;
+}
+
+#contact-table .table-wrapper {
+    background: rgba(255, 255, 255, 0.72);
+    border: 2px solid var(--mar-navy);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#contact-table .faq-table {
+    min-width: 0;
+}
+
+#contact-table .faq-table th {
+    background: var(--arena-sable);
+    color: var(--mar-navy);
+    font-weight: 700;
+}
+
+#contact-table .faq-table th,
+#contact-table .faq-table td {
+    border-color: rgba(26, 54, 93, 0.28);
+    color: var(--mar-navy);
+}
+
+#contact-table .faq-table td {
+    background: transparent;
+}
+
+@media (max-width: 877px) {
+    #contact-table .table-title {
+        font-size: 1.6rem;
+    }
+}
+
 @media (max-width: 877px) {
     .table-section {
         padding: 1.5rem 0.85rem;
