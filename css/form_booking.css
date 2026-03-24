@@ -156,3 +156,84 @@
         font-size: 1rem;
     }
 }
+
+/* admin forms */
+.admin-forms {
+    padding: 0.5rem 1.25rem 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.admin-form-card {
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid rgba(26, 54, 93, 0.32);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+.admin-form-card h3 {
+    margin-bottom: 0.75rem;
+    color: var(--mar-navy);
+    font-size: 1.1rem;
+}
+
+.admin-manage-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.admin-manage-form label {
+    color: var(--mar-navy);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+}
+
+.admin-manage-form input,
+.admin-manage-form select {
+    padding: 0.75rem;
+    border: 1px solid #c7c7c7;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--mar-navy);
+}
+
+.admin-manage-form button {
+    margin-top: 0.45rem;
+    padding: 0.75rem 0.95rem;
+    border: 0;
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--mar-navy);
+    background: var(--arena-sable);
+    cursor: pointer;
+}
+
+.admin-manage-form button:hover {
+    background: var(--arena-hover);
+}
+
+.admin-inline-remove {
+    border: 0;
+    border-radius: 6px;
+    padding: 0.45rem 0.7rem;
+    color: var(--mar-navy);
+    background: var(--arena-sable);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.admin-inline-remove:hover {
+    background: var(--arena-hover);
+}
+
+@media (max-width: 877px) {
+    .admin-forms {
+        grid-template-columns: 1fr;
+        padding: 0.5rem 0.85rem 1rem;
+    }
+}

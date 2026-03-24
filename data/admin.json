@@ -1,0 +1,34 @@
+{
+  "title": {
+    "title": "Panel de administracion",
+    "description": "Gestiona habitaciones y actividades desde un unico lugar."
+  },
+  "rooms": {
+    "tableTitle": "Habitaciones disponibles",
+    "headers": ["Nombre", "Descripcion", "Accion"],
+    "forms": {
+      "addTitle": "Anadir habitacion",
+      "removeTitle": "Quitar habitacion",
+      "nameLabel": "Nombre",
+      "descriptionLabel": "Descripcion",
+      "namePlaceholder": "Nombre de la habitacion",
+      "descriptionPlaceholder": "Descripcion de la habitacion",
+      "addButtonText": "Anadir",
+      "removeButtonText": "Quitar seleccionada"
+    }
+  },
+  "activities": {
+    "tableTitle": "Actividades disponibles",
+    "headers": ["Nombre", "Descripcion", "Accion"],
+    "forms": {
+      "addTitle": "Anadir actividad",
+      "removeTitle": "Quitar actividad",
+      "nameLabel": "Nombre",
+      "descriptionLabel": "Descripcion",
+      "namePlaceholder": "Nombre de la actividad",
+      "descriptionPlaceholder": "Descripcion de la actividad",
+      "addButtonText": "Anadir",
+      "removeButtonText": "Quitar seleccionada"
+    }
+  }
+}
