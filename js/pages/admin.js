@@ -31,11 +31,14 @@ function init() {
 }
 
 function loadJson(fileName) {
-    return fetch(fileName).then((response) => {
+    const sectionKey = getSectionKey(fileName);
+    return fetch("../data/site-data.json").then((response) => {
         if (!response.ok) {
-            throw new Error(`No se pudo cargar ${fileName}`);
+            throw new Error("No se pudo cargar site-data.json");
         }
         return response.json();
+    }).then((data) => {
+        return data[sectionKey] || data;
     });
 }
 
@@ -285,3 +288,8 @@ function updateRemoveSelect(removeContainer, items) {
         select.appendChild(option);
     });
 }
+
+function getSectionKey(fileName) {
+    return String(fileName || "").split("/").pop().replace(".json", "");
+}
+

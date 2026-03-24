@@ -7,7 +7,8 @@ function init() {
 }
 
 function loadLoginData(fileName, callback) {
-    fetch(fileName)
+    const sectionKey = getSectionKey(fileName);
+    fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("No se pudo cargar el archivo de login.");
@@ -16,7 +17,7 @@ function loadLoginData(fileName, callback) {
         })
         .then((data) => {
             if (callback) {
-                callback(data);
+                callback(data[sectionKey] || data);
             }
         })
         .catch((error) => console.error(error));
@@ -161,21 +162,57 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function authenticateFromJson(email, password) {
     try {
-        const response = await fetch('../data/users.json');
+        const response = await fetch('../data/site-data.json');
         if (!response.ok) {
-            throw new Error('No se pudo cargar users.json');
+            throw new Error('No se pudo cargar site-data.json');
         }
 
         const data = await response.json();
-        if (!data || !Array.isArray(data.users)) {
+        const baseUsers = data && Array.isArray(data.users) ? data.users : [];
+        const localUsers = getLocalRegisteredUsers();
+        const users = [...baseUsers, ...localUsers];
+        const passwordOverrides = getPasswordOverrides();
+
+        if (!users.length) {
             return null;
         }
 
-        return data.users.find((user) => user.email === email && user.password === password) || null;
+        return users.find((user) => {
+            const expectedPassword = Object.prototype.hasOwnProperty.call(passwordOverrides, user.email)
+                ? passwordOverrides[user.email]
+                : user.password;
+            return user.email === email && expectedPassword === password;
+        }) || null;
     } catch (error) {
         console.error(error);
         return null;
     }
+}
+
+function getLocalRegisteredUsers() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function getPasswordOverrides() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('passwordOverrides') || '{}');
+        return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+        return {};
+    }
+}
+
+
+
+
+function getSectionKey(fileName) {
+    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
+    return cleanName;
 }
 
 

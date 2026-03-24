@@ -1,4 +1,9 @@
-document.addEventListener('DOMContentLoaded', () => {
+let targetEmail = '';
+let cachedUsers = [];
+
+document.addEventListener('DOMContentLoaded', async () => {
+    cachedUsers = await getAllUsers();
+
     setTimeout(() => {
         const step1 = document.getElementById('step-1');
         const step2 = document.getElementById('step-2');
@@ -20,8 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const toggle1 = document.getElementById('toggle-reset-1');
         const toggle2 = document.getElementById('toggle-reset-2');
 
-        let targetEmail = '';
-
         if (toggle1 && pass1) {
             toggle1.addEventListener('click', () => {
                 pass1.setAttribute('type', pass1.getAttribute('type') === 'password' ? 'text' : 'password');
@@ -41,12 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (btn1) {
-            btn1.addEventListener('click', () => {
+            btn1.addEventListener('click', async () => {
                 err1.style.display = 'none';
                 const email = emailInput.value.trim();
-                const savedEmail = localStorage.getItem('savedUserEmail');
+                cachedUsers = await getAllUsers();
+                const exists = cachedUsers.some((user) => user.email === email);
 
-                if (email === 'user@ulpgc.es' || (savedEmail && email === savedEmail)) {
+                if (exists) {
                     targetEmail = email;
                     step1.style.display = 'none';
                     step2.style.display = 'block';
@@ -91,12 +95,61 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                if (targetEmail !== 'user@ulpgc.es') {
-                    localStorage.setItem('savedUserPassword', p1);
-                }
+                persistNewPassword(targetEmail, p1);
 
                 window.location.href = 'login.html';
             });
         }
     }, 500);
 });
+
+async function getAllUsers() {
+    try {
+        const response = await fetch('../data/site-data.json');
+        if (!response.ok) {
+            return getLocalRegisteredUsers();
+        }
+        const data = await response.json();
+        const baseUsers = data && Array.isArray(data.users) ? data.users : [];
+        return [...baseUsers, ...getLocalRegisteredUsers()];
+    } catch (error) {
+        return getLocalRegisteredUsers();
+    }
+}
+
+function getLocalRegisteredUsers() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function persistNewPassword(email, newPassword) {
+    if (!email) {
+        return;
+    }
+
+    const localUsers = getLocalRegisteredUsers();
+    const localUser = localUsers.find((user) => user.email === email);
+
+    if (localUser) {
+        localUser.password = newPassword;
+        localStorage.setItem('registeredUsers', JSON.stringify(localUsers));
+        return;
+    }
+
+    let passwordOverrides = {};
+    try {
+        const parsed = JSON.parse(localStorage.getItem('passwordOverrides') || '{}');
+        if (parsed && typeof parsed === 'object') {
+            passwordOverrides = parsed;
+        }
+    } catch (error) {
+        passwordOverrides = {};
+    }
+
+    passwordOverrides[email] = newPassword;
+    localStorage.setItem('passwordOverrides', JSON.stringify(passwordOverrides));
+}

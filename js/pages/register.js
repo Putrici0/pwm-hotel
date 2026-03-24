@@ -7,7 +7,8 @@ function init() {
 }
 
 function loadRegisterData(fileName, callback) {
-    fetch(fileName)
+    const sectionKey = getSectionKey(fileName);
+    fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("No se pudo cargar el archivo de registro.");
@@ -16,7 +17,7 @@ function loadRegisterData(fileName, callback) {
         })
         .then((data) => {
             if (callback) {
-                callback(data);
+                callback(data[sectionKey] || data);
             }
         })
         .catch((error) => console.error(error));
@@ -154,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (regForm) {
-            regForm.addEventListener('submit', (e) => {
+            regForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 const pwd1 = passInput1.value;
@@ -175,12 +176,55 @@ document.addEventListener('DOMContentLoaded', () => {
                     return;
                 }
 
-                localStorage.setItem('savedUserEmail', email);
-                localStorage.setItem('savedUserPassword', pwd1);
+                const allUsers = await getAllUsers();
+                const emailAlreadyExists = allUsers.some((user) => user.email === email);
+
+                if (emailAlreadyExists) {
+                    errorMsg.textContent = 'Ese correo ya esta registrado.';
+                    errorMsg.style.display = 'block';
+                    return;
+                }
+
+                const localUsers = getLocalRegisteredUsers();
+                localUsers.push({
+                    email,
+                    password: pwd1,
+                    role: 'user'
+                });
+                localStorage.setItem('registeredUsers', JSON.stringify(localUsers));
 
                 window.location.href = 'login.html';
             });
         }
     }, 500);
 });
+
+async function getAllUsers() {
+    try {
+        const response = await fetch('../data/site-data.json');
+        if (!response.ok) {
+            return getLocalRegisteredUsers();
+        }
+        const data = await response.json();
+        const baseUsers = data && Array.isArray(data.users) ? data.users : [];
+        return [...baseUsers, ...getLocalRegisteredUsers()];
+    } catch (error) {
+        return getLocalRegisteredUsers();
+    }
+}
+
+function getLocalRegisteredUsers() {
+    try {
+        const parsed = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+        return Array.isArray(parsed) ? parsed : [];
+    } catch (error) {
+        return [];
+    }
+}
+
+function getSectionKey(fileName) {
+    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
+    return cleanName;
+}
+
 

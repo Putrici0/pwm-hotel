@@ -7,7 +7,8 @@ function init() {
 }
 
 function loadContactData(fileName, callback) {
-    fetch(fileName)
+    const sectionKey = getSectionKey(fileName);
+    fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("No se pudo cargar el archivo de contacto.");
@@ -16,7 +17,7 @@ function loadContactData(fileName, callback) {
         })
         .then((data) => {
             if (callback) {
-                callback(data);
+                callback(data[sectionKey] || data);
             }
         })
         .catch((error) => console.error(error));
@@ -235,12 +236,23 @@ function renderContactFaq(faqData) {
         return;
     }
 
+    const questionLabel = Array.isArray(faqData.headers) && faqData.headers[0] ? faqData.headers[0] : "Pregunta";
+    const answerLabel = Array.isArray(faqData.headers) && faqData.headers[1] ? faqData.headers[1] : "Respuesta";
+
     faqData.items.forEach((faqItem) => {
         const row = document.createElement("tr");
         row.innerHTML = `
-            <td>${faqItem.question || ""}</td>
-            <td>${faqItem.answer || ""}</td>
+            <td data-label="${questionLabel}">${faqItem.question || ""}</td>
+            <td data-label="${answerLabel}">${faqItem.answer || ""}</td>
         `;
         tbody.appendChild(row);
     });
 }
+
+
+function getSectionKey(fileName) {
+    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
+    return cleanName;
+}
+
+

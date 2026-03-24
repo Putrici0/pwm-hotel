@@ -7,7 +7,8 @@ function init() {
 }
 
 function loadRestaurantData(fileName, callback) {
-    fetch(fileName)
+    const sectionKey = getSectionKey(fileName);
+    fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
                 throw new Error("No se pudo cargar el archivo de restaurante.");
@@ -16,7 +17,7 @@ function loadRestaurantData(fileName, callback) {
         })
         .then((data) => {
             if (callback) {
-                callback(data);
+                callback(data[sectionKey] || data);
             }
         })
         .catch((error) => console.error(error));
@@ -177,3 +178,11 @@ function renderCategoryTable(sectionId, categoryData) {
         cells[1].textContent = item.price || "";
     });
 }
+
+
+function getSectionKey(fileName) {
+    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
+    return cleanName;
+}
+
+
