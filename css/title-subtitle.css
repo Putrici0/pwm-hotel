@@ -1,6 +1,7 @@
 /* css por template TITLE-SUBTITLE (title-subtitle.html) */
 .hero {
     padding: 2.25rem 1.25rem 1.5rem 1.25rem;
+    text-align: center;
 }
 
 .hero__title {

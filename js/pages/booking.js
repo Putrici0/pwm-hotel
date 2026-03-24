@@ -277,10 +277,10 @@ function renderCheckoutForm(checkout) {
 }
 
 const availableRoomsMock = [
-    { id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=300&q=80' },
-    { id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 3, img: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=300&q=80' },
-    { id: 'familiar', name: 'Habitación Familiar', maxGuests: 5, img: 'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?auto=format&fit=crop&w=300&q=80' },
-    { id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=300&q=80' }
+    { id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/img/11.jpg' },
+    { id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/img/12.jpg' },
+    { id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/img/13.jpg' },
+    { id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/img/14.jpg' }
 ];
 
 let selectedRoomName = "";

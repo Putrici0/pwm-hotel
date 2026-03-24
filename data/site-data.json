@@ -88,7 +88,7 @@
                     "header":  {
                                    "title":  "Reserva tu estancia en Isla Dorada",
                                    "description":  "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinacion de confort, ubicacion y servicios.",
-                                   "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1015/1600/900\u0027) center/cover no-repeat"
+                                   "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/10.jpg) center/cover no-repeat"
                                },
                     "availability":  {
                                          "title":  "Sistema de disponibilidad de habitaciones",
