@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForRestaurantTemplates(() => {
-        loadRestaurantData("../data/restaurant.json", renderRestaurantPage);
+        loadRestaurantData("restaurant", renderRestaurantPage);
     });
 }
 
-function loadRestaurantData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadRestaurantData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -187,12 +186,6 @@ function renderCategoryTable(sectionId, categoryData) {
         cells[0].textContent = item.name || "";
         cells[1].textContent = item.price || "";
     });
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

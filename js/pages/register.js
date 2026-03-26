@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForRegisterTemplate(() => {
-        loadRegisterData("../data/register.json", renderRegisterPage);
+        loadRegisterData("register", renderRegisterPage);
     });
 }
 
-function loadRegisterData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadRegisterData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -221,10 +220,4 @@ function getLocalRegisteredUsers() {
         return [];
     }
 }
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
-}
-
 

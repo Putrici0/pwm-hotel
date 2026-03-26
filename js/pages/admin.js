@@ -4,9 +4,9 @@ function init() {
     waitForAdminTemplates(async () => {
         try {
             const [adminConfig, roomsData, activitiesData] = await Promise.all([
-                loadJson("../data/admin.json"),
-                loadJson("../data/rooms.json"),
-                loadJson("../data/activities.json")
+                loadJson("admin"),
+                loadJson("rooms"),
+                loadJson("activities")
             ]);
 
             renderAdminTitle(adminConfig.title);
@@ -30,8 +30,7 @@ function init() {
     });
 }
 
-function loadJson(fileName) {
-    const sectionKey = getSectionKey(fileName);
+function loadJson(sectionKey) {
     return fetch("../data/site-data.json").then((response) => {
         if (!response.ok) {
             throw new Error("No se pudo cargar site-data.json");
@@ -287,9 +286,5 @@ function updateRemoveSelect(removeContainer, items) {
         option.textContent = `${index + 1}. ${item.title}`;
         select.appendChild(option);
     });
-}
-
-function getSectionKey(fileName) {
-    return String(fileName || "").split("/").pop().replace(".json", "");
 }
 

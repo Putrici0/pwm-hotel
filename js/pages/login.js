@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForLoginTemplate(() => {
-        loadLoginData("../data/login.json", renderLoginPage);
+        loadLoginData("login", renderLoginPage);
     });
 }
 
-function loadLoginData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadLoginData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -208,11 +207,5 @@ function getPasswordOverrides() {
 }
 
 
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
-}
 
 

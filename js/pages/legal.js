@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForLegalTemplates(() => {
-        loadLegalData("../data/legal.json", renderLegalPage);
+        loadLegalData("legal", renderLegalPage);
     });
 }
 
-function loadLegalData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadLegalData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -104,10 +103,6 @@ function renderLegalPage(data) {
     }
 }
 
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const dateElement = document.getElementById('legal-date');

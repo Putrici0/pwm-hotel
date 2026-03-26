@@ -19,14 +19,18 @@
     line-height: 1.2;
 }
 
-@media (max-width: 909px) {
+@media (min-width: 577px) and (max-width: 900px) {
     .image-grid-section {
         padding: 1.75rem 0.85rem;
     }
 
     .image-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.85rem;
+    }
+
+    .image-grid__item:nth-child(3) {
+        grid-column: 1 / -1;
     }
 
     .image-grid__item {
@@ -77,7 +81,11 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 576px) {
+    .image-grid {
+        grid-template-columns: 1fr;
+    }
+
     .image-grid__item {
         min-height: 200px;
         padding: 0.85rem;

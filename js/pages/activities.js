@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForActivitiesTemplate(() => {
-        loadActivitiesData("../data/activities.json", renderActivities);
+        loadActivitiesData("activities", renderActivities);
     });
 }
 
-function loadActivitiesData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadActivitiesData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -136,12 +135,6 @@ function renderActivitiesIntro(intro) {
     if (descriptionEl && intro.description) {
         descriptionEl.textContent = intro.description;
     }
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

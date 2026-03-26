@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForContactTemplates(() => {
-        loadContactData("../data/contact.json", renderContactPage);
+        loadContactData("contact", renderContactPage);
     });
 }
 
-function loadContactData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadContactData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -247,12 +246,6 @@ function renderContactFaq(faqData) {
         `;
         tbody.appendChild(row);
     });
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

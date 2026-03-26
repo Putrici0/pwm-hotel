@@ -139,7 +139,7 @@
 }
 
 /* Responsive */
-@media (max-width: 877px) {
+@media (max-width: 900px) {
     .booking-image {
         height: 220px;
         margin: 2rem 1rem;
@@ -159,9 +159,58 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 576px) {
+    #booking-title .hero {
+        position: relative;
+        min-height: 320px;
+        margin: 0 1rem 1rem;
+        padding: 0;
+        border-radius: 14px;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-end;
+        text-align: left;
+        background: var(--booking-hero-image, #ccc);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+
+    #booking-title .hero::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.08) 15%,
+            rgba(0, 0, 0, 0.74) 100%
+        );
+    }
+
+    #booking-title .hero__content {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        padding: 1rem;
+    }
+
+    #booking-title .hero__title,
+    #booking-title .hero__description {
+        color: #fff;
+    }
+
+    #booking-title .hero__title {
+        font-size: 1.75rem;
+        margin-bottom: 0.45rem;
+    }
+
+    #booking-title .hero__description {
+        font-size: 0.95rem;
+        line-height: 1.35;
+    }
+
     .booking-image {
-        height: 180px;
+        display: none;
     }
 
     .booking-widget__title {
@@ -243,7 +292,7 @@
     color: var(--mar-navy);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 576px) {
     .room-option-card {
         flex-direction: column;
     }

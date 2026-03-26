@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForBookingTemplates(() => {
-        loadBookingData("../data/booking.json", renderBookingPage);
+        loadBookingData("booking", renderBookingPage);
     });
 }
 
-function loadBookingData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadBookingData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -118,6 +117,11 @@ function renderBookingImage(header) {
     }
 
     imageSection.style.background = header.imageGradient;
+
+    const heroSection = document.querySelector("#booking-title .hero");
+    if (heroSection) {
+        heroSection.style.setProperty("--booking-hero-image", header.imageGradient);
+    }
 }
 
 function renderAvailabilityWidget(availability) {
@@ -403,12 +407,6 @@ function formatSummaryDate(rawDate) {
     }
 
     return new Intl.DateTimeFormat("es-ES").format(parsedDate);
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

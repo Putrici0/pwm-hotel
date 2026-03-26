@@ -77,13 +77,13 @@
     background: transparent;
 }
 
-@media (max-width: 877px) {
+@media (max-width: 900px) {
     #contact-table .table-title {
         font-size: 1.6rem;
     }
 }
 
-@media (min-width: 521px) and (max-width: 877px) {
+@media (min-width: 577px) and (max-width: 900px) {
     #contact-table .table-wrapper {
         border-radius: 14px;
     }
@@ -123,7 +123,7 @@
     }
 }
 
-@media (max-width: 520px) {
+@media (max-width: 576px) {
     #contact-table .table-wrapper {
         border: 0;
         background: transparent;
@@ -227,7 +227,7 @@
     width: 160px;
 }
 
-@media (max-width: 877px) {
+@media (max-width: 900px) {
     #admin-table-1 .table-title,
     #admin-table-2 .table-title {
         font-size: 1.6rem;
@@ -239,7 +239,7 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 576px) {
     #contact-table .table-section,
     #admin-table-1 .table-section,
     #admin-table-2 .table-section {
@@ -270,7 +270,7 @@
     }
 }
 
-@media (max-width: 877px) {
+@media (max-width: 900px) {
     .table-section {
         padding: 1.5rem 0.85rem;
     }
@@ -282,7 +282,7 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 576px) {
     .table-wrapper {
         overflow-x: auto;
     }

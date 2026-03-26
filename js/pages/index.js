@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForIndexTemplates(() => {
-        loadIndexData("../data/index.json", renderIndexPage);
+        loadIndexData("index", renderIndexPage);
     });
 }
 
-function loadIndexData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadIndexData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -216,7 +215,3 @@ function renderGridSection(sectionId, sectionData) {
     });
 }
 
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
-}

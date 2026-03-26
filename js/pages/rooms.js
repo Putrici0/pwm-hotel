@@ -4,12 +4,11 @@ function init() {
     document.body.classList.add("page-rooms");
 
     waitForRoomTemplate(() => {
-        loadRoomData("../data/rooms.json", renderRooms);
+        loadRoomData("rooms", renderRooms);
     });
 }
 
-function loadRoomData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadRoomData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -104,12 +103,6 @@ function renderRooms(data) {
             imageEl.style.background = room.imageGradient;
         }
     });
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

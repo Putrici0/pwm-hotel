@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForWellnessTemplates(() => {
-        loadWellnessData("../data/wellness-facilities.json", renderWellnessFacilities);
+        loadWellnessData("wellness-facilities", renderWellnessFacilities);
     });
 }
 
-function loadWellnessData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadWellnessData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -105,12 +104,6 @@ function renderWellnessIntro(intro) {
     if (descriptionEl && intro.description) {
         descriptionEl.textContent = intro.description;
     }
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 

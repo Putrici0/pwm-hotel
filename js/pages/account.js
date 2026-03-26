@@ -2,12 +2,11 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
     waitForAccountTemplates(() => {
-        loadAccountData("../data/account.json", renderAccountPage);
+        loadAccountData("account", renderAccountPage);
     });
 }
 
-function loadAccountData(fileName, callback) {
-    const sectionKey = getSectionKey(fileName);
+function loadAccountData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
             if (!response.ok) {
@@ -185,12 +184,6 @@ function renderAccountActions(actionsData) {
             window.location.href = "change-password.html";
         });
     }
-}
-
-
-function getSectionKey(fileName) {
-    const cleanName = String(fileName || '').split('/').pop().replace('.json', '');
-    return cleanName;
 }
 
 
