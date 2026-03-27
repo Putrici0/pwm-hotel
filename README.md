@@ -61,7 +61,7 @@ Nota: en todas las páginas se realiza carga de templates y de contenido JSON.
   - Checkbox de términos obligatorio (`required`)
 - Validación adicional en JS:
   - Coincidencia de contraseñas
-  - Regla de contraseña: mínimo 6 caracteres, una mayúscula, un número y un carácter especial (`?`, `!`, `*`)
+  - Regla de contraseña: mínimo 6 caracteres, una mayúscula, un número y un carácter especial (`?`, `!`, `*`, `'`)
 
 ### 3) Change Password
 - Página: [pages/change-password.html](./pages/change-password.html)
@@ -126,4 +126,6 @@ El proyecto maneja dos roles de usuario:
 ### Cómo probar cada rol
 - Prueba rol `admin`: iniciar sesión con `admin@ulpgc.es`.
 - Prueba rol `user`: iniciar sesión con `user@ulpgc.es`.
+- La contraseña por los dos roles es `pruebaPWM26?`
 - Alternativa para rol `user`: crear una cuenta nueva desde [pages/register.html](./pages/register.html) (se guarda en `localStorage` con rol `user`).
+
