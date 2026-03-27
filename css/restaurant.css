@@ -236,3 +236,45 @@
         height: 56px;
     }
 }
+
+.menu-fixed-header {
+    text-align: center;
+    padding: 2rem 1.25rem 0 1.25rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.menu-fixed-header h2 {
+    font-size: 2rem;
+    color: var(--mar-navy);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.5rem;
+}
+
+.menu-fixed-header h2::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 3px;
+    background-color: var(--arena-sable);
+    border-radius: 2px;
+}
+
+@media (max-width: 900px) {
+    .menu-fixed-header h2 {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .menu-fixed-header {
+        padding: 1.5rem 0.75rem 0 0.75rem;
+    }
+
+    .menu-fixed-header h2 {
+        font-size: 1.45rem;
+    }
+}

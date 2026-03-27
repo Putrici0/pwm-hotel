@@ -77,6 +77,12 @@ function isMenuTableReady(sectionId) {
 
 function renderRestaurantPage(data) {
     renderDailyMenu(data.dailyMenu);
+
+    const fixedMenuTitle = document.getElementById("fixed-menu-title");
+    if (fixedMenuTitle && data.fixedMenu && data.fixedMenu.title) {
+        fixedMenuTitle.textContent = data.fixedMenu.title;
+    }
+
     renderCategoryTable("starters", data.starters);
     renderCategoryTable("first-dish", data.firstDishes);
     renderCategoryTable("second-dish", data.secondDishes);
@@ -187,5 +193,4 @@ function renderCategoryTable(sectionId, categoryData) {
         cells[1].textContent = item.price || "";
     });
 }
-
 
