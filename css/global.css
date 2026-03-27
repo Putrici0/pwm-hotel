@@ -54,12 +54,20 @@ body > div + div {
 
 /*css HEADER*/
 .header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.85rem 1.5rem;
     background-color: var(--mar-navy);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.main-action-container {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .logo-container {
