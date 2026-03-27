@@ -80,7 +80,7 @@
       {
         "title": "Yoga al amanecer",
         "description": "Empieza el día con una sesión de yoga en la playa para mejorar movilidad, respiración y energía antes del desayuno.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://img.freepik.com/fotos-premium/mujer-fitness-alto-contraste-haciendo-yoga-al-amanecer_767466-15728.jpg\u0027) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/34.jpg) center/cover no-repeat"
       },
       {
         "title": "Cata de vinos y productos locales",
@@ -375,17 +375,20 @@
       {
         "title": "Instalaciones Wellness",
         "description": "Accede a nuestro espacio wellness en Gran Canaria con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg') center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg') center/cover no-repeat",
+        "imageLink": "wellness-facilities.html"
       },
       {
         "title": "Restauración",
         "description": "Saborea una oferta gastronómica variada con menú diario, cocina canaria y opciones internacionales preparadas con producto fresco.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg') center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg') center/cover no-repeat",
+        "imageLink": "restaurant.html"
       },
       {
         "title": "Actividades",
         "description": "Completa tu viaje en Gran Canaria con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg') center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/33.jpg) center/cover no-repeat",
+        "imageLink": "activities.html"
       }
     ]
   },
@@ -403,7 +406,7 @@
                                                    {
                                                        "title":  "Piscina",
                                                        "description":  "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
-                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg\u0027) center/cover no-repeat"
+                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/32.jpg) center/cover no-repeat"
                                                    },
                                                    {
                                                        "title":  "Spa",

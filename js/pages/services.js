@@ -78,8 +78,20 @@ function renderServicesPage(data) {
             descriptionEl.textContent = service.description;
         }
 
-        if (imageEl && service.imageGradient) {
-            imageEl.style.background = service.imageGradient;
+        if (imageEl) {
+            if (service.imageGradient) {
+                imageEl.style.background = service.imageGradient;
+            }
+
+            if (service.imageLink) {
+                imageEl.style.cursor = "pointer";
+                imageEl.onclick = function() {
+                    window.location.href = service.imageLink;
+                };
+            } else {
+                imageEl.style.cursor = "default";
+                imageEl.onclick = null;
+            }
         }
     });
 }
@@ -105,5 +117,3 @@ function renderServicesIntro(intro) {
         descriptionEl.textContent = intro.description;
     }
 }
-
-
