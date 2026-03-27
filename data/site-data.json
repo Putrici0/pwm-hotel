@@ -561,6 +561,31 @@
         ]
       }
     ]
+  },
+  "changePassword": {
+    "step1": {
+      "title": "Recuperar contraseña",
+      "description": "Introduce el correo electrónico asociado a tu cuenta para recibir un código de recuperación.",
+      "labelEmail": "Correo electrónico",
+      "placeholderEmail": "tu@email.com",
+      "btnText": "Enviar código"
+    },
+    "step2": {
+      "title": "Verificación de seguridad",
+      "description": "Introduce el código de 6 dígitos que te hemos enviado. (Código de prueba: 123456)",
+      "labelCode": "Código de recuperación",
+      "placeholderCode": "123456",
+      "btnText": "Verificar código"
+    },
+    "step3": {
+      "title": "Nueva contraseña",
+      "description": "Tu nueva contraseña debe tener al menos 6 caracteres, una mayúscula, un número y un carácter especial (? ! *).",
+      "labelPass1": "Nueva contraseña",
+      "placeholderPass1": "Escribe tu nueva contraseña",
+      "labelPass2": "Confirmar contraseña",
+      "placeholderPass2": "Repite tu nueva contraseña",
+      "btnText": "Cambiar contraseña"
+    }
   }
 }
 
