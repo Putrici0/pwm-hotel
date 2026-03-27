@@ -67,12 +67,13 @@ function isContactInfoReady() {
 }
 
 function isContactFormReady() {
-    const section = document.getElementById("contact-form");
+    const section = document.getElementById("contact-form-section");
     return Boolean(
         section &&
-        section.querySelectorAll("label").length >= 5 &&
-        section.querySelectorAll("input").length >= 5 &&
-        section.querySelector("button[type='submit']")
+        document.getElementById("contact-name") &&
+        document.getElementById("contact-subject") &&
+        document.getElementById("contact-question") &&
+        document.getElementById("btn-submit")
     );
 }
 
@@ -91,6 +92,7 @@ function renderContactPage(data) {
     renderContactInfo(data.commitment);
     renderContactForm(data.form);
     renderContactFaq(data.faq);
+    setupContactFormValidation();
 }
 
 function renderContactTitle(header) {
@@ -147,52 +149,100 @@ function renderContactForm(formData) {
         return;
     }
 
-    const section = document.getElementById("contact-form");
-    if (!section) {
-        return;
+    const labelName = document.getElementById("label-name");
+    const labelLastname = document.getElementById("label-lastname");
+    const labelEmail = document.getElementById("label-email");
+    const labelSubject = document.getElementById("label-subject");
+    const labelQuestion = document.getElementById("label-question");
+
+    const inputName = document.getElementById("contact-name");
+    const inputLastname = document.getElementById("contact-lastname");
+    const inputEmail = document.getElementById("contact-email");
+    const selectSubject = document.getElementById("contact-subject");
+    const inputQuestion = document.getElementById("contact-question");
+
+    const privacyText = document.getElementById("privacy-text");
+    const btnSubmit = document.getElementById("btn-submit");
+
+    if (labelName && formData.labels) labelName.textContent = formData.labels.name;
+    if (labelLastname && formData.labels) labelLastname.textContent = formData.labels.lastName;
+    if (labelEmail && formData.labels) labelEmail.textContent = formData.labels.email;
+    if (labelSubject && formData.labels) labelSubject.textContent = formData.labels.subject;
+    if (labelQuestion && formData.labels) labelQuestion.textContent = formData.labels.question;
+
+    if (inputName && formData.placeholders) inputName.placeholder = formData.placeholders.name;
+    if (inputLastname && formData.placeholders) inputLastname.placeholder = formData.placeholders.lastName;
+    if (inputEmail && formData.placeholders) inputEmail.placeholder = formData.placeholders.email;
+    if (inputQuestion && formData.placeholders) inputQuestion.placeholder = formData.placeholders.question;
+
+    if (privacyText && formData.privacyText) privacyText.textContent = formData.privacyText;
+    if (btnSubmit && formData.submitText) btnSubmit.textContent = formData.submitText;
+
+    if (selectSubject && formData.subjectOptions) {
+        selectSubject.innerHTML = "";
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "";
+        defaultOption.disabled = true;
+        defaultOption.selected = true;
+        defaultOption.textContent = formData.placeholders.subject;
+        selectSubject.appendChild(defaultOption);
+
+        formData.subjectOptions.forEach(opt => {
+            const optionElement = document.createElement("option");
+            optionElement.value = opt.value;
+            optionElement.textContent = opt.text;
+            selectSubject.appendChild(optionElement);
+        });
     }
+}
 
-    const labels = section.querySelectorAll("label");
-    const inputs = section.querySelectorAll("input");
-    const checkboxLabel = section.querySelector(".auth-checkbox strong");
-    const submitButton = section.querySelector("button[type='submit']");
+function setupContactFormValidation() {
+    const form = document.getElementById("contact-form-element");
+    const errorDiv = document.getElementById("contact-error");
+    const successDiv = document.getElementById("contact-success");
+    const emailInput = document.getElementById("contact-email");
+    const questionInput = document.getElementById("contact-question");
+    const submitBtn = document.getElementById("btn-submit");
 
-    if (labels.length >= 5 && formData.labels) {
-        labels[0].textContent = formData.labels.name || labels[0].textContent;
-        labels[1].textContent = formData.labels.lastName || labels[1].textContent;
-        labels[2].textContent = formData.labels.email || labels[2].textContent;
-        labels[3].textContent = formData.labels.subject || labels[3].textContent;
-        labels[4].textContent = formData.labels.question || labels[4].textContent;
-    }
+    if (!form || !errorDiv || !successDiv) return;
 
-    if (inputs.length >= 5 && formData.placeholders) {
-        inputs[0].placeholder = formData.placeholders.name || inputs[0].placeholder;
-        inputs[1].placeholder = formData.placeholders.lastName || inputs[1].placeholder;
-        inputs[2].placeholder = formData.placeholders.email || inputs[2].placeholder;
-        inputs[3].placeholder = formData.placeholders.subject || inputs[3].placeholder;
-        inputs[4].placeholder = formData.placeholders.question || inputs[4].placeholder;
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
 
-        inputs[0].type = "text";
-        inputs[1].type = "text";
-        inputs[2].type = "email";
-        inputs[3].type = "text";
-        inputs[4].type = "text";
+        errorDiv.style.display = "none";
+        successDiv.style.display = "none";
+        errorDiv.innerHTML = "";
 
-        // poner required en todos
-        inputs[0].required = true;
-        inputs[1].required = true;
-        inputs[2].required = true;
-        inputs[3].required = true;
-        inputs[4].required = true;
-    }
+        let errors = [];
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (checkboxLabel && formData.privacyText) {
-        checkboxLabel.textContent = formData.privacyText;
-    }
+        if (!emailRegex.test(emailInput.value)) {
+            errors.push("Por favor, introduce un correo electrónico válido.");
+        }
 
-    if (submitButton && formData.submitText) {
-        submitButton.textContent = formData.submitText;
-    }
+        if (questionInput.value.trim().length < 20) {
+            errors.push("Tu mensaje es demasiado corto. Por favor, escribe al menos 20 caracteres.");
+        }
+
+        if (errors.length > 0) {
+            errorDiv.innerHTML = errors.join("<br>");
+            errorDiv.style.display = "block";
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.7";
+            submitBtn.textContent = "Enviando...";
+
+            setTimeout(() => {
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.style.opacity = "1";
+                submitBtn.textContent = "Enviar consulta";
+                successDiv.innerHTML = "¡Mensaje enviado con éxito!<br><span style='font-size: 0.9em; font-weight: normal;'>Hemos enviado un resumen a tu correo. Nuestro equipo de atención al cliente te responderá en breve.</span>";
+                successDiv.style.display = "block";
+            }, 1500);
+        }
+    });
 }
 
 function renderContactFaq(faqData) {

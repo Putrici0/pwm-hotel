@@ -169,3 +169,35 @@
         padding: 0.8rem;
     }
 }
+
+/* Estilos adicionales para Contact Form */
+.contact-card {
+    width: 600px;
+    max-width: 90vw;
+}
+
+.auth-card select,
+.auth-card textarea {
+    padding: 0.8rem;
+    border: 1px solid var(--arena-sable);
+    border-radius: 6px;
+    background-color: var(--arena-clara);
+    color: var(--mar-navy);
+    transition: border-color 0.3s ease;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+.auth-card select:focus,
+.auth-card textarea:focus {
+    outline: none;
+    border-color: var(--mar-navy);
+    background-color: var(--blanco-puro);
+}
+
+.auth-card textarea {
+    resize: vertical;
+    min-height: 120px;
+}

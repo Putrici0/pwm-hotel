@@ -159,9 +159,27 @@
         "name": "Introduce tu nombre",
         "lastName": "Introduce tus apellidos",
         "email": "Introduce tu email",
-        "subject": "Motivo de la consulta",
+        "subject": "Selecciona una opción",
         "question": "Escribe aquí tu duda"
       },
+      "subjectOptions": [
+        {
+          "value": "reservas",
+          "text": "Informaciones sobre reservas"
+        },
+        {
+          "value": "actividades",
+          "text": "Informaciones sobre actividades"
+        },
+        {
+          "value": "restaurante",
+          "text": "Informaciones sobre restaurante"
+        },
+        {
+          "value": "otro",
+          "text": "Otro"
+        }
+      ],
       "privacyText": "Acepto la política de privacidad",
       "submitText": "Enviar consulta"
     },
