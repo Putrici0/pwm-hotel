@@ -145,7 +145,7 @@
     "commitment": {
       "title": "Compromiso de atención al huésped",
       "description": "Nuestro equipo de recepción y administración responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1068/1600/900\u0027) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/35.png) center/cover no-repeat"
     },
     "form": {
       "labels": {
