@@ -115,6 +115,7 @@ function renderRegisterPage(data) {
             inputs[4].setCustomValidity("");
         }
     }
+
     inputs[3].addEventListener("input", validarPasswords);
     inputs[4].addEventListener("input", validarPasswords);
 }

@@ -145,7 +145,7 @@ function renderAccountTable(tableData, users) {
 
     const safeReservations = reservations.length > 0
         ? reservations
-        : [{ id: "Sin reservas", checkin: "-", checkout: "-" }];
+        : [{id: "Sin reservas", checkin: "-", checkout: "-"}];
 
     safeReservations.forEach((reservation) => {
         const row = document.createElement("div");

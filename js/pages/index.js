@@ -115,7 +115,7 @@ function renderTextImageSection(sectionId, sectionData) {
 
         if (sectionData.imageLink) {
             imageEl.style.cursor = "pointer";
-            imageEl.onclick = function() {
+            imageEl.onclick = function () {
                 if (sectionData.imageLink.startsWith("http")) {
                     window.open(sectionData.imageLink, "_blank");
                 } else {
@@ -205,7 +205,7 @@ function renderGridSection(sectionId, sectionData) {
 
         if (itemData.imageLink) {
             itemEl.style.cursor = "pointer";
-            itemEl.onclick = function() {
+            itemEl.onclick = function () {
                 window.location.href = itemData.imageLink;
             };
         } else {

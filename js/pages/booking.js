@@ -281,10 +281,10 @@ function renderCheckoutForm(checkout) {
 }
 
 const availableRoomsMock = [
-    { id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/img/11.jpg' },
-    { id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/img/12.jpg' },
-    { id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/img/13.jpg' },
-    { id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/img/14.jpg' }
+    {id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/img/11.jpg'},
+    {id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/img/12.jpg'},
+    {id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/img/13.jpg'},
+    {id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/img/14.jpg'}
 ];
 
 let selectedRoomName = "";
@@ -330,7 +330,7 @@ function setupBookingFlow(checkout) {
 
         const filteredRooms = availableRoomsMock.filter(room => room.maxGuests >= requestedGuests);
 
-        if(filteredRooms.length === 0) {
+        if (filteredRooms.length === 0) {
             roomContainer.innerHTML = `<p style="color:white; text-align:center;">No hay habitaciones para ${requestedGuests} personas.</p>`;
         } else {
             filteredRooms.forEach(room => {
@@ -366,7 +366,7 @@ function setupBookingFlow(checkout) {
                     selectedRoomName = e.target.getAttribute('data-roomname');
 
                     updateSummaryDates();
-                    if(roomValue) roomValue.textContent = selectedRoomName;
+                    if (roomValue) roomValue.textContent = selectedRoomName;
 
                     if (formTitle) formTitle.style.display = "block";
                     if (bookingSummary) bookingSummary.style.display = "block";
@@ -374,7 +374,7 @@ function setupBookingFlow(checkout) {
                     successMessage.style.display = "none";
 
                     checkoutSection.style.display = "flex";
-                    checkoutSection.scrollIntoView({ behavior: "smooth" });
+                    checkoutSection.scrollIntoView({behavior: "smooth"});
                 });
             });
         }

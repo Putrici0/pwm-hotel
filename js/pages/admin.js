@@ -240,7 +240,7 @@ function renderAdminForms(addContainer, removeContainer, formsConfig, items, onC
                 return;
             }
 
-            items.push({ title, description });
+            items.push({title, description});
             addForm.reset();
             onChange();
         });

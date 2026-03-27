@@ -50,7 +50,7 @@ function loadLegacyScript(src) {
 
     script.onload = () => {
         if (document.readyState !== "loading") {
-            document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
+            document.dispatchEvent(new Event("DOMContentLoaded", {bubbles: true, cancelable: true}));
         }
     };
 

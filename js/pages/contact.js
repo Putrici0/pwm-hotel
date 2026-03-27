@@ -181,7 +181,7 @@ function renderContactForm(formData) {
         // poner required en todos
         inputs[0].required = true;
         inputs[1].required = true;
-        inputs[2].required= true;
+        inputs[2].required = true;
         inputs[3].required = true;
         inputs[4].required = true;
     }
