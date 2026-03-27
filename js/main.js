@@ -1,6 +1,6 @@
 let pwmMainBootstrapped = false;
 
-const LEGACY_PAGE_SCRIPTS = {
+const PAGE_SCRIPTS = {
     "activities.html": "../js/pages/activities.js",
     "booking.html": "../js/pages/booking.js",
     "change-password.html": "../js/pages/change-password.js",
@@ -34,16 +34,16 @@ function bootstrapMain() {
         return;
     }
 
-    const legacyScriptPath = LEGACY_PAGE_SCRIPTS[currentPage];
+    const pageScriptPath = PAGE_SCRIPTS[currentPage];
 
-    if (!legacyScriptPath) {
+    if (!pageScriptPath) {
         return;
     }
 
-    loadLegacyScript(legacyScriptPath);
+    loadPageScript(pageScriptPath);
 }
 
-function loadLegacyScript(src) {
+function loadPageScript(src) {
     const script = document.createElement("script");
     script.src = src;
     script.async = false;
@@ -55,7 +55,7 @@ function loadLegacyScript(src) {
     };
 
     script.onerror = () => {
-        console.error(`No se pudo cargar el script legacy: ${src}`);
+        console.error(`No se pudo cargar el script de pagina: ${src}`);
     };
 
     document.body.appendChild(script);

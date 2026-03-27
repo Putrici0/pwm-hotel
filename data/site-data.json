@@ -1,4 +1,4 @@
-{
+﻿{
   "index": {
     "intro": {
       "title": "Isla Dorada Hotel",
@@ -69,22 +69,22 @@
   "activities": {
     "intro": {
       "title": "Actividades y Experiencias",
-      "description": "Completa tu estancia con planes para todos los gustos: actividades culturales, bienestar y ocio dentro y fuera del hotel."
+      "description": "Completa tu estancia en Gran Canaria con planes para todos los gustos: actividades culturales, bienestar y ocio dentro y fuera del hotel."
     },
     "activities": [
       {
         "title": "Tour guiado por la ciudad",
-        "description": "Recorre los puntos mas emblematicos con un guia local y descubre la historia, cultura y rincones recomendados para sacar el maximo partido a tu viaje.",
+        "description": "Recorre los puntos más emblemáticos de Gran Canaria con un guía local y descubre su historia, cultura y rincones recomendados para sacar el máximo partido a tu viaje.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://images.interhome.group/travelguide/spain-gran-canaria-las-palmas.jpg\u0027) center/cover no-repeat"
       },
       {
         "title": "Yoga al amanecer",
-        "description": "Empieza el dia con una sesion de yoga en la playa para mejorar movilidad, respiracion y energia antes del desayuno.",
+        "description": "Empieza el día con una sesión de yoga en la playa para mejorar movilidad, respiración y energía antes del desayuno.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://img.freepik.com/fotos-premium/mujer-fitness-alto-contraste-haciendo-yoga-al-amanecer_767466-15728.jpg\u0027) center/cover no-repeat"
       },
       {
         "title": "Cata de vinos y productos locales",
-        "description": "Disfruta de una experiencia gastronomica guiada con seleccion de vinos regionales y degustacion de quesos, aceites y productos artesanales.",
+        "description": "Disfruta de una experiencia gastronómica guiada con selección de vinos regionales y degustación de quesos, aceites y productos artesanales.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://vinostresrios.com/wp-content/uploads/2023/11/cata-de-vinos-guia-9.jpg\u0027) center/cover no-repeat"
       }
     ]
@@ -92,15 +92,15 @@
   "booking": {
     "header": {
       "title": "Reserva tu estancia en Isla Dorada",
-      "description": "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinacion de confort, ubicacion y servicios.",
+      "description": "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinación de confort, ubicación y servicios.",
       "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/10.jpg) center/cover no-repeat"
     },
     "availability": {
       "title": "Sistema de disponibilidad de habitaciones",
       "checkinLabel": "Fecha de entrada",
       "checkoutLabel": "Fecha de salida",
-      "guestsLabel": "Huespedes",
-      "familySuiteLabel": "Incluir opcion de suite familiar",
+      "guestsLabel": "Huéspedes",
+      "familySuiteLabel": "Incluir opción de suite familiar",
       "submitText": "Comprobar disponibilidad",
       "defaultCheckin": "2026-04-15",
       "defaultCheckout": "2026-04-18",
@@ -113,8 +113,8 @@
       "summary": {
         "checkinLabel": "Check-in",
         "checkoutLabel": "Check-out",
-        "roomLabel": "Habitacion",
-        "defaultRoom": "Habitacion doble",
+        "roomLabel": "Habitación",
+        "defaultRoom": "Habitación doble",
         "familySuiteRoom": "Suite familiar"
       },
       "form": {
@@ -128,23 +128,23 @@
           "lastName": "Introduce tus apellidos",
           "email": "Introduce tu email"
         },
-        "privacyText": "Acepto la politica de privacidad",
+        "privacyText": "Acepto la política de privacidad",
         "submitText": "Reservar ahora"
       },
       "success": {
         "title": "Reserva confirmada",
-        "description": "Tu reserva se ha realizado con exito. Hemos enviado la confirmacion a tu correo."
+        "description": "Tu reserva se ha realizado con éxito. Hemos enviado la confirmación a tu correo."
       }
     }
   },
   "contact": {
     "header": {
       "title": "Contacta con Isla Dorada Hotel",
-      "subtitle": "Estamos aqui para resolver tus dudas antes, durante y despues de tu estancia."
+      "subtitle": "Estamos aquí para resolver tus dudas antes, durante y después de tu estancia."
     },
     "commitment": {
-      "title": "Compromiso de atencion al huesped",
-      "description": "Nuestro equipo de recepcion y administracion responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
+      "title": "Compromiso de atención al huésped",
+      "description": "Nuestro equipo de recepción y administración responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
       "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1068/1600/900\u0027) center/cover no-repeat"
     },
     "form": {
@@ -160,9 +160,9 @@
         "lastName": "Introduce tus apellidos",
         "email": "Introduce tu email",
         "subject": "Motivo de la consulta",
-        "question": "Escribe aqui tu duda"
+        "question": "Escribe aquí tu duda"
       },
-      "privacyText": "Acepto la politica de privacidad",
+      "privacyText": "Acepto la política de privacidad",
       "submitText": "Enviar consulta"
     },
     "faq": {
@@ -178,15 +178,15 @@
         },
         {
           "question": "¿Se puede cancelar una reserva?",
-          "answer": "Si, depende de la tarifa seleccionada. Consulta las condiciones en el momento de reservar."
+          "answer": "Sí, depende de la tarifa seleccionada. Consulta las condiciones en el momento de reservar."
         },
         {
           "question": "¿El hotel ofrece traslado al aeropuerto?",
-          "answer": "Disponemos de traslado bajo peticion previa con coste adicional."
+          "answer": "Disponemos de traslado bajo petición previa con coste adicional."
         },
         {
           "question": "¿Hay opciones para dietas especiales en el restaurante?",
-          "answer": "Si, ofrecemos opciones vegetarianas, veganas y sin gluten."
+          "answer": "Sí, ofrecemos opciones vegetarianas, veganas y sin gluten."
         }
       ]
     }
@@ -220,10 +220,10 @@
         "name": "Introduce tu nombre",
         "lastName": "Introduce tus apellidos",
         "email": "Introduce tu email",
-        "password": "Crea una contraseñaa",
-        "confirmPassword": "Repite tu contraseñaa"
+        "password": "Crea una contraseña",
+        "confirmPassword": "Repite tu contraseña"
       },
-      "termsText": "Acepto los terminos y condiciones",
+      "termsText": "Acepto los términos y condiciones",
       "submitText": "Crear cuenta"
     }
   },
@@ -350,53 +350,53 @@
   "services": {
     "intro": {
       "title": "Servicios del Hotel",
-      "description": "Disfruta de una experiencia completa con zonas de bienestar, propuesta gastronómica y actividades pensadas para todos los perfiles de viajero."
+      "description": "Disfruta de una experiencia completa en Gran Canaria con zonas de bienestar, propuesta gastronómica y actividades pensadas para todos los perfiles de viajero."
     },
     "services": [
       {
         "title": "Instalaciones Wellness",
-        "description": "Accede a nuestro espacio wellness con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/433/1600/900') center/cover no-repeat"
+        "description": "Accede a nuestro espacio wellness en Gran Canaria con gimnasio, piscina y spa para mantener tu rutina de bienestar y desconectar durante toda la estancia.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/3823039/pexels-photo-3823039.jpeg') center/cover no-repeat"
       },
       {
         "title": "Restauración",
-        "description": "Saborea una oferta gastronómica variada con menú diario, cocina local y opciones internacionales preparadas con producto fresco.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1080/1600/900') center/cover no-repeat"
+        "description": "Saborea una oferta gastronómica variada con menú diario, cocina canaria y opciones internacionales preparadas con producto fresco.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg') center/cover no-repeat"
       },
       {
         "title": "Actividades",
-        "description": "Completa tu viaje con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://picsum.photos/id/1018/1600/900') center/cover no-repeat"
+        "description": "Completa tu viaje en Gran Canaria con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('https://images.pexels.com/photos/1268855/pexels-photo-1268855.jpeg') center/cover no-repeat"
       }
     ]
   },
     "wellness-facilities":  {
                                 "intro":  {
                                               "title":  "Wellness \u0026 Relax",
-                                              "description":  "Descubre nuestras instalaciones de bienestar para mantenerte activo y desconectar durante tu estancia: gimnasio, piscina y spa en un mismo espacio."
+                                              "description":  "Descubre nuestras instalaciones de bienestar en Gran Canaria para mantenerte activo y desconectar durante tu estancia: gimnasio, piscina y spa en un mismo espacio."
                                           },
                                 "facilities":  [
                                                    {
                                                        "title":  "Gimnasio",
                                                        "description":  "Espacio equipado con máquinas de cardio y fuerza, zona funcional y material de entrenamiento libre para mantener tu rutina durante la estancia.",
-                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/1004/1600/900\u0027) center/cover no-repeat"
+                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg\u0027) center/cover no-repeat"
                                                    },
                                                    {
                                                        "title":  "Piscina",
                                                        "description":  "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
-                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://picsum.photos/id/101/1600/900\u0027) center/cover no-repeat"
+                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(\u0027https://images.pexels.com/photos/261102/pexels-photo-261102.jpeg\u0027) center/cover no-repeat"
                                                    },
                                                    {
                                                        "title":  "Spa",
                                                        "description":  "Circuito de bienestar con sauna, baño de vapor y cabinas de masaje para una experiencia de desconexión completa en un ambiente tranquilo.",
-                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://picsum.photos/id/119/1600/900\u0027) center/cover no-repeat"
+                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(\u0027https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg\u0027) center/cover no-repeat"
                                                    }
                                                ]
                             },
     "account":  {
                     "title":  {
                                   "title":  "Tu cuenta",
-                                  "description":  "Aqui puedes ver tus reservas y actualizar tus datos."
+                                  "description":  "Aquí puedes ver tus reservas y actualizar tus datos."
                               },
                     "table":  {
                                   "title":  "Reservas del usuario",
@@ -410,7 +410,7 @@
                                     "buttons":  [
                                                     "Cambiar nombre",
                                                     "Cambiar correo",
-                                                    "Cambiar contrasena"
+                                                    "Cambiar contraseña"
                                                 ]
                                 },
                     "users":  [
@@ -443,24 +443,24 @@
                 },
     "admin":  {
                   "title":  {
-                                "title":  "Panel de administracion",
-                                "description":  "Gestiona habitaciones y actividades desde un unico lugar."
+                                "title":  "Panel de administración",
+                                "description":  "Gestiona habitaciones y actividades desde un único lugar."
                             },
                   "rooms":  {
                                 "tableTitle":  "Habitaciones disponibles",
                                 "headers":  [
                                                 "Nombre",
-                                                "Descripcion",
-                                                "Accion"
+                                                "Descripción",
+                                                "Acción"
                                             ],
                                 "forms":  {
-                                              "addTitle":  "Anadir habitacion",
-                                              "removeTitle":  "Quitar habitacion",
+                                              "addTitle":  "Añadir habitación",
+                                              "removeTitle":  "Quitar habitación",
                                               "nameLabel":  "Nombre",
-                                              "descriptionLabel":  "Descripcion",
-                                              "namePlaceholder":  "Nombre de la habitacion",
-                                              "descriptionPlaceholder":  "Descripcion de la habitacion",
-                                              "addButtonText":  "Anadir",
+                                              "descriptionLabel":  "Descripción",
+                                              "namePlaceholder":  "Nombre de la habitación",
+                                              "descriptionPlaceholder":  "Descripción de la habitación",
+                                              "addButtonText":  "Añadir",
                                               "removeButtonText":  "Quitar seleccionada"
                                           }
                             },
@@ -468,17 +468,17 @@
                                      "tableTitle":  "Actividades disponibles",
                                      "headers":  [
                                                      "Nombre",
-                                                     "Descripcion",
-                                                     "Accion"
+                                                     "Descripción",
+                                                     "Acción"
                                                  ],
                                      "forms":  {
-                                                   "addTitle":  "Anadir actividad",
+                                                   "addTitle":  "Añadir actividad",
                                                    "removeTitle":  "Quitar actividad",
                                                    "nameLabel":  "Nombre",
-                                                   "descriptionLabel":  "Descripcion",
+                                                   "descriptionLabel":  "Descripción",
                                                    "namePlaceholder":  "Nombre de la actividad",
-                                                   "descriptionPlaceholder":  "Descripcion de la actividad",
-                                                   "addButtonText":  "Anadir",
+                                                   "descriptionPlaceholder":  "Descripción de la actividad",
+                                                   "addButtonText":  "Añadir",
                                                    "removeButtonText":  "Quitar seleccionada"
                                                }
                                  }
@@ -523,4 +523,5 @@
     ]
   }
 }
+
 
