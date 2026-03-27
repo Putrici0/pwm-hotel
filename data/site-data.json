@@ -485,14 +485,14 @@
               },
     "users":  [
                   {
-                      "email":  "user@ulpgc.es",
+                      "email":  "admin@ulpgc.es",
                       "password":  "pruebaPWM26?",
                       "role":  "admin"
                   },
                   {
-                      "email":  "123@123.123",
-                      "password":  "123",
-                      "role":  "admin"
+                      "email":  "user@ulpgc.es",
+                      "password":  "pruebaPWM26?",
+                      "role":  "user"
                   }
               ],
   "legal": {

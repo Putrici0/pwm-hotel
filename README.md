@@ -1,118 +1,129 @@
-# Proyecto 'Isla Dorada' Sprint 2
-### Grupo 44.4 de la asignatura 'Programación Web y Móvil' de la Universidad de Las Palmas de Gran Canaria en el grado de Ingeniería Informática
-Integrantes: Fedele Zuccaro ([fedele24](https://github.com/fedele24)), Joan Martinez Perdomo ([Doffensmirthz](https://github.com/Doffensmirthz)), Pablo Llopis Parrilla ([Putrici0](https://github.com/Putrici0))
+# Proyecto Isla Dorada - SPRINT 2
 
+## Nombre del proyecto y componentes del grupo
+- Proyecto: **Isla Dorada Hotel**
+- Grupo: **44.4** (Programación Web y Móvil, ULPGC)
+- Integrantes:
+  - Fedele Zuccaro ([fedele24](https://github.com/fedele24))
+  - Joan Martinez Perdomo ([Doffensmirthz](https://github.com/Doffensmirthz))
+  - Pablo Llopis Parrilla ([Putrici0](https://github.com/Putrici0))
 
-## 1. Descripción del proyecto
-Desarrollar una plataforma web y móvil para 'Isla Dorada', especializada en la reserva directa de habitaciones del hotel, eliminando intermediarios para ofrecer a los huéspedes una experiencia fluida, rápida y visualmente impactante
+## Ubicación del PDFs de mockups
+- Carpeta general de mockups: [mockups](./mockups)
+- Mockups PDF Desktop: [mockups/desktop](./mockups/desktop)
+- Mockups PDF Tablet: [mockups/tablet](./mockups/tablet)
+- Mockups PDF Phone: [mockups/phone](./mockups/phone)
 
-## 2. Definición y especificación de los requisitos funcionales
-### 2.1 Requisitos funcionales del usuario
-#### A. Módulo de Consulta y Catálogo (Público)
+## Ubicación del contenido JSON
+- JSON local usado por las páginas: [data/site-data.json](./data/site-data.json)
+- Tipo de fuente: **Local** 
 
-RFU1: El sistema permitirá a los usuarios consultar el catálogo completo de tipos de habitaciones del hotel (descripciones, fotos y características).
+## Listado de páginas HTML del proyecto
+Página de inicio de la aplicación web: [pages/index.html](./pages/index.html)
 
-RFU2: El sistema permitirá a los usuarios buscar y visualizar las habitaciones libres filtrando por fechas específicas y número de huéspedes.
+Nota: en todas las páginas se realiza carga de templates y de contenido JSON.
 
-RFU3: El sistema mostrará la ubicación geográfica del hotel y datos de contacto.
+| Página HTML | Mockup PDF (directo)                                                                                                                                                             | Responsive implementado | Templates usados | JSON usado |
+|---|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---|---|---|
+| [pages/index.html](./pages/index.html) | [desktop](./mockups/desktop/01.%20home.pdf) \| [tablet](./mockups/tablet/01.%20home.pdf) \| [phone](./mockups/phone/01.%20home.pdf)                                              | Header responsive con menú hamburguesa (`<=900px`), bloques text-image apilados (`<=900px`), grids de imágenes `3->2->1` columnas (`<=900px` y `<=576px`). | [templates/header.html](./templates/header.html), [templates/text-image-vertical.html](./templates/text-image-vertical.html), [templates/text-image-right.html](./templates/text-image-right.html), [templates/image-grid.html](./templates/image-grid.html), [templates/footer.html](./templates/footer.html) | [js/pages/index.js](./js/pages/index.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/booking.html](./pages/booking.html) | [desktop](./mockups/desktop/02.%20booking.pdf) \| [tablet](./mockups/tablet/02.%20booking.pdf) \| [phone](./mockups/phone/02.%20booking.pdf)                                     | Widget de disponibilidad en grid responsive (`5->2->1`), checkout adaptado a móvil (`<=900px` y `<=576px`), navegación móvil del header (`<=900px`). | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/booking-widget-section.html](./templates/booking-widget-section.html), [templates/form-booking.html](./templates/form-booking.html), [templates/footer.html](./templates/footer.html) | [js/pages/booking.js](./js/pages/booking.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/rooms.html](./pages/rooms.html) | [desktop](./mockups/desktop/03.%20rooms.pdf) \| [tablet](./mockups/tablet/03.%20rooms.pdf) \| [phone](./mockups/phone/03.%20rooms.pdf)                                           | Secciones text-image alternas que se apilan en móvil/tablet (`<=900px`), ajustes de tipografía y padding (`<=576px`). | [templates/header.html](./templates/header.html), [templates/text-image-right.html](./templates/text-image-right.html), [templates/text-image-left.html](./templates/text-image-left.html), [templates/footer.html](./templates/footer.html) | [js/pages/rooms.js](./js/pages/rooms.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/services.html](./pages/services.html) | [desktop](./mockups/desktop/04.%20services.pdf) \| [tablet](./mockups/tablet/04.%20services.pdf) \| [phone](./mockups/phone/04.%20services.pdf)                                  | Título/subtítulo responsive (`<=900px`/`<=576px`), bloques text-image apilados (`<=900px`), menú móvil de header (`<=900px`). | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/text-image-right.html](./templates/text-image-right.html), [templates/footer.html](./templates/footer.html) | [js/pages/services.js](./js/pages/services.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/restaurant.html](./pages/restaurant.html) | [desktop](./mockups/desktop/05.%20restaurant.pdf) \| [tablet](./mockups/tablet/05.%20restaurant.pdf) \| [phone](./mockups/phone/05.%20restaurant.pdf)                            | Tabla de menú con layout específico para tablet (`768-1023px`) y móvil (`<=767px`), textos/filas reordenados en pantallas pequeñas. | [templates/header.html](./templates/header.html), [templates/text-image-vertical.html](./templates/text-image-vertical.html), [templates/table-menu.html](./templates/table-menu.html), [templates/footer.html](./templates/footer.html) | [js/pages/restaurant.js](./js/pages/restaurant.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/wellness-facilities.html](./pages/wellness-facilities.html) | [desktop](./mockups/desktop/06.%20wellness-facilities.pdf) \| [tablet](./mockups/tablet/06.%20wellness-facilities.pdf) \| [phone](./mockups/phone/06.%20wellness-facilities.pdf) | Título/subtítulo responsive y secciones text-image en columna en móvil (`<=900px`), ajuste adicional en móvil pequeño (`<=576px`). | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/text-image-left.html](./templates/text-image-left.html), [templates/footer.html](./templates/footer.html) | [js/pages/wellness-facilities.js](./js/pages/wellness-facilities.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/activities.html](./pages/activities.html) | [desktop](./mockups/desktop/07.%20activities.pdf) \| [tablet](./mockups/tablet/07.%20activities.pdf) \| [phone](./mockups/phone/07.%20activities.pdf)                            | Cards text-image adaptadas a móvil/tablet (`<=900px`), navegación móvil en header (`<=900px`). | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/text-image-right.html](./templates/text-image-right.html), [templates/footer.html](./templates/footer.html) | [js/pages/activities.js](./js/pages/activities.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/contact.html](./pages/contact.html) | [desktop](./mockups/desktop/08.%20contact.pdf) \| [tablet](./mockups/tablet/08.%20contact.pdf) \| [phone](./mockups/phone/08.%20contact.pdf)                                     | Formulario responsive (`auth.css`), tabla FAQ responsive (`tables.css`) y bloque text-image responsive (`<=900px`/`<=576px`). | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/text-image-right.html](./templates/text-image-right.html), [templates/auth-register.html](./templates/auth-register.html), [templates/table.html](./templates/table.html), [templates/footer.html](./templates/footer.html) | [js/pages/contact.js](./js/pages/contact.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/account.html](./pages/account.html) | [desktop](./mockups/desktop/09.%20account.pdf) \| [tablet](./mockups/tablet/09.%20account.pdf) \| [phone](./mockups/phone/09.%20account.pdf)                                     | Tarjetas de cuenta en grid responsive (`3->2->1`), ajuste de paddings en `<=900px` y `<=576px`. | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/table-card.html](./templates/table-card.html), [templates/footer.html](./templates/footer.html) | [js/pages/account.js](./js/pages/account.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/login.html](./pages/login.html) | [desktop](./mockups/desktop/10.%20login.pdf) \| [tablet](./mockups/tablet/10.%20login.pdf) \| [phone](./mockups/phone/10.%20login.pdf)                                           | Formulario de autenticación responsive (`<=900px` y `<=576px`) y navegación móvil del header. | [templates/header.html](./templates/header.html), [templates/auth-login.html](./templates/auth-login.html), [templates/footer.html](./templates/footer.html) | [js/pages/login.js](./js/pages/login.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/register.html](./pages/register.html) | [desktop](./mockups/desktop/11.%20register.pdf) \| [tablet](./mockups/tablet/11.%20register.pdf) \| [phone](./mockups/phone/11.%20register.pdf)                                  | Formulario responsive (`auth.css`) con ajuste de anchuras y espaciado para tablet y móvil. | [templates/header.html](./templates/header.html), [templates/auth-register.html](./templates/auth-register.html), [templates/footer.html](./templates/footer.html) | [js/pages/register.js](./js/pages/register.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/change-password.html](./pages/change-password.html) | [desktop](./mockups/desktop/12.%20change-password.pdf) \| [tablet](./mockups/tablet/12.%20change-password.pdf) \| [phone](./mockups/phone/12.%20change-password.pdf)             | Flujo de recuperación en tarjeta responsive (`auth.css`), comportamiento correcto en móvil (`<=576px`). | [templates/header.html](./templates/header.html), [templates/forget-password.html](./templates/forget-password.html), [templates/footer.html](./templates/footer.html) | [js/pages/change-password.js](./js/pages/change-password.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/admin.html](./pages/admin.html) | [desktop](./mockups/desktop/13.%20admin.pdf) \| [tablet](./mockups/tablet/13.%20admin.pdf) \| [phone](./mockups/phone/13.%20admin.pdf)                                           | Tablas y formularios de gestión adaptados a tablet/móvil (`tables.css` + `form_booking.css`), menú responsive global. | [templates/header.html](./templates/header.html), [templates/title-subtitle.html](./templates/title-subtitle.html), [templates/table.html](./templates/table.html), [templates/footer.html](./templates/footer.html) | [js/pages/admin.js](./js/pages/admin.js) -> [data/site-data.json](./data/site-data.json) |
+| [pages/legal.html](./pages/legal.html) | Sin mockup específico en `mockups/` al ser página con solo texto                                                                                                                 | Página legal responsive (`legal.css` + header/footer global responsive). | [templates/header.html](./templates/header.html), [templates/footer.html](./templates/footer.html) | [js/pages/legal.js](./js/pages/legal.js) -> [data/site-data.json](./data/site-data.json) |
 
-RFU4: El sistema mostrará la información sobre el impacto ambiental (huella de carbono).
+## Validaciones HTML en páginas con formulario
 
-RFU5: El sistema ofrecerá una página de contacto de asistencia al cliente y una sección de preguntas frecuentes (FAQ).
+### 1) Login
+- Página: [pages/login.html](./pages/login.html)
+- Template: [templates/auth-login.html](./templates/auth-login.html)
+- Validaciones HTML:
+  - `input[type="email"]` obligatorio (`required`)
+  - `input[type="password"]` obligatorio (`required`)
 
-RFU6: El sistema mostrará la oferta detallada del hotel organizada por categorías:
-•	Restauración: Menú del día y platos destacados.
-•	Bienestar: Información sobre gimnasio, spa y piscinas.
-•	Actividades: Información sobre excursiones y espectáculos.
+### 2) Register
+- Página: [pages/register.html](./pages/register.html)
+- Template: [templates/auth-register.html](./templates/auth-register.html)
+- Validaciones HTML:
+  - Nombre obligatorio (`required`)
+  - Apellidos obligatorio (`required`)
+  - Email con `type="email"` y `required`
+  - Contraseña obligatoria (`required`)
+  - Confirmación de contraseña obligatoria (`required`)
+  - Checkbox de términos obligatorio (`required`)
+- Validación adicional en JS:
+  - Coincidencia de contraseñas
+  - Regla de contraseña: mínimo 6 caracteres, una mayúscula, un número y un carácter especial (`?`, `!`, `*`)
 
-#### B. Módulo de Gestión de Usuarios y Cuentas
+### 3) Change Password
+- Página: [pages/change-password.html](./pages/change-password.html)
+- Template: [templates/forget-password.html](./templates/forget-password.html)
+- Validaciones HTML:
+  - Email con `type="email"` y `required`
+  - Código: `required`, `maxlength="6"`, `pattern="\d*"`
+  - Nueva contraseña obligatoria (`required`)
+  - Confirmación obligatoria (`required`)
+- Validación adicional en JS:
+  - Solo dígitos en el código (máx. 6)
+  - Código de prueba: `123456`
+  - Coincidencia y fortaleza de contraseña (misma regla que registro)
 
-RFU7: Los usuarios no registrados podrán crear una cuenta aportando un identificador y una clave.
+### 4) Booking
+- Página: [pages/booking.html](./pages/booking.html)
+- Templates: [templates/booking-widget-section.html](./templates/booking-widget-section.html), [templates/form-booking.html](./templates/form-booking.html)
+- Validaciones HTML:
+  - Check-in obligatorio (`type="date"`, `required`)
+  - Check-out obligatorio (`type="date"`, `required`)
+  - Huéspedes obligatorio (`type="number"`, `required`, `min`, `max`)
+  - Formulario final: nombre obligatorio, apellidos obligatorio, email obligatorio (`type="email"`)
+  - Checkbox de privacidad obligatorio (`required`)
 
-RFU8: Los usuarios registrados podrán acceder a un panel personal para consultar sus reservas y acceder a descuentos exclusivos.
+### 5) Contact
+- Página: [pages/contact.html](./pages/contact.html)
+- Template: [templates/auth-register.html](./templates/auth-register.html) (reutilizado)
+- Validaciones HTML/JS:
+  - Nombre, apellidos, email, asunto y mensaje obligatorios (`required`)
+  - Email con `type="email"`
+  - Checkbox de privacidad obligatorio (`required`)
 
-RFU9: Los usuarios registrados podrán modificar sus datos de perfil (excepto los datos identificatorios críticos).
+### 6) Admin
+- Página: [pages/admin.html](./pages/admin.html)
+- Formulario generado por JS: [js/pages/admin.js](./js/pages/admin.js)
+- Validaciones HTML:
+  - Alta de elemento: nombre y descripción obligatorios (`required`)
+  - Baja por selector (`select`) con comprobación de índice válido en JS
 
-RFU10: El sistema permitirá solicitar el cambio de contraseña en caso de olvido.
+## Usuario y contraseña de prueba
+Credenciales definidas en [data/site-data.json](./data/site-data.json):
 
+- Usuario admin: `admin@ulpgc.es` / `pruebaPWM26?`
+- Usuario normal (`user`): `user@ulpgc.es` / `pruebaPWM26?`
 
-#### C. Módulo de Reservas y Pagos
-RFU11: Los usuarios (registrados o invitados) podrán reservar una o varias habitaciones disponibles.
+## Roles de usuario y permisos
+El proyecto maneja dos roles de usuario:
 
-RFU12: El proceso de reserva incluirá una pasarela de pago externa al sitio web para completar la transacción.
+- `admin`
+- `user`
 
-### 2.2 Requisitos funcionales del administrador.
+### Accesos por rol
+- `admin`:
+  - Puede iniciar sesión.
+  - Puede acceder al panel [pages/admin.html](./pages/admin.html).
+  - En el header se muestran opciones `.admin-only`.
+- `user`:
+  - Puede iniciar sesión.
+  - Puede acceder a su cuenta [pages/account.html](./pages/account.html).
+  - No puede acceder al panel [pages/admin.html](./pages/admin.html) (redirección a login).
 
-RFA1: El administrador podrá crear, consultar, modificar y eliminar las habitaciones.
-
-RFA2: El administrador podrá crear, consultar, modificar y eliminar los servicios del hotel.
-
-RFA3: El administrador podrá crear, consultar, modificar y eliminar las reservas.
-
-RFA4: El sistema requerirá autenticación para el acceso al panel de administración.
-
-## 3. Mockups y StoryBoard
-
-Las [páginas](./pages) tienen el mismo nombre que el [mockup](./mockups) que implementan.
-
-## Estructuración del código
-El código se divide en las carpetas [pages](./pages) (paginas finales usando el xlu para los templates), [css](./css) (de momento lo tenemos todo compactado en un único css) y [js](./js) que en este sprint1 solo contiene el código xlu proporcionado por los profesores.
-En la carpeta [examples](./examples) se encuentra el diseño de cada template que se puede abrir en el navegador para demostrar cual es nuestra intención con los templates. Los separamos de pages por el cambio que había que hacer con respecto al xlu, es decir los examples tienen, entre otros, <body> mientras que los templates no, de ahí que se puedan visualizar.
-En cuanto a **path traversal** usamos el relativo, es decir como se insistió en clase de teoría usamos la ruta relativa y no la absoluta (../ ./).
-
-## Mockups
-Nosotros guardamos los mockups diseñados en figma individualmente en formato pdf en [carpeta mockups](./mockups)
-
-## Templates
-Tenemos los templates html en la [carpeta templates](./templates).
-Nosotros identificamos que para cada uno de los siguientes mockups los templates asociados son:
-<br>
-<sub>Los siguientes enlaces te llevan al pdf del mockup</sub>
-1. [Home](./mockups/01.%20home.pdf), que se identifica con el index.html, la página principal.
-   Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
-2. [Booking](./mockups/02.%20booking.pdf)
-   Usa los templates: header.html, title-subtitle.html, table-availability.html, form.html y footer.html
-3. [Rooms](./mockups/03.%20rooms.pdf)
-   Usa los templates: header.html, text-image-right.html, text-image-left.html y footer.html
-4. [Services](./mockups/04.%20services.pdf)
-   Usa los templates: header.html, title-subtitle.html, text-image-right.html y footer.html
-5. [Restaurant](./mockups/05.%20restaurant.pdf)
-   Usa los templates: header.html, text-image-vertical.html, text-image-right.html, image-grid.html y footer.html
-6. [Wellness-facilities](./mockups/06.%20wellness-facilities.pdf)
-   Usa los templates: header.html, title-subtitle.html, text-image-left.html y footer.html
-7. [Activities](./mockups/07.%20activities.pdf)
-   Usa los templates: header.html, title-subtitle.html, text-image-right.html y footer.html
-8. [Contact](./mockups/08.%20contact.pdf)
-   Usa los templates: header.html, title-subtitle.html, text-image-right.html, auth-register.html, table.html y footer.html   
-9. [Account](./mockups/09.%20account.pdf)
-   Usa los templates: header.html, title-subtitle.html, table-card.html y footer.html
-10. [Login](./mockups/10.%20login.pdf)
-   Usa los templates: header.html, auth-register.html y footer.html
-11. [Register](./mockups/11.%20register.pdf)
-   Usa los templates: header.html, auth-register.html y footer.html
-12. [Change-password](./mockups/12.%20change-password.pdf)
-   Usa los templates: header.html, forget-password.html y footer.html
-13. [Admin](./mockups/13.%20admin.pdf)
-   Usa los templates: header.html, title-subtitle.html, table.html, form.html y footer.html
-
-## Navegabilidad de la página web
-Nosotros usamos una _navbar_ que de momento está con _Lorem Ipsum_ pero que durante la presentación hay una diapositiva explicando que iría en cada botón y de ahí se entiende la navegabilidad. También hay enlaces entre algunas páginas con, por ejemplo imagenes. 
-
-# Entendimiento del story-board
-Desde cualquier página a través del header se podrá acceder en este orden según la _navbar_:
-<br>
-<sub> Los siguientes enlaces llevan al html de cada una de las páginas </sub>
-1. [Home](./pages/index.html)  
-2. [Bookings](./pages/bookings.html)
-3. [Rooms](./pages/rooms.html)  
-4. [Services](./pages/services.html) Que si no se hace click despliega las siguientes opciones
-   - [Restaurant](./pages/restaurant.html)  
-   - [Wellness Facilities](./pages/wellness-facilities.html)  
-   - [Activities](./pages/activities.html)  
-5. [Contact](./pages/contact.html)  
-6. [Account](./pages/account.html) Que si no se hace click despliega las siguientes opciones
-   - [Login](./pages/login.html)  
-   - [Register](./pages/register.html)  
-   - [Recover Password](./pages/change-password.html)
-
-**Siguiendo las indicaciones sobre dos tipos de cuentas (privilegiadas y no privilegiadas)** hemos decidido que si un usuario registrado accede a su cuenta se redirigirá hacia [admin.html](./pages/admin.html)
+### Cómo probar cada rol
+- Prueba rol `admin`: iniciar sesión con `admin@ulpgc.es`.
+- Prueba rol `user`: iniciar sesión con `user@ulpgc.es`.
+- Alternativa para rol `user`: crear una cuenta nueva desde [pages/register.html](./pages/register.html) (se guarda en `localStorage` con rol `user`).
