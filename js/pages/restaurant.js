@@ -191,6 +191,15 @@ function renderCategoryTable(sectionId, categoryData) {
 
         cells[0].textContent = item.name || "";
         cells[1].textContent = item.price || "";
+
+        if (cells[2] && item.imageGradient) {
+            const imagePlaceholder = cells[2].querySelector(".white-placeholder");
+            if (imagePlaceholder) {
+                imagePlaceholder.style.background = item.imageGradient;
+                imagePlaceholder.style.border = "none";
+            }
+        }
     });
 }
+
 
