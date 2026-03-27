@@ -104,9 +104,7 @@ function renderLoginPage(data) {
             link.href = data.form.forgotPasswordHref;
         }
     }
-
 }
-
 
 window.addEventListener('pageshow', (e) => {
     if (e.persisted) {
@@ -136,6 +134,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const email = document.getElementById('login-email').value;
                 const password = passwordInput.value;
+
+                // --- NUEVA LÓGICA: COMPROBACIÓN DE ADMIN HARDCODEADO ---
+                if (email === 'admin@ulpgc.es' && password === 'pruebaPWM26?') {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loggedUserEmail', email);
+                    localStorage.setItem('userRole', 'admin');
+
+                    // Asegúrate de que este sea el nombre correcto de tu página de admin
+                    window.location.href = 'admin.html';
+                    return; // Salimos de la función aquí para no hacer el fetch
+                }
+                // --------------------------------------------------------
+
+                // Lógica original para usuarios normales
                 const user = await authenticateFromJson(email, password);
 
                 if (user) {
