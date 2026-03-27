@@ -1,43 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin</title>
+    <title>Admin Dashboard</title>
 
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/title-subtitle.css">
-    <link rel="stylesheet" href="../css/tables.css">
-    <link rel="stylesheet" href="../css/form_booking.css">
+    <link rel="stylesheet" href="../css/admin-panel.css">
+
     <script src="../js/shared/include-file.js"></script>
 </head>
 <body>
 
-    <header class="header" data-include-file="../templates/header.html"></header>
+<header class="header" data-include-file="../templates/header.html"></header>
 
-    <main>
+<main>
+    <div id="admin-title" class="admin-header-section"></div>
 
-        <div id="admin-title" data-include-file="../templates/title-subtitle.html"></div>
+    <div id="admin-dashboard" class="admin-dashboard-container">
+        <p>Cargando panel de administración...</p>
+    </div>
+</main>
 
-        <div id="admin-table-1" data-include-file="../templates/table.html"></div>
+<footer class="footer" data-include-file="../templates/footer.html"></footer>
 
-        <div id="admin-forms-1" class="admin-forms">
-            <div id="admin-room-form-add"></div>
-            <div id="admin-room-form-remove"></div>
-        </div>
-
-        <div id="admin-table-2" data-include-file="../templates/table.html"></div>
-
-        <div id="admin-forms-2" class="admin-forms">
-            <div id="admin-activity-form-add"></div>
-            <div id="admin-activity-form-remove"></div>
-        </div>
-
-    </main>
-
-    <footer class="footer" data-include-file="../templates/footer.html"></footer>
-
-    <script src="../js/main.js"></script>
+<script src="../js/pages/admin.js"></script>
+<script src="../js/main.js"></script>
 
 </body>
 </html>

@@ -1,290 +1,213 @@
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", initAdmin);
 
-function init() {
-    waitForAdminTemplates(async () => {
-        try {
-            const [adminConfig, roomsData, activitiesData] = await Promise.all([
-                loadJson("admin"),
-                loadJson("rooms"),
-                loadJson("activities")
-            ]);
+async function initAdmin() {
+    try {
+        const response = await fetch("../data/site-data.json");
+        const data = await response.json();
+        const adminConfig = data.admin;
+        const initialData = data.initialData;
 
-            renderAdminTitle(adminConfig.title);
-            initAdminBlock({
-                tableContainerId: "admin-table-1",
-                addFormContainerId: "admin-room-form-add",
-                removeFormContainerId: "admin-room-form-remove",
-                tableConfig: adminConfig.rooms,
-                items: Array.isArray(roomsData.rooms) ? roomsData.rooms : []
-            });
-            initAdminBlock({
-                tableContainerId: "admin-table-2",
-                addFormContainerId: "admin-activity-form-add",
-                removeFormContainerId: "admin-activity-form-remove",
-                tableConfig: adminConfig.activities,
-                items: Array.isArray(activitiesData.activities) ? activitiesData.activities : []
-            });
-        } catch (error) {
-            console.error("No se pudo inicializar admin:", error);
-        }
-    });
-}
-
-function loadJson(sectionKey) {
-    return fetch("../data/site-data.json").then((response) => {
-        if (!response.ok) {
-            throw new Error("No se pudo cargar site-data.json");
-        }
-        return response.json();
-    }).then((data) => {
-        return data[sectionKey] || data;
-    });
-}
-
-function waitForAdminTemplates(callback) {
-    let tries = 0;
-    const maxTries = 120;
-
-    const timer = setInterval(() => {
-        tries += 1;
-
-        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
-        const titleReady = isAdminTitleReady();
-        const table1Ready = isTableReady("admin-table-1");
-        const table2Ready = isTableReady("admin-table-2");
-        const formsReady = isFormsReady();
-
-        if (pendingIncludes === 0 && titleReady && table1Ready && table2Ready && formsReady) {
-            clearInterval(timer);
-            callback();
+        if (!localStorage.getItem("hotelAdminData")) {
+            localStorage.setItem("hotelAdminData", JSON.stringify(initialData));
         }
 
-        if (tries >= maxTries) {
-            clearInterval(timer);
-            console.error("No se pudieron cargar las secciones de admin.");
-        }
-    }, 50);
+        renderAdminTitle(adminConfig.title);
+        renderDashboard(adminConfig.sections);
+
+    } catch (error) {
+        console.error("Error al inicializar admin:", error);
+        document.getElementById("admin-dashboard").innerHTML = "<p>Error al cargar los datos.</p>";
+    }
 }
 
-function isAdminTitleReady() {
-    const section = document.getElementById("admin-title");
-    return Boolean(section && section.querySelector("h1") && section.querySelector("p"));
+function getAdminData() {
+    return JSON.parse(localStorage.getItem("hotelAdminData"));
 }
 
-function isTableReady(sectionId) {
-    const section = document.getElementById(sectionId);
-    return Boolean(
-        section &&
-        section.querySelector(".table-title") &&
-        section.querySelector(".table thead tr") &&
-        section.querySelector(".table tbody")
-    );
-}
-
-function isFormsReady() {
-    return Boolean(
-        document.getElementById("admin-room-form-add") &&
-        document.getElementById("admin-room-form-remove") &&
-        document.getElementById("admin-activity-form-add") &&
-        document.getElementById("admin-activity-form-remove")
-    );
+function saveAdminData(data) {
+    localStorage.setItem("hotelAdminData", JSON.stringify(data));
 }
 
 function renderAdminTitle(titleData) {
-    if (!titleData) {
-        return;
-    }
-
-    const section = document.getElementById("admin-title");
-    if (!section) {
-        return;
-    }
-
-    const titleEl = section.querySelector("h1");
-    const descriptionEl = section.querySelector("p");
-
-    if (titleEl && titleData.title) {
-        titleEl.textContent = titleData.title;
-    }
-
-    if (descriptionEl && titleData.description) {
-        descriptionEl.textContent = titleData.description;
-    }
-}
-
-function initAdminBlock(config) {
-    const tableContainer = document.getElementById(config.tableContainerId);
-    const addFormContainer = document.getElementById(config.addFormContainerId);
-    const removeFormContainer = document.getElementById(config.removeFormContainerId);
-
-    if (!tableContainer || !addFormContainer || !removeFormContainer || !config.tableConfig) {
-        return;
-    }
-
-    const state = {
-        items: config.items.map((item) => ({
-            title: item.title || "",
-            description: item.description || ""
-        }))
-    };
-
-    renderManagedTable(tableContainer, config.tableConfig, state.items, () => {
-        updateRemoveSelect(removeFormContainer, state.items);
-    });
-    renderAdminForms(addFormContainer, removeFormContainer, config.tableConfig.forms, state.items, () => {
-        renderManagedTable(tableContainer, config.tableConfig, state.items, () => {
-            updateRemoveSelect(removeFormContainer, state.items);
-        });
-        updateRemoveSelect(removeFormContainer, state.items);
-    });
-}
-
-function renderManagedTable(section, tableConfig, items, onItemsChanged) {
-    const titleEl = section.querySelector(".table-title");
-    const headerRow = section.querySelector(".table thead tr");
-    const tbody = section.querySelector(".table tbody");
-    const tableEl = section.querySelector(".table");
-
-    if (!headerRow || !tbody || !tableEl) {
-        return;
-    }
-
-    tableEl.classList.add("admin-table");
-
-    if (titleEl && tableConfig.tableTitle) {
-        titleEl.textContent = tableConfig.tableTitle;
-    }
-
-    headerRow.innerHTML = "";
-    const headers = Array.isArray(tableConfig.headers) && tableConfig.headers.length === 3
-        ? tableConfig.headers
-        : ["Nombre", "Descripcion", "Accion"];
-
-    headers.forEach((headerText) => {
-        const th = document.createElement("th");
-        th.textContent = headerText;
-        headerRow.appendChild(th);
-    });
-
-    tbody.innerHTML = "";
-
-    if (!items.length) {
-        const emptyRow = document.createElement("tr");
-        emptyRow.innerHTML = `<td colspan="3">No hay elementos.</td>`;
-        tbody.appendChild(emptyRow);
-        return;
-    }
-
-    items.forEach((item) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${item.title}</td>
-            <td>${item.description}</td>
-            <td><button type="button" class="admin-inline-remove">Quitar</button></td>
+    const titleContainer = document.getElementById("admin-title");
+    if (titleContainer && titleData) {
+        titleContainer.innerHTML = `
+            <h1>${titleData.title}</h1>
+            <p>${titleData.description}</p>
         `;
+    }
+}
 
-        const removeButton = row.querySelector(".admin-inline-remove");
-        removeButton.addEventListener("click", () => {
-            const index = items.indexOf(item);
-            if (index >= 0) {
-                items.splice(index, 1);
-                renderManagedTable(section, tableConfig, items, onItemsChanged);
-                if (onItemsChanged) {
-                    onItemsChanged();
+function renderDashboard(sections) {
+    const dashboard = document.getElementById("admin-dashboard");
+    dashboard.innerHTML = "";
+
+    const db = getAdminData();
+
+    sections.forEach(section => {
+        const sectionDiv = document.createElement("section");
+        sectionDiv.className = "admin-section-block";
+
+        const sectionTitle = document.createElement("h2");
+        sectionTitle.textContent = section.title;
+        sectionDiv.appendChild(sectionTitle);
+
+        const gridDiv = document.createElement("div");
+        gridDiv.className = "admin-grid";
+
+        const tableContainer = document.createElement("div");
+        tableContainer.className = "admin-table-container";
+        tableContainer.innerHTML = generateTableHTML(section, db[section.id] || []);
+
+        attachDeleteEvents(tableContainer, section.id, sections);
+
+        const formContainer = document.createElement("div");
+        formContainer.className = "admin-form-container";
+        formContainer.innerHTML = generateFormHTML(section);
+
+        // N.B.: La funzione qui sotto è diventata ASINCRONA
+        attachSubmitEvent(formContainer, section, sections);
+
+        gridDiv.appendChild(tableContainer);
+        gridDiv.appendChild(formContainer);
+        sectionDiv.appendChild(gridDiv);
+        dashboard.appendChild(sectionDiv);
+    });
+}
+
+function generateTableHTML(section, items) {
+    if (!items || items.length === 0) {
+        return `<p>No hay elementos registrados en ${section.title}.</p>`;
+    }
+
+    const headers = section.fields.map(f => `<th>${f.label}</th>`).join("");
+
+    const rows = items.map((item, index) => {
+        const cells = section.fields.map(f => {
+            if (section.id === 'rooms' && f.name === 'imagen') {
+                return `<td><img src="${item[f.name]}" alt="${item.nombre}" class="room-thumbnail"></td>`;
+            } else if (f.name === 'imagen' && section.id !== 'rooms') {
+
+                return `<td title="${item[f.name]}">${item[f.name] ? item[f.name].substring(0,20) + '...' : ''}</td>`;
+            }
+            // Default: mostra il testo semplice
+            return `<td>${item[f.name] || ''}</td>`;
+        }).join("");
+
+        return `
+            <tr>
+                ${cells}
+                <td><button class="btn-delete" data-index="${index}">Borrar</button></td>
+            </tr>
+        `;
+    }).join("");
+
+    return `
+        <table class="admin-table">
+            <thead>
+                <tr>${headers}<th>Acción</th></tr>
+            </thead>
+            <tbody>${rows}</tbody>
+        </table>
+    `;
+}
+
+function generateFormHTML(section) {
+    const inputs = section.fields.map(f => {
+        const inputType = f.type || 'text';
+        // Gestione specifica per il campo file
+        if (inputType === 'file') {
+            return `
+                <div class="form-group">
+                    <label>${f.label}</label>
+                    <input type="file" name="${f.name}" accept="image/*" required>
+                </div>
+            `;
+        }
+        return `
+            <div class="form-group">
+                <label>${f.label}</label>
+                <input type="${inputType}" name="${f.name}" required>
+            </div>
+        `;
+    }).join("");
+
+    return `
+        <div class="admin-form-card">
+            <h3>Añadir ${section.title}</h3>
+            <form id="form-${section.id}" enctype="multipart/form-data">
+                ${inputs}
+                <button type="submit" class="btn btn-primary">Añadir</button>
+            </form>
+        </div>
+    `;
+}
+
+function attachDeleteEvents(container, sectionId, allSections) {
+    const buttons = container.querySelectorAll(".btn-delete");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const index = e.target.getAttribute("data-index");
+            const db = getAdminData();
+            db[sectionId].splice(index, 1);
+            saveAdminData(db);
+            renderDashboard(allSections);
+        });
+    });
+}
+
+// Helper per convertire il file caricato in stringa Base64 salvabile
+function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file); // Legge il file come URL Data (Base64)
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
+}
+
+function attachSubmitEvent(container, section, allSections) {
+    const form = container.querySelector(`#form-${section.id}`);
+
+    // La callback di submit diventa ASINCRONA
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const newItem = {};
+
+        // Prima leggiamo i campi testo normali
+        section.fields.forEach(f => {
+            if (f.type !== 'file') {
+                newItem[f.name] = formData.get(f.name);
+            }
+        });
+
+        // Poi gestiamo i campi file (specifico per Rooms Imagen)
+        if (section.id === 'rooms') {
+            const fileInput = form.querySelector('input[type="file"][name="imagen"]');
+            if (fileInput && fileInput.files.length > 0) {
+                try {
+                    // Attendiamo la conversione del file in stringa
+                    const base64String = await convertFileToBase64(fileInput.files[0]);
+                    newItem.imagen = base64String; // Salviamo la stringa dell'immagine
+                } catch (error) {
+                    console.error("Error leggendo il file:", error);
+                    alert("Error al cargar la imagen.");
+                    return; // Interrompe l'aggiunta
                 }
             }
-        });
+        }
 
-        tbody.appendChild(row);
+        // Salvataggio nel LocalStorage
+        const db = getAdminData();
+        if (!db[section.id]) {
+            db[section.id] = [];
+        }
+        db[section.id].push(newItem);
+        saveAdminData(db);
+
+        form.reset(); // Pulisce il form
+        renderDashboard(allSections); // Ridisegna
     });
 }
-
-function renderAdminForms(addContainer, removeContainer, formsConfig, items, onChange) {
-    const safeConfig = formsConfig || {};
-
-    addContainer.innerHTML = `
-        <section class="admin-form-card">
-            <h3>${safeConfig.addTitle || "Anadir elemento"}</h3>
-            <form class="admin-manage-form" data-form-type="add">
-                <label>${safeConfig.nameLabel || "Nombre"}</label>
-                <input type="text" name="title" placeholder="${safeConfig.namePlaceholder || ""}" required>
-                <label>${safeConfig.descriptionLabel || "Descripcion"}</label>
-                <input type="text" name="description" placeholder="${safeConfig.descriptionPlaceholder || ""}" required>
-                <button type="submit">${safeConfig.addButtonText || "Anadir"}</button>
-            </form>
-        </section>
-    `;
-
-    removeContainer.innerHTML = `
-        <section class="admin-form-card">
-            <h3>${safeConfig.removeTitle || "Quitar elemento"}</h3>
-            <form class="admin-manage-form" data-form-type="remove">
-                <label>Selecciona un elemento</label>
-                <select name="index"></select>
-                <button type="submit">${safeConfig.removeButtonText || "Quitar"}</button>
-            </form>
-        </section>
-    `;
-
-    const addForm = addContainer.querySelector("form[data-form-type='add']");
-    const removeForm = removeContainer.querySelector("form[data-form-type='remove']");
-
-    if (addForm) {
-        addForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const formData = new FormData(addForm);
-            const title = String(formData.get("title") || "").trim();
-            const description = String(formData.get("description") || "").trim();
-
-            if (!title || !description) {
-                return;
-            }
-
-            items.push({title, description});
-            addForm.reset();
-            onChange();
-        });
-    }
-
-    if (removeForm) {
-        removeForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const select = removeForm.querySelector("select[name='index']");
-            const selectedIndex = Number(select.value);
-
-            if (Number.isNaN(selectedIndex) || selectedIndex < 0 || selectedIndex >= items.length) {
-                return;
-            }
-
-            items.splice(selectedIndex, 1);
-            onChange();
-        });
-    }
-
-    updateRemoveSelect(removeContainer, items);
-}
-
-function updateRemoveSelect(removeContainer, items) {
-    const select = removeContainer.querySelector("select[name='index']");
-    if (!select) {
-        return;
-    }
-
-    select.innerHTML = "";
-
-    if (!items.length) {
-        const option = document.createElement("option");
-        option.value = "";
-        option.textContent = "No hay elementos";
-        select.appendChild(option);
-        return;
-    }
-
-    items.forEach((item, index) => {
-        const option = document.createElement("option");
-        option.value = String(index);
-        option.textContent = `${index + 1}. ${item.title}`;
-        select.appendChild(option);
-    });
-}
-

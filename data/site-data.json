@@ -481,48 +481,87 @@
                                   }
                               ]
                 },
-    "admin":  {
-                  "title":  {
-                                "title":  "Panel de administración",
-                                "description":  "Gestiona habitaciones y actividades desde un único lugar."
-                            },
-                  "rooms":  {
-                                "tableTitle":  "Habitaciones disponibles",
-                                "headers":  [
-                                                "Nombre",
-                                                "Descripción",
-                                                "Acción"
-                                            ],
-                                "forms":  {
-                                              "addTitle":  "Añadir habitación",
-                                              "removeTitle":  "Quitar habitación",
-                                              "nameLabel":  "Nombre",
-                                              "descriptionLabel":  "Descripción",
-                                              "namePlaceholder":  "Nombre de la habitación",
-                                              "descriptionPlaceholder":  "Descripción de la habitación",
-                                              "addButtonText":  "Añadir",
-                                              "removeButtonText":  "Quitar seleccionada"
-                                          }
-                            },
-                  "activities":  {
-                                     "tableTitle":  "Actividades disponibles",
-                                     "headers":  [
-                                                     "Nombre",
-                                                     "Descripción",
-                                                     "Acción"
-                                                 ],
-                                     "forms":  {
-                                                   "addTitle":  "Añadir actividad",
-                                                   "removeTitle":  "Quitar actividad",
-                                                   "nameLabel":  "Nombre",
-                                                   "descriptionLabel":  "Descripción",
-                                                   "namePlaceholder":  "Nombre de la actividad",
-                                                   "descriptionPlaceholder":  "Descripción de la actividad",
-                                                   "addButtonText":  "Añadir",
-                                                   "removeButtonText":  "Quitar seleccionada"
-                                               }
-                                 }
-              },
+  "admin": {
+    "title": {
+      "title": "Panel de Administración",
+      "description": "Gestiona todo el hotel desde un único lugar. Los cambios se guardarán en el LocalStorage."
+    },
+    "sections": [
+      {
+        "id": "rooms",
+        "title": "Habitaciones",
+        "fields": [
+          {"name": "nombre", "label": "Nombre de la habitación", "type": "text"},
+          {"name": "descripcion", "label": "Descripción", "type": "text"},
+          {"name": "imagen", "label": "Imagen de la habitación", "type": "file"}
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Servicios del Hotel",
+        "fields": [
+          {"name": "nombre", "label": "Nombre del servicio", "type": "text"},
+          {"name": "descripcion", "label": "Descripción", "type": "text"}
+        ]
+      },
+      {
+        "id": "reservations",
+        "title": "Reservas",
+        "fields": [
+          {"name": "cliente", "label": "Nombre y Apellido", "type": "text"},
+          {"name": "email", "label": "Email", "type": "email"},
+          {"name": "habitacion", "label": "Habitación Elegida", "type": "text"},
+          {"name": "fecha", "label": "Fecha (Ej. 2026-05-12)", "type": "date"},
+          {"name": "huespedes", "label": "Número de Huéspedes", "type": "number"}
+        ]
+      },
+      {
+        "id": "menus",
+        "title": "Menú Fijo",
+        "fields": [
+          {"name": "plato", "label": "Nombre del Plato", "type": "text"},
+          {"name": "tipo", "label": "Tipo (Primo, Segundo, Postre)", "type": "text"},
+          {"name": "imagen", "label": "URL de la Imagen", "type": "text"}
+        ]
+      },
+      {
+        "id": "faqs",
+        "title": "Preguntas de los Clientes (FAQ)",
+        "fields": [
+          {"name": "pregunta", "label": "Pregunta", "type": "text"},
+          {"name": "respuesta", "label": "Respuesta", "type": "text"}
+        ]
+      }
+    ]
+  },
+  "initialData": {
+    "rooms": [
+      {
+        "nombre": "Suite Mar Premium",
+        "descripcion": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
+        "imagen": "../img/bookingRooms/11.jpg"
+      },
+      {
+        "nombre": "Habitación Deluxe Terraza",
+        "descripcion": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
+        "imagen": "../img/bookingRooms/12.jpg"
+      },
+      {
+        "nombre": "Habitación Familiar",
+        "descripcion": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
+        "imagen": "../img/bookingRooms/13.jpg"
+      },
+      {
+        "nombre": "Habitación Cozy",
+        "descripcion": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
+        "imagen": "../img/bookingRooms/14.jpg"
+      }
+    ],
+    "services": [{"nombre": "Spa & Bienestar", "descripcion": "Relájate en nuestro spa."}],
+    "reservations": [],
+    "menus": [],
+    "faqs": []
+  },
     "users":  [
                   {
                       "email":  "admin@ulpgc.es",
