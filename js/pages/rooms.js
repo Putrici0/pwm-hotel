@@ -31,13 +31,15 @@ function waitForRoomTemplate(callback) {
     const timer = setInterval(() => {
         tries += 1;
 
-        const firstRoom = document.getElementById("room1");
-        const isReady = firstRoom &&
-            firstRoom.querySelector("h2") &&
-            firstRoom.querySelector("p") &&
-            firstRoom.querySelector(".text-image-right__image");
+        const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
+        const roomSections = Array.from(document.querySelectorAll("main section[id^='room']"));
+        const isReady = roomSections.length > 0 && roomSections.every((section) => {
+            return section.querySelector("h2") &&
+                section.querySelector("p") &&
+                section.querySelector(".text-image-right__image");
+        });
 
-        if (isReady) {
+        if (pendingIncludes === 0 && isReady) {
             clearInterval(timer);
             callback();
         }
