@@ -567,7 +567,7 @@
       "title": "Recuperar contraseña",
       "description": "Introduce el correo electrónico asociado a tu cuenta para recibir un código de recuperación.",
       "labelEmail": "Correo electrónico",
-      "placeholderEmail": "tu@email.com",
+      "placeholderEmail": "Introduce tu email",
       "btnText": "Enviar código"
     },
     "step2": {
