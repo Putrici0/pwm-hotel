@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('./styles/legacy/global.css');
+@import url('./styles/legacy/title-subtitle.css');
+@import url('./styles/legacy/text-image.css');
+@import url('./styles/legacy/image-grid.css');
+@import url('./styles/legacy/booking.css');
+@import url('./styles/legacy/form_booking.css');
+@import url('./styles/legacy/restaurant.css');
+@import url('./styles/legacy/auth.css');
+@import url('./styles/legacy/tables.css');
+@import url('./styles/legacy/table-card.css');
+@import url('./styles/legacy/admin-panel.css');
+@import url('./styles/legacy/account.css');
+@import url('./styles/legacy/legal.css');
