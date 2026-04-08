@@ -1,0 +1,18 @@
+<app-header></app-header>
+
+<ng-container *ngIf="activitiesData$ | async as activitiesData">
+  <app-title-subtitle
+    [title]="activitiesData.intro.title"
+    [description]="activitiesData.intro.description"
+  ></app-title-subtitle>
+
+  <main>
+    <app-text-image-section
+      *ngFor="let activity of activitiesData.activities"
+      sectionClass="text-image-right"
+      [sectionData]="activity"
+    ></app-text-image-section>
+  </main>
+</ng-container>
+
+<app-footer></app-footer>

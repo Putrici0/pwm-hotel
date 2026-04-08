@@ -1,0 +1,77 @@
+<app-header></app-header>
+
+<main>
+  <div id="admin-title" class="admin-header-section" *ngIf="adminTitle as title">
+    <h1>{{ title.title }}</h1>
+    <p>{{ title.description }}</p>
+  </div>
+
+  <div id="admin-dashboard" class="admin-dashboard-container">
+    <section class="admin-section-block" *ngFor="let section of sections">
+      <h2>{{ section.title }}</h2>
+
+      <div class="admin-grid">
+        <div class="admin-table-container">
+          <p *ngIf="getRows(section.id).length === 0">No hay elementos registrados en {{ section.title }}.</p>
+
+          <table class="admin-table" *ngIf="getRows(section.id).length > 0">
+            <thead>
+              <tr>
+                <th *ngFor="let field of section.fields">{{ field.label }}</th>
+                <th>Accion</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of getRows(section.id); let i = index">
+                <td *ngFor="let field of section.fields">
+                  <img
+                    *ngIf="section.id === 'rooms' && field.name === 'imagen'"
+                    [src]="row[field.name]"
+                    [alt]="row['nombre'] || 'room'"
+                    class="room-thumbnail"
+                  />
+                  <span *ngIf="!(section.id === 'rooms' && field.name === 'imagen')">
+                    {{ row[field.name] }}
+                  </span>
+                </td>
+                <td><button class="btn-delete" (click)="deleteItem(section.id, i)">Borrar</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="admin-form-container">
+          <div class="admin-form-card">
+            <h3>Anadir {{ section.title }}</h3>
+            <form (ngSubmit)="submit(section)">
+              <div class="form-group" *ngFor="let field of section.fields">
+                <label>{{ field.label }}</label>
+
+                <input
+                  *ngIf="field.type !== 'file'"
+                  [type]="field.type || 'text'"
+                  [name]="field.name"
+                  [(ngModel)]="formValues[section.id][field.name]"
+                  required
+                />
+
+                <input
+                  *ngIf="field.type === 'file'"
+                  type="file"
+                  [name]="field.name"
+                  accept="image/*"
+                  (change)="onFileChange($event, section.id, field.name)"
+                  required
+                />
+              </div>
+
+              <button type="submit" class="btn btn-primary">Anadir</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<app-footer></app-footer>
