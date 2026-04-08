@@ -1,0 +1,62 @@
+<app-header></app-header>
+
+<main *ngIf="loginData$ | async as loginData">
+  <section id="auth-login-section" class="auth-section">
+    <div class="auth-card">
+      <form id="login-form-element" (ngSubmit)="submit()">
+        <label>{{ loginData.form.labels.email }}</label>
+        <input
+          type="email"
+          id="login-email"
+          [placeholder]="loginData.form.placeholders.email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+
+        <label>{{ loginData.form.labels.password }}</label>
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            id="login-password"
+            [placeholder]="loginData.form.placeholders.password"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+          <button type="button" id="toggle-password" class="toggle-password-btn" (click)="showPassword = !showPassword">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <div id="login-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" id="btn-login" class="auth-btn-primary">
+          {{ loginData.form.primaryButtonText }}
+        </button>
+
+        <a routerLink="/register" id="btn-register" class="auth-btn-secondary">
+          {{ loginData.form.secondaryButtonText }}
+        </a>
+
+        <a [routerLink]="['/change-password']" class="auth-link">
+          {{ loginData.form.forgotPasswordText }}
+        </a>
+      </form>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>

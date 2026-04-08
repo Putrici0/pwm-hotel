@@ -1,0 +1,108 @@
+<app-header></app-header>
+
+<main *ngIf="registerData$ | async as registerData">
+  <section id="auth-register-section" class="auth-section">
+    <div class="auth-card">
+      <form id="register-form-element" (ngSubmit)="submit()">
+        <label>{{ registerData.form.labels.name }}</label>
+        <input
+          type="text"
+          [placeholder]="registerData.form.placeholders.name"
+          [(ngModel)]="formModel.name"
+          name="name"
+          required
+        />
+
+        <label>{{ registerData.form.labels.lastName }}</label>
+        <input
+          type="text"
+          [placeholder]="registerData.form.placeholders.lastName"
+          [(ngModel)]="formModel.lastName"
+          name="lastName"
+          required
+        />
+
+        <label>{{ registerData.form.labels.email }}</label>
+        <input
+          type="email"
+          [placeholder]="registerData.form.placeholders.email"
+          [(ngModel)]="formModel.email"
+          name="email"
+          required
+        />
+
+        <label>{{ registerData.form.labels.password }}</label>
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword1 ? 'text' : 'password'"
+            id="reg-password"
+            [placeholder]="registerData.form.placeholders.password"
+            [(ngModel)]="formModel.password"
+            name="password"
+            required
+          />
+          <button type="button" id="toggle-reg-pass" class="toggle-password-btn" (click)="showPassword1 = !showPassword1">
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <label>{{ registerData.form.labels.confirmPassword }}</label>
+        <div class="password-wrapper">
+          <input
+            [type]="showPassword2 ? 'text' : 'password'"
+            id="reg-password-confirm"
+            [placeholder]="registerData.form.placeholders.confirmPassword"
+            [(ngModel)]="formModel.confirmPassword"
+            name="confirmPassword"
+            required
+          />
+          <button
+            type="button"
+            id="toggle-reg-pass-confirm"
+            class="toggle-password-btn"
+            (click)="showPassword2 = !showPassword2"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              stroke="currentColor"
+              stroke-width="2"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+
+        <div class="auth-checkbox">
+          <input type="checkbox" [(ngModel)]="formModel.terms" name="terms" required />
+          <div>
+            <strong>{{ registerData.form.termsText }}</strong><br />
+          </div>
+        </div>
+
+        <div id="register-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+        <button type="submit" class="auth-btn-primary">{{ registerData.form.submitText }}</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>
