@@ -1,0 +1,17 @@
+<app-header></app-header>
+
+<ng-container *ngIf="wellnessData$ | async as wellnessData">
+  <app-title-subtitle
+    [title]="wellnessData.intro.title"
+    [description]="wellnessData.intro.description"
+  ></app-title-subtitle>
+
+  <app-text-image-section
+    *ngFor="let facility of wellnessData.facilities"
+    sectionClass="text-image-left"
+    [imageFirst]="true"
+    [sectionData]="facility"
+  ></app-text-image-section>
+</ng-container>
+
+<app-footer></app-footer>

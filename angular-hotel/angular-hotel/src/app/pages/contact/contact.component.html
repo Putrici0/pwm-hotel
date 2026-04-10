@@ -1,0 +1,98 @@
+<app-header></app-header>
+
+<main *ngIf="contactData$ | async as contactData">
+  <app-title-subtitle
+    [title]="contactData.header.title"
+    [description]="contactData.header.subtitle"
+  ></app-title-subtitle>
+
+  <app-text-image-section
+    sectionClass="text-image-right"
+    [sectionData]="{
+      title: contactData.commitment.title,
+      description: contactData.commitment.description,
+      imageGradient: contactData.commitment.imageGradient
+    }"
+  ></app-text-image-section>
+
+  <section id="contact-form-section" class="auth-section">
+    <div class="auth-card contact-card">
+      <form id="contact-form-element" (ngSubmit)="submit()">
+        <label>{{ contactData.form.labels.name }}</label>
+        <input type="text" [placeholder]="contactData.form.placeholders.name" [(ngModel)]="formModel.name" name="name" required />
+
+        <label>{{ contactData.form.labels.lastName }}</label>
+        <input
+          type="text"
+          [placeholder]="contactData.form.placeholders.lastName"
+          [(ngModel)]="formModel.lastName"
+          name="lastName"
+          required
+        />
+
+        <label>{{ contactData.form.labels.email }}</label>
+        <input
+          type="email"
+          [placeholder]="contactData.form.placeholders.email"
+          [(ngModel)]="formModel.email"
+          name="email"
+          required
+        />
+
+        <label>{{ contactData.form.labels.subject }}</label>
+        <select [(ngModel)]="formModel.subject" name="subject" required>
+          <option value="" disabled selected>{{ contactData.form.placeholders.subject }}</option>
+          <option *ngFor="let option of contactData.form.subjectOptions" [value]="option.value">
+            {{ option.text }}
+          </option>
+        </select>
+
+        <label>{{ contactData.form.labels.question }}</label>
+        <textarea
+          [placeholder]="contactData.form.placeholders.question"
+          [(ngModel)]="formModel.question"
+          name="question"
+          required
+        ></textarea>
+
+        <div class="auth-checkbox">
+          <input type="checkbox" [(ngModel)]="formModel.privacy" name="privacy" required />
+          <div>
+            <strong>{{ contactData.form.privacyText }}</strong>
+          </div>
+        </div>
+
+        <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div class="success-msg" *ngIf="successMessage" style="color: green; text-align: center; font-weight: bold; margin-top: 10px">
+          {{ successMessage }}
+        </div>
+
+        <button type="submit" id="btn-submit" class="auth-btn-primary" [disabled]="submitting">
+          {{ submitting ? 'Enviando...' : contactData.form.submitText }}
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section id="table-section" class="table-section">
+    <h2 class="table-title">{{ contactData.faq.title }}</h2>
+
+    <div class="table-wrapper">
+      <table class="table faq-table">
+        <thead>
+          <tr>
+            <th *ngFor="let header of contactData.faq.headers">{{ header }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of contactData.faq.items">
+            <td [attr.data-label]="contactData.faq.headers[0]">{{ item.question }}</td>
+            <td [attr.data-label]="contactData.faq.headers[1]">{{ item.answer }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>
