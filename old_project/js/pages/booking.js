@@ -281,10 +281,10 @@ function renderCheckoutForm(checkout) {
 }
 
 const availableRoomsMock = [
-    {id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/img/bookingRooms/11.jpg'},
-    {id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/img/bookingRooms/12.jpg'},
-    {id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/img/bookingRooms/13.jpg'},
-    {id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/img/bookingRooms/14.jpg'}
+    {id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/old_project/img/bookingRooms/11.jpg'},
+    {id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/old_project/img/bookingRooms/12.jpg'},
+    {id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/old_project/img/bookingRooms/13.jpg'},
+    {id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/old_project/img/bookingRooms/14.jpg'}
 ];
 
 let selectedRoomName = "";
