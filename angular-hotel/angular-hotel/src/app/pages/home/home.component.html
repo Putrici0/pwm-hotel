@@ -1,0 +1,29 @@
+<app-header></app-header>
+
+<main *ngIf="homeData$ | async as homeData">
+  <app-text-image-section
+    sectionClass="text-image-vertical"
+    [sectionData]="homeData.intro"
+  ></app-text-image-section>
+
+  <app-text-image-section
+    sectionClass="text-image-right"
+    [sectionData]="homeData.islandInfo"
+  ></app-text-image-section>
+
+  <app-image-grid-section [sectionData]="homeData.environment"></app-image-grid-section>
+
+  <app-text-image-section
+    sectionClass="text-image-vertical"
+    [sectionData]="homeData.rooms"
+  ></app-text-image-section>
+
+  <app-image-grid-section [sectionData]="homeData.services"></app-image-grid-section>
+
+  <app-text-image-section
+    sectionClass="text-image-vertical"
+    [sectionData]="homeData.location"
+  ></app-text-image-section>
+</main>
+
+<app-footer></app-footer>

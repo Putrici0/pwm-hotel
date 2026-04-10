@@ -1,0 +1,19 @@
+<app-header></app-header>
+
+<main *ngIf="legalData$ | async as legalData">
+  <section class="legal-section">
+    <div class="legal-container">
+      <h1>{{ legalData.title }}</h1>
+      <p class="legal-date" id="legal-date">{{ legalDateLabel }}</p>
+
+      <div class="legal-content">
+        <ng-container *ngFor="let section of legalData.sections">
+          <h2>{{ section.subtitle }}</h2>
+          <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
+        </ng-container>
+      </div>
+    </div>
+  </section>
+</main>
+
+<app-footer></app-footer>
