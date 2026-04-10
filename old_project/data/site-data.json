@@ -108,14 +108,18 @@
       "minGuests": 1,
       "maxGuests": 6
     },
+    "roomsList": [
+      { "id": "suite-mar", "name": "Suite Mar Premium", "maxGuests": 2, "price": 220, "img": "/old_project/img/bookingRooms/11.jpg" },
+      { "id": "deluxe-terr", "name": "Habitación Deluxe Terraza", "maxGuests": 4, "price": 280, "img": "/old_project/img/bookingRooms/12.jpg" },
+      { "id": "familiar", "name": "Habitación Familiar", "maxGuests": 6, "price": 400, "img": "/old_project/img/bookingRooms/13.jpg" },
+      { "id": "cozy", "name": "Habitación Cozy", "maxGuests": 2, "price": 120, "img": "/old_project/img/bookingRooms/14.jpg" }
+    ],
     "checkout": {
       "title": "Completa tu reserva",
       "summary": {
         "checkinLabel": "Check-in",
         "checkoutLabel": "Check-out",
-        "roomLabel": "Habitación",
-        "defaultRoom": "Habitación doble",
-        "familySuiteRoom": "Suite familiar"
+        "roomLabel": "Habitaciones"
       },
       "form": {
         "labels": {
@@ -250,7 +254,7 @@
       "title": "Menú del día",
       "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
       "price": "24,90 EUR",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../old_project/img/restaurant/15.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/restaurant/15.jpg) center/cover no-repeat"
     },
     "fixedMenu": {
       "title": "MENÚ FIJO"
@@ -261,22 +265,22 @@
         {
           "name": "Ensalada de tomate y burrata",
           "price": "9,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/16.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/16.jpg) center/cover no-repeat"
         },
         {
           "name": "Croquetas caseras de jamón ibérico",
           "price": "8,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/17.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/17.jpg) center/cover no-repeat"
         },
         {
           "name": "Crema suave de calabaza",
           "price": "7,80 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/18.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/18.webp) center/cover no-repeat"
         },
         {
           "name": "Tosta de aguacate y salmón",
           "price": "10,20 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/19.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/19.webp) center/cover no-repeat"
         }
       ]
     },
@@ -286,22 +290,22 @@
         {
           "name": "Risotto de setas y parmesano",
           "price": "13,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/20.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/20.jpg) center/cover no-repeat"
         },
         {
           "name": "Pasta fresca con pesto de albahaca",
           "price": "12,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/21.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/21.webp) center/cover no-repeat"
         },
         {
           "name": "Arroz meloso de marisco",
           "price": "14,80 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/22.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/22.jpg) center/cover no-repeat"
         },
         {
           "name": "Sopa del chef",
           "price": "9,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/23.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/23.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -311,22 +315,22 @@
         {
           "name": "Lubina al horno con verduras",
           "price": "18,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/24.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/24.jpg) center/cover no-repeat"
         },
         {
           "name": "Solomillo de ternera con puré trufado",
           "price": "22,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/25.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/25.jpg) center/cover no-repeat"
         },
         {
           "name": "Pollo de corral al limón",
           "price": "16,40 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/26.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/26.jpg) center/cover no-repeat"
         },
         {
           "name": "Hamburguesa premium de la casa",
           "price": "15,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/27.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/27.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -336,22 +340,22 @@
         {
           "name": "Tarta de queso horneada",
           "price": "6,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/28.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/28.jpg) center/cover no-repeat"
         },
         {
           "name": "Mousse de chocolate negro",
           "price": "6,20 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/29.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/29.jpg) center/cover no-repeat"
         },
         {
           "name": "Fruta fresca de temporada",
           "price": "5,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/30.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/30.jpg) center/cover no-repeat"
         },
         {
           "name": "Helado artesano",
           "price": "5,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/31.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/31.jpg) center/cover no-repeat"
         }
       ]
     }
@@ -361,25 +365,29 @@
       {
         "title": "Suite Mar Premium",
         "guests": 2,
-        "description": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
+        "price": 220,
+        "description": "👥 Hasta <strong>2 Huéspedes</strong> | 💶 <strong>220 €/noche.</strong> La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/11.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Deluxe Terraza",
         "guests": 4,
-        "description": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
+        "price": 280,
+        "description": "👥 Hasta <strong>4 Huéspedes</strong> | 💶 <strong>280 €/noche.</strong> Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/12.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Familiar",
         "guests": 6,
-        "description": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
+        "price": 400,
+        "description": "👥 Hasta <strong>6 Huéspedes</strong> | 💶 <strong>400 €/noche.</strong> Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/13.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Cozy",
         "guests": 2,
-        "description": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
+        "price": 120,
+        "description": "👥 Hasta <strong>2 Huéspedes</strong> | 💶 <strong>120 €/noche.</strong> Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/14.jpg) center/cover no-repeat"
       }
     ]
