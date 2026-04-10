@@ -1,0 +1,24 @@
+<section [class]="sectionClass">
+  @if (imageFirst) {
+    <div
+      class="text-image-right__image"
+      [style.background]="sectionData.imageGradient"
+      [style.cursor]="sectionData.imageLink ? 'pointer' : 'default'"
+      (click)="handleClick()"
+    ></div>
+  }
+
+  <div class="text-image-right__text">
+    <h2>{{ sectionData.title }}</h2>
+    <p>{{ sectionData.description }}</p>
+  </div>
+
+  @if (!imageFirst) {
+    <div
+      class="text-image-right__image"
+      [style.background]="sectionData.imageGradient"
+      [style.cursor]="sectionData.imageLink ? 'pointer' : 'default'"
+      (click)="handleClick()"
+    ></div>
+  }
+</section>

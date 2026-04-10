@@ -1,0 +1,16 @@
+<section class="image-grid-section">
+  <h2>{{ sectionData.title }}</h2>
+
+  <div class="image-grid">
+    <div
+      class="image-grid__item"
+      *ngFor="let item of sectionData.items"
+      [style.background]="item.imageGradient"
+      [style.cursor]="item.imageLink ? 'pointer' : 'default'"
+      (click)="goTo(item.imageLink)"
+    >
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+    </div>
+  </div>
+</section>
