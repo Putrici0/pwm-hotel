@@ -254,7 +254,7 @@
       "title": "Menú del día",
       "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
       "price": "24,90 EUR",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../old_project/img/restaurant/15.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/restaurant/15.jpg) center/cover no-repeat"
     },
     "fixedMenu": {
       "title": "MENÚ FIJO"
@@ -265,22 +265,22 @@
         {
           "name": "Ensalada de tomate y burrata",
           "price": "9,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/16.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/16.jpg) center/cover no-repeat"
         },
         {
           "name": "Croquetas caseras de jamón ibérico",
           "price": "8,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/17.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/17.jpg) center/cover no-repeat"
         },
         {
           "name": "Crema suave de calabaza",
           "price": "7,80 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/18.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/18.webp) center/cover no-repeat"
         },
         {
           "name": "Tosta de aguacate y salmón",
           "price": "10,20 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/19.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/19.webp) center/cover no-repeat"
         }
       ]
     },
@@ -290,22 +290,22 @@
         {
           "name": "Risotto de setas y parmesano",
           "price": "13,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/20.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/20.jpg) center/cover no-repeat"
         },
         {
           "name": "Pasta fresca con pesto de albahaca",
           "price": "12,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/21.webp) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/21.webp) center/cover no-repeat"
         },
         {
           "name": "Arroz meloso de marisco",
           "price": "14,80 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/22.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/22.jpg) center/cover no-repeat"
         },
         {
           "name": "Sopa del chef",
           "price": "9,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/23.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/23.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -315,22 +315,22 @@
         {
           "name": "Lubina al horno con verduras",
           "price": "18,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/24.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/24.jpg) center/cover no-repeat"
         },
         {
           "name": "Solomillo de ternera con puré trufado",
           "price": "22,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/25.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/25.jpg) center/cover no-repeat"
         },
         {
           "name": "Pollo de corral al limón",
           "price": "16,40 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/26.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/26.jpg) center/cover no-repeat"
         },
         {
           "name": "Hamburguesa premium de la casa",
           "price": "15,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/27.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/27.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -340,22 +340,22 @@
         {
           "name": "Tarta de queso horneada",
           "price": "6,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/28.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/28.jpg) center/cover no-repeat"
         },
         {
           "name": "Mousse de chocolate negro",
           "price": "6,20 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/29.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/29.jpg) center/cover no-repeat"
         },
         {
           "name": "Fruta fresca de temporada",
           "price": "5,50 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/30.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/30.jpg) center/cover no-repeat"
         },
         {
           "name": "Helado artesano",
           "price": "5,90 EUR",
-          "imageGradient": "url(../old_project/img/restaurant/31.jpg) center/cover no-repeat"
+          "imageGradient": "url(/old_project/img/restaurant/31.jpg) center/cover no-repeat"
         }
       ]
     }
