@@ -365,25 +365,29 @@
       {
         "title": "Suite Mar Premium",
         "guests": 2,
-        "description": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
+        "price": 220,
+        "description": "👥 Hasta <strong>2 Huéspedes</strong> | 💶 <strong>220 €/noche.</strong> La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/11.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Deluxe Terraza",
         "guests": 4,
-        "description": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
+        "price": 280,
+        "description": "👥 Hasta <strong>4 Huéspedes</strong> | 💶 <strong>280 €/noche.</strong> Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/12.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Familiar",
         "guests": 6,
-        "description": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
+        "price": 400,
+        "description": "👥 Hasta <strong>6 Huéspedes</strong> | 💶 <strong>400 €/noche.</strong> Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/13.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Cozy",
         "guests": 2,
-        "description": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
+        "price": 120,
+        "description": "👥 Hasta <strong>2 Huéspedes</strong> | 💶 <strong>120 €/noche.</strong> Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
         "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/14.jpg) center/cover no-repeat"
       }
     ]

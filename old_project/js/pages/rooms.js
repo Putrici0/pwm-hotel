@@ -94,11 +94,11 @@ function renderRooms(data) {
         const imageEl = roomSection.querySelector(".text-image-right__image");
 
         if (titleEl) {
-            titleEl.textContent = room.title;
+            titleEl.innerHTML = room.title;
         }
 
         if (descriptionEl) {
-            descriptionEl.textContent = room.description;
+            descriptionEl.innerHTML = room.description;
         }
 
         if (imageEl && room.imageGradient) {
