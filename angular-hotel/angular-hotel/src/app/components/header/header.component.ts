@@ -6,7 +6,8 @@ import { AuthService } from '../../services/auth.service';
   selector: 'app-header',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './header.component.html'
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css'
 })
 export class HeaderComponent {
   menuOpen = false;

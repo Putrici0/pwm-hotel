@@ -11,7 +11,8 @@ import { SiteDataService } from '../../services/site-data.service';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css'
 })
 export class LoginComponent {
   private readonly siteDataService = inject(SiteDataService);

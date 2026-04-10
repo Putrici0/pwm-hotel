@@ -1,0 +1,163 @@
+/* css por template AUTHENTICATION (auth-login.html, auth-register.html)*/
+.auth-section {
+    padding: 3rem 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-card {
+    width: 420px;
+    padding: 1.5rem;
+    background-color: var(--blanco-puro);
+    border: 2px solid var(--mar-navy);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+}
+
+/* ... estilos existentes ... */
+
+/* Estilos de tabla adaptados (anteriormente en tables.css) */
+.table-section {
+    padding: 2rem 1.25rem;
+}
+
+.table-title {
+    font-size: 2rem;
+    color: var(--mar-navy);
+    text-align: left;
+    max-width: 900px;
+    margin: 0 auto 0.9rem auto;
+}
+
+.table-wrapper {
+    background: rgba(255, 255, 255, 0.72);
+    border: 2px solid var(--mar-navy);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.faq-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 0;
+}
+
+.faq-table th {
+    background: var(--arena-sable);
+    color: var(--mar-navy);
+    font-weight: 700;
+    text-align: left;
+    vertical-align: top;
+    padding: 1.2rem;
+    border: 1px solid rgba(26, 54, 93, 0.28);
+}
+
+.faq-table td {
+    padding: 1.2rem;
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid rgba(26, 54, 93, 0.28);
+    color: var(--mar-navy);
+    background: transparent;
+}
+
+.faq-table th:first-child,
+.faq-table td:first-child {
+    width: 38%;
+}
+
+@media (max-width: 900px) {
+    .table-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 900px) {
+    .table-wrapper {
+        border-radius: 14px;
+    }
+
+    .faq-table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .faq-table th,
+    .faq-table td {
+        font-size: 0.96rem;
+        padding: 0.95rem 0.9rem;
+    }
+
+    .faq-table th:first-child,
+    .faq-table td:first-child {
+        width: 40%;
+    }
+
+    .faq-table th:last-child,
+    .faq-table td:last-child {
+        width: 60%;
+    }
+
+    .faq-table tbody tr:nth-child(odd) td {
+        background: rgba(255, 255, 255, 0.38);
+    }
+
+    .faq-table tbody tr:nth-child(even) td {
+        background: rgba(255, 255, 255, 0.22);
+    }
+
+    .faq-table tbody tr td:first-child {
+        border-left: 3px solid rgba(26, 54, 93, 0.22);
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 576px) {
+    .table-wrapper {
+        border: 0;
+        background: transparent;
+        overflow: visible;
+    }
+
+    .faq-table thead {
+        display: none;
+    }
+
+    .faq-table,
+    .faq-table tbody,
+    .faq-table tr,
+    .faq-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .faq-table tr {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid rgba(26, 54, 93, 0.24);
+        border-radius: 10px;
+        margin-bottom: 0.75rem;
+        padding: 0.85rem 0.85rem 0.75rem;
+    }
+
+    .faq-table tr:last-child {
+        margin-bottom: 0;
+    }
+
+    .faq-table td {
+        border: 0;
+        padding: 0;
+        text-align: left;
+    }
+
+    .faq-table td:first-child {
+        width: 100%;
+        font-weight: 700;
+        margin-bottom: 0.4rem;
+    }
+
+    .faq-table td:last-child {
+        color: rgba(26, 54, 93, 0.92);
+    }
+}

@@ -11,7 +11,8 @@ import { SiteDataService } from '../../services/site-data.service';
   selector: 'app-account',
   standalone: true,
   imports: [CommonModule, HeaderComponent, FooterComponent, TitleSubtitleComponent],
-  templateUrl: './account.component.html'
+  templateUrl: './account.component.html',
+  styleUrl: './account.component.css'
 })
 export class AccountComponent implements OnInit {
   private readonly siteDataService = inject(SiteDataService);
