@@ -3,12 +3,12 @@
     "intro": {
       "title": "Isla Dorada Hotel",
       "description": "Un hotel frente al mar en Gran Canaria con estancias confortables, servicios premium y una experiencia pensada para desconectar.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/index/1.webp) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/index/1.webp) center/cover no-repeat"
     },
     "islandInfo": {
       "title": "Gran Canaria, la isla del hotel",
       "description": "Gran Canaria combina playa, naturaleza y cultura en un mismo destino. Puedes disfrutar de dunas, rutas de montaña, pueblos con encanto y una oferta gastronómica muy variada durante todo el año.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/index/2.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/index/2.jpg) center/cover no-repeat"
     },
     "environment": {
       "title": "Compromiso ambiental del hotel",
@@ -16,24 +16,24 @@
         {
           "title": "Eficiencia energética",
           "description": "Uso de iluminación LED y sistemas de climatización optimizados para reducir el consumo.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/index/3.png) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/index/3.png) center/cover no-repeat"
         },
         {
           "title": "Consumo responsable de agua",
           "description": "Programa de reutilización de toallas y control inteligente de caudal en habitaciones y zonas comunes.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/index/4.jpg) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/index/4.jpg) center/cover no-repeat"
         },
         {
           "title": "Gestión de residuos",
           "description": "Separación selectiva, reducción de plásticos de un solo uso y colaboración con proveedores locales.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/index/5.jpg) center/cover no-repeat"
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/index/5.jpg) center/cover no-repeat"
         }
       ]
     },
     "rooms": {
       "title": "Habitaciones para cada tipo de viaje",
       "description": "Desde habitaciones acogedoras para escapadas cortas hasta suites premium con vistas al océano, todas equipadas para garantizar descanso y comodidad.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/index/6.jpg) center/cover no-repeat",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/index/6.jpg) center/cover no-repeat",
       "imageLink": "rooms.html"
     },
     "services": {
@@ -42,19 +42,19 @@
         {
           "title": "Wellness",
           "description": "Gimnasio, piscina y spa para mantener tu rutina de bienestar durante la estancia.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/index/7.jpg) center/cover no-repeat",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/index/7.jpg) center/cover no-repeat",
           "imageLink": "wellness-facilities.html"
         },
         {
           "title": "Restauración",
           "description": "Propuesta gastronómica diaria con cocina local e internacional elaborada con producto fresco.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/index/8.webp) center/cover no-repeat",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/index/8.webp) center/cover no-repeat",
           "imageLink": "restaurant.html"
         },
         {
           "title": "Actividades",
           "description": "Experiencias dentro y fuera del hotel: rutas, ocio familiar y planes personalizados.",
-          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/index/9.jpg) center/cover no-repeat",
+          "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/index/9.jpg) center/cover no-repeat",
           "imageLink": "activities.html"
         }
       ]
@@ -62,7 +62,7 @@
     "location": {
       "title": "Localización del hotel",
       "description": "Isla Dorada Hotel se encuentra en el exclusivo Paseo de Meloneras 37, Maspalomas, en la costa sur de Gran Canaria, a pocos minutos de la playa y del Faro.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/index/1.jpg) center/cover no-repeat",
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/index/1.jpg) center/cover no-repeat",
       "imageLink": "https://www.google.com/maps/dir/?api=1&destination=Paseo+de+Meloneras+37,+Maspalomas"
     }
   },
@@ -80,7 +80,7 @@
       {
         "title": "Yoga al amanecer",
         "description": "Empieza el día con una sesión de yoga en la playa para mejorar movilidad, respiración y energía antes del desayuno.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/34.jpg) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/34.jpg) center/cover no-repeat"
       },
       {
         "title": "Cata de vinos y productos locales",
@@ -93,7 +93,7 @@
     "header": {
       "title": "Reserva tu estancia en Isla Dorada",
       "description": "Elige tus fechas y prepara tu escapada en Gran Canaria con la mejor combinación de confort, ubicación y servicios.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/bookingRooms/10.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/10.jpg) center/cover no-repeat"
     },
     "availability": {
       "title": "Sistema de disponibilidad de habitaciones",
@@ -145,7 +145,7 @@
     "commitment": {
       "title": "Compromiso de atención al huésped",
       "description": "Nuestro equipo de recepción y administración responde a cada consulta con rapidez y seguimiento personalizado para que tengas una experiencia clara y sin complicaciones.",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/35.png) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/35.png) center/cover no-repeat"
     },
     "form": {
       "labels": {
@@ -250,7 +250,7 @@
       "title": "Menú del día",
       "description": "Menú completo con entrante, principal y postre elaborado con producto fresco local.",
       "price": "24,90 EUR",
-      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../img/restaurant/15.jpg) center/cover no-repeat"
+      "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(../old_project/img/restaurant/15.jpg) center/cover no-repeat"
     },
     "fixedMenu": {
       "title": "MENÚ FIJO"
@@ -261,22 +261,22 @@
         {
           "name": "Ensalada de tomate y burrata",
           "price": "9,50 EUR",
-          "imageGradient": "url(../img/restaurant/16.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/16.jpg) center/cover no-repeat"
         },
         {
           "name": "Croquetas caseras de jamón ibérico",
           "price": "8,90 EUR",
-          "imageGradient": "url(../img/restaurant/17.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/17.jpg) center/cover no-repeat"
         },
         {
           "name": "Crema suave de calabaza",
           "price": "7,80 EUR",
-          "imageGradient": "url(../img/restaurant/18.webp) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/18.webp) center/cover no-repeat"
         },
         {
           "name": "Tosta de aguacate y salmón",
           "price": "10,20 EUR",
-          "imageGradient": "url(../img/restaurant/19.webp) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/19.webp) center/cover no-repeat"
         }
       ]
     },
@@ -286,22 +286,22 @@
         {
           "name": "Risotto de setas y parmesano",
           "price": "13,50 EUR",
-          "imageGradient": "url(../img/restaurant/20.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/20.jpg) center/cover no-repeat"
         },
         {
           "name": "Pasta fresca con pesto de albahaca",
           "price": "12,90 EUR",
-          "imageGradient": "url(../img/restaurant/21.webp) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/21.webp) center/cover no-repeat"
         },
         {
           "name": "Arroz meloso de marisco",
           "price": "14,80 EUR",
-          "imageGradient": "url(../img/restaurant/22.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/22.jpg) center/cover no-repeat"
         },
         {
           "name": "Sopa del chef",
           "price": "9,90 EUR",
-          "imageGradient": "url(../img/restaurant/23.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/23.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -311,22 +311,22 @@
         {
           "name": "Lubina al horno con verduras",
           "price": "18,90 EUR",
-          "imageGradient": "url(../img/restaurant/24.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/24.jpg) center/cover no-repeat"
         },
         {
           "name": "Solomillo de ternera con puré trufado",
           "price": "22,50 EUR",
-          "imageGradient": "url(../img/restaurant/25.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/25.jpg) center/cover no-repeat"
         },
         {
           "name": "Pollo de corral al limón",
           "price": "16,40 EUR",
-          "imageGradient": "url(../img/restaurant/26.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/26.jpg) center/cover no-repeat"
         },
         {
           "name": "Hamburguesa premium de la casa",
           "price": "15,90 EUR",
-          "imageGradient": "url(../img/restaurant/27.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/27.jpg) center/cover no-repeat"
         }
       ]
     },
@@ -336,22 +336,22 @@
         {
           "name": "Tarta de queso horneada",
           "price": "6,50 EUR",
-          "imageGradient": "url(../img/restaurant/28.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/28.jpg) center/cover no-repeat"
         },
         {
           "name": "Mousse de chocolate negro",
           "price": "6,20 EUR",
-          "imageGradient": "url(../img/restaurant/29.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/29.jpg) center/cover no-repeat"
         },
         {
           "name": "Fruta fresca de temporada",
           "price": "5,50 EUR",
-          "imageGradient": "url(../img/restaurant/30.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/30.jpg) center/cover no-repeat"
         },
         {
           "name": "Helado artesano",
           "price": "5,90 EUR",
-          "imageGradient": "url(../img/restaurant/31.jpg) center/cover no-repeat"
+          "imageGradient": "url(../old_project/img/restaurant/31.jpg) center/cover no-repeat"
         }
       ]
     }
@@ -362,25 +362,25 @@
         "title": "Suite Mar Premium",
         "guests": 2,
         "description": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/bookingRooms/11.jpg) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/11.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Deluxe Terraza",
         "guests": 4,
         "description": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/bookingRooms/12.jpg) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/12.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Familiar",
         "guests": 6,
         "description": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/bookingRooms/13.jpg) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/13.jpg) center/cover no-repeat"
       },
       {
         "title": "Habitación Cozy",
         "guests": 2,
         "description": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/bookingRooms/14.jpg) center/cover no-repeat"
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/bookingRooms/14.jpg) center/cover no-repeat"
       }
     ]
   },
@@ -405,7 +405,7 @@
       {
         "title": "Actividades",
         "description": "Completa tu viaje en Gran Canaria con actividades dentro y fuera del hotel, desde propuestas familiares hasta planes de aventura y ocio al aire libre.",
-        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/img/33.jpg) center/cover no-repeat",
+        "imageGradient": "linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url(/old_project/img/33.jpg) center/cover no-repeat",
         "imageLink": "activities.html"
       }
     ]
@@ -424,7 +424,7 @@
                                                    {
                                                        "title":  "Piscina",
                                                        "description":  "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
-                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/img/32.jpg) center/cover no-repeat"
+                                                       "imageGradient":  "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(/old_project/img/32.jpg) center/cover no-repeat"
                                                    },
                                                    {
                                                        "title":  "Spa",
@@ -539,22 +539,22 @@
       {
         "nombre": "Suite Mar Premium",
         "descripcion": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
-        "imagen": "../img/bookingRooms/11.jpg"
+        "imagen": "../old_project/img/bookingRooms/11.jpg"
       },
       {
         "nombre": "Habitación Deluxe Terraza",
         "descripcion": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
-        "imagen": "../img/bookingRooms/12.jpg"
+        "imagen": "../old_project/img/bookingRooms/12.jpg"
       },
       {
         "nombre": "Habitación Familiar",
         "descripcion": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
-        "imagen": "../img/bookingRooms/13.jpg"
+        "imagen": "../old_project/img/bookingRooms/13.jpg"
       },
       {
         "nombre": "Habitación Cozy",
         "descripcion": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
-        "imagen": "../img/bookingRooms/14.jpg"
+        "imagen": "../old_project/img/bookingRooms/14.jpg"
       }
     ],
     "services": [{"nombre": "Spa & Bienestar", "descripcion": "Relájate en nuestro spa."}],
