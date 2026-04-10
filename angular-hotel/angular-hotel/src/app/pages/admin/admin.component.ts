@@ -22,7 +22,8 @@ interface AdminSection {
   selector: 'app-admin',
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
-  templateUrl: './admin.component.html'
+  templateUrl: './admin.component.html',
+  styleUrl: './admin.component.css'
 })
 export class AdminComponent implements OnInit {
   private readonly siteDataService = inject(SiteDataService);

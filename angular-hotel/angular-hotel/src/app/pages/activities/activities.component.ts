@@ -16,7 +16,8 @@ import { SiteDataService } from '../../services/site-data.service';
     TitleSubtitleComponent,
     TextImageSectionComponent
   ],
-  templateUrl: './activities.component.html'
+  templateUrl: './activities.component.html',
+  styleUrl: './activities.component.css'
 })
 export class ActivitiesComponent {
   private readonly siteDataService = inject(SiteDataService);

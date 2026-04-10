@@ -9,7 +9,8 @@ import { SiteDataService } from '../../services/site-data.service';
   selector: 'app-restaurant',
   standalone: true,
   imports: [CommonModule, HeaderComponent, FooterComponent, TextImageSectionComponent],
-  templateUrl: './restaurant.component.html'
+  templateUrl: './restaurant.component.html',
+  styleUrl: './restaurant.component.css'
 })
 export class RestaurantComponent {
   private readonly siteDataService = inject(SiteDataService);
