@@ -17,7 +17,8 @@ interface RoomOption {
   selector: 'app-booking',
   standalone: true,
   imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, TitleSubtitleComponent],
-  templateUrl: './booking.component.html'
+  templateUrl: './booking.component.html',
+  styleUrl: './booking.component.css'
 })
 export class BookingComponent implements OnInit {
   private readonly siteDataService = inject(SiteDataService);

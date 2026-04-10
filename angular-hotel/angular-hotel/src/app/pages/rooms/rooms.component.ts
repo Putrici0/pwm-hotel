@@ -9,7 +9,8 @@ import { SiteDataService } from '../../services/site-data.service';
   selector: 'app-rooms',
   standalone: true,
   imports: [CommonModule, HeaderComponent, FooterComponent, TextImageSectionComponent],
-  templateUrl: './rooms.component.html'
+  templateUrl: './rooms.component.html',
+  styleUrl: './rooms.component.css'
 })
 export class RoomsComponent {
   private readonly siteDataService = inject(SiteDataService);

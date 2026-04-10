@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AuthService } from '../../services/auth.service';
@@ -10,8 +10,9 @@ import { SiteDataService } from '../../services/site-data.service';
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
-  templateUrl: './change-password.component.html'
+  imports: [CommonModule, FormsModule, RouterLink, HeaderComponent, FooterComponent],
+  templateUrl: './change-password.component.html',
+  styleUrl: './change-password.component.css'
 })
 export class ChangePasswordComponent {
   private readonly siteDataService = inject(SiteDataService);

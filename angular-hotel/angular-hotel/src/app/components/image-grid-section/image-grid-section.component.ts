@@ -7,7 +7,8 @@ import { ImageGridSection } from '../../models/home.model';
   selector: 'app-image-grid-section',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './image-grid-section.component.html'
+  templateUrl: './image-grid-section.component.html',
+  styleUrl: './image-grid-section.component.css'
 })
 export class ImageGridSectionComponent {
   @Input({ required: true }) sectionData!: ImageGridSection;

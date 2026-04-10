@@ -18,7 +18,8 @@ import { SiteDataService } from '../../services/site-data.service';
     TitleSubtitleComponent,
     TextImageSectionComponent
   ],
-  templateUrl: './contact.component.html'
+  templateUrl: './contact.component.html',
+  styleUrl: './contact.component.css'
 })
 export class ContactComponent {
   private readonly siteDataService = inject(SiteDataService);

@@ -5,7 +5,8 @@ import { TextImageSection } from '../../models/home.model';
 @Component({
   selector: 'app-text-image-section',
   standalone: true,
-  templateUrl: './text-image-section.component.html'
+  templateUrl: './text-image-section.component.html',
+  styleUrl: './text-image-section.component.css'
 })
 export class TextImageSectionComponent {
   @Input({ required: true }) sectionData!: TextImageSection;
