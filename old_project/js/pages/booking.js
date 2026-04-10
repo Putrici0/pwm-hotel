@@ -9,15 +9,11 @@ function init() {
 function loadBookingData(sectionKey, callback) {
     fetch("../data/site-data.json")
         .then((response) => {
-            if (!response.ok) {
-                throw new Error("No se pudo cargar el archivo de booking.");
-            }
+            if (!response.ok) throw new Error("No se pudo cargar el archivo de booking.");
             return response.json();
         })
         .then((data) => {
-            if (callback) {
-                callback(data[sectionKey] || data);
-            }
+            if (callback) callback(data[sectionKey] || data);
         })
         .catch((error) => console.error(error));
 }
@@ -25,59 +21,19 @@ function loadBookingData(sectionKey, callback) {
 function waitForBookingTemplates(callback) {
     let tries = 0;
     const maxTries = 120;
-
     const timer = setInterval(() => {
         tries += 1;
-
         const pendingIncludes = document.querySelectorAll("[data-include-file], [xlu-include-file]").length;
-        const titleReady = isBookingTitleReady();
-        const availabilityReady = isAvailabilityReady();
-        const checkoutReady = isCheckoutReady();
+        const titleReady = document.getElementById("booking-title")?.querySelector("h1");
+        const availabilityReady = document.getElementById("booking-table")?.querySelector("button[type='submit']");
+        const checkoutReady = document.getElementById("booking-form")?.querySelector(".form-title");
 
         if (pendingIncludes === 0 && titleReady && availabilityReady && checkoutReady) {
             clearInterval(timer);
             callback();
         }
-
-        if (tries >= maxTries) {
-            clearInterval(timer);
-            console.error("No se pudieron cargar las secciones de booking.");
-        }
+        if (tries >= maxTries) clearInterval(timer);
     }, 50);
-}
-
-function isBookingTitleReady() {
-    const section = document.getElementById("booking-title");
-    return Boolean(
-        section &&
-        section.querySelector("h1") &&
-        section.querySelector("p")
-    );
-}
-
-function isAvailabilityReady() {
-    const section = document.getElementById("booking-table");
-    return Boolean(
-        section &&
-        section.querySelector(".booking-widget__title") &&
-        section.querySelector("#checkin") &&
-        section.querySelector("#checkout") &&
-        section.querySelector("#guests") &&
-        section.querySelector("button[type='submit']")
-    );
-}
-
-function isCheckoutReady() {
-    const section = document.getElementById("booking-form");
-    return Boolean(
-        section &&
-        section.querySelector(".form-title") &&
-        section.querySelectorAll(".booking-summary .summary-item span").length >= 3 &&
-        section.querySelectorAll("#final-booking-form label").length >= 3 &&
-        section.querySelectorAll("#final-booking-form input").length >= 4 &&
-        section.querySelector("#success-message h3") &&
-        section.querySelector("#success-message p")
-    );
 }
 
 function renderBookingPage(data) {
@@ -85,182 +41,117 @@ function renderBookingPage(data) {
     renderBookingImage(data.header);
     renderAvailabilityWidget(data.availability);
     renderCheckoutForm(data.checkout);
-    setupBookingFlow(data.checkout);
+
+    setupBookingFlow(data.checkout, data.roomsList || []);
 }
 
 function renderBookingHeader(header) {
-    if (!header) {
-        return;
-    }
-
+    if (!header) return;
     const section = document.getElementById("booking-title");
-    if (!section) {
-        return;
-    }
-
+    if (!section) return;
     const titleEl = section.querySelector("h1");
     const descriptionEl = section.querySelector("p");
-
-    if (titleEl && header.title) {
-        titleEl.textContent = header.title;
-    }
-
-    if (descriptionEl && header.description) {
-        descriptionEl.textContent = header.description;
-    }
+    if (titleEl && header.title) titleEl.textContent = header.title;
+    if (descriptionEl && header.description) descriptionEl.textContent = header.description;
 }
 
 function renderBookingImage(header) {
     const imageSection = document.getElementById("booking-image");
-    if (!imageSection || !header || !header.imageGradient) {
+    if (!imageSection || !header || !header.imageGradient) return;
+    imageSection.style.background = header.imageGradient;
+    const heroSection = document.querySelector("#booking-title .hero");
+    if (heroSection) heroSection.style.setProperty("--booking-hero-image", header.imageGradient);
+}
+
+// ---------------------------------------------------------
+// FUNCIÓN TODOTERRENO PARA ENCONTRAR LABELS
+// ---------------------------------------------------------
+function setLabelForInput(inputEl, newText) {
+    if (!inputEl || !newText) return;
+
+    // 1. Intenta por el atributo 'for'
+    let label = document.querySelector(`label[for='${inputEl.id}']`);
+
+    // 2. Si no, busca el elemento hermano anterior
+    if (!label && inputEl.previousElementSibling && inputEl.previousElementSibling.tagName === 'LABEL') {
+        label = inputEl.previousElementSibling;
+    }
+
+    // 3. Si no, busca si el input está DENTRO de un label
+    if (!label && inputEl.parentElement && inputEl.parentElement.tagName === 'LABEL') {
+        // Cambiamos solo el texto sin borrar el input
+        const textNode = Array.from(inputEl.parentElement.childNodes).find(n => n.nodeType === 3 && n.nodeValue.trim() !== '');
+        if (textNode) textNode.nodeValue = newText + " ";
         return;
     }
 
-    imageSection.style.background = header.imageGradient;
-
-    const heroSection = document.querySelector("#booking-title .hero");
-    if (heroSection) {
-        heroSection.style.setProperty("--booking-hero-image", header.imageGradient);
+    if (label) {
+        label.textContent = newText;
     }
 }
 
 function renderAvailabilityWidget(availability) {
-    if (!availability) {
-        return;
-    }
-
+    if (!availability) return;
     const section = document.getElementById("booking-table");
-    if (!section) {
-        return;
-    }
+    if (!section) return;
 
     const titleEl = section.querySelector(".booking-widget__title");
-    const checkinLabel = section.querySelector("label[for='checkin']");
-    const checkoutLabel = section.querySelector("label[for='checkout']");
-    const guestsLabel = section.querySelector("label[for='guests']");
     const checkinInput = section.querySelector("#checkin");
     const checkoutInput = section.querySelector("#checkout");
     const guestsInput = section.querySelector("#guests");
     const checkboxLabelText = section.querySelector(".checkbox-group label");
     const submitButton = section.querySelector("button[type='submit']");
 
-    if (titleEl && availability.title) {
-        titleEl.textContent = availability.title;
-    }
+    if (titleEl && availability.title) titleEl.textContent = availability.title;
 
-    if (checkinLabel && availability.checkinLabel) {
-        checkinLabel.textContent = availability.checkinLabel;
-    }
+    // Cambiamos el texto usando nuestra función todoterreno (Adiós Lorem Ipsum)
+    if (availability.checkinLabel) setLabelForInput(checkinInput, availability.checkinLabel);
+    if (availability.checkoutLabel) setLabelForInput(checkoutInput, availability.checkoutLabel);
+    if (availability.guestsLabel) setLabelForInput(guestsInput, availability.guestsLabel);
 
-    if (checkoutLabel && availability.checkoutLabel) {
-        checkoutLabel.textContent = availability.checkoutLabel;
-    }
-
-    if (guestsLabel && availability.guestsLabel) {
-        guestsLabel.textContent = availability.guestsLabel;
-    }
-
-    if (checkinInput && availability.defaultCheckin) {
-        checkinInput.value = availability.defaultCheckin;
-    }
-
-    if (checkoutInput && availability.defaultCheckout) {
-        checkoutInput.value = availability.defaultCheckout;
-    }
-
-    if (guestsInput && availability.defaultGuests) {
-        guestsInput.value = availability.defaultGuests;
-    }
-
-    if (guestsInput && availability.minGuests) {
-        guestsInput.min = String(availability.minGuests);
-    }
-
-    if (guestsInput && availability.maxGuests) {
-        guestsInput.max = String(availability.maxGuests);
-    }
+    if (checkinInput && availability.defaultCheckin) checkinInput.value = availability.defaultCheckin;
+    if (checkoutInput && availability.defaultCheckout) checkoutInput.value = availability.defaultCheckout;
+    if (guestsInput && availability.defaultGuests) guestsInput.value = availability.defaultGuests;
+    if (guestsInput && availability.minGuests) guestsInput.min = String(availability.minGuests);
+    if (guestsInput && availability.maxGuests) guestsInput.max = String(availability.maxGuests);
 
     if (checkboxLabelText && availability.familySuiteLabel) {
-        const checkboxInput = checkboxLabelText.querySelector("input");
+        const checkboxInput = checkboxLabelText.querySelector("input") || document.createElement("input");
+        checkboxInput.type = "checkbox";
+        checkboxInput.id = "family-suite-checkbox";
         checkboxLabelText.textContent = "";
-        if (checkboxInput) {
-            checkboxLabelText.appendChild(checkboxInput);
-            checkboxLabelText.appendChild(document.createTextNode(` ${availability.familySuiteLabel}`));
-        } else {
-            checkboxLabelText.textContent = availability.familySuiteLabel;
-        }
+        checkboxLabelText.appendChild(checkboxInput);
+        checkboxLabelText.appendChild(document.createTextNode(` ${availability.familySuiteLabel}`));
     }
 
-    if (submitButton && availability.submitText) {
-        submitButton.textContent = availability.submitText;
-    }
+    if (submitButton && availability.submitText) submitButton.textContent = availability.submitText;
 }
 
 function renderCheckoutForm(checkout) {
-    if (!checkout) {
-        return;
-    }
-
+    if (!checkout) return;
     const section = document.getElementById("booking-form");
-    if (!section) {
-        return;
-    }
+    if (!section) return;
 
     const titleEl = section.querySelector(".form-title");
-    const summaryLabels = section.querySelectorAll(".booking-summary .summary-item span");
-    const roomValueEl = section.querySelector("#summary-room-value");
-    const labels = section.querySelectorAll("#final-booking-form label");
+    if (titleEl && checkout.title) titleEl.textContent = checkout.title;
+
+    // Arreglo del Lorem Ipsum del formulario final
     const nameInput = section.querySelector("#final-name");
     const lastNameInput = section.querySelector("#final-lastname");
     const emailInput = section.querySelector("#final-email");
     const policyText = section.querySelector("#booking-policy-text");
     const submitButton = section.querySelector("#final-booking-form button[type='submit']");
-    const successTitle = section.querySelector("#success-message h3");
-    const successDescription = section.querySelector("#success-message p");
 
-    if (titleEl && checkout.title) {
-        titleEl.textContent = checkout.title;
-    }
-
-    if (summaryLabels.length >= 3 && checkout.summary) {
-        if (checkout.summary.checkinLabel) {
-            summaryLabels[0].textContent = `${checkout.summary.checkinLabel}:`;
-        }
-        if (checkout.summary.checkoutLabel) {
-            summaryLabels[1].textContent = `${checkout.summary.checkoutLabel}:`;
-        }
-        if (checkout.summary.roomLabel) {
-            summaryLabels[2].textContent = `${checkout.summary.roomLabel}:`;
-        }
-        if (roomValueEl && checkout.summary.defaultRoom) {
-            roomValueEl.textContent = checkout.summary.defaultRoom;
-        }
-    }
-
-    if (labels.length >= 3 && checkout.form && checkout.form.labels) {
-        labels[0].textContent = checkout.form.labels.name || labels[0].textContent;
-        labels[1].textContent = checkout.form.labels.lastName || labels[1].textContent;
-        labels[2].textContent = checkout.form.labels.email || labels[2].textContent;
+    if (checkout.form && checkout.form.labels) {
+        setLabelForInput(nameInput, checkout.form.labels.name);
+        setLabelForInput(lastNameInput, checkout.form.labels.lastName);
+        setLabelForInput(emailInput, checkout.form.labels.email);
     }
 
     if (checkout.form && checkout.form.placeholders) {
-        if (nameInput) {
-            nameInput.placeholder = checkout.form.placeholders.name || nameInput.placeholder;
-            nameInput.required = true;
-            nameInput.type = "text";
-        }
-
-        if (lastNameInput) {
-            lastNameInput.placeholder = checkout.form.placeholders.lastName || lastNameInput.placeholder;
-            lastNameInput.required = true;
-            lastNameInput.type = "text";
-        }
-
-        if (emailInput) {
-            emailInput.placeholder = checkout.form.placeholders.email || emailInput.placeholder;
-            emailInput.required = true;
-            emailInput.type = "email";
-        }
+        if (nameInput) nameInput.placeholder = checkout.form.placeholders.name;
+        if (lastNameInput) lastNameInput.placeholder = checkout.form.placeholders.lastName;
+        if (emailInput) emailInput.placeholder = checkout.form.placeholders.email;
     }
 
     if (policyText && checkout.form && checkout.form.privacyText) {
@@ -270,26 +161,9 @@ function renderCheckoutForm(checkout) {
     if (submitButton && checkout.form && checkout.form.submitText) {
         submitButton.textContent = checkout.form.submitText;
     }
-
-    if (successTitle && checkout.success && checkout.success.title) {
-        successTitle.textContent = checkout.success.title;
-    }
-
-    if (successDescription && checkout.success && checkout.success.description) {
-        successDescription.textContent = checkout.success.description;
-    }
 }
 
-const availableRoomsMock = [
-    {id: 'suite-mar', name: 'Suite Mar Premium', maxGuests: 2, img: '/old_project/img/bookingRooms/11.jpg'},
-    {id: 'deluxe-terr', name: 'Habitación Deluxe Terraza', maxGuests: 4, img: '/old_project/img/bookingRooms/12.jpg'},
-    {id: 'familiar', name: 'Habitación Familiar', maxGuests: 6, img: '/old_project/img/bookingRooms/13.jpg'},
-    {id: 'cozy', name: 'Habitación Cozy', maxGuests: 2, img: '/old_project/img/bookingRooms/14.jpg'}
-];
-
-let selectedRoomName = "";
-
-function setupBookingFlow(checkout) {
+function setupBookingFlow(checkout, roomsList) {
     const searchForm = document.querySelector(".booking-form");
     const roomListSection = document.getElementById("room-selection-list");
     const roomContainer = document.querySelector(".room-options-container");
@@ -299,114 +173,144 @@ function setupBookingFlow(checkout) {
     const bookingSummary = document.querySelector(".booking-summary");
     const formTitle = document.querySelector(".form-title");
 
-    if (!searchForm || !checkoutSection || !finalForm || !successMessage || !roomListSection) {
-        return;
-    }
+    if (!searchForm || !checkoutSection || !finalForm) return;
 
     const checkinInput = document.getElementById("checkin");
     const checkoutInput = document.getElementById("checkout");
     const guestsInput = document.getElementById("guests");
-    const checkinValue = document.getElementById("summary-checkin-value");
-    const checkoutValue = document.getElementById("summary-checkout-value");
-    const roomValue = document.getElementById("summary-room-value");
+    const familyCheckbox = document.getElementById("family-suite-checkbox");
 
-    const updateSummaryDates = () => {
-        if (checkinValue && checkinInput) {
-            checkinValue.textContent = formatSummaryDate(checkinInput.value);
-        }
-        if (checkoutValue && checkoutInput) {
-            checkoutValue.textContent = formatSummaryDate(checkoutInput.value);
-        }
-    };
+    let selectedRoomsArr = [];
+    let currentCapacity = 0;
+    let totalNights = 0;
+    let requestedGuests = 0;
 
     searchForm.addEventListener("submit", (event) => {
         event.preventDefault();
 
+        // Reiniciar variables
+        selectedRoomsArr = [];
+        currentCapacity = 0;
+        requestedGuests = parseInt(guestsInput.value) || 1;
         checkoutSection.style.display = "none";
-
-        const requestedGuests = parseInt(guestsInput.value) || 1;
-
         roomContainer.innerHTML = "";
 
-        const filteredRooms = availableRoomsMock.filter(room => room.maxGuests >= requestedGuests);
+        // Calcular noches
+        const inDate = new Date(checkinInput.value);
+        const outDate = new Date(checkoutInput.value);
+        if (inDate >= outDate) {
+            alert("La fecha de salida debe ser posterior a la de entrada.");
+            return;
+        }
+        const diffTime = Math.abs(outDate - inDate);
+        totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        if (filteredRooms.length === 0) {
-            roomContainer.innerHTML = `<p style="color:white; text-align:center;">No hay habitaciones para ${requestedGuests} personas.</p>`;
-        } else {
-            filteredRooms.forEach(room => {
-                const card = document.createElement('div');
-                card.className = 'room-option-card';
-                card.innerHTML = `
-                    <div class="room-option-img" style="background-image: url('${room.img}')"></div>
-                    <div class="room-option-details">
-                        <div>
-                            <div class="room-option-title">${room.name}</div>
-                            <div class="room-option-info">Máx. ${room.maxGuests} personas</div>
+        let availableRooms = roomsList;
+        if (familyCheckbox && !familyCheckbox.checked) {
+            availableRooms = availableRooms.filter(r => r.id !== 'familiar');
+        }
+
+        const statusDiv = document.createElement('div');
+        statusDiv.id = "booking-status-bar";
+        statusDiv.style.cssText = "background: #D4C4A8; color: #1A365D; padding: 15px; text-align: center; margin-bottom: 20px; font-weight: bold; border-radius: 5px;";
+        statusDiv.textContent = `Por favor, selecciona habitaciones para ${requestedGuests} huéspedes.`;
+        roomContainer.appendChild(statusDiv);
+
+        availableRooms.forEach(room => {
+            const totalPrice = room.price * totalNights;
+            const card = document.createElement('div');
+            card.className = 'room-option-card';
+            card.innerHTML = `
+                <div class="room-option-img" style="background-image: url('${room.img}')"></div>
+                <div class="room-option-details">
+                    <div>
+                        <div class="room-option-title">${room.name}</div>
+                        <div class="room-option-info">Capacidad: ${room.maxGuests} personas</div>
+                        <div class="room-option-price" style="color: #1A365D; font-weight: bold; margin-top: 5px;">
+                            ${room.price}€ / noche (Total: ${totalPrice}€ por ${totalNights} noches)
                         </div>
-                        <button type="button" class="btn-select-room" data-roomname="${room.name}">Seleccionar</button>
                     </div>
-                `;
-                roomContainer.appendChild(card);
-            });
+                    <button type="button" class="btn-select-room" data-room='${JSON.stringify(room)}'>Seleccionar</button>
+                </div>
+            `;
+            roomContainer.appendChild(card);
+        });
 
-            const selectButtons = roomContainer.querySelectorAll('.btn-select-room');
-            selectButtons.forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const selectedCard = e.target.closest('.room-option-card');
+        const selectButtons = roomContainer.querySelectorAll('.btn-select-room');
+        selectButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const roomData = JSON.parse(e.target.getAttribute('data-room'));
 
-                    roomContainer.innerHTML = '';
-                    roomContainer.appendChild(selectedCard);
+                selectedRoomsArr.push(roomData);
+                currentCapacity += roomData.maxGuests;
 
-                    e.target.textContent = 'Seleccionada';
-                    e.target.style.backgroundColor = 'var(--arena-sable)';
-                    e.target.style.color = 'var(--mar-navy)';
-                    e.target.style.cursor = 'default';
-                    e.target.disabled = true;
+                e.target.textContent = 'Añadida';
+                e.target.style.backgroundColor = 'var(--arena-sable, #E6D5B8)';
+                e.target.style.color = '#333';
+                e.target.style.cursor = 'default';
+                e.target.disabled = true;
 
-                    selectedRoomName = e.target.getAttribute('data-roomname');
+                const statusBar = document.getElementById("booking-status-bar");
 
-                    updateSummaryDates();
-                    if (roomValue) roomValue.textContent = selectedRoomName;
+                if (currentCapacity < requestedGuests) {
+                    statusBar.textContent = `Llevas ${currentCapacity} plazas. Faltan ${requestedGuests - currentCapacity} más. Añade otra habitación.`;
+                    statusBar.style.background = "#e67e22";
+                } else {
+                    statusBar.textContent = `¡Perfecto! Completa tus datos abajo.`;
+                    statusBar.style.background = "#27ae60";
+
+
+                    const remainingBtns = roomContainer.querySelectorAll('.btn-select-room:not(:disabled)');
+                    remainingBtns.forEach(b => {
+                        b.disabled = true;
+                        b.style.opacity = "0.5";
+                        b.style.cursor = "not-allowed";
+                        b.textContent = "Cupo lleno";
+                    });
+
+                    renderFinalSummary(selectedRoomsArr, totalNights, requestedGuests);
 
                     if (formTitle) formTitle.style.display = "block";
                     if (bookingSummary) bookingSummary.style.display = "block";
                     finalForm.style.display = "block";
                     successMessage.style.display = "none";
-
                     checkoutSection.style.display = "flex";
                     checkoutSection.scrollIntoView({behavior: "smooth"});
-                });
+                }
             });
-        }
+        });
 
         roomListSection.style.display = "block";
     });
 
     finalForm.addEventListener("submit", (event) => {
         event.preventDefault();
-
         finalForm.style.display = "none";
-        if (bookingSummary) {
-            bookingSummary.style.display = "none";
-        }
-        if (formTitle) {
-            formTitle.style.display = "none";
-        }
+        if (bookingSummary) bookingSummary.style.display = "none";
+        if (formTitle) formTitle.style.display = "none";
         successMessage.style.display = "block";
     });
 }
 
-function formatSummaryDate(rawDate) {
-    if (!rawDate) {
-        return "--/--/----";
-    }
+function renderFinalSummary(rooms, nights, guests) {
+    const bookingSummary = document.querySelector(".booking-summary");
+    const checkinInput = document.getElementById("checkin");
+    const checkoutInput = document.getElementById("checkout");
 
-    const parsedDate = new Date(rawDate);
-    if (Number.isNaN(parsedDate.getTime())) {
-        return rawDate;
-    }
+    if (!bookingSummary) return;
 
-    return new Intl.DateTimeFormat("es-ES").format(parsedDate);
+    const formatDt = (d) => new Intl.DateTimeFormat("es-ES").format(new Date(d));
+    const roomNames = rooms.map(r => r.name).join(", ");
+    const totalPrice = rooms.reduce((acc, r) => acc + (r.price * nights), 0);
+
+    bookingSummary.innerHTML = `
+        <div class="summary-item"><span>Check-in:</span> <span>${formatDt(checkinInput.value)}</span></div>
+        <div class="summary-item"><span>Check-out:</span> <span>${formatDt(checkoutInput.value)}</span></div>
+        <div class="summary-item"><span>Noches:</span> <span>${nights}</span></div>
+        <div class="summary-item"><span>Huéspedes:</span> <span>${guests}</span></div>
+        <div class="summary-item"><span>Habitaciones:</span> <span>${roomNames}</span></div>
+        <div class="summary-item" style="font-weight: bold; font-size: 1.1rem; border-top: 1px solid #ccc; padding-top: 10px; margin-top: 10px; color: #1A365D;">
+            <span>Total a pagar:</span> <span>${totalPrice} €</span>
+        </div>
+    `;
 }
-
-

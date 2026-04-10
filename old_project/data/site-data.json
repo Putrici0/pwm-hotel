@@ -108,14 +108,18 @@
       "minGuests": 1,
       "maxGuests": 6
     },
+    "roomsList": [
+      { "id": "suite-mar", "name": "Suite Mar Premium", "maxGuests": 2, "price": 220, "img": "/old_project/img/bookingRooms/11.jpg" },
+      { "id": "deluxe-terr", "name": "Habitación Deluxe Terraza", "maxGuests": 4, "price": 280, "img": "/old_project/img/bookingRooms/12.jpg" },
+      { "id": "familiar", "name": "Habitación Familiar", "maxGuests": 6, "price": 400, "img": "/old_project/img/bookingRooms/13.jpg" },
+      { "id": "cozy", "name": "Habitación Cozy", "maxGuests": 2, "price": 120, "img": "/old_project/img/bookingRooms/14.jpg" }
+    ],
     "checkout": {
       "title": "Completa tu reserva",
       "summary": {
         "checkinLabel": "Check-in",
         "checkoutLabel": "Check-out",
-        "roomLabel": "Habitación",
-        "defaultRoom": "Habitación doble",
-        "familySuiteRoom": "Suite familiar"
+        "roomLabel": "Habitaciones"
       },
       "form": {
         "labels": {
