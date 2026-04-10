@@ -1,0 +1,16 @@
+<app-header></app-header>
+
+<main class="page-rooms" *ngIf="roomsData$ | async as roomsData">
+  <app-text-image-section
+    *ngFor="let room of roomsData.rooms; let i = index"
+    [sectionClass]="i % 2 === 0 ? 'text-image-right' : 'text-image-left'"
+    [imageFirst]="i % 2 !== 0"
+    [sectionData]="{
+      title: room['title'],
+      description: room['description'],
+      imageGradient: room['imageGradient']
+    }"
+  ></app-text-image-section>
+</main>
+
+<app-footer></app-footer>

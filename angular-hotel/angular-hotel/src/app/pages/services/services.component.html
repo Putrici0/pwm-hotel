@@ -1,0 +1,16 @@
+<app-header></app-header>
+
+<ng-container *ngIf="servicesData$ | async as servicesData">
+  <app-title-subtitle
+    [title]="servicesData.intro.title"
+    [description]="servicesData.intro.description"
+  ></app-title-subtitle>
+
+  <app-text-image-section
+    *ngFor="let service of servicesData.services"
+    sectionClass="text-image-right"
+    [sectionData]="service"
+  ></app-text-image-section>
+</ng-container>
+
+<app-footer></app-footer>
