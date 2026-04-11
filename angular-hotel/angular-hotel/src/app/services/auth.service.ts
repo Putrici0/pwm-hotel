@@ -92,10 +92,8 @@ export class AuthService {
 
   private async getAllUsers(): Promise<AuthUser[]> {
     try {
-      const data = await firstValueFrom(this.siteDataService.getAllData());
-      const baseUsers = Array.isArray((data as { users?: AuthUser[] }).users)
-        ? ((data as { users: AuthUser[] }).users ?? [])
-        : [];
+      const usersDoc = await firstValueFrom(this.siteDataService.getSection<{users?: AuthUser[]}>('users'));
+      const baseUsers = Array.isArray(usersDoc?.users) ? usersDoc.users : [];
       return [...baseUsers, ...this.getLocalRegisteredUsers()];
     } catch {
       return this.getLocalRegisteredUsers();

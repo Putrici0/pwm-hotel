@@ -16,9 +16,12 @@ export class AdminDataService {
       return;
     }
 
-    const data = await firstValueFrom(this.siteDataService.getAllData());
-    const initialData = (data as { initialData?: AdminDb }).initialData || {};
-    localStorage.setItem(this.storageKey, JSON.stringify(initialData));
+    try {
+      const initialData = await firstValueFrom(this.siteDataService.getSection<AdminDb>('initialData'));
+      localStorage.setItem(this.storageKey, JSON.stringify(initialData || {}));
+    } catch {
+      localStorage.setItem(this.storageKey, JSON.stringify({}));
+    }
   }
 
   getDb(): AdminDb {
