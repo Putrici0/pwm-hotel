@@ -170,3 +170,66 @@ input[type="file"]::file-selector-button {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Transizione fluidissima */
 }
 
+/* --- STYLES PARA LA EDICIÓN EN LÍNEA --- */
+.action-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.btn-edit {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-edit:hover {
+    background-color: #d4b886;
+}
+
+.btn-save {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-save:hover {
+    background-color: #218838;
+}
+
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.edit-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--mar-navy);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.edit-input:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 128, 0.5);
+}

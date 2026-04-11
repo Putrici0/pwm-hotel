@@ -499,9 +499,11 @@
         "id": "rooms",
         "title": "Habitaciones",
         "fields": [
-          {"name": "nombre", "label": "Nombre de la habitación", "type": "text"},
+          {"name": "nombre", "label": "Nombre", "type": "text"},
           {"name": "descripcion", "label": "Descripción", "type": "text"},
-          {"name": "imagen", "label": "Imagen de la habitación", "type": "file"}
+          {"name": "precio", "label": "Precio (€)", "type": "number"},
+          {"name": "huespedes", "label": "Huéspedes", "type": "number"},
+          {"name": "imagen", "label": "Imagen", "type": "file"}
         ]
       },
       {
@@ -519,7 +521,7 @@
           {"name": "cliente", "label": "Nombre y Apellido", "type": "text"},
           {"name": "email", "label": "Email", "type": "email"},
           {"name": "habitacion", "label": "Habitación Elegida", "type": "text"},
-          {"name": "fecha", "label": "Fecha (Ej. 2026-05-12)", "type": "date"},
+          {"name": "fecha", "label": "Fecha", "type": "date"},
           {"name": "huespedes", "label": "Número de Huéspedes", "type": "number"}
         ]
       },
@@ -528,7 +530,7 @@
         "title": "Menú Fijo",
         "fields": [
           {"name": "plato", "label": "Nombre del Plato", "type": "text"},
-          {"name": "tipo", "label": "Tipo (Primo, Segundo, Postre)", "type": "text"},
+          {"name": "tipo", "label": "Tipo", "type": "text"},
           {"name": "imagen", "label": "URL de la Imagen", "type": "text"}
         ]
       },
@@ -547,21 +549,29 @@
       {
         "nombre": "Suite Mar Premium",
         "descripcion": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
+        "precio": 220,
+        "huespedes": 2,
         "imagen": "../old_project/img/bookingRooms/11.jpg"
       },
       {
         "nombre": "Habitación Deluxe Terraza",
         "descripcion": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
+        "precio": 280,
+        "huespedes": 4,
         "imagen": "../old_project/img/bookingRooms/12.jpg"
       },
       {
         "nombre": "Habitación Familiar",
         "descripcion": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
+        "precio": 400,
+        "huespedes": 6,
         "imagen": "../old_project/img/bookingRooms/13.jpg"
       },
       {
         "nombre": "Habitación Cozy",
         "descripcion": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
+        "precio": 120,
+        "huespedes": 2,
         "imagen": "../old_project/img/bookingRooms/14.jpg"
       }
     ],
