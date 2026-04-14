@@ -15,8 +15,8 @@ async function initAdmin() {
         renderDashboard(adminConfig.sections);
 
     } catch (error) {
-        console.error("Error al inicializar admin:", error);
-        document.getElementById("admin-dashboard").innerHTML = "<p>Error al cargar los datos.</p>";
+        console.error(error);
+        document.getElementById("admin-dashboard").innerHTML = "<p>Error.</p>";
     }
 }
 
@@ -60,7 +60,7 @@ function renderDashboard(sections) {
         tableContainer.innerHTML = generateTableHTML(section, db[section.id] || []);
 
         attachDeleteEvents(tableContainer, section.id, sections);
-        attachEditEvents(tableContainer, section, sections); // NUEVO: Eventos de editar
+        attachEditEvents(tableContainer, section, sections);
 
         const formContainer = document.createElement("div");
         formContainer.className = "admin-form-container";
@@ -77,7 +77,7 @@ function renderDashboard(sections) {
 
 function generateTableHTML(section, items) {
     if (!items || items.length === 0) {
-        return `<p>No hay elementos registrados en ${section.title}.</p>`;
+        return `<p>No hay elementos.</p>`;
     }
 
     const headers = section.fields.map(f => `<th>${f.label}</th>`).join("");
@@ -85,22 +85,29 @@ function generateTableHTML(section, items) {
     const rows = items.map((item, index) => {
         const cells = section.fields.map(f => {
             if (section.id === 'rooms' && f.name === 'imagen') {
-                return `<td><img src="${item[f.name]}" alt="${item.nombre}" class="room-thumbnail"></td>`;
+                return `<td><img src="${item[f.name]}" alt="${item.nombre}" class="room-thumbnail modal-trigger" data-fullsrc="${item[f.name]}"></td>`;
             } else if (f.name === 'imagen' && section.id !== 'rooms') {
                 return `<td title="${item[f.name]}">${item[f.name] ? item[f.name].substring(0,20) + '...' : ''}</td>`;
             }
-            // Añadir el símbolo de euro al precio si existe
+
             let cellText = item[f.name] || '';
             if (f.name === 'precio') cellText += ' €';
-            return `<td>${cellText}</td>`;
+
+            if (f.name === 'descripcion') {
+                return `<td style="font-size: 0.9em; line-height: 1.4;">${cellText}</td>`;
+            }
+
+            return `<td><strong>${cellText}</strong></td>`;
         }).join("");
 
         return `
             <tr>
                 ${cells}
                 <td class="action-cell">
-                    <button class="btn-edit" data-index="${index}">Editar</button>
-                    <button class="btn-delete" data-index="${index}">Borrar</button>
+                    <div class="action-buttons-wrapper">
+                        <button class="admin-btn-edit" data-index="${index}">Editar</button>
+                        <button class="admin-btn-delete" data-index="${index}">Borrar</button>
+                    </div>
                 </td>
             </tr>
         `;
@@ -113,7 +120,152 @@ function generateTableHTML(section, items) {
             </thead>
             <tbody>${rows}</tbody>
         </table>
+        
+        <div id="imageModal" class="image-modal-overlay">
+            <div class="image-modal-content">
+                <button class="image-modal-close" onclick="closeImageModal()">&times;</button>
+                <img id="modalImage" src="" alt="Vista">
+            </div>
+        </div>
     `;
+}
+
+window.openImageModal = function(src) {
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    if (modal && modalImg) {
+        modalImg.src = src;
+        modal.classList.add('active');
+    }
+};
+
+window.closeImageModal = function() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+};
+
+function attachEditEvents(container, section, allSections) {
+    const thumbnails = container.querySelectorAll('.modal-trigger');
+    thumbnails.forEach(thumb => {
+        thumb.addEventListener('click', (e) => {
+            openImageModal(e.target.getAttribute('data-fullsrc'));
+        });
+    });
+
+    const modalOverlay = container.querySelector('#imageModal');
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeImageModal();
+        });
+    }
+
+    const editButtons = container.querySelectorAll(".admin-btn-edit");
+    editButtons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            const index = e.target.getAttribute("data-index");
+            const db = getAdminData();
+            const item = db[section.id][index];
+            const row = e.target.closest("tr");
+
+            const cells = section.fields.map(f => {
+                if (f.type === 'file') {
+                    return `
+                        <td>
+                            <img src="${item[f.name]}" class="room-thumbnail" style="margin-bottom: 5px; cursor: default;">
+                            <input type="file" class="edit-input-file" data-name="${f.name}" accept="image/*" style="width:100%; font-size: 0.8em;">
+                        </td>
+                    `;
+                } else if (f.name === 'descripcion') {
+                    return `<td><textarea class="edit-textarea auto-expand" data-name="${f.name}">${item[f.name] || ''}</textarea></td>`;
+                } else if (f.name === 'nombre') {
+                    return `<td><textarea class="edit-textarea edit-input-name auto-expand" data-name="${f.name}" rows="1" style="min-height: 40px;">${item[f.name] || ''}</textarea></td>`;
+                } else {
+                    return `<td><input type="${f.type}" class="edit-input" data-name="${f.name}" value="${item[f.name] || ''}" style="width: 80px; padding: 5px;"></td>`;
+                }
+            }).join("");
+
+            row.innerHTML = `
+                ${cells}
+                <td class="action-cell">
+                    <div class="action-buttons-wrapper">
+                        <button class="admin-btn-save" data-index="${index}">Guardar</button>
+                        <button class="admin-btn-cancel">Cancelar</button>
+                    </div>
+                </td>
+            `;
+
+            const textareas = row.querySelectorAll('.auto-expand');
+            textareas.forEach(textarea => {
+                textarea.style.height = 'auto';
+                textarea.style.height = (textarea.scrollHeight) + 'px';
+
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            });
+
+            row.querySelector(".admin-btn-cancel").addEventListener("click", () => {
+                renderDashboard(allSections);
+            });
+
+            row.querySelector(".admin-btn-save").addEventListener("click", async () => {
+                if (confirm("¿Estás seguro de que deseas guardar estos cambios?")) {
+                    const newObj = { ...item };
+
+                    const inputs = row.querySelectorAll(".edit-input");
+                    inputs.forEach(inp => {
+                        newObj[inp.getAttribute("data-name")] = inp.value;
+                    });
+
+                    const txtAreas = row.querySelectorAll(".edit-textarea");
+                    txtAreas.forEach(txt => {
+                        newObj[txt.getAttribute("data-name")] = txt.value;
+                    });
+
+                    const fileInput = row.querySelector(".edit-input-file");
+                    if (fileInput && fileInput.files.length > 0) {
+                        try {
+                            newObj[fileInput.getAttribute("data-name")] = await convertFileToBase64(fileInput.files[0]);
+                        } catch (error) {
+                            alert("Error.");
+                            return;
+                        }
+                    }
+
+                    db[section.id][index] = newObj;
+                    saveAdminData(db);
+                    renderDashboard(allSections);
+                }
+            });
+        });
+    });
+}
+
+function attachDeleteEvents(container, sectionId, allSections) {
+    const buttons = container.querySelectorAll(".admin-btn-delete");
+    buttons.forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            if (confirm("¿Borrar permanentemente?")) {
+                const index = e.target.getAttribute("data-index");
+                const db = getAdminData();
+                db[sectionId].splice(index, 1);
+                saveAdminData(db);
+                renderDashboard(allSections);
+            }
+        });
+    });
+}
+
+function convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+    });
 }
 
 function generateFormHTML(section) {
@@ -140,101 +292,10 @@ function generateFormHTML(section) {
             <h3>Añadir ${section.title}</h3>
             <form id="form-${section.id}" enctype="multipart/form-data">
                 ${inputs}
-                <button type="submit" class="btn btn-primary">Añadir</button>
+                <button type="submit" class="admin-btn-submit">Añadir</button>
             </form>
         </div>
     `;
-}
-
-// NUEVA FUNCIÓN: Lógica de edición en línea
-function attachEditEvents(container, section, allSections) {
-    const editButtons = container.querySelectorAll(".btn-edit");
-    editButtons.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            const index = e.target.getAttribute("data-index");
-            const db = getAdminData();
-            const item = db[section.id][index];
-            const row = e.target.closest("tr");
-
-            // Convertir las celdas en inputs
-            const cells = section.fields.map(f => {
-                if (f.type === 'file') {
-                    return `
-                        <td>
-                            <img src="${item[f.name]}" class="room-thumbnail" style="margin-bottom: 5px;">
-                            <input type="file" class="edit-input-file" data-name="${f.name}" accept="image/*" style="width:100%; font-size: 0.8em;">
-                        </td>
-                    `;
-                } else {
-                    return `<td><input type="${f.type}" class="edit-input" data-name="${f.name}" value="${item[f.name] || ''}"></td>`;
-                }
-            }).join("");
-
-            // Reemplazar la fila con los inputs y los nuevos botones
-            row.innerHTML = `
-                ${cells}
-                <td class="action-cell">
-                    <button class="btn-save" data-index="${index}">Guardar</button>
-                    <button class="btn-cancel">Cancelar</button>
-                </td>
-            `;
-
-            // Botón Cancelar
-            row.querySelector(".btn-cancel").addEventListener("click", () => {
-                renderDashboard(allSections); // Recargar sin guardar
-            });
-
-            // Botón Guardar
-            row.querySelector(".btn-save").addEventListener("click", async () => {
-                if (confirm("¿Estás seguro de que deseas guardar estos cambios?")) {
-                    const newObj = { ...item };
-                    const inputs = row.querySelectorAll(".edit-input");
-
-                    inputs.forEach(inp => {
-                        newObj[inp.getAttribute("data-name")] = inp.value;
-                    });
-
-                    const fileInput = row.querySelector(".edit-input-file");
-                    if (fileInput && fileInput.files.length > 0) {
-                        try {
-                            newObj[fileInput.getAttribute("data-name")] = await convertFileToBase64(fileInput.files[0]);
-                        } catch (error) {
-                            alert("Error al procesar la nueva imagen.");
-                            return;
-                        }
-                    }
-
-                    db[section.id][index] = newObj;
-                    saveAdminData(db);
-                    renderDashboard(allSections);
-                }
-            });
-        });
-    });
-}
-
-function attachDeleteEvents(container, sectionId, allSections) {
-    const buttons = container.querySelectorAll(".btn-delete");
-    buttons.forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            if (confirm("¿Estás seguro de que quieres borrar este elemento permanentemente?")) {
-                const index = e.target.getAttribute("data-index");
-                const db = getAdminData();
-                db[sectionId].splice(index, 1);
-                saveAdminData(db);
-                renderDashboard(allSections);
-            }
-        });
-    });
-}
-
-function convertFileToBase64(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-    });
 }
 
 function attachSubmitEvent(container, section, allSections) {
@@ -243,7 +304,7 @@ function attachSubmitEvent(container, section, allSections) {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!confirm(`¿Quieres añadir este elemento a ${section.title}?`)) {
+        if (!confirm(`¿Añadir?`)) {
             return;
         }
 
@@ -263,8 +324,7 @@ function attachSubmitEvent(container, section, allSections) {
                     const base64String = await convertFileToBase64(fileInput.files[0]);
                     newItem.imagen = base64String;
                 } catch (error) {
-                    console.error("Error leggendo il file:", error);
-                    alert("Error al cargar la imagen.");
+                    alert("Error.");
                     return;
                 }
             }
