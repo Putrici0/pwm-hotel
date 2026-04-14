@@ -1,96 +1,169 @@
 <app-header></app-header>
 
-<main *ngIf="contactData$ | async as contactData">
-  <app-title-subtitle
-    [title]="contactData.header.title"
-    [description]="contactData.header.subtitle"
-  ></app-title-subtitle>
+<main>
+  <section class="title-subtitle-section">
+    <div class="title-subtitle-container">
+      <h1>Contacto</h1>
+      <p>
+        Estamos aquí para ayudarte. Si tienes cualquier duda sobre tu estancia,
+        servicios o reservas, puedes escribirnos mediante este formulario.
+      </p>
+    </div>
+  </section>
 
-  <app-text-image-section
-    sectionClass="text-image-right"
-    [sectionData]="{
-      title: contactData.commitment.title,
-      description: contactData.commitment.description,
-      imageGradient: contactData.commitment.imageGradient
-    }"
-  ></app-text-image-section>
+  <section class="text-image-section text-image-right">
+    <div class="text-image-container">
+      <div class="text-content">
+        <h2>Atención cercana y rápida</h2>
+        <p>
+          Queremos que comunicarte con nosotros sea sencillo. Nuestro equipo revisa
+          cada solicitud para ofrecer una respuesta clara y útil lo antes posible.
+        </p>
+      </div>
+      <div
+        class="image-content"
+        style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');"
+      ></div>
+    </div>
+  </section>
 
   <section id="contact-form-section" class="auth-section">
     <div class="auth-card contact-card">
-      <form id="contact-form-element" (ngSubmit)="submit()">
-        <label>{{ contactData.form.labels.name }}</label>
-        <input type="text" [placeholder]="contactData.form.placeholders.name" [(ngModel)]="formModel.name" name="name" required />
+      <form id="contact-form-element" (ngSubmit)="submit()" #contactForm="ngForm">
+        <div class="form-grid two-columns">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              [(ngModel)]="formModel.name"
+              required
+            />
+          </div>
 
-        <label>{{ contactData.form.labels.lastName }}</label>
-        <input
-          type="text"
-          [placeholder]="contactData.form.placeholders.lastName"
-          [(ngModel)]="formModel.lastName"
-          name="lastName"
-          required
-        />
-
-        <label>{{ contactData.form.labels.email }}</label>
-        <input
-          type="email"
-          [placeholder]="contactData.form.placeholders.email"
-          [(ngModel)]="formModel.email"
-          name="email"
-          required
-        />
-
-        <label>{{ contactData.form.labels.subject }}</label>
-        <select [(ngModel)]="formModel.subject" name="subject" required>
-          <option value="" disabled selected>{{ contactData.form.placeholders.subject }}</option>
-          <option *ngFor="let option of contactData.form.subjectOptions" [value]="option.value">
-            {{ option.text }}
-          </option>
-        </select>
-
-        <label>{{ contactData.form.labels.question }}</label>
-        <textarea
-          [placeholder]="contactData.form.placeholders.question"
-          [(ngModel)]="formModel.question"
-          name="question"
-          required
-        ></textarea>
-
-        <div class="auth-checkbox">
-          <input type="checkbox" [(ngModel)]="formModel.privacy" name="privacy" required />
-          <div>
-            <strong>{{ contactData.form.privacyText }}</strong>
+          <div class="form-group">
+            <label for="lastName">Apellidos</label>
+            <input
+              id="lastName"
+              name="lastName"
+              type="text"
+              [(ngModel)]="formModel.lastName"
+              required
+            />
           </div>
         </div>
 
-        <div class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
-        <div class="success-msg" *ngIf="successMessage" style="color: green; text-align: center; font-weight: bold; margin-top: 10px">
-          {{ successMessage }}
+        <div class="form-group">
+          <label for="email">Correo electrónico</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            [(ngModel)]="formModel.email"
+            required
+          />
         </div>
 
-        <button type="submit" id="btn-submit" class="auth-btn-primary" [disabled]="submitting">
-          {{ submitting ? 'Enviando...' : contactData.form.submitText }}
+        <div class="form-group">
+          <label for="subject">Asunto</label>
+          <select
+            id="subject"
+            name="subject"
+            [(ngModel)]="formModel.subject"
+            required
+          >
+            <option value="" disabled selected>Selecciona el motivo de tu consulta</option>
+            <option value="reservation">Reserva</option>
+            <option value="stay">Estancia</option>
+            <option value="services">Servicios</option>
+            <option value="incident">Incidencia</option>
+            <option value="other">Otra consulta</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="question">Mensaje</label>
+          <textarea
+            id="question"
+            name="question"
+            rows="6"
+            [(ngModel)]="formModel.question"
+            placeholder="Escribe aquí tu mensaje..."
+            required
+          ></textarea>
+        </div>
+
+        <div class="checkbox-group">
+          <input
+            id="privacy"
+            name="privacy"
+            type="checkbox"
+            [(ngModel)]="formModel.privacy"
+          />
+          <label for="privacy">
+            Acepto el tratamiento de mis datos para gestionar esta consulta.
+          </label>
+        </div>
+
+        <p *ngIf="errorMessage" class="form-message error-message">
+          {{ errorMessage }}
+        </p>
+
+        <p *ngIf="successMessage" class="form-message success-message">
+          {{ successMessage }}
+        </p>
+
+        <button type="submit" class="auth-button" [disabled]="submitting">
+          {{ submitting ? 'Enviando...' : 'Enviar mensaje' }}
         </button>
       </form>
     </div>
   </section>
 
-  <section id="table-section" class="table-section">
-    <h2 class="table-title">{{ contactData.faq.title }}</h2>
+  <section class="faq-section">
+    <div class="faq-container">
+      <h2>Preguntas frecuentes</h2>
 
-    <div class="table-wrapper">
-      <table class="table faq-table">
-        <thead>
-          <tr>
-            <th *ngFor="let header of contactData.faq.headers">{{ header }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let item of contactData.faq.items">
-            <td [attr.data-label]="contactData.faq.headers[0]">{{ item.question }}</td>
-            <td [attr.data-label]="contactData.faq.headers[1]">{{ item.answer }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="faq-group">
+        <h3>Reservas y estancia</h3>
+
+        <div class="faq-item">
+          <h4>¿Cómo puedo modificar una reserva?</h4>
+          <p>
+            Puedes ponerte en contacto con el hotel indicando los datos de tu
+            reserva para que podamos revisarla.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>¿Recibiré confirmación tras enviar el formulario?</h4>
+          <p>
+            Sí. Verás un mensaje de confirmación en pantalla una vez el envío se
+            haya completado correctamente.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-group">
+        <h3>Servicios</h3>
+
+        <div class="faq-item">
+          <h4>¿Puedo consultar servicios disponibles antes de llegar?</h4>
+          <p>
+            Sí. Puedes escribirnos mediante el formulario y te facilitaremos la
+            información que necesites.
+          </p>
+        </div>
+
+        <div class="faq-item">
+          <h4>¿Atienden consultas generales del hotel?</h4>
+          <p>
+            Sí. Este formulario también sirve para dudas generales sobre
+            instalaciones, horarios o funcionamiento.
+          </p>
+        </div>
+      </div>
     </div>
   </section>
 </main>
