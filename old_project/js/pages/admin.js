@@ -1,3 +1,5 @@
+let servicesFilter = 'bienestar';
+
 document.addEventListener("DOMContentLoaded", initAdmin);
 
 async function initAdmin() {
@@ -7,6 +9,8 @@ async function initAdmin() {
         const adminConfig = data.admin;
         const initialData = data.initialData;
 
+        localStorage.removeItem("hotelAdminData");
+
         if (!localStorage.getItem("hotelAdminData")) {
             localStorage.setItem("hotelAdminData", JSON.stringify(initialData));
         }
@@ -15,7 +19,6 @@ async function initAdmin() {
         renderDashboard(adminConfig.sections);
 
     } catch (error) {
-        console.error(error);
         document.getElementById("admin-dashboard").innerHTML = "<p>Error.</p>";
     }
 }
@@ -52,12 +55,33 @@ function renderDashboard(sections) {
         sectionTitle.textContent = section.title;
         sectionDiv.appendChild(sectionTitle);
 
+        if (section.id === 'services') {
+            const filterRow = document.createElement("div");
+            filterRow.className = "admin-filter-row";
+            filterRow.innerHTML = `
+                <button class="filter-btn ${servicesFilter === 'bienestar' ? 'active' : ''}" data-filter="bienestar">Bienestar</button>
+                <button class="filter-btn ${servicesFilter === 'actividad' ? 'active' : ''}" data-filter="actividad">Actividades</button>
+            `;
+            filterRow.querySelectorAll(".filter-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    servicesFilter = btn.getAttribute("data-filter");
+                    renderDashboard(sections);
+                });
+            });
+            sectionDiv.appendChild(filterRow);
+        }
+
         const gridDiv = document.createElement("div");
         gridDiv.className = "admin-grid";
 
+        let items = db[section.id] || [];
+        if (section.id === 'services') {
+            items = items.filter(s => s.tipo === servicesFilter);
+        }
+
         const tableContainer = document.createElement("div");
         tableContainer.className = "admin-table-container";
-        tableContainer.innerHTML = generateTableHTML(section, db[section.id] || []);
+        tableContainer.innerHTML = generateTableHTML(section, items);
 
         attachDeleteEvents(tableContainer, section.id, sections);
         attachEditEvents(tableContainer, section, sections);
@@ -77,17 +101,16 @@ function renderDashboard(sections) {
 
 function generateTableHTML(section, items) {
     if (!items || items.length === 0) {
-        return `<p>No hay elementos.</p>`;
+        return `<p>No hay elementos registrados.</p>`;
     }
 
-    const headers = section.fields.map(f => `<th>${f.label}</th>`).join("");
+    const fieldsToShow = section.fields.filter(f => f.name !== 'tipo' || section.id !== 'services');
+    const headers = fieldsToShow.map(f => `<th>${f.label}</th>`).join("");
 
     const rows = items.map((item, index) => {
-        const cells = section.fields.map(f => {
-            if (section.id === 'rooms' && f.name === 'imagen') {
-                return `<td><img src="${item[f.name]}" alt="${item.nombre}" class="room-thumbnail modal-trigger" data-fullsrc="${item[f.name]}"></td>`;
-            } else if (f.name === 'imagen' && section.id !== 'rooms') {
-                return `<td title="${item[f.name]}">${item[f.name] ? item[f.name].substring(0,20) + '...' : ''}</td>`;
+        const cells = fieldsToShow.map(f => {
+            if (f.name === 'imagen') {
+                return `<td><img src="${item[f.name] || ''}" class="room-thumbnail modal-trigger" data-fullsrc="${item[f.name] || ''}"></td>`;
             }
 
             let cellText = item[f.name] || '';
@@ -133,7 +156,7 @@ function generateTableHTML(section, items) {
 window.openImageModal = function(src) {
     const modal = document.getElementById('imageModal');
     const modalImg = document.getElementById('modalImage');
-    if (modal && modalImg) {
+    if (modal && modalImg && src) {
         modalImg.src = src;
         modal.classList.add('active');
     }
@@ -166,81 +189,63 @@ function attachEditEvents(container, section, allSections) {
         btn.addEventListener("click", (e) => {
             const index = e.target.getAttribute("data-index");
             const db = getAdminData();
-            const item = db[section.id][index];
-            const row = e.target.closest("tr");
 
-            const cells = section.fields.map(f => {
-                if (f.type === 'file') {
-                    return `
-                        <td>
-                            <img src="${item[f.name]}" class="room-thumbnail" style="margin-bottom: 5px; cursor: default;">
-                            <input type="file" class="edit-input-file" data-name="${f.name}" accept="image/*" style="width:100%; font-size: 0.8em;">
-                        </td>
-                    `;
-                } else if (f.name === 'descripcion') {
-                    return `<td><textarea class="edit-textarea auto-expand" data-name="${f.name}">${item[f.name] || ''}</textarea></td>`;
-                } else if (f.name === 'nombre') {
-                    return `<td><textarea class="edit-textarea edit-input-name auto-expand" data-name="${f.name}" rows="1" style="min-height: 40px;">${item[f.name] || ''}</textarea></td>`;
-                } else {
-                    return `<td><input type="${f.type}" class="edit-input" data-name="${f.name}" value="${item[f.name] || ''}" style="width: 80px; padding: 5px;"></td>`;
-                }
-            }).join("");
-
-            row.innerHTML = `
-                ${cells}
-                <td class="action-cell">
-                    <div class="action-buttons-wrapper">
-                        <button class="admin-btn-save" data-index="${index}">Guardar</button>
-                        <button class="admin-btn-cancel">Cancelar</button>
-                    </div>
-                </td>
-            `;
-
-            const textareas = row.querySelectorAll('.auto-expand');
-            textareas.forEach(textarea => {
-                textarea.style.height = 'auto';
-                textarea.style.height = (textarea.scrollHeight) + 'px';
-
-                textarea.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    this.style.height = (this.scrollHeight) + 'px';
-                });
-            });
-
-            row.querySelector(".admin-btn-cancel").addEventListener("click", () => {
-                renderDashboard(allSections);
-            });
-
-            row.querySelector(".admin-btn-save").addEventListener("click", async () => {
-                if (confirm("¿Estás seguro de que deseas guardar estos cambios?")) {
-                    const newObj = { ...item };
-
-                    const inputs = row.querySelectorAll(".edit-input");
-                    inputs.forEach(inp => {
-                        newObj[inp.getAttribute("data-name")] = inp.value;
-                    });
-
-                    const txtAreas = row.querySelectorAll(".edit-textarea");
-                    txtAreas.forEach(txt => {
-                        newObj[txt.getAttribute("data-name")] = txt.value;
-                    });
-
-                    const fileInput = row.querySelector(".edit-input-file");
-                    if (fileInput && fileInput.files.length > 0) {
-                        try {
-                            newObj[fileInput.getAttribute("data-name")] = await convertFileToBase64(fileInput.files[0]);
-                        } catch (error) {
-                            alert("Error.");
-                            return;
-                        }
-                    }
-
-                    db[section.id][index] = newObj;
-                    saveAdminData(db);
-                    renderDashboard(allSections);
-                }
-            });
+            let items = db[section.id];
+            if (section.id === 'services') {
+                const filtered = items.filter(s => s.tipo === servicesFilter);
+                const realItem = filtered[index];
+                const realIndex = items.indexOf(realItem);
+                processEdit(e.target.closest("tr"), section, items, realIndex, allSections);
+            } else {
+                processEdit(e.target.closest("tr"), section, items, index, allSections);
+            }
         });
+    });
+}
+
+function processEdit(row, section, dbList, index, allSections) {
+    const item = dbList[index];
+    const cells = section.fields.map(f => {
+        if (f.name === 'tipo' && section.id === 'services') return '';
+        if (f.type === 'file') {
+            return `<td><img src="${item[f.name] || ''}" class="room-thumbnail" style="margin-bottom: 5px; cursor: default;"><input type="file" class="edit-input-file" data-name="${f.name}" accept="image/*" style="width:100%; font-size: 0.8em;"></td>`;
+        } else if (f.name === 'descripcion') {
+            return `<td><textarea class="edit-textarea auto-expand" data-name="${f.name}">${item[f.name] || ''}</textarea></td>`;
+        } else if (f.name === 'nombre') {
+            return `<td><textarea class="edit-textarea edit-input-name auto-expand" data-name="${f.name}" rows="1" style="min-height: 40px;">${item[f.name] || ''}</textarea></td>`;
+        } else {
+            return `<td><input type="${f.type}" class="edit-input" data-name="${f.name}" value="${item[f.name] || ''}" style="width: 80px; padding: 5px;"></td>`;
+        }
+    }).join("");
+
+    row.innerHTML = `${cells}<td class="action-cell"><div class="action-buttons-wrapper"><button class="admin-btn-save">Guardar</button><button class="admin-btn-cancel">Cancelar</button></div></td>`;
+
+    row.querySelectorAll('.auto-expand').forEach(textarea => {
+        textarea.style.height = 'auto';
+        textarea.style.height = (textarea.scrollHeight) + 'px';
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+        });
+    });
+
+    row.querySelector(".admin-btn-cancel").addEventListener("click", () => renderDashboard(allSections));
+
+    row.querySelector(".admin-btn-save").addEventListener("click", async () => {
+        if (confirm("¿Guardar cambios?")) {
+            const newObj = { ...item };
+            row.querySelectorAll(".edit-input").forEach(inp => newObj[inp.getAttribute("data-name")] = inp.value);
+            row.querySelectorAll(".edit-textarea").forEach(txt => newObj[txt.getAttribute("data-name")] = txt.value);
+            const fileInput = row.querySelector(".edit-input-file");
+            if (fileInput && fileInput.files.length > 0) {
+                try { newObj[fileInput.getAttribute("data-name")] = await convertFileToBase64(fileInput.files[0]); } catch (error) { return; }
+            }
+            dbList[index] = newObj;
+            const fullDb = getAdminData();
+            fullDb[section.id] = dbList;
+            saveAdminData(fullDb);
+            renderDashboard(allSections);
+        }
     });
 }
 
@@ -251,7 +256,14 @@ function attachDeleteEvents(container, sectionId, allSections) {
             if (confirm("¿Borrar permanentemente?")) {
                 const index = e.target.getAttribute("data-index");
                 const db = getAdminData();
-                db[sectionId].splice(index, 1);
+                let list = db[sectionId];
+                if (sectionId === 'services') {
+                    const filtered = list.filter(s => s.tipo === servicesFilter);
+                    const realIndex = list.indexOf(filtered[index]);
+                    list.splice(realIndex, 1);
+                } else {
+                    list.splice(index, 1);
+                }
                 saveAdminData(db);
                 renderDashboard(allSections);
             }
@@ -270,73 +282,37 @@ function convertFileToBase64(file) {
 
 function generateFormHTML(section) {
     const inputs = section.fields.map(f => {
+        if (section.id === 'services' && f.name === 'tipo') {
+            return `<div class="form-group"><label>${f.label}</label><select name="${f.name}" required><option value="bienestar">Bienestar</option><option value="actividad">Actividades</option></select></div>`;
+        }
         const inputType = f.type || 'text';
         if (inputType === 'file') {
-            return `
-                <div class="form-group">
-                    <label>${f.label}</label>
-                    <input type="file" name="${f.name}" accept="image/*" required>
-                </div>
-            `;
+            return `<div class="form-group"><label>${f.label}</label><input type="file" name="${f.name}" accept="image/*" required></div>`;
         }
-        return `
-            <div class="form-group">
-                <label>${f.label}</label>
-                <input type="${inputType}" name="${f.name}" required>
-            </div>
-        `;
+        return `<div class="form-group"><label>${f.label}</label><input type="${inputType}" name="${f.name}" required></div>`;
     }).join("");
 
-    return `
-        <div class="admin-form-card">
-            <h3>Añadir ${section.title}</h3>
-            <form id="form-${section.id}" enctype="multipart/form-data">
-                ${inputs}
-                <button type="submit" class="admin-btn-submit">Añadir</button>
-            </form>
-        </div>
-    `;
+    return `<div class="admin-form-card"><h3>Añadir ${section.title}</h3><form id="form-${section.id}" enctype="multipart/form-data">${inputs}<button type="submit" class="admin-btn-submit">Añadir</button></form></div>`;
 }
 
 function attachSubmitEvent(container, section, allSections) {
     const form = container.querySelector(`#form-${section.id}`);
-
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
-
-        if (!confirm(`¿Añadir?`)) {
-            return;
-        }
-
+        if (!confirm(`¿Añadir?`)) return;
         const formData = new FormData(form);
         const newItem = {};
-
         section.fields.forEach(f => {
-            if (f.type !== 'file') {
-                newItem[f.name] = formData.get(f.name);
-            }
+            if (f.type !== 'file') { newItem[f.name] = formData.get(f.name); }
         });
-
-        if (section.id === 'rooms') {
-            const fileInput = form.querySelector('input[type="file"][name="imagen"]');
-            if (fileInput && fileInput.files.length > 0) {
-                try {
-                    const base64String = await convertFileToBase64(fileInput.files[0]);
-                    newItem.imagen = base64String;
-                } catch (error) {
-                    alert("Error.");
-                    return;
-                }
-            }
+        const fileInput = form.querySelector('input[type="file"][name="imagen"]');
+        if (fileInput && fileInput.files.length > 0) {
+            try { newItem.imagen = await convertFileToBase64(fileInput.files[0]); } catch (error) { return; }
         }
-
         const db = getAdminData();
-        if (!db[section.id]) {
-            db[section.id] = [];
-        }
+        if (!db[section.id]) db[section.id] = [];
         db[section.id].push(newItem);
         saveAdminData(db);
-
         form.reset();
         renderDashboard(allSections);
     });

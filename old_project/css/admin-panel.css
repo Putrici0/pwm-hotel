@@ -306,3 +306,40 @@ input[type="file"] {
     font-size: 0.9rem;
     box-sizing: border-box;
 }
+
+.admin-filter-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: var(--arena-clara);
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.filter-btn {
+    padding: 0.6rem 1.5rem;
+    border: 2px solid var(--mar-navy);
+    background: white;
+    color: var(--mar-navy);
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: var(--arena-sable);
+}
+
+.filter-btn.active {
+    background: var(--mar-navy);
+    color: white;
+}
+
+.admin-form-card select {
+    width: 100%;
+    padding: 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+}

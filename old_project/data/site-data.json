@@ -511,7 +511,9 @@
         "title": "Servicios del Hotel",
         "fields": [
           {"name": "nombre", "label": "Nombre del servicio", "type": "text"},
-          {"name": "descripcion", "label": "Descripción", "type": "text"}
+          {"name": "tipo", "label": "Tipo", "type": "text"},
+          {"name": "descripcion", "label": "Descripción", "type": "text"},
+          {"name": "imagen", "label": "Imagen", "type": "file"}
         ]
       },
       {
@@ -551,31 +553,68 @@
         "descripcion": "La opción más exclusiva. Incluye cocina de diseño, baño turco privado y vistas frontales al océano. Lujo absoluto con cama king size y zona de estar.",
         "precio": 220,
         "huespedes": 2,
-        "imagen": "../old_project/img/bookingRooms/11.jpg"
+        "imagen": "/old_project/img/bookingRooms/11.jpg"
       },
       {
         "nombre": "Habitación Deluxe Terraza",
         "descripcion": "Espacio luminoso con terraza privada amueblada. Equipada con minibar premium, cafetera de cápsulas y un baño completo con ducha de efecto lluvia.",
         "precio": 280,
         "huespedes": 4,
-        "imagen": "../old_project/img/bookingRooms/12.jpg"
+        "imagen": "/old_project/img/bookingRooms/12.jpg"
       },
       {
         "nombre": "Habitación Familiar",
         "descripcion": "Máxima amplitud para grupos. Cuenta con áreas separadas, mobiliario infantil, nevera familiar y un set de juegos para los más pequeños.",
         "precio": 400,
         "huespedes": 6,
-        "imagen": "../old_project/img/bookingRooms/13.jpg"
+        "imagen": "/old_project/img/bookingRooms/13.jpg"
       },
       {
         "nombre": "Habitación Cozy",
         "descripcion": "Práctica y acogedora. Dispone de nevera compacta, Wi-Fi de alta velocidad y un sistema de climatización inteligente para un descanso perfecto.",
         "precio": 120,
         "huespedes": 2,
-        "imagen": "../old_project/img/bookingRooms/14.jpg"
+        "imagen": "/old_project/img/bookingRooms/14.jpg"
       }
     ],
-    "services": [{"nombre": "Spa & Bienestar", "descripcion": "Relájate en nuestro spa."}],
+    "services": [
+      {
+        "nombre": "Gimnasio",
+        "tipo": "bienestar",
+        "descripcion": "Espacio equipado con máquinas de cardio y fuerza, zona funcional y material de entrenamiento libre para mantener tu rutina durante la estancia.",
+        "imagen": "https://images.pexels.com/photos/1954524/pexels-photo-1954524.jpeg"
+      },
+      {
+        "nombre": "Piscina",
+        "tipo": "bienestar",
+        "descripcion": "Piscina exterior climatizada con área de tumbonas y servicio de bar cercano, ideal para relajarte o disfrutar en familia a cualquier hora del día.",
+        "imagen": "/old_project/img/32.jpg"
+      },
+      {
+        "nombre": "Spa",
+        "tipo": "bienestar",
+        "descripcion": "Circuito de bienestar con sauna, baño de vapor y cabinas de masaje para una experiencia de desconexión completa en un ambiente tranquilo.",
+        "imagen": "https://images.pexels.com/photos/3757942/pexels-photo-3757942.jpeg"
+      },
+      {
+        "nombre": "Tour guiado por la ciudad",
+        "tipo": "actividad",
+        "descripcion": "Recorre los puntos más emblemáticos de Gran Canaria con un guía local y descubre su historia, cultura y rincones recomendados para sacar el máximo partido a tu viaje.",
+        "imagen": "https://images.interhome.group/travelguide/spain-gran-canaria-las-palmas.jpg"
+      },
+      {
+        "nombre": "Yoga al amanecer",
+        "tipo": "actividad",
+        "descripcion": "Empieza el día con una sesión de yoga en la playa para mejorar movilidad, respiración y energía antes del desayuno.",
+        "imagen": "/old_project/img/34.jpg"
+      },
+      {
+        "nombre": "Cata de vinos y productos locales",
+        "tipo": "actividad",
+        "descripcion": "Disfruta de una experiencia gastronómica guiada con selección de vinos regionales y degustación de quesos, aceites y productos artesanales.",
+        "imagen": "https://vinostresrios.com/wp-content/uploads/2023/11/cata-de-vinos-guia-9.jpg"
+      }
+    ],
     "reservations": [],
     "menus": [],
     "faqs": []
