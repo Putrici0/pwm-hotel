@@ -1,38 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account</title>
+    <title>Mi Cuenta - Isla Dorada</title>
 
     <link rel="stylesheet" href="../css/global.css">
-    <link rel="stylesheet" href="../css/title-subtitle.css">
-    <link rel="stylesheet" href="../css/table-card.css">
     <link rel="stylesheet" href="../css/account.css">
 
     <script src="../js/shared/include-file.js"></script>
 </head>
 <body>
 
-    <header class="header" data-include-file="../templates/header.html"></header>
+<header class="header" data-include-file="../templates/header.html"></header>
 
-    <main>
+<main class="account-main-container">
+    <div id="account-header-section" class="account-header-section"></div>
 
-        <div id="title-account" data-include-file="../templates/title-subtitle.html"></div>
+    <div class="account-dashboard">
+        <div id="account-tabs" class="account-tabs-wrapper"></div>
+        <div id="account-content" class="account-content-area"></div>
+    </div>
+</main>
 
-        <div id="table-account" data-include-file="../templates/table-card.html"></div>
+<footer class="footer" data-include-file="../templates/footer.html"></footer>
 
-        <section class="account-actions">
-            <button id="change-1-account" class="account-actions__btn">Lorem Ipsum</button>
-            <button id="change-2-account" class="account-actions__btn">Lorem Ipsum</button>
-            <button id="change-3-account" class="account-actions__btn">Lorem Ipsum</button>
-        </section>
-
-    </main>
-
-    <footer class="footer" data-include-file="../templates/footer.html"></footer>
-
-    <script src="../js/main.js"></script>
+<script src="../js/pages/account.js"></script>
+<script src="../js/main.js"></script>
 
 </body>
 </html>
