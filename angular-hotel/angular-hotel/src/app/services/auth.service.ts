@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Auth,
+  User,
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
   onAuthStateChanged,
@@ -9,12 +10,11 @@ import {
   signOut,
   updatePassword as firebaseUpdatePassword
 } from '@angular/fire/auth';
-import { firstValueFrom } from 'rxjs';
-import { SiteDataService } from './site-data.service';
+import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
 
-interface AuthRoleUser {
+interface UserAccessDocument {
   email: string;
-  role: 'admin' | 'user';
+  isAdmin: boolean;
 }
 
 @Injectable({
@@ -22,7 +22,7 @@ interface AuthRoleUser {
 })
 export class AuthService {
   private readonly auth = inject(Auth);
-  private readonly siteDataService = inject(SiteDataService);
+  private readonly firestore = inject(Firestore);
 
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
@@ -31,7 +31,7 @@ export class AuthService {
         return;
       }
 
-      void this.persistLocalSession(user.email);
+      void this.syncSessionFromUser(user);
     });
   }
 
@@ -39,8 +39,7 @@ export class AuthService {
     try {
       const normalizedEmail = email.trim().toLowerCase();
       const credentials = await signInWithEmailAndPassword(this.auth, normalizedEmail, password);
-      const resolvedEmail = credentials.user.email || normalizedEmail;
-      await this.persistLocalSession(resolvedEmail);
+      await this.syncSessionFromUser(credentials.user);
       return true;
     } catch {
       return false;
@@ -67,7 +66,8 @@ export class AuthService {
   async register(email: string, password: string): Promise<{ ok: boolean; message?: string }> {
     const normalizedEmail = email.trim().toLowerCase();
     try {
-      await createUserWithEmailAndPassword(this.auth, normalizedEmail, password);
+      const credentials = await createUserWithEmailAndPassword(this.auth, normalizedEmail, password);
+      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false);
       await signOut(this.auth);
       this.clearLocalSession();
       return { ok: true };
@@ -83,6 +83,14 @@ export class AuthService {
 
       if (code === 'auth/weak-password') {
         return { ok: false, message: 'La contrasena es demasiado debil.' };
+      }
+
+      if (code === 'permission-denied') {
+        return { ok: false, message: 'Firestore denego permisos al crear users/{uid}. Revisa las reglas.' };
+      }
+
+      if (code === 'unavailable') {
+        return { ok: false, message: 'Firestore no disponible temporalmente.' };
       }
 
       return { ok: false, message: 'No se pudo registrar el usuario.' };
@@ -111,22 +119,64 @@ export class AuthService {
     await sendPasswordResetEmail(this.auth, normalizedEmail);
   }
 
-  private async persistLocalSession(email: string): Promise<void> {
-    const role = await this.getUserRoleByEmail(email);
+  private async syncSessionFromUser(user: User): Promise<void> {
+    const email = user.email || '';
+    let role: 'admin' | 'user' = 'user';
+
+    try {
+      const accessDoc = await this.ensureUserAccessDocument(user.uid, email, false);
+      role = accessDoc.isAdmin ? 'admin' : 'user';
+    } catch {
+      role = 'user';
+    }
+
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('loggedUserEmail', email);
     localStorage.setItem('userRole', role);
   }
 
-  private async getUserRoleByEmail(email: string): Promise<'admin' | 'user'> {
-    try {
-      const usersDoc = await firstValueFrom(this.siteDataService.getSection<{users?: AuthRoleUser[]}>('users'));
-      const users = Array.isArray(usersDoc?.users) ? usersDoc.users : [];
-      const foundUser = users.find((user) => user.email?.toLowerCase() === email.toLowerCase());
-      return foundUser?.role === 'admin' ? 'admin' : 'user';
-    } catch {
-      return 'user';
+  private async ensureUserAccessDocument(
+    uid: string,
+    email: string,
+    defaultIsAdmin: boolean
+  ): Promise<UserAccessDocument> {
+    const normalizedEmail = email.toLowerCase();
+    const userAccessRef = doc(this.firestore, 'users', uid);
+    const userAccessSnapshot = await getDoc(userAccessRef);
+
+    if (!userAccessSnapshot.exists()) {
+      await setDoc(userAccessRef, {
+        email: normalizedEmail,
+        isAdmin: defaultIsAdmin,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp()
+      });
+
+      return {
+        email: normalizedEmail,
+        isAdmin: defaultIsAdmin
+      };
     }
+
+    const userAccessData = userAccessSnapshot.data() as Partial<UserAccessDocument>;
+    const isAdmin = userAccessData.isAdmin === true;
+    const storedEmail = typeof userAccessData.email === 'string' ? userAccessData.email.toLowerCase() : normalizedEmail;
+
+    if (storedEmail !== normalizedEmail) {
+      await setDoc(
+        userAccessRef,
+        {
+          email: normalizedEmail,
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
+    }
+
+    return {
+      email: storedEmail !== normalizedEmail ? normalizedEmail : storedEmail,
+      isAdmin
+    };
   }
 
   private clearLocalSession(): void {
