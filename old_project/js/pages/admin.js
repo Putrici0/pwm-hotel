@@ -311,52 +311,62 @@ function attachSubmitEvent(container, section, allSections, bookingConfig) {
 // ------------------------------------------------------------------
 // --- LÓGICA DE INYECCIÓN DEL WIDGET DE RESERVAS EN ADMIN ---
 // ------------------------------------------------------------------
-function setLabelForInputAdmin(inputEl, newText) {
-    if (!inputEl || !newText) return;
-    let label = document.querySelector(`label[for='${inputEl.id}']`);
-    if (!label && inputEl.previousElementSibling && inputEl.previousElementSibling.tagName === 'LABEL') label = inputEl.previousElementSibling;
-    if (label) label.textContent = newText;
-}
-
 function injectBookingWidget(bookingConfig, roomsList) {
     const container = document.getElementById("admin-booking-widget-inject");
     if (!container) return;
 
-    // 1. Construir el HTML del Widget
+    // 1. Construir el HTML del Widget usando las clases de admin-form-card
     container.innerHTML = `
-        <div class="booking-widget-container" style="background:var(--arena-clara); padding:1.5rem; border-radius:var(--radius-card);">
-            <form class="booking-form" id="admin-booking-search-form">
-                <div class="form-group-alt">
+        <div class="admin-form-card" style="max-width: 100%; margin-top: 1rem;">
+            <form class="admin-manage-form" id="admin-booking-search-form" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; align-items: end;">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label for="admin-checkin">Check-in</label>
                     <input type="date" id="admin-checkin" required>
                 </div>
-                <div class="form-group-alt">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label for="admin-checkout">Check-out</label>
                     <input type="date" id="admin-checkout" required>
                 </div>
-                <div class="form-group-alt">
+                <div class="form-group" style="margin-bottom: 0;">
                     <label for="admin-guests">Huéspedes</label>
                     <input type="number" id="admin-guests" min="1" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-full">BUSCAR DISPONIBILIDAD</button>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <button type="submit" class="admin-btn-submit" style="margin-top: 0; height: 100%;">BUSCAR</button>
+                </div>
             </form>
-            <div class="checkbox-group-alt" style="margin-top:1rem;">
-                <label><input type="checkbox" id="admin-family-suite-checkbox"> Incluir Suite Familiar</label>
+            
+            <div style="margin-top: 1rem; font-size: 0.9rem;">
+                <label style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem; color: var(--mar-navy); font-weight: bold;">
+                    <input type="checkbox" id="admin-family-suite-checkbox" style="width: auto;"> 
+                    Incluir Suite Familiar
+                </label>
             </div>
             
             <section id="admin-room-selection-list" style="display:none; margin-top:2rem;">
                 <div class="room-options-container" id="admin-room-container"></div>
             </section>
 
-            <section id="admin-checkout-section" style="display:none; margin-top:2rem;">
-                <div class="booking-checkout-card" style="margin: 0 auto;">
-                    <div class="booking-summary" id="admin-booking-summary"></div>
-                    <form id="admin-final-booking-form">
-                        <div class="form-group"><label>Nombre y Apellidos</label><input type="text" id="admin-final-name" required></div>
-                        <div class="form-group"><label>Email</label><input type="email" id="admin-final-email" required></div>
+            <section id="admin-checkout-section" style="display:none; margin-top:2rem; padding-top: 2rem; border-top: 1px solid var(--arena-sable);">
+                <div class="booking-summary" id="admin-booking-summary" style="margin-bottom: 1.5rem; background: var(--blanco-puro); padding: 1rem; border-radius: 8px;"></div>
+                
+                <form id="admin-final-booking-form" class="admin-manage-form" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Nombre</label>
+                        <input type="text" id="admin-final-name" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label>Apellidos</label>
+                        <input type="text" id="admin-final-lastname" required>
+                    </div>
+                    <div class="form-group" style="grid-column: 1 / -1; margin-bottom: 0;">
+                        <label>Email</label>
+                        <input type="email" id="admin-final-email" required>
+                    </div>
+                    <div style="grid-column: 1 / -1;">
                         <button type="submit" class="admin-btn-submit">CONFIRMAR RESERVA</button>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </section>
         </div>
     `;
@@ -401,12 +411,12 @@ function injectBookingWidget(bookingConfig, roomsList) {
         const familyCheckbox = document.getElementById("admin-family-suite-checkbox");
         let availableRooms = roomsList;
         if (familyCheckbox && !familyCheckbox.checked) {
-            availableRooms = availableRooms.filter(r => r.nombre !== 'Habitación Familiar'); // Ajusta si el nombre es distinto
+            availableRooms = availableRooms.filter(r => r.nombre !== 'Habitación Familiar');
         }
 
         const statusDiv = document.createElement('div');
         statusDiv.id = "admin-booking-status-bar";
-        statusDiv.style.cssText = "background:#D4C4A8; color:#1A365D; padding:15px; text-align:center; margin-bottom:20px; font-weight:bold; border-radius:5px;";
+        statusDiv.style.cssText = "background:var(--arena-sable); color:var(--mar-navy); padding:15px; text-align:center; margin-bottom:20px; font-weight:bold; border-radius:5px;";
         statusDiv.textContent = `Selecciona habitaciones para ${requestedGuests} huéspedes.`;
         roomContainer.appendChild(statusDiv);
 
@@ -414,15 +424,15 @@ function injectBookingWidget(bookingConfig, roomsList) {
             const totalPrice = (room.precio || room.price || 0) * totalNights;
             const card = document.createElement('div');
             card.className = 'room-option-card';
-            card.style.cssText = "display:flex; background:white; padding:1rem; border-radius:8px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.1); align-items:center; gap:1rem;";
+            card.style.cssText = "display:flex; background:white; padding:1rem; border-radius:8px; margin-bottom:1rem; box-shadow:0 2px 5px rgba(0,0,0,0.05); align-items:center; gap:1.5rem;";
             card.innerHTML = `
-                <img src="${room.imagen || room.img}" style="width:100px; height:80px; object-fit:cover; border-radius:4px;">
+                <img src="${room.imagen || room.img}" style="width:120px; height:90px; object-fit:cover; border-radius:4px; border: 1px solid var(--arena-clara);">
                 <div style="flex:1;">
-                    <h4 style="color:var(--mar-navy); margin-bottom:0.2rem;">${room.nombre || room.title}</h4>
-                    <div style="font-size:0.85rem;">Capacidad: ${room.huespedes || room.guests || room.maxGuests} pers.</div>
-                    <div style="color:var(--mar-navy); font-weight:bold; margin-top:0.2rem;">${room.precio || room.price}€ / noche</div>
+                    <h4 style="color:var(--mar-navy); margin-bottom:0.3rem; font-size: 1.1rem;">${room.nombre || room.title}</h4>
+                    <div style="font-size:0.9rem; color: #555;">Capacidad: <strong>${room.huespedes || room.guests || room.maxGuests} pers.</strong></div>
+                    <div style="color:var(--mar-navy); font-weight:bold; margin-top:0.4rem; font-size: 1.05rem;">${room.precio || room.price}€ / noche</div>
                 </div>
-                <button type="button" class="admin-btn-save admin-select-room-btn" data-room='${JSON.stringify(room)}'>Añadir</button>
+                <button type="button" class="admin-btn-save admin-select-room-btn" data-room='${JSON.stringify(room)}' style="padding: 0.8rem 1.5rem; font-size: 1rem;">Añadir</button>
             `;
             roomContainer.appendChild(card);
         });
@@ -434,16 +444,17 @@ function injectBookingWidget(bookingConfig, roomsList) {
                 currentCapacity += parseInt(roomData.huespedes || roomData.guests || roomData.maxGuests);
 
                 ev.target.textContent = 'Añadida';
-                ev.target.style.backgroundColor = '#ccc';
+                ev.target.style.backgroundColor = '#6c757d';
                 ev.target.disabled = true;
 
                 const statusBar = document.getElementById("admin-booking-status-bar");
                 if (currentCapacity < requestedGuests) {
                     statusBar.textContent = `Faltan ${requestedGuests - currentCapacity} plazas.`;
                     statusBar.style.background = "#e67e22";
+                    statusBar.style.color = "white";
                 } else {
                     statusBar.textContent = `¡Capacidad cubierta!`;
-                    statusBar.style.background = "#27ae60";
+                    statusBar.style.background = "#28a745";
                     statusBar.style.color = "white";
 
                     roomContainer.querySelectorAll('.admin-select-room-btn:not(:disabled)').forEach(b => {
@@ -464,7 +475,10 @@ function injectBookingWidget(bookingConfig, roomsList) {
     const finalForm = document.getElementById("admin-final-booking-form");
     finalForm.addEventListener("submit", (e) => {
         e.preventDefault();
-        const clientName = document.getElementById('admin-final-name').value;
+        const clientFirstName = document.getElementById('admin-final-name').value;
+        const clientLastName = document.getElementById('admin-final-lastname').value;
+        const clientFullName = `${clientFirstName} ${clientLastName}`.trim();
+
         const clientEmail = document.getElementById('admin-final-email').value;
         const inDate = document.getElementById('admin-checkin').value;
         const outDate = document.getElementById('admin-checkout').value;
@@ -472,7 +486,7 @@ function injectBookingWidget(bookingConfig, roomsList) {
         const roomNames = selectedRoomsArr.map(r => r.nombre || r.title).join(", ");
 
         const newReservation = {
-            cliente: clientName,
+            cliente: clientFullName,
             email: clientEmail,
             habitacion: roomNames,
             entrada: inDate,
@@ -487,7 +501,6 @@ function injectBookingWidget(bookingConfig, roomsList) {
 
         alert("¡Reserva añadida con éxito al panel de control!");
 
-        // Recargar la vista de administración para ver la tabla actualizada
         initAdmin();
     });
 }
