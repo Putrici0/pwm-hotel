@@ -2,6 +2,7 @@ let currentSectionId = 'rooms';
 let servicesFilter = 'bienestar';
 let reservationsFilter = 'proximas';
 let menusFilter = 'entrantes';
+let reservationsCustomDate = '';
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
@@ -41,6 +42,43 @@ function renderAdminTitle(titleData) {
             <p>${titleData.description}</p>
         `;
     }
+}
+
+function getFilteredItems(sectionId, dbList) {
+    let items = [...(dbList || [])];
+
+    if (sectionId === 'services') {
+        return items.filter(s => s.tipo === servicesFilter);
+    }
+
+    if (sectionId === 'menus') {
+        return items.filter(m => m.categoria === menusFilter);
+    }
+
+    if (sectionId === 'reservations') {
+        items = items.filter(res => {
+            const resDate = new Date(res.entrada);
+            resDate.setHours(0,0,0,0);
+
+            if (reservationsFilter === 'proximas') {
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                return resDate >= today;
+            } else if (reservationsFilter === 'custom' && reservationsCustomDate) {
+                const customDate = new Date(reservationsCustomDate);
+                customDate.setHours(0,0,0,0);
+                return resDate >= customDate;
+            }
+            return true;
+        });
+        return items.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
+    }
+
+    if (sectionId === 'faqs') {
+        return items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    }
+
+    return items;
 }
 
 function renderDashboard(sections, bookingConfig) {
@@ -87,10 +125,28 @@ function renderDashboard(sections, bookingConfig) {
         filterRow.innerHTML = `
             <button class="filter-btn ${reservationsFilter === 'proximas' ? 'active' : ''}" data-filter="proximas">Próximas</button>
             <button class="filter-btn ${reservationsFilter === 'todas' ? 'active' : ''}" data-filter="todas">Todas</button>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-left: 1rem;">
+                <label for="admin-custom-date" style="font-weight:bold; color:var(--mar-navy);">Ver desde:</label>
+                <input type="date" id="admin-custom-date" class="admin-date-input" value="${reservationsCustomDate}">
+            </div>
         `;
         filterRow.querySelectorAll(".filter-btn").forEach(btn => {
-            btn.addEventListener("click", () => { reservationsFilter = btn.getAttribute("data-filter"); renderDashboard(sections, bookingConfig); });
+            btn.addEventListener("click", () => {
+                reservationsFilter = btn.getAttribute("data-filter");
+                reservationsCustomDate = '';
+                renderDashboard(sections, bookingConfig);
+            });
         });
+
+        const dateInput = filterRow.querySelector('#admin-custom-date');
+        dateInput.addEventListener('change', (e) => {
+            if(e.target.value) {
+                reservationsCustomDate = e.target.value;
+                reservationsFilter = 'custom';
+                renderDashboard(sections, bookingConfig);
+            }
+        });
+
         sectionDiv.appendChild(filterRow);
     }
 
@@ -112,24 +168,11 @@ function renderDashboard(sections, bookingConfig) {
     const gridDiv = document.createElement("div");
     gridDiv.className = "admin-grid";
 
-    let items = db[section.id] || [];
-
-    if (section.id === 'services') items = items.filter(s => s.tipo === servicesFilter);
-    if (section.id === 'menus') items = items.filter(m => m.categoria === menusFilter);
-
-    if (section.id === 'reservations') {
-        const today = new Date(); today.setHours(0,0,0,0);
-        if (reservationsFilter === 'proximas') items = items.filter(res => new Date(res.entrada) >= today);
-        items.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
-    }
-
-    if (section.id === 'faqs') {
-        items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-    }
+    const filteredItems = getFilteredItems(section.id, db[section.id]);
 
     const tableContainer = document.createElement("div");
     tableContainer.className = "admin-table-container";
-    tableContainer.innerHTML = generateTableHTML(section, items);
+    tableContainer.innerHTML = generateTableHTML(section, filteredItems);
 
     attachDeleteEvents(tableContainer, section.id, sections, bookingConfig);
     attachEditEvents(tableContainer, section, sections, bookingConfig);
@@ -229,23 +272,12 @@ function attachEditEvents(container, section, allSections, bookingConfig) {
         btn.addEventListener("click", (e) => {
             const index = e.target.getAttribute("data-index");
             const db = getAdminData();
-            let items = db[section.id];
+            let items = db[section.id] || [];
 
-            if (section.id === 'services') {
-                const filtered = items.filter(s => s.tipo === servicesFilter);
-                processEdit(e.target.closest("tr"), section, items, items.indexOf(filtered[index]), allSections, bookingConfig);
-            } else if (section.id === 'menus') {
-                const filtered = items.filter(m => m.categoria === menusFilter);
-                processEdit(e.target.closest("tr"), section, items, items.indexOf(filtered[index]), allSections, bookingConfig);
-            } else if (section.id === 'reservations') {
-                const today = new Date(); today.setHours(0,0,0,0);
-                let filtered = items;
-                if (reservationsFilter === 'proximas') filtered = items.filter(res => new Date(res.entrada) >= today);
-                filtered.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
-                processEdit(e.target.closest("tr"), section, items, items.indexOf(filtered[index]), allSections, bookingConfig);
-            } else {
-                processEdit(e.target.closest("tr"), section, items, index, allSections, bookingConfig);
-            }
+            const filtered = getFilteredItems(section.id, items);
+            const realIndex = items.indexOf(filtered[index]);
+
+            processEdit(e.target.closest("tr"), section, items, realIndex, allSections, bookingConfig);
         });
     });
 }
@@ -296,22 +328,14 @@ function attachDeleteEvents(container, sectionId, allSections, bookingConfig) {
                 if (proceed) {
                     const index = e.target.getAttribute("data-index");
                     const db = getAdminData();
-                    let list = db[sectionId];
-                    let targetList = list;
+                    let items = db[sectionId] || [];
 
-                    if (sectionId === 'services') targetList = list.filter(s => s.tipo === servicesFilter);
-                    else if (sectionId === 'menus') targetList = list.filter(m => m.categoria === menusFilter);
-                    else if (sectionId === 'reservations') {
-                        const today = new Date(); today.setHours(0,0,0,0);
-                        targetList = reservationsFilter === 'proximas' ? list.filter(res => new Date(res.entrada) >= today) : list;
-                        targetList.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
-                    }
-                    else if (sectionId === 'faqs') {
-                        targetList.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-                    }
+                    const filtered = getFilteredItems(sectionId, items);
+                    const realIndex = items.indexOf(filtered[index]);
 
-                    list.splice(list.indexOf(targetList[index]), 1);
-                    saveAdminData(db); renderDashboard(allSections, bookingConfig);
+                    items.splice(realIndex, 1);
+                    saveAdminData(db);
+                    renderDashboard(allSections, bookingConfig);
                 }
             }
         });

@@ -352,6 +352,7 @@
     border-bottom: 2px solid var(--arena-clara);
     scrollbar-width: thin;
     scrollbar-color: var(--arena-sable) transparent;
+    justify-content: center;
 }
 
 .admin-tabs-wrapper::-webkit-scrollbar {
@@ -435,5 +436,8 @@
     .admin-btn-toggle-form {
         width: 100%;
         border-radius: 8px;
+    }
+    .admin-tabs-wrapper {
+        justify-content: flex-start;
     }
 }
