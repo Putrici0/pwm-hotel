@@ -1,17 +1,23 @@
 <app-header></app-header>
 
-<ng-container *ngIf="wellnessData$ | async as wellnessData">
-  <app-title-subtitle
-    [title]="wellnessData.intro.title"
-    [description]="wellnessData.intro.description"
-  ></app-title-subtitle>
+<section class="wellness-page wrapper">
+  <div class="page-header">
+    <h1>Wellness</h1>
+    <p>
+      El área wellness refuerza la dimensión de descanso del hotel y aporta espacios que
+      complementan la experiencia del huésped.
+    </p>
+  </div>
 
-  <app-text-image-section
-    *ngFor="let facility of wellnessData.facilities"
-    sectionClass="text-image-left"
-    [imageFirst]="true"
-    [sectionData]="facility"
-  ></app-text-image-section>
-</ng-container>
+  <div class="cards-grid">
+    <article class="facility-card" *ngFor="let item of facilities">
+      <img [src]="item.imageUrl" [alt]="item.title" />
+      <div class="facility-card__body">
+        <h2>{{ item.title }}</h2>
+        <p>{{ item.description }}</p>
+      </div>
+    </article>
+  </div>
+</section>
 
 <app-footer></app-footer>

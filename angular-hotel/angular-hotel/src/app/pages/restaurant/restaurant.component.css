@@ -1,280 +1,69 @@
-/* css por template RESTAURANT & MENU (table-menu.html y la imagen de cabecera de la página restaurant.html) */
+.wrapper {
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+}
 
-.restaurant-hero-image {
-    width: 100%;
-    height: 250px;
-    background: var(--arena-sable);
-    margin: 20px 0;
+.restaurant-page {
+  padding: 3rem 0;
+}
+
+.hero-mini {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.hero-mini h1 {
+  color: #123b44;
+  margin-bottom: 0.8rem;
+}
+
+.hero-mini img,
+.dish-card img {
+  width: 100%;
+  border-radius: 20px;
+  object-fit: cover;
 }
 
 .menu-section {
-    padding: 2.25rem 1.25rem;
-    max-width: 900px;
-    margin: 0 auto;
+  margin-top: 2rem;
 }
 
-.menu-section__title {
-    font-size: 24px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--mar-navy);
+.menu-section h2 {
+  color: #123b44;
+  margin-bottom: 1rem;
 }
 
-.menu-table {
-    border: 2px solid var(--mar-navy);
-    border-radius: 12px;
-    overflow: hidden;
-    background-color: #F8F5F0;
-    box-shadow: 0 4px 15px rgba(26, 54, 93, 0.05);
+.dish-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.2rem;
 }
 
-
-.menu-table table,
-.menu-table tbody {
-    display: block;
-    width: 100%;
+.dish-card {
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
-.menu-table tr {
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--mar-navy);
-    width: 100%;
+.dish-card img {
+  height: 210px;
 }
 
-.menu-table tr:last-child {
-    border-bottom: none;
+.dish-card__body {
+  padding: 1rem;
 }
 
-.menu-table td {
-    padding: 15px 20px;
-    border-bottom: none;
-}
-
-.menu-table td:nth-child(1) {
-    order: 2;
-    flex: 1;
-    text-align: left;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: var(--mar-navy);
-    padding-left: 15px;
-}
-
-.menu-table td:nth-child(2) {
-    order: 3;
-    text-align: right;
-    font-weight: bold;
-    font-size: 1.2rem;
-    white-space: nowrap;
-    min-width: 100px;
-}
-
-
-.menu-table td:nth-child(3) {
-    order: 1;
-    width: 100px;
-    padding-right: 0;
-    display: flex;
-    justify-content: center;
-}
-
-
-.white-placeholder {
-    width: 80px;
-    height: 80px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    border: 1px solid rgba(26, 54, 93, 0.2);
-    flex-shrink: 0;
-}
-
-
-@media (min-width: 768px) and (max-width: 1023px) {
-    .restaurant-hero-image {
-        height: 210px;
-        margin: 22px 0;
-    }
-
-    .menu-section {
-        max-width: 820px;
-        padding: 1.6rem 1rem;
-    }
-
-    .menu-section__title {
-        font-size: 1.55rem;
-        margin-bottom: 0.9rem;
-    }
-
-    .menu-table {
-        border-width: 1px;
-        border-radius: 14px;
-    }
-
-    .menu-table tr {
-        display: grid;
-        grid-template-columns: 70px 1fr auto;
-        gap: 0.6rem;
-        align-items: center;
-    }
-
-    .menu-table td {
-        padding: 0.85rem 0.75rem;
-    }
-
-    .menu-table td:nth-child(1) {
-        order: 2;
-        font-size: 1.02rem;
-        line-height: 1.35;
-        padding-left: 0.2rem;
-    }
-
-    .menu-table td:nth-child(2) {
-        order: 3;
-        min-width: 96px;
-        font-size: 1rem;
-        border-radius: 999px;
-        background: rgba(26, 54, 93, 0.08);
-        padding: 0.35rem 0.65rem;
-    }
-
-    .menu-table td:nth-child(3) {
-        order: 1;
-        width: 70px;
-        padding-right: 0;
-    }
-
-    .white-placeholder {
-        width: 52px;
-        height: 52px;
-    }
-}
-
-@media (max-width: 767px) {
-    .restaurant-hero-image {
-        height: 180px;
-        margin: 16px 0;
-    }
-
-    .menu-section {
-        padding: 1.15rem 0.75rem;
-    }
-
-    .menu-section__title {
-        font-size: 1.3rem;
-        margin-bottom: 0.7rem;
-    }
-
-    .menu-table {
-        border: 0;
-        background: transparent;
-        box-shadow: none;
-    }
-
-    .menu-table table {
-        display: block;
-    }
-
-    .menu-table tbody {
-        display: flex;
-        flex-direction: column;
-        gap: 0.7rem;
-    }
-
-    .menu-table tr {
-        display: grid;
-        grid-template-columns: 56px 1fr;
-        grid-template-areas:
-            "img name"
-            "price price";
-        gap: 0.45rem 0.7rem;
-        border: 1px solid rgba(26, 54, 93, 0.22);
-        border-radius: 12px;
-        background: rgba(255, 255, 255, 0.82);
-        padding: 0.7rem;
-    }
-
-    .menu-table td {
-        display: block;
-        width: 100%;
-        padding: 0;
-        border: 0;
-    }
-
-    .menu-table td:nth-child(3) {
-        grid-area: img;
-        width: 56px;
-        margin-bottom: 0;
-        justify-content: flex-start;
-    }
-
-    .menu-table td:nth-child(1) {
-        grid-area: name;
-        font-size: 1rem;
-        line-height: 1.35;
-        margin-bottom: 0;
-    }
-
-    .menu-table td:nth-child(2) {
-        grid-area: price;
-        min-width: 0;
-        text-align: left;
-        font-size: 1.05rem;
-        color: var(--mar-navy);
-        font-weight: 700;
-        padding-top: 0.15rem;
-    }
-
-    .menu-table td:nth-child(2)::before {
-        content: attr(data-label) ": ";
-        font-weight: 600;
-        color: rgba(26, 54, 93, 0.82);
-    }
-
-    .white-placeholder {
-        width: 56px;
-        height: 56px;
-    }
-}
-
-.menu-fixed-header {
-    text-align: center;
-    padding: 2rem 1.25rem 0 1.25rem;
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.menu-fixed-header h2 {
-    font-size: 2rem;
-    color: var(--mar-navy);
-    position: relative;
-    display: inline-block;
-    padding-bottom: 0.5rem;
-}
-
-.menu-fixed-header h2::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 20%;
-    right: 20%;
-    height: 3px;
-    background-color: var(--arena-sable);
-    border-radius: 2px;
+.dish-card__body h3 {
+  color: #123b44;
+  margin-bottom: 0.55rem;
 }
 
 @media (max-width: 900px) {
-    .menu-fixed-header h2 {
-        font-size: 1.75rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .menu-fixed-header {
-        padding: 1.5rem 0.75rem 0 0.75rem;
-    }
-
-    .menu-fixed-header h2 {
-        font-size: 1.45rem;
-    }
+  .hero-mini {
+    grid-template-columns: 1fr;
+  }
 }

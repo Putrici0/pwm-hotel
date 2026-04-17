@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, doc, docData } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,4 +17,23 @@ export class SiteDataService {
     const docRef = doc(this.firestore, 'assets', 'imageCatalog');
     return docData(docRef) as Observable<Record<string, string>>;
   }
+  private imageCatalog$ = this.getImageCatalog().pipe(
+    shareReplay(1)
+  );
+
+  getImage(key: string): Observable<string | null> {
+    return this.imageCatalog$.pipe(
+      map(catalog => catalog[key] || null)
+    );
+  }
+
+  resolveImage(catalog: Record<string, string>, key: string, fallback: string): string {
+    const image = catalog[key];
+    if (!image || !image.trim()) {
+      return fallback;
+    }
+
+    return image;
+  }
+
 }

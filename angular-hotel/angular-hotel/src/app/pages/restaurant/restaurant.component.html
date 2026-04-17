@@ -1,80 +1,72 @@
 <app-header></app-header>
 
-<main *ngIf="restaurantData$ | async as restaurantData">
-  <app-text-image-section
-    sectionClass="text-image-vertical"
-    [sectionData]="{
-      title: restaurantData.dailyMenu.title,
-      description:
-        restaurantData.dailyMenu.description +
-        (restaurantData.dailyMenu.price ? ' Precio: ' + restaurantData.dailyMenu.price : ''),
-      imageGradient: restaurantData.dailyMenu.imageGradient
-    }"
-  ></app-text-image-section>
-
-  <div class="menu-fixed-header">
-    <h2 id="fixed-menu-title">{{ restaurantData.fixedMenu.title }}</h2>
+<section class="restaurant-page wrapper">
+  <div class="hero-mini">
+    <div>
+      <h1>Restauración</h1>
+      <p>
+        La propuesta gastronómica del hotel combina cocina reconocible, presentación cuidada y un
+        enfoque cómodo para el huésped.
+      </p>
+      <p>
+        La carta se organiza en entrantes, primeros, segundos y postres, junto con un menú del día
+        pensado para aportar variedad.
+      </p>
+    </div>
+    <img [src]="menuImage" alt="Restaurante del hotel" />
   </div>
 
-  <section id="starters" class="menu-section">
-    <h2 class="menu-section__title">{{ restaurantData.starters.title }}</h2>
-    <div class="menu-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let item of restaurantData.starters.items" class="menu-table__row">
-            <td data-label="Plato" class="menu-item-name">{{ item.name }}</td>
-            <td data-label="Precio" class="menu-item-price">{{ item.price }}</td>
-            <td class="menu-item-img"><div class="white-placeholder" [style.background]="item.imageGradient"></div></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="menu-section">
+    <h2>Entrantes</h2>
+    <div class="dish-grid">
+      <article class="dish-card" *ngFor="let item of starters">
+        <img [src]="item.imageUrl" [alt]="item.title" />
+        <div class="dish-card__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
     </div>
-  </section>
+  </div>
 
-  <section id="first-dish" class="menu-section">
-    <h2 class="menu-section__title">{{ restaurantData.firstDishes.title }}</h2>
-    <div class="menu-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let item of restaurantData.firstDishes.items" class="menu-table__row">
-            <td data-label="Plato" class="menu-item-name">{{ item.name }}</td>
-            <td data-label="Precio" class="menu-item-price">{{ item.price }}</td>
-            <td class="menu-item-img"><div class="white-placeholder" [style.background]="item.imageGradient"></div></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="menu-section">
+    <h2>Primeros platos</h2>
+    <div class="dish-grid">
+      <article class="dish-card" *ngFor="let item of firstDishes">
+        <img [src]="item.imageUrl" [alt]="item.title" />
+        <div class="dish-card__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
     </div>
-  </section>
+  </div>
 
-  <section id="second-dish" class="menu-section">
-    <h2 class="menu-section__title">{{ restaurantData.secondDishes.title }}</h2>
-    <div class="menu-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let item of restaurantData.secondDishes.items" class="menu-table__row">
-            <td data-label="Plato" class="menu-item-name">{{ item.name }}</td>
-            <td data-label="Precio" class="menu-item-price">{{ item.price }}</td>
-            <td class="menu-item-img"><div class="white-placeholder" [style.background]="item.imageGradient"></div></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="menu-section">
+    <h2>Segundos platos</h2>
+    <div class="dish-grid">
+      <article class="dish-card" *ngFor="let item of secondDishes">
+        <img [src]="item.imageUrl" [alt]="item.title" />
+        <div class="dish-card__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
     </div>
-  </section>
+  </div>
 
-  <section id="dessert-dish" class="menu-section">
-    <h2 class="menu-section__title">{{ restaurantData.desserts.title }}</h2>
-    <div class="menu-table">
-      <table>
-        <tbody>
-          <tr *ngFor="let item of restaurantData.desserts.items" class="menu-table__row">
-            <td data-label="Plato" class="menu-item-name">{{ item.name }}</td>
-            <td data-label="Precio" class="menu-item-price">{{ item.price }}</td>
-            <td class="menu-item-img"><div class="white-placeholder" [style.background]="item.imageGradient"></div></td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="menu-section">
+    <h2>Postres</h2>
+    <div class="dish-grid">
+      <article class="dish-card" *ngFor="let item of desserts">
+        <img [src]="item.imageUrl" [alt]="item.title" />
+        <div class="dish-card__body">
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.description }}</p>
+        </div>
+      </article>
     </div>
-  </section>
-</main>
+  </div>
+</section>
 
 <app-footer></app-footer>

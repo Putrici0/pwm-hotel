@@ -29,11 +29,13 @@ export class HeaderComponent {
     this.accountDropdownOpen = false;
   }
 
-  toggleServicesDropdown(): void {
+  toggleServicesDropdown(event?: Event): void {
+    event?.preventDefault();
     this.servicesDropdownOpen = !this.servicesDropdownOpen;
   }
 
-  toggleAccountDropdown(): void {
+  toggleAccountDropdown(event?: Event): void {
+    event?.preventDefault();
     this.accountDropdownOpen = !this.accountDropdownOpen;
   }
 

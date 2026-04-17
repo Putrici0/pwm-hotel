@@ -1,102 +1,81 @@
 <header class="header" [class.menu-open]="menuOpen">
-  <a id="header-logo-link" routerLink="/" class="logo-container">
-    <img src="/img/logo.png" alt="Logo" class="logo-img" />
-    <span class="hotel-name">Isla Dorada</span>
+  <a class="logo-container" routerLink="/" (click)="closeMenu()">
+    <div class="logo-mark">ID</div>
+    <div class="hotel-name">Isla Dorada</div>
   </a>
 
-  <button
-    id="header-menu-toggle"
-    class="header-menu-toggle"
-    type="button"
-    aria-label="Abrir menu"
-    [attr.aria-expanded]="menuOpen"
-    aria-controls="header-nav-menu"
-    (click)="toggleMenu()"
-  >
+  <div class="main-action-container">
+    <a class="btn btn-primary btn-small" routerLink="/booking" (click)="closeMenu()">
+      Reserva ahora
+    </a>
+  </div>
+
+  <button class="header-menu-toggle" type="button" (click)="toggleMenu()" aria-label="Abrir menú">
     <span class="header-menu-toggle__line"></span>
     <span class="header-menu-toggle__line"></span>
     <span class="header-menu-toggle__line"></span>
   </button>
 
-  <div id="header-main-action" class="main-action-container">
-    <a routerLink="/booking" class="btn btn-primary btn-large">Reserva ahora</a>
-  </div>
+  <div class="header-menu-backdrop" (click)="closeMenu()"></div>
 
-  <nav id="header-nav-menu" class="nav-menu">
-    <button
-      id="header-menu-close"
-      class="header-menu-close"
-      type="button"
-      aria-label="Cerrar menu"
-      (click)="closeMenu()"
-    >
-      <span class="header-menu-close__line"></span>
-      <span class="header-menu-close__line"></span>
-      <span class="header-menu-close__line"></span>
+  <nav class="nav-menu">
+    <button class="header-menu-close mobile-only" type="button" (click)="closeMenu()" aria-label="Cerrar menú">
+      ✕
     </button>
 
     <ul class="nav-list">
-      <li class="mobile-only">
-        <a routerLink="/booking" class="nav-link" (click)="closeMenu()">Reserva ahora</a>
+      <li>
+        <a class="nav-link" routerLink="/booking" (click)="closeMenu()">Reserva ahora</a>
       </li>
-      <li><a routerLink="/rooms" class="nav-link" (click)="closeMenu()">Habitaciones</a></li>
+
+      <li>
+        <a class="nav-link" routerLink="/rooms" (click)="closeMenu()">Habitaciones</a>
+      </li>
 
       <li class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen">
         <div class="dropdown-trigger">
-          <a routerLink="/services" class="nav-link" (click)="closeMenu()">Servicios</a>
-          <button
-            type="button"
-            class="dropdown-toggle"
-            aria-label="Abrir submenu de servicios"
-            [attr.aria-expanded]="servicesDropdownOpen"
-            (click)="toggleServicesDropdown()"
-          >
-            &#9662;
-          </button>
+          <a class="nav-link" href="#" (click)="toggleServicesDropdown($event)">Servicios</a>
+          <button class="dropdown-toggle" type="button" (click)="toggleServicesDropdown($event)">▾</button>
         </div>
+
         <ul class="dropdown-menu">
-          <li><a routerLink="/restaurant" (click)="closeMenu()">Restauracion</a></li>
+          <li><a routerLink="/services" (click)="closeMenu()">Servicios</a></li>
+          <li><a routerLink="/restaurant" (click)="closeMenu()">Restauración</a></li>
           <li><a routerLink="/wellness-facilities" (click)="closeMenu()">Bienestar</a></li>
           <li><a routerLink="/activities" (click)="closeMenu()">Actividades</a></li>
         </ul>
       </li>
 
-      <li><a routerLink="/contact" class="nav-link" (click)="closeMenu()">Faq</a></li>
+      <li>
+        <a class="nav-link" routerLink="/contact" (click)="closeMenu()">Contacto</a>
+      </li>
+
+      <li>
+        <a class="nav-link" routerLink="/legal" (click)="closeMenu()">Legal</a>
+      </li>
 
       <li class="dropdown-item" [class.dropdown-open]="accountDropdownOpen">
         <div class="dropdown-trigger">
-          <a [routerLink]="accountRoute" class="btn btn-primary btn-small" (click)="closeMenu()">Tu cuenta</a>
-          <button
-            type="button"
-            class="dropdown-toggle"
-            aria-label="Abrir submenu de cuenta"
-            [attr.aria-expanded]="accountDropdownOpen"
-            (click)="toggleAccountDropdown()"
-          >
-            &#9662;
-          </button>
+          <a class="nav-link" href="#" (click)="toggleAccountDropdown($event)">Tu cuenta</a>
+          <button class="dropdown-toggle" type="button" (click)="toggleAccountDropdown($event)">▾</button>
         </div>
+
         <ul class="dropdown-menu dropdown-right">
-          <li class="login-only"><a routerLink="/login" (click)="closeMenu()">Login</a></li>
-          <li class="login-only"><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
-          <li class="login-only">
-            <a routerLink="/change-password" (click)="closeMenu()">Recupera tu contrasena</a>
+          <li>
+            <a [routerLink]="accountRoute" (click)="closeMenu()">
+              {{ showLogout ? 'Mi cuenta' : 'Login' }}
+            </a>
           </li>
+          <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
+          <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
           @if (showAdminOption) {
-            <li class="admin-only"><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
+            <li><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
           }
           @if (showLogout) {
-            <li class="auth-only"><a href="#" (click)="logout($event)">Log out</a></li>
+            <li><a href="#" (click)="logout($event)">Log out</a></li>
           }
         </ul>
       </li>
     </ul>
   </nav>
-
-  <div
-    id="header-menu-backdrop"
-    class="header-menu-backdrop"
-    aria-hidden="true"
-    (click)="closeMenu()"
-  ></div>
 </header>

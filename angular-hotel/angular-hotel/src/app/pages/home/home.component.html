@@ -1,173 +1,107 @@
 <app-header></app-header>
 
-<main>
-  <section class="text-image-section text-image-vertical">
-    <div class="text-image-container">
-      <div class="text-content">
-        <h2>Bienvenido a PWM Hotel</h2>
-        <p>
-          Disfruta de una estancia tranquila y cuidada al detalle en un entorno
-          pensado para desconectar, descansar y vivir una experiencia cómoda
-          desde el primer momento.
-        </p>
-      </div>
-      <div
-        class="image-content"
-        style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80');"
-      ></div>
+<section class="hero">
+  <div class="hero__content wrapper">
+    <div class="hero__text">
+      <span class="eyebrow">Isla Dorada Hotel</span>
+      <h1>Descanso, gastronomía y experiencias junto al mar</h1>
+      <p>
+        Isla Dorada Hotel es un alojamiento pensado para quienes quieren disfrutar de Gran Canaria
+        con comodidad, buena ubicación y servicios que combinan descanso, ocio y bienestar.
+      </p>
+      <a class="hero__cta" href="/booking">Reservar estancia</a>
     </div>
-  </section>
 
-  <section class="text-image-section text-image-right">
-    <div class="text-image-container">
-      <div class="text-content">
-        <h2>Un hotel para descubrir la isla</h2>
-        <p>
-          PWM Hotel combina descanso, buena ubicación y servicios pensados tanto
-          para escapadas cortas como para estancias más largas. Desde aquí puedes
-          moverte con facilidad y disfrutar del entorno sin renunciar a la comodidad.
-        </p>
-      </div>
-      <div
-        class="image-content"
-        style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');"
-      ></div>
+    <div class="hero__media">
+      <img [src]="introImage" alt="Vista principal del hotel" />
     </div>
-  </section>
+  </div>
+</section>
 
-  <section class="image-grid-section">
-    <div class="image-grid-container">
-      <h2>Nuestro entorno</h2>
+<section class="section wrapper split">
+  <div class="split__media">
+    <img [src]="roomsImage" alt="Habitaciones del hotel" />
+  </div>
+  <div class="split__text">
+    <h2>Habitaciones para cada tipo de viaje</h2>
+    <p>
+      El hotel ofrece propuestas pensadas para escapadas en pareja, viajes familiares, estancias de
+      descanso y visitas cortas orientadas a descubrir la isla.
+    </p>
+    <p>
+      La oferta incluye habitaciones acogedoras, opciones familiares y estancias premium con más
+      amplitud y servicios adicionales.
+    </p>
+  </div>
+</section>
 
-      <div class="image-grid">
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Naturaleza</h3>
-            <p>
-              Espacios abiertos, paisajes agradables y un ambiente perfecto para
-              desconectar del ritmo diario.
-            </p>
-          </div>
-        </article>
+<section class="section wrapper">
+  <div class="section__header">
+    <h2>Servicios destacados</h2>
+    <p>Una experiencia completa de hotel con espacios y servicios adaptados a distintos perfiles.</p>
+  </div>
 
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Descanso</h3>
-            <p>
-              Una experiencia enfocada en la tranquilidad, el confort y el bienestar
-              durante toda tu estancia.
-            </p>
-          </div>
-        </article>
-
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Experiencias</h3>
-            <p>
-              Actividades, restauración y zonas comunes diseñadas para que puedas
-              disfrutar del hotel más allá de la habitación.
-            </p>
-          </div>
-        </article>
+  <div class="card-grid">
+    <article class="card" *ngFor="let item of services">
+      <img [src]="item.imageUrl" [alt]="item.title" />
+      <div class="card__body">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
+        <a *ngIf="item.link" [href]="item.link">Ver más</a>
       </div>
-    </div>
-  </section>
+    </article>
+  </div>
+</section>
 
-  <section class="text-image-section text-image-vertical">
-    <div class="text-image-container">
-      <div class="text-content">
-        <h2>Habitaciones para cada tipo de estancia</h2>
-        <p>
-          Disponemos de habitaciones amplias, cómodas y luminosas, pensadas para
-          ofrecer una experiencia agradable tanto a parejas como a familias o
-          viajeros que buscan descanso y funcionalidad.
-        </p>
+<section class="section wrapper split split--reverse">
+  <div class="split__media">
+    <img [src]="islandImage" alt="Gran Canaria" />
+  </div>
+  <div class="split__text">
+    <h2>Gran Canaria, la isla del hotel</h2>
+    <p>
+      Gran Canaria combina playa, naturaleza y cultura en un mismo destino. La ubicación del hotel
+      permite acceder con facilidad a zonas costeras, espacios urbanos y planes de ocio.
+    </p>
+    <p>
+      Esto convierte la estancia en una base cómoda para combinar relax con actividades a distintos
+      ritmos.
+    </p>
+  </div>
+</section>
+
+<section class="section wrapper split">
+  <div class="split__media">
+    <img [src]="locationImage" alt="Ubicación del hotel" />
+  </div>
+  <div class="split__text">
+    <h2>Localización del hotel</h2>
+    <p>
+      Isla Dorada Hotel se sitúa en una zona bien conectada que facilita el acceso a playas,
+      comercios y puntos de interés del entorno.
+    </p>
+    <p>
+      Esta combinación de accesibilidad y tranquilidad refuerza el valor de la estancia para
+      visitantes que buscan comodidad desde su llegada.
+    </p>
+  </div>
+</section>
+
+<section class="section wrapper">
+  <div class="section__header">
+    <h2>Compromiso con el entorno</h2>
+    <p>Sostenibilidad y mantenimiento responsable como parte del funcionamiento diario del hotel.</p>
+  </div>
+
+  <div class="card-grid">
+    <article class="card" *ngFor="let item of environmentItems">
+      <img [src]="item.imageUrl" [alt]="item.title" />
+      <div class="card__body">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.description }}</p>
       </div>
-      <div
-        class="image-content"
-        style="background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=1200&q=80');"
-      ></div>
-    </div>
-  </section>
-
-  <section class="image-grid-section">
-    <div class="image-grid-container">
-      <h2>Servicios destacados</h2>
-
-      <div class="image-grid">
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Atención personalizada</h3>
-            <p>
-              Nuestro equipo está disponible para ayudarte y resolver cualquier
-              necesidad durante tu estancia.
-            </p>
-          </div>
-        </article>
-
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Espacios para relajarte</h3>
-            <p>
-              Zonas comunes cómodas y agradables para descansar, desconectar y
-              disfrutar del hotel.
-            </p>
-          </div>
-        </article>
-
-        <article class="grid-card">
-          <div
-            class="grid-card-image"
-            style="background-image: url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=900&q=80');"
-          ></div>
-          <div class="grid-card-content">
-            <h3>Experiencia completa</h3>
-            <p>
-              Habitaciones, bienestar, restauración y actividades para que tu
-              estancia sea más completa.
-            </p>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="text-image-section text-image-vertical">
-    <div class="text-image-container">
-      <div class="text-content">
-        <h2>Ubicación y accesibilidad</h2>
-        <p>
-          PWM Hotel se encuentra en una zona bien conectada, ideal para disfrutar
-          del entorno, desplazarte cómodamente y aprovechar tanto las instalaciones
-          del hotel como los lugares de interés cercanos.
-        </p>
-      </div>
-      <div
-        class="image-content"
-        style="background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80');"
-      ></div>
-    </div>
-  </section>
-</main>
+    </article>
+  </div>
+</section>
 
 <app-footer></app-footer>
