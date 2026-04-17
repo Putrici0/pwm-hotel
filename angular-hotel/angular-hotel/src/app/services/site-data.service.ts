@@ -9,7 +9,12 @@ export class SiteDataService {
   private readonly firestore = inject(Firestore);
 
   getSection<T>(sectionKey: string): Observable<T> {
-    const docRef = doc(this.firestore, `siteData`, sectionKey);
+    const docRef = doc(this.firestore, `pages`, sectionKey);
     return docData(docRef, { idField: 'id' }) as Observable<T>;
+  }
+
+  getImageCatalog(): Observable<Record<string, string>> {
+    const docRef = doc(this.firestore, 'assets', 'imageCatalog');
+    return docData(docRef) as Observable<Record<string, string>>;
   }
 }
