@@ -65,7 +65,12 @@ export class ChangePasswordComponent {
       return;
     }
 
-    await this.authService.updatePassword(this.targetEmail.trim(), this.pass1);
-    await this.router.navigateByUrl('/login');
+    try {
+      await this.authService.updatePassword(this.targetEmail.trim(), this.pass1);
+      await this.router.navigateByUrl('/login');
+    } catch {
+      this.error3 =
+        'No se pudo actualizar la contrasena desde aqui. Si no has iniciado sesion, usa el correo de recuperacion.';
+    }
   }
 }

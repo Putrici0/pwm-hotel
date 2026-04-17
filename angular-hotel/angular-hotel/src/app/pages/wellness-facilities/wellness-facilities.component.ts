@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface FacilityItem {
   title: string;
@@ -17,7 +19,9 @@ interface FacilityItem {
   styleUrl: './wellness-facilities.component.css'
 })
 export class WellnessFacilitiesComponent {
-  readonly facilities: FacilityItem[] = [
+  private readonly siteDataService = inject(SiteDataService);
+
+  facilities: FacilityItem[] = [
     {
       title: 'Gimnasio',
       description:
@@ -40,4 +44,21 @@ export class WellnessFacilitiesComponent {
         'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg'
     }
   ];
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        const facilityKeys = [
+          'wellness-facilities-facilities-item-1-gimnasio',
+          'wellness-facilities-facilities-item-2-piscina',
+          'wellness-facilities-facilities-item-3-spa'
+        ];
+
+        this.facilities = this.facilities.map((facility, index) => ({
+          ...facility,
+          imageUrl: this.siteDataService.resolveImage(catalog, facilityKeys[index], facility.imageUrl)
+        }));
+      });
+  }
 }

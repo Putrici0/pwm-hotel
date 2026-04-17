@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface ActivityItem {
   title: string;
@@ -18,7 +20,9 @@ interface ActivityItem {
   styleUrl: './activities.component.css'
 })
 export class ActivitiesComponent {
-  readonly activities: ActivityItem[] = [
+  private readonly siteDataService = inject(SiteDataService);
+
+  activities: ActivityItem[] = [
     {
       title: 'Tour guiado por la ciudad',
       description:
@@ -44,4 +48,21 @@ export class ActivitiesComponent {
         'https://st.depositphotos.com/2309453/2618/i/600/depositphotos_26180755-stock-photo-blond-woman-drinking-red-wine.jpg'
     }
   ];
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        const activityKeys = [
+          'activities-activities-item-1-tour-guiado-por-la-ciudad',
+          'activities-activities-item-2-yoga-al-amanecer',
+          'activities-activities-item-3-cata-de-vinos-y-productos-locales'
+        ];
+
+        this.activities = this.activities.map((activity, index) => ({
+          ...activity,
+          imageUrl: this.siteDataService.resolveImage(catalog, activityKeys[index], activity.imageUrl)
+        }));
+      });
+  }
 }

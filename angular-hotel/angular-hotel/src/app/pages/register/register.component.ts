@@ -2,10 +2,32 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AuthService } from '../../services/auth.service';
 import { SiteDataService } from '../../services/site-data.service';
+
+interface RegisterPageData {
+  form: {
+    labels: {
+      name: string;
+      lastName: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+    };
+    placeholders: {
+      name: string;
+      lastName: string;
+      email: string;
+      password: string;
+      confirmPassword: string;
+    };
+    termsText: string;
+    submitText: string;
+  };
+}
 
 @Component({
   selector: 'app-register',
@@ -19,7 +41,31 @@ export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
 
-  readonly registerData$ = this.siteDataService.getSection<any>('register');
+  private readonly defaultRegisterData: RegisterPageData = {
+    form: {
+      labels: {
+        name: 'Nombre',
+        lastName: 'Apellidos',
+        email: 'Correo electronico',
+        password: 'Contrasena',
+        confirmPassword: 'Repite contrasena'
+      },
+      placeholders: {
+        name: 'Tu nombre',
+        lastName: 'Tus apellidos',
+        email: 'Tu correo',
+        password: 'Tu contrasena',
+        confirmPassword: 'Repite tu contrasena'
+      },
+      termsText: 'Acepto la politica de privacidad',
+      submitText: 'Crear cuenta'
+    }
+  };
+
+  readonly registerData$ = this.siteDataService.getSection<RegisterPageData>('register').pipe(
+    map((data) => data?.form ? data : this.defaultRegisterData),
+    catchError(() => of(this.defaultRegisterData))
+  );
 
   formModel = {
     name: '',
