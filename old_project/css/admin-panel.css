@@ -30,6 +30,7 @@
     border-bottom: 2px solid var(--arena-sable);
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
+    display: none;
 }
 
 .admin-grid {
@@ -340,4 +341,99 @@
 .filter-btn.active {
     background: var(--mar-navy);
     color: white;
+}
+
+.admin-tabs-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--arena-clara);
+    scrollbar-width: thin;
+    scrollbar-color: var(--arena-sable) transparent;
+}
+
+.admin-tabs-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+.admin-tabs-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--arena-sable);
+    border-radius: 10px;
+}
+
+.admin-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--mar-navy);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.admin-tab-btn:hover {
+    background: var(--arena-clara);
+    opacity: 1;
+}
+
+.admin-tab-btn.active {
+    border-bottom: 3px solid var(--mar-navy);
+    color: var(--mar-navy);
+    opacity: 1;
+    background: white;
+}
+
+.admin-btn-toggle-form {
+    background-color: var(--mar-navy);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 1rem auto;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.admin-btn-toggle-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.admin-form-wrapper {
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+.admin-form-wrapper.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    pointer-events: none;
+}
+
+@media (max-width: 900px) {
+    .admin-tab-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .admin-btn-toggle-form {
+        width: 100%;
+        border-radius: 8px;
+    }
 }

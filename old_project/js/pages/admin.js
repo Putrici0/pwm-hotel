@@ -1,3 +1,4 @@
+let currentSectionId = 'rooms';
 let servicesFilter = 'bienestar';
 let reservationsFilter = 'proximas';
 let menusFilter = 'entrantes';
@@ -12,8 +13,6 @@ async function initAdmin() {
         const bookingConfig = data.booking;
         const initialData = data.initialData;
 
-        localStorage.removeItem("hotelAdminData");
-
         if (!localStorage.getItem("hotelAdminData")) {
             localStorage.setItem("hotelAdminData", JSON.stringify(initialData));
         }
@@ -22,7 +21,7 @@ async function initAdmin() {
         renderDashboard(adminConfig.sections, bookingConfig);
 
     } catch (error) {
-        document.getElementById("admin-dashboard").innerHTML = "<p>Error.</p>";
+        document.getElementById("admin-dashboard").innerHTML = "<p>Error al cargar el panel.</p>";
     }
 }
 
@@ -49,106 +48,130 @@ function renderDashboard(sections, bookingConfig) {
     dashboard.innerHTML = "";
     const db = getAdminData();
 
-    sections.forEach(section => {
-        const sectionDiv = document.createElement("section");
-        sectionDiv.className = "admin-section-block";
-        const sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = section.title;
-        sectionDiv.appendChild(sectionTitle);
+    const tabsContainer = document.createElement("div");
+    tabsContainer.className = "admin-tabs-wrapper";
+    sections.forEach(s => {
+        const btn = document.createElement("button");
+        btn.className = `admin-tab-btn ${currentSectionId === s.id ? 'active' : ''}`;
+        btn.textContent = s.title;
+        btn.onclick = () => {
+            currentSectionId = s.id;
+            renderDashboard(sections, bookingConfig);
+        };
+        tabsContainer.appendChild(btn);
+    });
+    dashboard.appendChild(tabsContainer);
 
-        if (section.id === 'services') {
-            const filterRow = document.createElement("div");
-            filterRow.className = "admin-filter-row";
-            filterRow.innerHTML = `
-                <button class="filter-btn ${servicesFilter === 'bienestar' ? 'active' : ''}" data-filter="bienestar">Bienestar</button>
-                <button class="filter-btn ${servicesFilter === 'actividad' ? 'active' : ''}" data-filter="actividad">Actividades</button>
-            `;
-            filterRow.querySelectorAll(".filter-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    servicesFilter = btn.getAttribute("data-filter");
-                    renderDashboard(sections, bookingConfig);
-                });
-            });
-            sectionDiv.appendChild(filterRow);
-        }
+    const section = sections.find(s => s.id === currentSectionId);
+    if (!section) return;
 
-        if (section.id === 'reservations') {
-            const filterRow = document.createElement("div");
-            filterRow.className = "admin-filter-row";
-            filterRow.innerHTML = `
-                <button class="filter-btn ${reservationsFilter === 'proximas' ? 'active' : ''}" data-filter="proximas">Próximas</button>
-                <button class="filter-btn ${reservationsFilter === 'todas' ? 'active' : ''}" data-filter="todas">Todas</button>
-            `;
-            filterRow.querySelectorAll(".filter-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    reservationsFilter = btn.getAttribute("data-filter");
-                    renderDashboard(sections, bookingConfig);
-                });
-            });
-            sectionDiv.appendChild(filterRow);
-        }
+    const sectionDiv = document.createElement("section");
+    sectionDiv.className = "admin-section-block";
 
-        if (section.id === 'menus') {
-            const filterRow = document.createElement("div");
-            filterRow.className = "admin-filter-row";
-            filterRow.innerHTML = `
-                <button class="filter-btn ${menusFilter === 'entrantes' ? 'active' : ''}" data-filter="entrantes">Entrantes</button>
-                <button class="filter-btn ${menusFilter === 'primeros' ? 'active' : ''}" data-filter="primeros">Primeros Platos</button>
-                <button class="filter-btn ${menusFilter === 'segundos' ? 'active' : ''}" data-filter="segundos">Segundos Platos</button>
-                <button class="filter-btn ${menusFilter === 'postres' ? 'active' : ''}" data-filter="postres">Postres</button>
-            `;
-            filterRow.querySelectorAll(".filter-btn").forEach(btn => {
-                btn.addEventListener("click", () => {
-                    menusFilter = btn.getAttribute("data-filter");
-                    renderDashboard(sections, bookingConfig);
-                });
-            });
-            sectionDiv.appendChild(filterRow);
-        }
+    if (section.id === 'services') {
+        const filterRow = document.createElement("div");
+        filterRow.className = "admin-filter-row";
+        filterRow.innerHTML = `
+            <button class="filter-btn ${servicesFilter === 'bienestar' ? 'active' : ''}" data-filter="bienestar">Bienestar</button>
+            <button class="filter-btn ${servicesFilter === 'actividad' ? 'active' : ''}" data-filter="actividad">Actividades</button>
+        `;
+        filterRow.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => { servicesFilter = btn.getAttribute("data-filter"); renderDashboard(sections, bookingConfig); });
+        });
+        sectionDiv.appendChild(filterRow);
+    }
 
-        const gridDiv = document.createElement("div");
-        gridDiv.className = "admin-grid";
+    if (section.id === 'reservations') {
+        const filterRow = document.createElement("div");
+        filterRow.className = "admin-filter-row";
+        filterRow.innerHTML = `
+            <button class="filter-btn ${reservationsFilter === 'proximas' ? 'active' : ''}" data-filter="proximas">Próximas</button>
+            <button class="filter-btn ${reservationsFilter === 'todas' ? 'active' : ''}" data-filter="todas">Todas</button>
+        `;
+        filterRow.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => { reservationsFilter = btn.getAttribute("data-filter"); renderDashboard(sections, bookingConfig); });
+        });
+        sectionDiv.appendChild(filterRow);
+    }
 
-        let items = db[section.id] || [];
+    if (section.id === 'menus') {
+        const filterRow = document.createElement("div");
+        filterRow.className = "admin-filter-row";
+        filterRow.innerHTML = `
+            <button class="filter-btn ${menusFilter === 'entrantes' ? 'active' : ''}" data-filter="entrantes">Entrantes</button>
+            <button class="filter-btn ${menusFilter === 'primeros' ? 'active' : ''}" data-filter="primeros">Primeros Platos</button>
+            <button class="filter-btn ${menusFilter === 'segundos' ? 'active' : ''}" data-filter="segundos">Segundos Platos</button>
+            <button class="filter-btn ${menusFilter === 'postres' ? 'active' : ''}" data-filter="postres">Postres</button>
+        `;
+        filterRow.querySelectorAll(".filter-btn").forEach(btn => {
+            btn.addEventListener("click", () => { menusFilter = btn.getAttribute("data-filter"); renderDashboard(sections, bookingConfig); });
+        });
+        sectionDiv.appendChild(filterRow);
+    }
 
-        if (section.id === 'services') items = items.filter(s => s.tipo === servicesFilter);
-        if (section.id === 'menus') items = items.filter(m => m.categoria === menusFilter);
+    const gridDiv = document.createElement("div");
+    gridDiv.className = "admin-grid";
 
-        if (section.id === 'reservations') {
-            const today = new Date(); today.setHours(0,0,0,0);
-            if (reservationsFilter === 'proximas') items = items.filter(res => new Date(res.entrada) >= today);
-            items.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
-        }
+    let items = db[section.id] || [];
 
-        if (section.id === 'faqs') {
-            items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
-        }
+    if (section.id === 'services') items = items.filter(s => s.tipo === servicesFilter);
+    if (section.id === 'menus') items = items.filter(m => m.categoria === menusFilter);
 
-        const tableContainer = document.createElement("div");
-        tableContainer.className = "admin-table-container";
-        tableContainer.innerHTML = generateTableHTML(section, items);
+    if (section.id === 'reservations') {
+        const today = new Date(); today.setHours(0,0,0,0);
+        if (reservationsFilter === 'proximas') items = items.filter(res => new Date(res.entrada) >= today);
+        items.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
+    }
 
-        attachDeleteEvents(tableContainer, section.id, sections, bookingConfig);
-        attachEditEvents(tableContainer, section, sections, bookingConfig);
-        gridDiv.appendChild(tableContainer);
+    if (section.id === 'faqs') {
+        items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    }
 
-        if (section.id !== 'reservations' && section.id !== 'faqs') {
-            const formContainer = document.createElement("div");
-            formContainer.className = "admin-form-container";
-            formContainer.innerHTML = generateFormHTML(section);
-            attachSubmitEvent(formContainer, section, sections, bookingConfig);
-            gridDiv.appendChild(formContainer);
-        } else if (section.id === 'reservations' && bookingConfig) {
-            const bookingWidgetContainer = document.createElement("div");
-            bookingWidgetContainer.className = "admin-booking-widget-wrapper";
-            bookingWidgetContainer.innerHTML = `<h3 style="text-align:center; color:var(--mar-navy); margin-top:2rem;">Añadir Reserva (Consultar Disponibilidad)</h3><div id="admin-booking-widget-inject"></div>`;
-            gridDiv.appendChild(bookingWidgetContainer);
+    const tableContainer = document.createElement("div");
+    tableContainer.className = "admin-table-container";
+    tableContainer.innerHTML = generateTableHTML(section, items);
+
+    attachDeleteEvents(tableContainer, section.id, sections, bookingConfig);
+    attachEditEvents(tableContainer, section, sections, bookingConfig);
+    gridDiv.appendChild(tableContainer);
+
+    if (section.id !== 'faqs') {
+        const toggleContainer = document.createElement("div");
+        toggleContainer.style.textAlign = "center";
+
+        const toggleBtn = document.createElement("button");
+        toggleBtn.className = "admin-btn-toggle-form";
+        toggleBtn.innerHTML = `+ Añadir ${section.title}`;
+        toggleContainer.appendChild(toggleBtn);
+        gridDiv.appendChild(toggleContainer);
+
+        const formWrapper = document.createElement("div");
+        formWrapper.className = "admin-form-wrapper hidden";
+
+        if (section.id !== 'reservations') {
+            formWrapper.innerHTML = generateFormHTML(section);
+            attachSubmitEvent(formWrapper, section, sections, bookingConfig);
+        } else if (bookingConfig) {
+            formWrapper.innerHTML = `<div class="admin-booking-widget-wrapper"><div id="admin-booking-widget-inject"></div></div>`;
             setTimeout(() => injectBookingWidget(bookingConfig, db.rooms || []), 0);
         }
 
-        sectionDiv.appendChild(gridDiv);
-        dashboard.appendChild(sectionDiv);
-    });
+        toggleBtn.onclick = () => {
+            formWrapper.classList.toggle("hidden");
+            if (formWrapper.classList.contains("hidden")) {
+                toggleBtn.innerHTML = `+ Añadir ${section.title}`;
+                toggleBtn.style.backgroundColor = "var(--mar-navy)";
+            } else {
+                toggleBtn.innerHTML = `- Cerrar Formulario`;
+                toggleBtn.style.backgroundColor = "#dc3545";
+            }
+        };
+
+        gridDiv.appendChild(formWrapper);
+    }
+
+    sectionDiv.appendChild(gridDiv);
+    dashboard.appendChild(sectionDiv);
 }
 
 function generateTableHTML(section, items) {
