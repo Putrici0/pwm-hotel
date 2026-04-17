@@ -441,54 +441,40 @@
                                                    }
                                                ]
                             },
-    "account":  {
-                    "title":  {
-                                  "title":  "Tu cuenta",
-                                  "description":  "Aquí puedes ver tus reservas y actualizar tus datos."
-                              },
-                    "table":  {
-                                  "title":  "Reservas del usuario",
-                                  "headers":  {
-                                                  "reservation":  "Reserva",
-                                                  "checkin":  "Check-in",
-                                                  "checkout":  "Check-out"
-                                              }
-                              },
-                    "actions":  {
-                                    "buttons":  [
-                                                    "Cambiar nombre",
-                                                    "Cambiar correo",
-                                                    "Cambiar contraseña"
-                                                ]
-                                },
-                    "users":  [
-                                  {
-                                      "email":  "user@ulpgc.es",
-                                      "reservations":  [
-                                                           {
-                                                               "id":  "ID-1001",
-                                                               "checkin":  "12/05/2026",
-                                                               "checkout":  "15/05/2026"
-                                                           },
-                                                           {
-                                                               "id":  "ID-1088",
-                                                               "checkin":  "01/08/2026",
-                                                               "checkout":  "05/08/2026"
-                                                           }
-                                                       ]
-                                  },
-                                  {
-                                      "email":  "123@123.123",
-                                      "reservations":  [
-                                                           {
-                                                               "id":  "ID-2201",
-                                                               "checkin":  "20/06/2026",
-                                                               "checkout":  "25/06/2026"
-                                                           }
-                                                       ]
-                                  }
-                              ]
-                },
+  "account": {
+    "title": {
+      "title": "Tu cuenta",
+      "description": "Aquí puedes ver tus reservas, consultar tus descuentos y actualizar tus datos personales."
+    },
+    "table": {
+      "title": "Historial de Reservas",
+      "headers": {
+        "reservation": "Habitación",
+        "checkin": "Fecha de Entrada",
+        "checkout": "Fecha de Salida"
+      }
+    },
+    "actions": {
+      "buttons": [
+        "Cambiar tus datos",
+        "Guardar Cambios",
+        "Cambiar contraseña"
+      ]
+    },
+    "users": [
+      {
+        "email": "user@ulpgc.es",
+        "reservations": [
+          {
+            "habitacion": "Habitación Deluxe Terraza",
+            "entrada": "2026-05-12",
+            "salida": "2026-05-15",
+            "huespedes": 2
+          }
+        ]
+      }
+    ]
+  },
   "admin": {
     "title": {
       "title": "Panel de Administración",
@@ -637,6 +623,22 @@
         "entrada": "2026-06-10",
         "salida": "2026-06-15",
         "huespedes": 4
+      },
+      {
+        "cliente": "Estudiante ULPGC",
+        "email": "user@ulpgc.es",
+        "habitacion": "Suite Mar Premium",
+        "entrada": "2026-05-15",
+        "salida": "2026-05-20",
+        "huespedes": 2
+      },
+      {
+        "cliente": "Estudiante ULPGC",
+        "email": "user@ulpgc.es",
+        "habitacion": "Habitación Cozy",
+        "entrada": "2026-02-10",
+        "salida": "2026-02-15",
+        "huespedes": 1
       }
     ],
     "menus": [
