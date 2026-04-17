@@ -1,6 +1,6 @@
 let servicesFilter = 'bienestar';
 let reservationsFilter = 'proximas';
-let menusFilter = 'entrantes'; // NUEVO FILTRO PARA MENÚS
+let menusFilter = 'entrantes';
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
@@ -12,7 +12,6 @@ async function initAdmin() {
         const bookingConfig = data.booking;
         const initialData = data.initialData;
 
-        // Limpiamos memoria para que cargue los nuevos platos del JSON
         localStorage.removeItem("hotelAdminData");
 
         if (!localStorage.getItem("hotelAdminData")) {
@@ -57,7 +56,6 @@ function renderDashboard(sections, bookingConfig) {
         sectionTitle.textContent = section.title;
         sectionDiv.appendChild(sectionTitle);
 
-        // FILTROS SERVICIOS
         if (section.id === 'services') {
             const filterRow = document.createElement("div");
             filterRow.className = "admin-filter-row";
@@ -74,7 +72,6 @@ function renderDashboard(sections, bookingConfig) {
             sectionDiv.appendChild(filterRow);
         }
 
-        // FILTROS RESERVAS
         if (section.id === 'reservations') {
             const filterRow = document.createElement("div");
             filterRow.className = "admin-filter-row";
@@ -91,7 +88,6 @@ function renderDashboard(sections, bookingConfig) {
             sectionDiv.appendChild(filterRow);
         }
 
-        // FILTROS MENÚ RESTAURANTE (NUEVO)
         if (section.id === 'menus') {
             const filterRow = document.createElement("div");
             filterRow.className = "admin-filter-row";
@@ -116,12 +112,16 @@ function renderDashboard(sections, bookingConfig) {
         let items = db[section.id] || [];
 
         if (section.id === 'services') items = items.filter(s => s.tipo === servicesFilter);
-        if (section.id === 'menus') items = items.filter(m => m.categoria === menusFilter); // Filtro Menú
+        if (section.id === 'menus') items = items.filter(m => m.categoria === menusFilter);
 
         if (section.id === 'reservations') {
             const today = new Date(); today.setHours(0,0,0,0);
             if (reservationsFilter === 'proximas') items = items.filter(res => new Date(res.entrada) >= today);
             items.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
+        }
+
+        if (section.id === 'faqs') {
+            items.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
         }
 
         const tableContainer = document.createElement("div");
@@ -132,13 +132,13 @@ function renderDashboard(sections, bookingConfig) {
         attachEditEvents(tableContainer, section, sections, bookingConfig);
         gridDiv.appendChild(tableContainer);
 
-        if (section.id !== 'reservations') {
+        if (section.id !== 'reservations' && section.id !== 'faqs') {
             const formContainer = document.createElement("div");
             formContainer.className = "admin-form-container";
             formContainer.innerHTML = generateFormHTML(section);
             attachSubmitEvent(formContainer, section, sections, bookingConfig);
             gridDiv.appendChild(formContainer);
-        } else if (bookingConfig) {
+        } else if (section.id === 'reservations' && bookingConfig) {
             const bookingWidgetContainer = document.createElement("div");
             bookingWidgetContainer.className = "admin-booking-widget-wrapper";
             bookingWidgetContainer.innerHTML = `<h3 style="text-align:center; color:var(--mar-navy); margin-top:2rem;">Añadir Reserva (Consultar Disponibilidad)</h3><div id="admin-booking-widget-inject"></div>`;
@@ -151,7 +151,6 @@ function renderDashboard(sections, bookingConfig) {
     });
 }
 
-// Ocultamos la columna técnica (tipo/categoria) de la tabla pública
 function generateTableHTML(section, items) {
     if (!items || items.length === 0) return `<p>No hay elementos.</p>`;
     const fieldsToShow = section.fields.filter(f => {
@@ -170,10 +169,16 @@ function generateTableHTML(section, items) {
                 if (parts.length === 3) cellText = `${parts[2]}/${parts[1]}/${parts[0]}`;
             }
             if (f.name === 'precio') cellText = parseFloat(cellText).toFixed(2) + ' €';
-            if (f.name === 'descripcion') return `<td style="font-size: 0.9em; line-height: 1.4; max-width: 300px;">${cellText}</td>`;
+            if (f.name === 'descripcion' || f.name === 'duda') return `<td style="font-size: 0.9em; line-height: 1.4; max-width: 300px;">${cellText}</td>`;
             return `<td><strong>${cellText}</strong></td>`;
         }).join("");
-        return `<tr>${cells}<td class="action-cell"><div class="action-buttons-wrapper"><button class="admin-btn-edit" data-index="${index}">Editar</button><button class="admin-btn-delete" data-index="${index}">Borrar</button></div></td></tr>`;
+
+        let actionButtons = `<button class="admin-btn-edit" data-index="${index}">Editar</button><button class="admin-btn-delete" data-index="${index}">Borrar</button>`;
+        if (section.id === 'faqs') {
+            actionButtons = `<button class="admin-btn-delete" data-index="${index}">Borrar</button>`;
+        }
+
+        return `<tr>${cells}<td class="action-cell"><div class="action-buttons-wrapper">${actionButtons}</div></td></tr>`;
     }).join("");
 
     return `<table class="admin-table"><thead><tr>${headers}<th>Acción</th></tr></thead><tbody>${rows}</tbody></table><div id="imageModal" class="image-modal-overlay"><div class="image-modal-content"><button class="image-modal-close" onclick="closeImageModal()">&times;</button><img id="modalImage" src="" alt="Vista"></div></div>`;
@@ -194,6 +199,8 @@ function attachEditEvents(container, section, allSections, bookingConfig) {
     container.querySelectorAll('.modal-trigger').forEach(thumb => {
         thumb.addEventListener('click', (e) => openImageModal(e.target.getAttribute('data-fullsrc')));
     });
+
+    if (section.id === 'faqs') return;
 
     container.querySelectorAll(".admin-btn-edit").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -261,13 +268,14 @@ function processEdit(row, section, dbList, index, allSections, bookingConfig) {
 function attachDeleteEvents(container, sectionId, allSections, bookingConfig) {
     container.querySelectorAll(".admin-btn-delete").forEach(btn => {
         btn.addEventListener("click", (e) => {
-            if (confirm("¿Borrar?")) {
+            if (confirm("¿Estás seguro de que quieres borrar esto?")) {
                 let proceed = sectionId !== 'reservations' || confirm("ÚLTIMO AVISO: Se borrará permanentemente.");
                 if (proceed) {
                     const index = e.target.getAttribute("data-index");
                     const db = getAdminData();
                     let list = db[sectionId];
                     let targetList = list;
+
                     if (sectionId === 'services') targetList = list.filter(s => s.tipo === servicesFilter);
                     else if (sectionId === 'menus') targetList = list.filter(m => m.categoria === menusFilter);
                     else if (sectionId === 'reservations') {
@@ -275,6 +283,10 @@ function attachDeleteEvents(container, sectionId, allSections, bookingConfig) {
                         targetList = reservationsFilter === 'proximas' ? list.filter(res => new Date(res.entrada) >= today) : list;
                         targetList.sort((a, b) => new Date(a.entrada) - new Date(b.entrada));
                     }
+                    else if (sectionId === 'faqs') {
+                        targetList.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+                    }
+
                     list.splice(list.indexOf(targetList[index]), 1);
                     saveAdminData(db); renderDashboard(allSections, bookingConfig);
                 }
@@ -313,7 +325,6 @@ function attachSubmitEvent(container, section, allSections, bookingConfig) {
     });
 }
 
-// INYECCION DE BOOKING (Mantenida igual)
 function setLabelForInputAdmin(inputEl, newText) {
     if (!inputEl || !newText) return;
     let label = document.querySelector(`label[for='${inputEl.id}']`);

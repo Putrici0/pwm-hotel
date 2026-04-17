@@ -542,8 +542,12 @@
         "id": "faqs",
         "title": "Preguntas de los Clientes (FAQ)",
         "fields": [
-          {"name": "pregunta", "label": "Pregunta", "type": "text"},
-          {"name": "respuesta", "label": "Respuesta", "type": "text"}
+          {"name": "fecha", "label": "Fecha", "type": "date"},
+          {"name": "nombre", "label": "Nombre", "type": "text"},
+          {"name": "apellidos", "label": "Apellidos", "type": "text"},
+          {"name": "email", "label": "Email", "type": "email"},
+          {"name": "asunto", "label": "Asunto", "type": "text"},
+          {"name": "duda", "label": "Mensaje", "type": "text"}
         ]
       }
     ]
@@ -656,7 +660,24 @@
       { "nombre": "Fruta fresca de temporada", "categoria": "postres", "precio": 5.50, "imagen": "/old_project/img/restaurant/30.jpg" },
       { "nombre": "Helado artesano", "categoria": "postres", "precio": 5.90, "imagen": "/old_project/img/restaurant/31.jpg" }
     ],
-    "faqs": []
+    "faqs": [
+      {
+        "fecha": "2026-04-17",
+        "nombre": "Carlos",
+        "apellidos": "Sánchez",
+        "email": "carlos@example.com",
+        "asunto": "Piscina climatizada",
+        "duda": "¿La piscina exterior está climatizada en los meses de invierno?"
+      },
+      {
+        "fecha": "2026-04-16",
+        "nombre": "Laura",
+        "apellidos": "Gómez",
+        "email": "laura@example.com",
+        "asunto": "Alergias restaurante",
+        "duda": "Quería saber si tienen opciones sin gluten en el menú de media pensión para mi hijo."
+      }
+    ]
   },
     "users":  [
                   {
