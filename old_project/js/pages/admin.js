@@ -1,4 +1,5 @@
 let servicesFilter = 'bienestar';
+let reservationsFilter = 'proximas';
 
 document.addEventListener("DOMContentLoaded", initAdmin);
 
@@ -44,27 +45,24 @@ function renderAdminTitle(titleData) {
 function renderDashboard(sections) {
     const dashboard = document.getElementById("admin-dashboard");
     dashboard.innerHTML = "";
-
     const db = getAdminData();
 
     sections.forEach(section => {
         const sectionDiv = document.createElement("section");
         sectionDiv.className = "admin-section-block";
+        sectionDiv.innerHTML = `<h2>${section.title}</h2>`;
 
-        const sectionTitle = document.createElement("h2");
-        sectionTitle.textContent = section.title;
-        sectionDiv.appendChild(sectionTitle);
-
-        if (section.id === 'services') {
+        if (section.id === 'reservations') {
             const filterRow = document.createElement("div");
             filterRow.className = "admin-filter-row";
             filterRow.innerHTML = `
-                <button class="filter-btn ${servicesFilter === 'bienestar' ? 'active' : ''}" data-filter="bienestar">Bienestar</button>
-                <button class="filter-btn ${servicesFilter === 'actividad' ? 'active' : ''}" data-filter="actividad">Actividades</button>
+                <button class="filter-btn ${reservationsFilter === 'proximas' ? 'active' : ''}" data-filter="proximas">Próximas</button>
+                <button class="filter-btn ${reservationsFilter === 'todas' ? 'active' : ''}" data-filter="todas">Todas</button>
+                <input type="date" id="date-filter" class="admin-date-input" title="Filtrar por día">
             `;
             filterRow.querySelectorAll(".filter-btn").forEach(btn => {
                 btn.addEventListener("click", () => {
-                    servicesFilter = btn.getAttribute("data-filter");
+                    reservationsFilter = btn.getAttribute("data-filter");
                     renderDashboard(sections);
                 });
             });
@@ -75,8 +73,12 @@ function renderDashboard(sections) {
         gridDiv.className = "admin-grid";
 
         let items = db[section.id] || [];
-        if (section.id === 'services') {
-            items = items.filter(s => s.tipo === servicesFilter);
+
+        if (section.id === 'reservations') {
+            const today = new Date();
+            if (reservationsFilter === 'proximas') {
+                items = items.filter(res => new Date(res.entrada) >= today);
+            }
         }
 
         const tableContainer = document.createElement("div");
@@ -89,7 +91,6 @@ function renderDashboard(sections) {
         const formContainer = document.createElement("div");
         formContainer.className = "admin-form-container";
         formContainer.innerHTML = generateFormHTML(section);
-
         attachSubmitEvent(formContainer, section, sections);
 
         gridDiv.appendChild(tableContainer);
@@ -253,19 +254,14 @@ function attachDeleteEvents(container, sectionId, allSections) {
     const buttons = container.querySelectorAll(".admin-btn-delete");
     buttons.forEach(btn => {
         btn.addEventListener("click", (e) => {
-            if (confirm("¿Borrar permanentemente?")) {
-                const index = e.target.getAttribute("data-index");
-                const db = getAdminData();
-                let list = db[sectionId];
-                if (sectionId === 'services') {
-                    const filtered = list.filter(s => s.tipo === servicesFilter);
-                    const realIndex = list.indexOf(filtered[index]);
-                    list.splice(realIndex, 1);
-                } else {
-                    list.splice(index, 1);
+            if (confirm("¿Estás SEGURO de que quieres borrar esta reserva?")) {
+                if (confirm("ESTA ES LA ÚLTIMA ADVERTENCIA: La reserva se eliminará permanentemente. ¿Continuar?")) {
+                    const index = e.target.getAttribute("data-index");
+                    const db = getAdminData();
+                    db[sectionId].splice(index, 1);
+                    saveAdminData(db);
+                    renderDashboard(allSections);
                 }
-                saveAdminData(db);
-                renderDashboard(allSections);
             }
         });
     });

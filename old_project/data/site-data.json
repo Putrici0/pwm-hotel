@@ -615,7 +615,24 @@
         "imagen": "https://vinostresrios.com/wp-content/uploads/2023/11/cata-de-vinos-guia-9.jpg"
       }
     ],
-    "reservations": [],
+    "reservations": [
+      {
+        "cliente": "Juan Pérez",
+        "email": "juan@example.com",
+        "habitacion": "Suite Mar Premium",
+        "entrada": "2026-05-15",
+        "salida": "2026-05-20",
+        "huespedes": 2
+      },
+      {
+        "cliente": "Marta García",
+        "email": "marta@example.com",
+        "habitacion": "Habitación Familiar",
+        "entrada": "2026-06-10",
+        "salida": "2026-06-15",
+        "huespedes": 4
+      }
+    ],
     "menus": [],
     "faqs": []
   },
