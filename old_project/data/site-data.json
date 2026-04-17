@@ -532,9 +532,10 @@
         "id": "menus",
         "title": "Menú Fijo",
         "fields": [
-          {"name": "plato", "label": "Nombre del Plato", "type": "text"},
-          {"name": "tipo", "label": "Tipo", "type": "text"},
-          {"name": "imagen", "label": "URL de la Imagen", "type": "text"}
+          {"name": "nombre", "label": "Nombre del Plato", "type": "text"},
+          {"name": "categoria", "label": "Categoría", "type": "select"},
+          {"name": "precio", "label": "Precio (€)", "type": "number"},
+          {"name": "imagen", "label": "Imagen", "type": "file"}
         ]
       },
       {
@@ -634,7 +635,27 @@
         "huespedes": 4
       }
     ],
-    "menus": [],
+    "menus": [
+      { "nombre": "Ensalada de tomate y burrata", "categoria": "entrantes", "precio": 9.50, "imagen": "/old_project/img/restaurant/16.jpg" },
+      { "nombre": "Croquetas caseras de jamón ibérico", "categoria": "entrantes", "precio": 8.90, "imagen": "/old_project/img/restaurant/17.jpg" },
+      { "nombre": "Crema suave de calabaza", "categoria": "entrantes", "precio": 7.80, "imagen": "/old_project/img/restaurant/18.webp" },
+      { "nombre": "Tosta de aguacate y salmón", "categoria": "entrantes", "precio": 10.20, "imagen": "/old_project/img/restaurant/19.webp" },
+
+      { "nombre": "Risotto de setas y parmesano", "categoria": "primeros", "precio": 13.50, "imagen": "/old_project/img/restaurant/20.jpg" },
+      { "nombre": "Pasta fresca con pesto de albahaca", "categoria": "primeros", "precio": 12.90, "imagen": "/old_project/img/restaurant/21.webp" },
+      { "nombre": "Arroz meloso de marisco", "categoria": "primeros", "precio": 14.80, "imagen": "/old_project/img/restaurant/22.jpg" },
+      { "nombre": "Sopa del chef", "categoria": "primeros", "precio": 9.90, "imagen": "/old_project/img/restaurant/23.jpg" },
+
+      { "nombre": "Lubina al horno con verduras", "categoria": "segundos", "precio": 18.90, "imagen": "/old_project/img/restaurant/24.jpg" },
+      { "nombre": "Solomillo de ternera con puré trufado", "categoria": "segundos", "precio": 22.50, "imagen": "/old_project/img/restaurant/25.jpg" },
+      { "nombre": "Pollo de corral al limón", "categoria": "segundos", "precio": 16.40, "imagen": "/old_project/img/restaurant/26.jpg" },
+      { "nombre": "Hamburguesa premium de la casa", "categoria": "segundos", "precio": 15.90, "imagen": "/old_project/img/restaurant/27.jpg" },
+
+      { "nombre": "Tarta de queso horneada", "categoria": "postres", "precio": 6.50, "imagen": "/old_project/img/restaurant/28.jpg" },
+      { "nombre": "Mousse de chocolate negro", "categoria": "postres", "precio": 6.20, "imagen": "/old_project/img/restaurant/29.jpg" },
+      { "nombre": "Fruta fresca de temporada", "categoria": "postres", "precio": 5.50, "imagen": "/old_project/img/restaurant/30.jpg" },
+      { "nombre": "Helado artesano", "categoria": "postres", "precio": 5.90, "imagen": "/old_project/img/restaurant/31.jpg" }
+    ],
     "faqs": []
   },
     "users":  [
