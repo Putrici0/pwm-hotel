@@ -4,7 +4,7 @@
 }
 
 .hero {
-  background: linear-gradient(180deg, #f6efe3 0%, #fff 100%);
+  background: linear-gradient(180deg, var(--arena-clara) 0%, var(--blanco-puro) 100%);
   padding: 3rem 0 2rem;
 }
 
@@ -18,7 +18,7 @@
 .eyebrow {
   display: inline-block;
   margin-bottom: 0.75rem;
-  color: #9c6c25;
+  color: var(--arena-hover);
   font-weight: 800;
 }
 
@@ -26,11 +26,11 @@
   font-size: clamp(2rem, 4vw, 3.2rem);
   line-height: 1.05;
   margin-bottom: 1rem;
-  color: #123b44;
+  color: var(--mar-navy);
 }
 
 .hero__text p {
-  color: #38535b;
+  color: var(--mar-navy);
   font-size: 1.05rem;
 }
 
@@ -38,11 +38,17 @@
   display: inline-block;
   margin-top: 1.2rem;
   padding: 0.9rem 1.2rem;
-  background: #d8b36a;
-  color: #123b44;
+  background: var(--arena-sable);
+  color: var(--mar-navy);
   text-decoration: none;
-  border-radius: 999px;
+  border-radius: var(--radius-card);
   font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+.hero__cta:hover {
+  background: var(--arena-hover);
+  transform: translateY(-2px);
 }
 
 .hero__media img,
@@ -51,7 +57,7 @@
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   object-fit: cover;
 }
 
@@ -65,7 +71,7 @@
 
 .section__header h2,
 .split__text h2 {
-  color: #123b44;
+  color: var(--mar-navy);
   margin-bottom: 0.8rem;
 }
 
@@ -87,10 +93,11 @@
 }
 
 .card {
-  background: #fff;
-  border-radius: 20px;
+  background: var(--blanco-puro);
+  border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--arena-sable);
 }
 
 .card img {
@@ -102,14 +109,14 @@
 }
 
 .card__body h3 {
-  color: #123b44;
+  color: var(--mar-navy);
   margin-bottom: 0.6rem;
 }
 
 .card__body a {
   display: inline-block;
   margin-top: 0.75rem;
-  color: #9c6c25;
+  color: var(--arena-hover);
   text-decoration: none;
   font-weight: 700;
 }

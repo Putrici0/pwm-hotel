@@ -10,7 +10,7 @@
     padding: 1.5rem;
     background-color: var(--blanco-puro);
     border: 2px solid var(--mar-navy);
-    border-radius: 12px;
+    border-radius: var(--radius-card);
     box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
 }
 

@@ -51,7 +51,7 @@
         width: 100%;
         min-height: 260px;
         height: 320px;
-        border-radius: 12px;
+        border-radius: var(--radius-card);
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -72,7 +72,7 @@
     .text-image-vertical {
         position: relative;
         overflow: hidden;
-        border-radius: 14px;
+        border-radius: var(--radius-card);
         min-height: 320px;
         padding: 0;
         margin: 0 1rem 1rem;
