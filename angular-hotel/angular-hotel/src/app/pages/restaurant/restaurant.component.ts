@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface Dish {
   title: string;
@@ -17,10 +19,12 @@ interface Dish {
   styleUrl: './restaurant.component.css'
 })
 export class RestaurantComponent {
-  readonly menuImage =
+  private readonly siteDataService = inject(SiteDataService);
+
+  menuImage =
     'https://st4.depositphotos.com/12982378/30973/i/600/depositphotos_309733034-stock-photo-selective-focus-surprised-man-holding.jpg';
 
-  readonly starters: Dish[] = [
+  starters: Dish[] = [
     {
       title: 'Ensalada de tomate y burrata',
       description: 'Propuesta fresca y ligera con producto de temporada.',
@@ -47,7 +51,7 @@ export class RestaurantComponent {
     }
   ];
 
-  readonly firstDishes: Dish[] = [
+  firstDishes: Dish[] = [
     {
       title: 'Risotto de setas y parmesano',
       description: 'Arroz meloso con perfil cremoso y sabor intenso.',
@@ -74,7 +78,7 @@ export class RestaurantComponent {
     }
   ];
 
-  readonly secondDishes: Dish[] = [
+  secondDishes: Dish[] = [
     {
       title: 'Lubina al horno con verduras',
       description: 'Pescado de sabor suave acompañado de verduras.',
@@ -101,7 +105,7 @@ export class RestaurantComponent {
     }
   ];
 
-  readonly desserts: Dish[] = [
+  desserts: Dish[] = [
     {
       title: 'Tarta de queso horneada',
       description: 'Postre cremoso con acabado suave.',
@@ -127,4 +131,64 @@ export class RestaurantComponent {
         'https://st3.depositphotos.com/1370849/15821/i/600/depositphotos_158216348-stock-photo-italian-ice-cream-artisanal-preparation.jpg'
     }
   ];
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        this.menuImage = this.siteDataService.resolveImage(
+          catalog,
+          'restaurant-dailymenu-menu-del-dia',
+          this.menuImage
+        );
+
+        const starterKeys = [
+          'restaurant-starters-items-item-1-ensalada-de-tomate-y-burrata',
+          'restaurant-starters-items-item-2-croquetas-caseras-de-jamon-iberico',
+          'restaurant-starters-items-item-3-crema-suave-de-calabaza',
+          'restaurant-starters-items-item-4-tosta-de-aguacate-y-salmon'
+        ];
+
+        this.starters = this.starters.map((item, index) => ({
+          ...item,
+          imageUrl: this.siteDataService.resolveImage(catalog, starterKeys[index], item.imageUrl)
+        }));
+
+        const firstDishKeys = [
+          'restaurant-firstdishes-items-item-1-risotto-de-setas-y-parmesano',
+          'restaurant-firstdishes-items-item-2-pasta-fresca-con-pesto-de-albahaca',
+          'restaurant-firstdishes-items-item-3-arroz-meloso-de-marisco',
+          'restaurant-firstdishes-items-item-4-sopa-del-chef'
+        ];
+
+        this.firstDishes = this.firstDishes.map((item, index) => ({
+          ...item,
+          imageUrl: this.siteDataService.resolveImage(catalog, firstDishKeys[index], item.imageUrl)
+        }));
+
+        const secondDishKeys = [
+          'restaurant-seconddishes-items-item-1-lubina-al-horno-con-verduras',
+          'restaurant-seconddishes-items-item-2-solomillo-de-ternera-con-pure-trufado',
+          'restaurant-seconddishes-items-item-3-pollo-de-corral-al-limon',
+          'restaurant-seconddishes-items-item-4-hamburguesa-premium-de-la-casa'
+        ];
+
+        this.secondDishes = this.secondDishes.map((item, index) => ({
+          ...item,
+          imageUrl: this.siteDataService.resolveImage(catalog, secondDishKeys[index], item.imageUrl)
+        }));
+
+        const dessertKeys = [
+          'restaurant-desserts-items-item-1-tarta-de-queso-horneada',
+          'restaurant-desserts-items-item-2-mousse-de-chocolate-negro',
+          'restaurant-desserts-items-item-3-fruta-fresca-de-temporada',
+          'restaurant-desserts-items-item-4-helado-artesano'
+        ];
+
+        this.desserts = this.desserts.map((item, index) => ({
+          ...item,
+          imageUrl: this.siteDataService.resolveImage(catalog, dessertKeys[index], item.imageUrl)
+        }));
+      });
+  }
 }

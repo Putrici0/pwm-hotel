@@ -27,4 +27,13 @@ export class SiteDataService {
     );
   }
 
+  resolveImage(catalog: Record<string, string>, key: string, fallback: string): string {
+    const image = catalog[key];
+    if (!image || !image.trim()) {
+      return fallback;
+    }
+
+    return image;
+  }
+
 }

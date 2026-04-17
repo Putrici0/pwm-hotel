@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { BookingsService } from '../../services/bookings.service';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface RoomOption {
   id: string;
@@ -22,11 +24,18 @@ interface RoomOption {
 export class BookingComponent {
   private readonly fb = inject(FormBuilder);
   private readonly bookingsService = inject(BookingsService);
+  private readonly siteDataService = inject(SiteDataService);
+  private readonly roomImageKeys: Record<string, string> = {
+    'suite-mar': 'initialdata-rooms-item-1-suite-mar-premium',
+    'deluxe-terr': 'initialdata-rooms-item-2-habitacion-deluxe-terraza',
+    familiar: 'initialdata-rooms-item-3-habitacion-familiar',
+    cozy: 'initialdata-rooms-item-4-habitacion-cozy'
+  };
 
-  readonly heroImage =
+  heroImage =
     'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
 
-  readonly availableRooms: RoomOption[] = [
+  availableRooms: RoomOption[] = [
     {
       id: 'suite-mar',
       name: 'Suite Mar Premium',
@@ -73,6 +82,30 @@ export class BookingComponent {
     email: ['', [Validators.required, Validators.email]],
     privacy: [false, Validators.requiredTrue]
   });
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        this.heroImage = this.siteDataService.resolveImage(
+          catalog,
+          'booking-header-reserva-tu-estancia-en-isla-dorada',
+          this.heroImage
+        );
+
+        this.availableRooms = this.availableRooms.map((room) => ({
+          ...room,
+          img: this.siteDataService.resolveImage(catalog, this.roomImageKeys[room.id], room.img)
+        }));
+
+        if (this.filteredRooms.length) {
+          this.filteredRooms = this.filteredRooms.map((room) => ({
+            ...room,
+            img: this.siteDataService.resolveImage(catalog, this.roomImageKeys[room.id], room.img)
+          }));
+        }
+      });
+  }
 
   searchAvailability(): void {
     const guests = Number(this.searchForm.value.guests || 0);

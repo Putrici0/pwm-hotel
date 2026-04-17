@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface ServiceItem {
   title: string;
@@ -17,7 +19,9 @@ interface ServiceItem {
   styleUrl: './services.component.css'
 })
 export class ServicesComponent {
-  readonly services: ServiceItem[] = [
+  private readonly siteDataService = inject(SiteDataService);
+
+  services: ServiceItem[] = [
     {
       title: 'Instalaciones wellness',
       description:
@@ -40,4 +44,21 @@ export class ServicesComponent {
         'https://st.depositphotos.com/1212973/2035/i/600/depositphotos_20355519-stock-photo-active-lifestyle-concept.jpg'
     }
   ];
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        const serviceKeys = [
+          'services-services-item-1-instalaciones-wellness',
+          'services-services-item-2-restauracion',
+          'services-services-item-3-actividades'
+        ];
+
+        this.services = this.services.map((item, index) => ({
+          ...item,
+          imageUrl: this.siteDataService.resolveImage(catalog, serviceKeys[index], item.imageUrl)
+        }));
+      });
+  }
 }

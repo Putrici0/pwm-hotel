@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { SiteDataService } from '../../services/site-data.service';
 
 interface RoomCard {
   title: string;
@@ -21,7 +23,9 @@ interface RoomCard {
   styleUrl: './rooms.component.css'
 })
 export class RoomsComponent {
-  readonly rooms: RoomCard[] = [
+  private readonly siteDataService = inject(SiteDataService);
+
+  rooms: RoomCard[] = [
     {
       title: 'Suite Mar Premium',
       description:
@@ -67,4 +71,22 @@ export class RoomsComponent {
       features: ['Diseño práctico', 'Ambiente cálido', 'Todo lo esencial', 'Buena relación calidad-precio']
     }
   ];
+
+  constructor() {
+    this.siteDataService.getImageCatalog()
+      .pipe(takeUntilDestroyed())
+      .subscribe((catalog) => {
+        const roomKeys = [
+          'rooms-rooms-item-1-suite-mar-premium',
+          'rooms-rooms-item-2-habitacion-deluxe-terraza',
+          'rooms-rooms-item-3-habitacion-familiar',
+          'rooms-rooms-item-4-habitacion-cozy'
+        ];
+
+        this.rooms = this.rooms.map((room, index) => ({
+          ...room,
+          imageUrl: this.siteDataService.resolveImage(catalog, roomKeys[index], room.imageUrl)
+        }));
+      });
+  }
 }
