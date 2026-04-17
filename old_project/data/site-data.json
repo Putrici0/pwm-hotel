@@ -523,7 +523,8 @@
           {"name": "cliente", "label": "Nombre y Apellido", "type": "text"},
           {"name": "email", "label": "Email", "type": "email"},
           {"name": "habitacion", "label": "Habitación Elegida", "type": "text"},
-          {"name": "fecha", "label": "Fecha", "type": "date"},
+          {"name": "entrada", "label": "Fecha Entrada", "type": "date"},
+          {"name": "salida", "label": "Fecha Salida", "type": "date"},
           {"name": "huespedes", "label": "Número de Huéspedes", "type": "number"}
         ]
       },
