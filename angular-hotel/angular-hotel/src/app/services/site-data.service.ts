@@ -10,6 +10,6 @@ export class SiteDataService {
 
   getSection<T>(sectionKey: string): Observable<T> {
     const docRef = doc(this.firestore, `siteData`, sectionKey);
-    return docData(docRef) as Observable<T>;
+    return docData(docRef, { idField: 'id' }) as Observable<T>;
   }
 }
