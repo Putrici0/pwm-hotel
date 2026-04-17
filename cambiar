@@ -3,3 +3,5 @@ en reserva ahora no funciona el  css
 restauracion no funciona el css
 
 faq no funciona el css
+
+he cambiado el main.js para resolver error de login del administrador (que se iba a cuenta de otro usuario)

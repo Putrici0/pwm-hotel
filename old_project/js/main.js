@@ -66,3 +66,23 @@ function canAccessAdmin() {
     const isAdmin = localStorage.getItem("userRole") === "admin";
     return isLoggedIn && isAdmin;
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Esperamos un poco para asegurarnos de que el header.html ya se ha inyectado en la página
+    setTimeout(() => {
+        const userRole = localStorage.getItem('userRole');
+        const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+        // Si está logueado y es administrador...
+        if (isLoggedIn === 'true' && userRole === 'admin') {
+
+            // Buscamos todos los enlaces que apunten a la página de usuario normal
+            const accountLinks = document.querySelectorAll('a[href*="account.html"]');
+
+            // Y los redirigimos a la de admin
+            accountLinks.forEach(link => {
+                link.href = 'admin.html';
+            });
+        }
+    }, 500); // Medio segundo de margen
+});

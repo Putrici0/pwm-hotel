@@ -1,16 +1,52 @@
 <app-header></app-header>
 
-<main *ngIf="legalData$ | async as legalData">
+<main>
   <section class="legal-section">
     <div class="legal-container">
-      <h1>{{ legalData.title }}</h1>
+      <h1>Aviso legal y política informativa</h1>
       <p class="legal-date" id="legal-date">{{ legalDateLabel }}</p>
 
       <div class="legal-content">
-        <ng-container *ngFor="let section of legalData.sections">
-          <h2>{{ section.subtitle }}</h2>
-          <p *ngFor="let paragraph of section.paragraphs">{{ paragraph }}</p>
-        </ng-container>
+        <h2>Información general</h2>
+        <p>
+          PWM Hotel es un sitio web informativo orientado a mostrar información
+          general del hotel, sus servicios y sus diferentes espacios.
+        </p>
+        <p>
+          El acceso y uso de este sitio implica la aceptación de unas condiciones
+          básicas de navegación y uso responsable del contenido mostrado.
+        </p>
+
+        <h2>Uso del sitio web</h2>
+        <p>
+          El usuario se compromete a utilizar la web de forma adecuada y a no
+          emplearla para fines ilícitos, fraudulentos o que puedan perjudicar
+          el funcionamiento del servicio.
+        </p>
+        <p>
+          El contenido mostrado en esta web tiene carácter informativo y puede
+          ser actualizado o modificado cuando resulte necesario.
+        </p>
+
+        <h2>Protección de datos</h2>
+        <p>
+          Los datos facilitados a través de formularios de contacto serán tratados
+          únicamente con la finalidad de gestionar consultas relacionadas con el hotel.
+        </p>
+        <p>
+          El usuario podrá solicitar información adicional sobre el tratamiento
+          de sus datos a través de los canales de contacto habilitados en la propia web.
+        </p>
+
+        <h2>Responsabilidad</h2>
+        <p>
+          PWM Hotel no garantiza la ausencia total de errores en los contenidos,
+          aunque se trabaja para mantener la información actualizada y correctamente presentada.
+        </p>
+        <p>
+          No se asume responsabilidad por interrupciones temporales del servicio,
+          incidencias técnicas o problemas ajenos al control razonable de la aplicación.
+        </p>
       </div>
     </div>
   </section>

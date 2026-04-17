@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { TextImageSectionComponent } from '../../components/text-image-section/text-image-section.component';
-import { TitleSubtitleComponent } from '../../components/title-subtitle/title-subtitle.component';
-import { SiteDataService } from '../../services/site-data.service';
 
 @Component({
   selector: 'app-contact',
@@ -14,17 +11,12 @@ import { SiteDataService } from '../../services/site-data.service';
     CommonModule,
     FormsModule,
     HeaderComponent,
-    FooterComponent,
-    TitleSubtitleComponent,
-    TextImageSectionComponent
+    FooterComponent
   ],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.css'
 })
 export class ContactComponent {
-  private readonly siteDataService = inject(SiteDataService);
-  readonly contactData$ = this.siteDataService.getSection<any>('contact');
-
   formModel = {
     name: '',
     lastName: '',
@@ -45,12 +37,28 @@ export class ContactComponent {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const errors: string[] = [];
 
+    if (!this.formModel.name.trim()) {
+      errors.push('Por favor, introduce tu nombre.');
+    }
+
+    if (!this.formModel.lastName.trim()) {
+      errors.push('Por favor, introduce tus apellidos.');
+    }
+
     if (!emailRegex.test(this.formModel.email)) {
       errors.push('Por favor, introduce un correo electronico valido.');
     }
 
+    if (!this.formModel.subject) {
+      errors.push('Por favor, selecciona un asunto.');
+    }
+
     if (this.formModel.question.trim().length < 20) {
       errors.push('Tu mensaje es demasiado corto. Por favor, escribe al menos 20 caracteres.');
+    }
+
+    if (!this.formModel.privacy) {
+      errors.push('Debes aceptar el tratamiento de datos para continuar.');
     }
 
     if (errors.length > 0) {
@@ -59,11 +67,20 @@ export class ContactComponent {
     }
 
     this.submitting = true;
+
     setTimeout(() => {
-      this.formModel = { name: '', lastName: '', email: '', subject: '', question: '', privacy: false };
+      this.formModel = {
+        name: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        question: '',
+        privacy: false
+      };
+
       this.submitting = false;
       this.successMessage =
-        'Mensaje enviado con exito. Hemos enviado un resumen a tu correo y te responderemos en breve.';
+        'Mensaje enviado con exito. Hemos recibido tu consulta y te responderemos en breve.';
     }, 1500);
   }
 }
