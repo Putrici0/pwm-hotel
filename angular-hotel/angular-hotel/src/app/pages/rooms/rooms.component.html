@@ -1,16 +1,34 @@
 <app-header></app-header>
 
-<main class="page-rooms" *ngIf="roomsData$ | async as roomsData">
-  <app-text-image-section
-    *ngFor="let room of roomsData.rooms; let i = index"
-    [sectionClass]="i % 2 === 0 ? 'text-image-right' : 'text-image-left'"
-    [imageFirst]="i % 2 !== 0"
-    [sectionData]="{
-      title: room['title'],
-      description: room['description'],
-      imageGradient: room['imageGradient']
-    }"
-  ></app-text-image-section>
-</main>
+<section class="rooms-page wrapper">
+  <div class="page-header">
+    <h1>Habitaciones</h1>
+    <p>
+      La oferta de habitaciones de Isla Dorada Hotel está diseñada para adaptarse a diferentes
+      estilos de viaje. Cada opción combina imagen cuidada, confort y una distribución coherente
+      con el tipo de estancia.
+    </p>
+  </div>
+
+  <div class="rooms-grid">
+    <article class="room-card" *ngFor="let room of rooms">
+      <img [src]="room.imageUrl" [alt]="room.title" />
+      <div class="room-card__body">
+        <h2>{{ room.title }}</h2>
+        <p>{{ room.description }}</p>
+
+        <ul class="room-meta">
+          <li><strong>Capacidad:</strong> {{ room.capacity }}</li>
+          <li><strong>Tamaño:</strong> {{ room.size }}</li>
+          <li><strong>Precio:</strong> {{ room.priceFrom }}</li>
+        </ul>
+
+        <div class="features">
+          <span *ngFor="let feature of room.features">{{ feature }}</span>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
 
 <app-footer></app-footer>

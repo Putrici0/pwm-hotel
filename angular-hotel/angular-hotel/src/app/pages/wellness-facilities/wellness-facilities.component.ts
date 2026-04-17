@@ -1,28 +1,43 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { TextImageSectionComponent } from '../../components/text-image-section/text-image-section.component';
-import { TitleSubtitleComponent } from '../../components/title-subtitle/title-subtitle.component';
-import { SiteDataService } from '../../services/site-data.service';
+
+interface FacilityItem {
+  title: string;
+  description: string;
+  imageUrl: string;
+}
 
 @Component({
   selector: 'app-wellness-facilities',
   standalone: true,
-  imports: [
-    CommonModule,
-    HeaderComponent,
-    FooterComponent,
-    TitleSubtitleComponent,
-    TextImageSectionComponent
-  ],
+  imports: [CommonModule, HeaderComponent, FooterComponent],
   templateUrl: './wellness-facilities.component.html',
   styleUrl: './wellness-facilities.component.css'
 })
 export class WellnessFacilitiesComponent {
-  private readonly siteDataService = inject(SiteDataService);
-  readonly wellnessData$ = this.siteDataService.getSection<{
-    intro: { title: string; description: string };
-    facilities: Array<{ title: string; description: string; imageGradient: string }>;
-  }>('wellness-facilities');
+  readonly facilities: FacilityItem[] = [
+    {
+      title: 'Gimnasio',
+      description:
+        'Espacio orientado al entrenamiento y mantenimiento de la rutina durante la estancia.',
+      imageUrl:
+        'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg'
+    },
+    {
+      title: 'Piscina',
+      description:
+        'Zona exterior pensada para el descanso y el disfrute en un ambiente relajado.',
+      imageUrl:
+        'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg'
+    },
+    {
+      title: 'Spa',
+      description:
+        'Área de bienestar dedicada a la relajación y al cuidado personal.',
+      imageUrl:
+        'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg'
+    }
+  ];
 }

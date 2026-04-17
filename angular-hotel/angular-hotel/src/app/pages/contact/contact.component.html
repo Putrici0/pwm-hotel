@@ -1,171 +1,37 @@
 <app-header></app-header>
 
-<main>
-  <section class="title-subtitle-section">
-    <div class="title-subtitle-container">
+<section class="contact-page wrapper">
+  <div class="contact-grid">
+    <div>
       <h1>Contacto</h1>
       <p>
-        Estamos aquí para ayudarte. Si tienes cualquier duda sobre tu estancia,
-        servicios o reservas, puedes escribirnos mediante este formulario.
+        El equipo de Isla Dorada Hotel mantiene una atención orientada a resolver dudas previas a la
+        estancia, ofrecer apoyo durante la reserva y facilitar información útil sobre servicios,
+        horarios y ubicación.
       </p>
-    </div>
-  </section>
+      <p>
+        Para consultas generales, modificaciones o solicitudes relacionadas con la estancia, el canal
+        de contacto del hotel permite centralizar la atención al huésped de forma clara y accesible.
+      </p>
 
-  <section class="text-image-section text-image-right">
-    <div class="text-image-container">
-      <div class="text-content">
-        <h2>Atención cercana y rápida</h2>
+      <div class="contact-box">
+        <p><strong>Dirección:</strong> Paseo de Meloneras, 37, Maspalomas</p>
+        <p><strong>Teléfono:</strong> +34 928 12 34 56</p>
+        <p><strong>Email:</strong> isladorada@grancanaria.es</p>
+      </div>
+    </div>
+
+    <div>
+      <img [src]="commitmentImage" alt="Compromiso de atención al huésped" />
+      <div class="contact-box">
+        <h2>Compromiso de atención al huésped</h2>
         <p>
-          Queremos que comunicarte con nosotros sea sencillo. Nuestro equipo revisa
-          cada solicitud para ofrecer una respuesta clara y útil lo antes posible.
+          Nuestro objetivo es ofrecer una respuesta cercana, ordenada y útil en cada fase de la
+          experiencia, desde la consulta inicial hasta la finalización de la estancia.
         </p>
       </div>
-      <div
-        class="image-content"
-        style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=1200&q=80');"
-      ></div>
     </div>
-  </section>
-
-  <section id="contact-form-section" class="auth-section">
-    <div class="auth-card contact-card">
-      <form id="contact-form-element" (ngSubmit)="submit()" #contactForm="ngForm">
-        <div class="form-grid two-columns">
-          <div class="form-group">
-            <label for="name">Nombre</label>
-            <input
-              id="name"
-              name="name"
-              type="text"
-              [(ngModel)]="formModel.name"
-              required
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="lastName">Apellidos</label>
-            <input
-              id="lastName"
-              name="lastName"
-              type="text"
-              [(ngModel)]="formModel.lastName"
-              required
-            />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Correo electrónico</label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            [(ngModel)]="formModel.email"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="subject">Asunto</label>
-          <select
-            id="subject"
-            name="subject"
-            [(ngModel)]="formModel.subject"
-            required
-          >
-            <option value="" disabled selected>Selecciona el motivo de tu consulta</option>
-            <option value="reservation">Reserva</option>
-            <option value="stay">Estancia</option>
-            <option value="services">Servicios</option>
-            <option value="incident">Incidencia</option>
-            <option value="other">Otra consulta</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="question">Mensaje</label>
-          <textarea
-            id="question"
-            name="question"
-            rows="6"
-            [(ngModel)]="formModel.question"
-            placeholder="Escribe aquí tu mensaje..."
-            required
-          ></textarea>
-        </div>
-
-        <div class="checkbox-group">
-          <input
-            id="privacy"
-            name="privacy"
-            type="checkbox"
-            [(ngModel)]="formModel.privacy"
-          />
-          <label for="privacy">
-            Acepto el tratamiento de mis datos para gestionar esta consulta.
-          </label>
-        </div>
-
-        <p *ngIf="errorMessage" class="form-message error-message">
-          {{ errorMessage }}
-        </p>
-
-        <p *ngIf="successMessage" class="form-message success-message">
-          {{ successMessage }}
-        </p>
-
-        <button type="submit" class="auth-button" [disabled]="submitting">
-          {{ submitting ? 'Enviando...' : 'Enviar mensaje' }}
-        </button>
-      </form>
-    </div>
-  </section>
-
-  <section class="faq-section">
-    <div class="faq-container">
-      <h2>Preguntas frecuentes</h2>
-
-      <div class="faq-group">
-        <h3>Reservas y estancia</h3>
-
-        <div class="faq-item">
-          <h4>¿Cómo puedo modificar una reserva?</h4>
-          <p>
-            Puedes ponerte en contacto con el hotel indicando los datos de tu
-            reserva para que podamos revisarla.
-          </p>
-        </div>
-
-        <div class="faq-item">
-          <h4>¿Recibiré confirmación tras enviar el formulario?</h4>
-          <p>
-            Sí. Verás un mensaje de confirmación en pantalla una vez el envío se
-            haya completado correctamente.
-          </p>
-        </div>
-      </div>
-
-      <div class="faq-group">
-        <h3>Servicios</h3>
-
-        <div class="faq-item">
-          <h4>¿Puedo consultar servicios disponibles antes de llegar?</h4>
-          <p>
-            Sí. Puedes escribirnos mediante el formulario y te facilitaremos la
-            información que necesites.
-          </p>
-        </div>
-
-        <div class="faq-item">
-          <h4>¿Atienden consultas generales del hotel?</h4>
-          <p>
-            Sí. Este formulario también sirve para dudas generales sobre
-            instalaciones, horarios o funcionamiento.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-</main>
+  </div>
+</section>
 
 <app-footer></app-footer>

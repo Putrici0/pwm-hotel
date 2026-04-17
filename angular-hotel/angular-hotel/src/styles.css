@@ -11,3 +11,30 @@
 @import url('./styles/legacy/admin-panel.css');
 @import url('./styles/legacy/account.css');
 @import url('./styles/legacy/legal.css');
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fcfaf6;
+  color: #2f3f44;
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin-top: 0;
+}
