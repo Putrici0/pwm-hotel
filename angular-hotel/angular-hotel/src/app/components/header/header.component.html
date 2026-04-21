@@ -34,8 +34,9 @@
 
       <li class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen">
         <div class="dropdown-trigger">
-          <a class="nav-link" href="#" (click)="toggleServicesDropdown($event)">Servicios</a>
-          <button class="dropdown-toggle" type="button" (click)="toggleServicesDropdown($event)">▾</button>
+          <button class="nav-link nav-link--dropdown" type="button" (click)="toggleServicesDropdown($event)">
+            Servicios <span class="dropdown-caret">▾</span>
+          </button>
         </div>
 
         <ul class="dropdown-menu">
@@ -49,14 +50,11 @@
         <a class="nav-link" routerLink="/contact" (click)="closeMenu()">Contacto</a>
       </li>
 
-      <li>
-        <a class="nav-link" routerLink="/legal" (click)="closeMenu()">Legal</a>
-      </li>
-
       <li class="dropdown-item" [class.dropdown-open]="accountDropdownOpen">
         <div class="dropdown-trigger">
-          <a class="nav-link" href="#" (click)="toggleAccountDropdown($event)">Tu cuenta</a>
-          <button class="dropdown-toggle" type="button" (click)="toggleAccountDropdown($event)">▾</button>
+          <button class="nav-link nav-link--dropdown" type="button" (click)="toggleAccountDropdown($event)">
+            Tu cuenta <span class="dropdown-caret">▾</span>
+          </button>
         </div>
 
         <ul class="dropdown-menu dropdown-right">

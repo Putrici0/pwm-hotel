@@ -31,6 +31,11 @@
 .hotel-name {
   font-weight: 800;
   font-size: 1.2rem;
+  color: var(--arena-sable);
+  transition: color 0.25s ease;
+}
+
+.logo-container:hover .hotel-name {
   color: var(--blanco-puro);
 }
 
@@ -84,6 +89,17 @@
   transition: color 0.25s ease;
 }
 
+.nav-link--dropdown {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dropdown-caret {
+  margin-left: 0.35rem;
+}
+
 .nav-link:hover {
   color: #ffffff;
 }
@@ -96,14 +112,6 @@
   display: flex;
   align-items: center;
   gap: 0.2rem;
-}
-
-.dropdown-toggle {
-  display: none;
-  border: 0;
-  background: transparent;
-  color: var(--arena-sable);
-  cursor: pointer;
 }
 
 .btn {
@@ -166,7 +174,7 @@
   right: 0;
 }
 
-@media (max-width: 1160px) {
+@media (max-width: 1320px) {
   .header {
     padding: 0.65rem 0.85rem;
   }
@@ -245,22 +253,14 @@
 
   .dropdown-trigger > .nav-link {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .nav-link {
     font-size: 1.1rem;
     padding: 0.75rem 0.55rem;
-  }
-
-  .dropdown-toggle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: rgba(255, 255, 255, 0.08);
   }
 
   .dropdown-menu {
