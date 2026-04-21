@@ -1,5 +1,4 @@
-/* admin.component.css */
-
+/* admin-panel.css */
 .admin-header-section {
     text-align: center;
     padding: 2rem;
@@ -13,7 +12,7 @@
 }
 
 .admin-dashboard-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 2rem auto;
     padding: 0 1.5rem;
 }
@@ -22,7 +21,7 @@
     margin-bottom: 4rem;
     background: var(--blanco-puro);
     padding: 2rem;
-    border-radius: 12px;
+    border-radius: var(--radius-card);
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
@@ -31,13 +30,13 @@
     border-bottom: 2px solid var(--arena-sable);
     padding-bottom: 0.5rem;
     margin-bottom: 1.5rem;
+    display: none;
 }
 
 .admin-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 2rem;
-    align-items: start;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
 }
 
 .admin-table {
@@ -46,21 +45,32 @@
 }
 
 .admin-table th, .admin-table td {
-    padding: 1rem;
+    padding: 1.5rem 1rem;
     text-align: left;
     border-bottom: 1px solid var(--arena-clara);
-}
-.admin-table td {
     vertical-align: middle;
 }
 
+.long-text-cell {
+    font-size: 0.9em;
+    line-height: 1.4;
+    max-width: 300px;
+    display: inline-block;
+}
+
 .room-thumbnail {
-    width: 60px;
+    width: 80px;
     height: 60px;
     object-fit: cover;
     border-radius: 4px;
     border: 1px solid var(--arena-sable);
     display: block;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.room-thumbnail:hover {
+    transform: scale(1.05);
 }
 
 .admin-table th {
@@ -74,56 +84,67 @@
 
 .admin-form-card {
     background-color: var(--arena-clara);
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
 }
 
 .admin-form-card h3 {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     color: var(--mar-navy);
+    text-align: center;
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.5rem;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
 }
 
-.form-group input {
+.form-group input, .form-group select {
     width: 100%;
-    padding: 0.5rem;
+    padding: 0.75rem;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
-.btn-delete {
+.action-cell {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.action-buttons-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.admin-btn-delete, .admin-btn-cancel {
     background-color: #dc3545;
     color: white;
     border: none;
-    padding: 0.4rem 0.8rem;
+    padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
+    width: 90px;
 }
 
-.btn-delete:hover {
+.admin-btn-delete:hover, .admin-btn-cancel:hover {
     background-color: #c82333;
 }
 
-/* Responsive per schermi piccoli */
-@media (max-width: 900px) {
-    .admin-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* Modifica directamente el bottone interno del browser */
-input[type="file"]::file-selector-button {
+.admin-btn-edit {
     background-color: var(--arena-sable);
     color: var(--mar-navy);
     border: none;
@@ -131,36 +152,481 @@ input[type="file"]::file-selector-button {
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.3s ease;
-    margin-right: 10px;
+    width: 90px;
 }
 
-/* Effetto cuando ci passi sopra col mouse */
-input[type="file"]::file-selector-button:hover {
+.admin-btn-edit:hover {
+    background-color: #d4b886;
+}
+
+.admin-btn-save {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 90px;
+}
+
+.admin-btn-save:hover {
+    background-color: #218838;
+}
+
+.admin-btn-submit {
+    background-color: var(--mar-navy);
+    color: var(--blanco-puro);
+    border: none;
+    padding: 1.2rem;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.admin-btn-submit:hover {
+    background-color: #1a2a40;
+}
+
+.image-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.image-modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.image-modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.image-modal-content img {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    display: block;
+}
+
+.image-modal-close {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 10px;
+    line-height: 1;
+}
+
+.image-modal-close:hover {
+    color: #ccc;
+}
+
+.edit-textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--mar-navy);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 60px;
+}
+
+.edit-textarea:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 128, 0.5);
+}
+
+.edit-input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 2px solid var(--mar-navy);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: block;
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    padding: 1rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    text-align: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.custom-file-upload:hover {
     background-color: var(--arena-hover);
     transform: translateY(-2px);
 }
 
-/* --- STILE PREMIUM PER L'INPUT FILE --- */
-input[type="file"] {
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: #666; 
-    cursor: pointer;
+.edit-custom-file {
+    padding: 0.6rem;
+    font-size: 0.75rem;
 }
 
-input[type="file"]::file-selector-button {
-    background-color: var(--arena-sable);
+.admin-date-input {
+    padding: 0.6rem;
+    border: 2px solid var(--mar-navy);
+    border-radius: 6px;
+    font-family: inherit;
     color: var(--mar-navy);
-    border: 2px solid transparent;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px; 
-    cursor: pointer;
+    background: white;
+}
+
+.admin-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    background: var(--arena-clara);
+    padding: 1rem;
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.admin-filter-date-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 1rem;
+}
+
+.admin-filter-date-wrap label {
     font-weight: bold;
-    font-size: 0.85rem;
+    color: var(--mar-navy);
+}
+
+.filter-btn {
+    padding: 0.6rem 1.5rem;
+    border: 2px solid var(--mar-navy);
+    background: white;
+    color: var(--mar-navy);
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.filter-btn:hover {
+    background: var(--arena-sable);
+}
+
+.filter-btn.active {
+    background: var(--mar-navy);
+    color: white;
+}
+
+.admin-tabs-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--arena-clara);
+    scrollbar-width: thin;
+    scrollbar-color: var(--arena-sable) transparent;
+    justify-content: center;
+}
+
+.admin-tabs-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.admin-tabs-wrapper::-webkit-scrollbar-thumb {
+    background-color: var(--arena-sable);
+    border-radius: 10px;
+}
+
+.admin-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--mar-navy);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.admin-tab-btn:hover {
+    background: var(--arena-clara);
+    opacity: 1;
+}
+
+.admin-tab-btn.active {
+    border-bottom: 3px solid var(--mar-navy);
+    color: var(--mar-navy);
+    opacity: 1;
+    background: white;
+}
+
+.toggle-form-wrap {
+    text-align: center;
+}
+
+.admin-btn-toggle-form {
+    background-color: var(--mar-navy);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 1rem auto;
+    display: inline-block;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-right: 15px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+    letter-spacing: 1px;
+}
+
+.admin-btn-toggle-form:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.admin-btn-toggle-form.close-state {
+    background-color: #dc3545;
+}
+
+.admin-form-wrapper {
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    opacity: 1;
+    margin-top: 1rem;
+}
+
+.admin-form-wrapper.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    pointer-events: none;
+}
+
+.admin-booking-widget-card {
+    max-width: 100%;
+    margin-top: 1rem;
+}
+
+.admin-manage-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    align-items: end;
+}
+
+.booking-field-inline {
+    margin-bottom: 0;
+}
+
+.booking-submit-wrap {
+    align-self: stretch;
+}
+
+.booking-search-btn {
+    margin-top: 0;
+    height: 100%;
+}
+
+.booking-family-wrap {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
+.booking-family-wrap label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--mar-navy);
+    font-weight: bold;
+}
+
+.booking-family-wrap input {
+    width: auto;
+}
+
+.booking-room-list {
+    margin-top: 2rem;
+}
+
+.booking-status-bar {
+    background: var(--arena-sable);
+    color: var(--mar-navy);
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.booking-status-bar.warning {
+    background: #e67e22;
+    color: white;
+}
+
+.booking-status-bar.success {
+    background: #28a745;
+    color: white;
+}
+
+.room-option-card {
+    display: flex;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.room-option-card img {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid var(--arena-clara);
+}
+
+.room-option-info {
+    flex: 1;
+}
+
+.room-option-info h4 {
+    color: var(--mar-navy);
+    margin-bottom: 0.3rem;
+    font-size: 1.1rem;
+}
+
+.room-option-meta {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.room-option-price {
+    color: var(--mar-navy);
+    font-weight: bold;
+    margin-top: 0.4rem;
+    font-size: 1.05rem;
+}
+
+.admin-select-room-btn:disabled {
+    background-color: #6c757d;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.booking-checkout-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--arena-sable);
+}
+
+.booking-summary {
+    margin-bottom: 1.5rem;
+    background: var(--blanco-puro);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.6rem;
+}
+
+.summary-total {
+    font-weight: bold;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    padding-top: 10px;
+    margin-bottom: 0;
+}
+
+.final-booking-form {
+    grid-template-columns: 1fr 1fr;
+}
+
+.booking-email-field {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+}
+
+.booking-confirm-wrap {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+    .admin-tab-btn {
+        font-size: 0.95rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .admin-btn-toggle-form {
+        width: 100%;
+        border-radius: 8px;
+    }
+
+    .admin-tabs-wrapper {
+        justify-content: flex-start;
+    }
+
+    .admin-filter-date-wrap {
+        margin-left: 0;
+    }
+
+    .room-option-card {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .final-booking-form {
+        grid-template-columns: 1fr;
+    }
 }

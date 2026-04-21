@@ -1,117 +1,203 @@
-/* account.component.css */
-
-/* css por template TABLE CARD (table-card.css)*/
-.table-card-section {
-    padding: 2.25rem 1.25rem;
-}
-
-.table-card-container {
-    max-width: 900px;
-    margin: 0 auto;
-}
-
-.table-card__title {
-    font-size: 2rem;
-    line-height: 1.2;
-    margin-bottom: 0.9rem;
-    color: var(--mar-navy);
-}
-
-.table-card {
-    border: 2px solid var(--mar-navy);
-    background: rgba(255, 255, 255, 0.7);
-    border-radius: 18px;
-    overflow: hidden;
-}
-
-.table-card__row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-}
-
-.table-card__header {
-    background-color: var(--arena-sable);
-    font-weight: 700;
-}
-
-.table-card__row div {
-    padding: 1rem;
+/* css por pagina ACCOUNT ACTIONS  */
+.account-header-section {
     text-align: center;
-    border-right: 1px solid rgba(26, 54, 93, 0.35);
-    border-bottom: 1px solid rgba(26, 54, 93, 0.35);
-    color: var(--mar-navy);
+    padding: 2.5rem 1.5rem;
+    background-color: var(--mar-navy);
+    color: var(--arena-clara);
 }
 
-.table-card__row div:last-child {
-    border-right: none;
+.account-header-section h1 {
+    color: var(--arena-sable);
+    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
 }
 
-.table-card__row:last-child div {
-    border-bottom: none;
+.account-main-container {
+    min-height: calc(100vh - 400px);
+    background-color: var(--arena-clara);
 }
 
-@media (max-width: 900px) {
-    .table-card-section {
-        padding: 1.5rem 0.85rem;
-    }
-
-    .table-card__title {
-        font-size: 1.6rem;
-    }
-
-    .table-card__row div {
-        padding: 1rem;
-    }
+.account-dashboard {
+    max-width: 1200px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1.5rem;
 }
 
-@media (max-width: 576px) {
-    .table-card-container {
-        overflow-x: auto;
-    }
-
-    .table-card {
-        min-width: 520px;
-    }
-}
-
-/* css por pagina ACCOUNT ACTIONS (account.css) */
-.account-actions {
-    padding: 1.75rem 1.25rem;
+.account-tabs-wrapper {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.85rem;
-    max-width: 900px;
-    margin: 0 auto;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ccc;
+    justify-content: center;
 }
 
-.account-actions__btn {
-    width: 100%;
-    max-width: 420px;
-    padding: 1rem;
-    background: var(--arena-sable);
+.account-tab-btn {
+    background: transparent;
+    border: none;
     color: var(--mar-navy);
-    border: 1px solid var(--mar-navy);
-    border-radius: 8px;
-    font-weight: 700;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.2s ease;
+    white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.6;
 }
 
-.account-actions__btn:hover {
-    background: var(--arena-hover);
-    transform: translateY(-1px);
+.account-tab-btn.active {
+    border-bottom: 3px solid var(--mar-navy);
+    color: var(--mar-navy);
+    opacity: 1;
+    background: white;
 }
 
-@media (max-width: 900px) {
-    .account-actions {
-        padding: 2rem 1rem;
-        gap: 1rem;
-    }
+.account-card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-@media (max-width: 576px) {
-    .account-actions__btn {
-        padding: 0.85rem;
-    }
+.account-card h2 {
+    color: var(--mar-navy);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--arena-sable);
+    padding-bottom: 0.5rem;
+}
+
+.account-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--mar-navy);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-group input:disabled {
+    background-color: #f9f9f9;
+    color: #666;
+}
+
+.readonly-email {
+    background-color: #f0f0f0;
+}
+
+.account-form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.account-btn-primary, .account-btn-save {
+    background-color: var(--mar-navy);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.account-btn-save {
+    background-color: #28a745;
+}
+
+.account-btn-secondary {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.account-btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.account-table-wrapper {
+    overflow-x: auto;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-table th,
+.account-table td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.account-table th {
+    background-color: var(--mar-navy);
+    color: white;
+}
+
+.account-room-img {
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.reservation-total {
+    color: var(--mar-navy);
+    font-weight: bold;
+}
+
+.discount-code {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px dashed var(--mar-navy);
+}
+
+.account-divider {
+    margin: 2rem 0 1rem;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.password-section h3 {
+    color: var(--mar-navy);
+    margin-bottom: 1rem;
+}
+
+.no-res-card {
+    text-align: center;
+    padding: 3rem;
+}
+
+.reserve-now-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    text-decoration: none;
 }

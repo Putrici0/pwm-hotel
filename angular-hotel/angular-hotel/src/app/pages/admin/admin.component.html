@@ -7,70 +7,429 @@
   </div>
 
   <div id="admin-dashboard" class="admin-dashboard-container">
-    <section class="admin-section-block" *ngFor="let section of sections">
-      <h2>{{ section.title }}</h2>
+    <div class="admin-tabs-wrapper" *ngIf="sections.length > 0">
+      <button
+        *ngFor="let section of sections"
+        class="admin-tab-btn"
+        [class.active]="currentSectionId === section.id"
+        type="button"
+        (click)="setCurrentSection(section.id)"
+      >
+        {{ section.title }}
+      </button>
+    </div>
+
+    <section class="admin-section-block" *ngIf="activeSection as section">
+      <div class="admin-filter-row" *ngIf="section.id === 'services'">
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="servicesFilter === 'bienestar'"
+          (click)="setServicesFilter('bienestar')"
+        >
+          Bienestar
+        </button>
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="servicesFilter === 'actividad'"
+          (click)="setServicesFilter('actividad')"
+        >
+          Actividades
+        </button>
+      </div>
+
+      <div class="admin-filter-row" *ngIf="section.id === 'menus'">
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="menusFilter === 'entrantes'"
+          (click)="setMenusFilter('entrantes')"
+        >
+          Entrantes
+        </button>
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="menusFilter === 'primeros'"
+          (click)="setMenusFilter('primeros')"
+        >
+          Primeros Platos
+        </button>
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="menusFilter === 'segundos'"
+          (click)="setMenusFilter('segundos')"
+        >
+          Segundos Platos
+        </button>
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="menusFilter === 'postres'"
+          (click)="setMenusFilter('postres')"
+        >
+          Postres
+        </button>
+      </div>
+
+      <div class="admin-filter-row" *ngIf="section.id === 'reservations'">
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="reservationsFilter === 'proximas'"
+          (click)="setReservationsFilter('proximas')"
+        >
+          Próximas
+        </button>
+        <button
+          type="button"
+          class="filter-btn"
+          [class.active]="reservationsFilter === 'todas'"
+          (click)="setReservationsFilter('todas')"
+        >
+          Todas
+        </button>
+
+        <div class="admin-filter-date-wrap">
+          <label for="admin-custom-date">Ver desde:</label>
+          <input
+            id="admin-custom-date"
+            type="date"
+            class="admin-date-input"
+            [ngModel]="reservationsCustomDate"
+            (ngModelChange)="setReservationsCustomDate($event)"
+          />
+        </div>
+      </div>
 
       <div class="admin-grid">
         <div class="admin-table-container">
-          <p *ngIf="getRows(section.id).length === 0">No hay elementos registrados en {{ section.title }}.</p>
+          <p *ngIf="getFilteredItems(section.id).length === 0">No hay elementos.</p>
 
-          <table class="admin-table" *ngIf="getRows(section.id).length > 0">
+          <table class="admin-table" *ngIf="getFilteredItems(section.id).length > 0">
             <thead>
               <tr>
-                <th *ngFor="let field of section.fields">{{ field.label }}</th>
-                <th>Accion</th>
+                <th *ngFor="let field of getVisibleFields(section)">{{ field.label }}</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of getRows(section.id); let i = index">
-                <td *ngFor="let field of section.fields">
-                  <img
-                    *ngIf="section.id === 'rooms' && field.name === 'imagen'"
-                    [src]="row[field.name]"
-                    [alt]="row['nombre'] || 'room'"
-                    class="room-thumbnail"
-                  />
-                  <span *ngIf="!(section.id === 'rooms' && field.name === 'imagen')">
-                    {{ row[field.name] }}
-                  </span>
-                </td>
-                <td><button class="btn-delete" (click)="deleteItem(section.id, i)">Borrar</button></td>
+              <tr *ngFor="let row of getFilteredItems(section.id)">
+                <ng-container *ngIf="!isEditingRow(section.id, row); else editRowTpl">
+                  <td *ngFor="let field of getVisibleFields(section)">
+                    <img
+                      *ngIf="isImageField(field)"
+                      class="room-thumbnail"
+                      [src]="getImageValue(row, field.name)"
+                      [alt]="'Imagen de ' + (row['nombre'] || 'elemento')"
+                      (click)="openImageModal(getImageValue(row, field.name))"
+                    />
+
+                    <ng-container *ngIf="!isImageField(field)">
+                      <span class="long-text-cell" *ngIf="isLongTextField(field.name)">
+                        {{ formatFieldValue(field, row) }}
+                      </span>
+                      <strong *ngIf="!isLongTextField(field.name)">
+                        {{ formatFieldValue(field, row) }}
+                      </strong>
+                    </ng-container>
+                  </td>
+
+                  <td class="action-cell">
+                    <div class="action-buttons-wrapper" *ngIf="section.id !== 'faqs'">
+                      <button type="button" class="admin-btn-edit" (click)="startEdit(section, row)">Editar</button>
+                      <button type="button" class="admin-btn-delete" (click)="deleteFilteredItem(section.id, row)">
+                        Borrar
+                      </button>
+                    </div>
+
+                    <div class="action-buttons-wrapper" *ngIf="section.id === 'faqs'">
+                      <button type="button" class="admin-btn-delete" (click)="deleteFilteredItem(section.id, row)">
+                        Borrar
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <ng-template #editRowTpl>
+                  <td *ngFor="let field of getVisibleFields(section)">
+                    <ng-container *ngIf="field.type === 'file'; else editTextTpl">
+                      <img
+                        [src]="editValues[field.name] || getImageValue(row, field.name)"
+                        class="room-thumbnail"
+                        alt="Vista previa"
+                        style="margin-bottom: 5px"
+                      />
+                      <label class="custom-file-upload edit-custom-file">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          (change)="onEditFileChange($event, field.name)"
+                        />
+                        <span class="file-text">{{ editFileLabel }}</span>
+                      </label>
+                    </ng-container>
+
+                    <ng-template #editTextTpl>
+                      <textarea
+                        *ngIf="isWideEditField(field.name)"
+                        class="edit-textarea"
+                        [name]="'edit-' + field.name"
+                        [(ngModel)]="editValues[field.name]"
+                      ></textarea>
+
+                      <input
+                        *ngIf="!isWideEditField(field.name)"
+                        [type]="field.type || 'text'"
+                        class="edit-input"
+                        [name]="'edit-' + field.name"
+                        [(ngModel)]="editValues[field.name]"
+                      />
+                    </ng-template>
+                  </td>
+
+                  <td class="action-cell">
+                    <div class="action-buttons-wrapper">
+                      <button type="button" class="admin-btn-save" (click)="saveEdit(section)">Guardar</button>
+                      <button type="button" class="admin-btn-cancel" (click)="cancelEdit()">Cancelar</button>
+                    </div>
+                  </td>
+                </ng-template>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div class="admin-form-container">
-          <div class="admin-form-card">
-            <h3>Anadir {{ section.title }}</h3>
-            <form (ngSubmit)="submit(section)">
-              <div class="form-group" *ngFor="let field of section.fields">
-                <label>{{ field.label }}</label>
-
-                <input
-                  *ngIf="field.type !== 'file'"
-                  [type]="field.type || 'text'"
-                  [name]="field.name"
-                  [(ngModel)]="formValues[section.id][field.name]"
-                  required
-                />
-
-                <input
-                  *ngIf="field.type === 'file'"
-                  type="file"
-                  [name]="field.name"
-                  accept="image/*"
-                  (change)="onFileChange($event, section.id, field.name)"
-                  required
-                />
-              </div>
-
-              <button type="submit" class="btn btn-primary">Anadir</button>
-            </form>
+        <ng-container *ngIf="section.id !== 'faqs'">
+          <div class="toggle-form-wrap">
+            <button
+              type="button"
+              class="admin-btn-toggle-form"
+              [class.close-state]="isFormOpen(section.id)"
+              (click)="toggleForm(section.id)"
+            >
+              {{ getToggleText(section) }}
+            </button>
           </div>
-        </div>
+
+          <div class="admin-form-wrapper" [class.hidden]="!isFormOpen(section.id)">
+            <ng-container *ngIf="section.id !== 'reservations'">
+              <div class="admin-form-card">
+                <h3>Añadir a {{ section.title }}</h3>
+                <form (ngSubmit)="submitNewItem(section)">
+                  <div class="form-group" *ngFor="let field of section.fields">
+                    <label>{{ field.label }}</label>
+
+                    <select
+                      *ngIf="section.id === 'services' && field.name === 'tipo'"
+                      [name]="section.id + '-' + field.name"
+                      [ngModel]="getNewValue(section.id, field.name)"
+                      (ngModelChange)="setNewValue(section.id, field.name, $event)"
+                      required
+                    >
+                      <option value="bienestar">Bienestar</option>
+                      <option value="actividad">Actividades</option>
+                    </select>
+
+                    <select
+                      *ngIf="section.id === 'menus' && field.name === 'categoria'"
+                      [name]="section.id + '-' + field.name"
+                      [ngModel]="getNewValue(section.id, field.name)"
+                      (ngModelChange)="setNewValue(section.id, field.name, $event)"
+                      required
+                    >
+                      <option value="entrantes">Entrantes</option>
+                      <option value="primeros">Primeros Platos</option>
+                      <option value="segundos">Segundos Platos</option>
+                      <option value="postres">Postres</option>
+                    </select>
+
+                    <label
+                      class="custom-file-upload"
+                      *ngIf="field.type === 'file'"
+                    >
+                      <input
+                        type="file"
+                        accept="image/*"
+                        [name]="section.id + '-' + field.name"
+                        (change)="onAddFileChange($event, section.id, field.name)"
+                        required
+                      />
+                      <span class="file-text">{{ getFileLabel(section.id, field.name) }}</span>
+                    </label>
+
+                    <input
+                      *ngIf="
+                        field.type !== 'file' &&
+                        !(section.id === 'services' && field.name === 'tipo') &&
+                        !(section.id === 'menus' && field.name === 'categoria')
+                      "
+                      [type]="field.type || 'text'"
+                      [name]="section.id + '-' + field.name"
+                      [ngModel]="getNewValue(section.id, field.name)"
+                      (ngModelChange)="setNewValue(section.id, field.name, $event)"
+                      [step]="field.type === 'number' ? '0.01' : null"
+                      required
+                    />
+                  </div>
+
+                  <button type="submit" class="admin-btn-submit">Añadir</button>
+                </form>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="section.id === 'reservations'">
+              <div class="admin-form-card admin-booking-widget-card">
+                <form class="admin-manage-form" (ngSubmit)="searchBookingRooms()">
+                  <div class="form-group booking-field-inline">
+                    <label for="admin-checkin">Check-in</label>
+                    <input
+                      id="admin-checkin"
+                      type="date"
+                      name="admin-checkin"
+                      [(ngModel)]="bookingSearch.checkin"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group booking-field-inline">
+                    <label for="admin-checkout">Check-out</label>
+                    <input
+                      id="admin-checkout"
+                      type="date"
+                      name="admin-checkout"
+                      [(ngModel)]="bookingSearch.checkout"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group booking-field-inline">
+                    <label for="admin-guests">Huéspedes</label>
+                    <input
+                      id="admin-guests"
+                      type="number"
+                      min="1"
+                      name="admin-guests"
+                      [(ngModel)]="bookingSearch.guests"
+                      required
+                    />
+                  </div>
+
+                  <div class="form-group booking-field-inline booking-submit-wrap">
+                    <button type="submit" class="admin-btn-submit booking-search-btn">BUSCAR</button>
+                  </div>
+                </form>
+
+                <div class="booking-family-wrap">
+                  <label>
+                    <input
+                      type="checkbox"
+                      name="admin-family-suite"
+                      [(ngModel)]="bookingSearch.includeFamilySuite"
+                    />
+                    Incluir Suite Familiar
+                  </label>
+                </div>
+
+                <section id="admin-room-selection-list" *ngIf="showBookingRoomList" class="booking-room-list">
+                  <div class="booking-status-bar" [class.warning]="bookingStatusType === 'warning'" [class.success]="bookingStatusType === 'success'">
+                    {{ bookingStatusMessage }}
+                  </div>
+
+                  <div class="room-options-container" id="admin-room-container">
+                    <div class="room-option-card" *ngFor="let room of bookingCandidates; let i = index">
+                      <img [src]="getRoomImage(room)" [alt]="getRoomName(room)" />
+                      <div class="room-option-info">
+                        <h4>{{ getRoomName(room) }}</h4>
+                        <div class="room-option-meta">Capacidad: <strong>{{ getRoomCapacity(room) }} pers.</strong></div>
+                        <div class="room-option-price">{{ getRoomPrice(room) }} € / noche</div>
+                      </div>
+                      <button
+                        type="button"
+                        class="admin-btn-save admin-select-room-btn"
+                        [disabled]="isBookingRoomDisabled(i)"
+                        (click)="addBookingRoom(i)"
+                      >
+                        {{ selectedCandidateIndexes.has(i) ? 'Añadida' : 'Añadir' }}
+                      </button>
+                    </div>
+                  </div>
+                </section>
+
+                <section id="admin-checkout-section" *ngIf="showBookingCheckout" class="booking-checkout-section">
+                  <div class="booking-summary" id="admin-booking-summary">
+                    <div class="summary-item">
+                      <span>Entrada:</span>
+                      <span>{{ bookingSearch.checkin }}</span>
+                    </div>
+                    <div class="summary-item">
+                      <span>Salida:</span>
+                      <span>{{ bookingSearch.checkout }}</span>
+                    </div>
+                    <div class="summary-item">
+                      <span>Habitaciones:</span>
+                      <span>{{ getBookingSummaryRooms() }}</span>
+                    </div>
+                    <div class="summary-item summary-total">
+                      <span>Total:</span>
+                      <span>{{ getBookingTotalPrice() }} €</span>
+                    </div>
+                  </div>
+
+                  <form id="admin-final-booking-form" class="admin-manage-form final-booking-form" (ngSubmit)="confirmAdminReservation()">
+                    <div class="form-group booking-field-inline">
+                      <label for="admin-final-name">Nombre</label>
+                      <input
+                        id="admin-final-name"
+                        type="text"
+                        name="admin-final-name"
+                        [(ngModel)]="bookingFinal.name"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group booking-field-inline">
+                      <label for="admin-final-lastname">Apellidos</label>
+                      <input
+                        id="admin-final-lastname"
+                        type="text"
+                        name="admin-final-lastname"
+                        [(ngModel)]="bookingFinal.lastName"
+                        required
+                      />
+                    </div>
+
+                    <div class="form-group booking-email-field">
+                      <label for="admin-final-email">Email</label>
+                      <input
+                        id="admin-final-email"
+                        type="email"
+                        name="admin-final-email"
+                        [(ngModel)]="bookingFinal.email"
+                        required
+                      />
+                    </div>
+
+                    <div class="booking-confirm-wrap">
+                      <button type="submit" class="admin-btn-submit">CONFIRMAR RESERVA</button>
+                    </div>
+                  </form>
+                </section>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
     </section>
+  </div>
+
+  <div class="image-modal-overlay" [class.active]="!!modalImageSrc" (click)="closeImageModal()">
+    <div class="image-modal-content" (click)="$event.stopPropagation()">
+      <button class="image-modal-close" type="button" (click)="closeImageModal()">&times;</button>
+      <img [src]="modalImageSrc" alt="Vista" />
+    </div>
   </div>
 </main>
 

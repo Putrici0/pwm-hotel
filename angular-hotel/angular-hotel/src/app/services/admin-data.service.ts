@@ -2,7 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { SiteDataService } from './site-data.service';
 
-type AdminDb = Record<string, Array<Record<string, string>>>;
+type AdminValue = string | number | null | undefined;
+type AdminItem = Record<string, AdminValue>;
+type AdminDb = Record<string, AdminItem[]>;
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +39,7 @@ export class AdminDataService {
     localStorage.setItem(this.storageKey, JSON.stringify(db));
   }
 
-  addItem(sectionId: string, item: Record<string, string>): void {
+  addItem(sectionId: string, item: AdminItem): void {
     const db = this.getDb();
     if (!Array.isArray(db[sectionId])) {
       db[sectionId] = [];
