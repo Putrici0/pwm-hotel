@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section class="rooms-page wrapper">
+<section class="rooms-page wrapper container-fluid">
   <div class="page-header">
     <h1>Habitaciones</h1>
     <p>
@@ -10,21 +10,21 @@
     </p>
   </div>
 
-  <div class="rooms-grid">
-    <article class="room-card" *ngFor="let room of rooms">
+  <div class="rooms-grid row g-4">
+    <article class="room-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let room of rooms">
       <img [src]="room.imageUrl" [alt]="room.title" />
-      <div class="room-card__body">
+      <div class="room-card__body card-body">
         <h2>{{ room.title }}</h2>
         <p>{{ room.description }}</p>
 
-        <ul class="room-meta">
+        <ul class="room-meta list-unstyled">
           <li><strong>Capacidad:</strong> {{ room.capacity }}</li>
           <li><strong>Tamaño:</strong> {{ room.size }}</li>
           <li><strong>Precio:</strong> {{ room.priceFrom }}</li>
         </ul>
 
-        <div class="features">
-          <span *ngFor="let feature of room.features">{{ feature }}</span>
+        <div class="features d-flex flex-wrap gap-2">
+          <span class="badge rounded-pill text-bg-light border" *ngFor="let feature of room.features">{{ feature }}</span>
         </div>
       </div>
     </article>

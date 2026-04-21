@@ -8,9 +8,8 @@
 }
 
 .booking-hero {
-  display: grid;
-  grid-template-columns: 1fr 0.95fr;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 2rem;
 }
@@ -26,16 +25,14 @@
 }
 
 .booking-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: start;
 }
 
 .panel {
   background: #fff;
   border-radius: 20px;
-  padding: 1.1rem;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
 }
 
@@ -144,11 +141,6 @@
 }
 
 @media (max-width: 900px) {
-  .booking-hero,
-  .booking-grid {
-    grid-template-columns: 1fr;
-  }
-
   .room-option {
     grid-template-columns: 1fr;
   }

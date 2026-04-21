@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section class="activities-page wrapper">
+<section class="activities-page wrapper container-fluid">
   <div class="page-header">
     <h1>Actividades</h1>
     <p>
@@ -9,13 +9,13 @@
     </p>
   </div>
 
-  <div class="cards-grid">
-    <article class="activity-card" *ngFor="let activity of activities">
+  <div class="cards-grid row g-4">
+    <article class="activity-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let activity of activities">
       <img [src]="activity.imageUrl" [alt]="activity.title" />
-      <div class="activity-card__body">
+      <div class="activity-card__body card-body">
         <h2>{{ activity.title }}</h2>
         <p>{{ activity.description }}</p>
-        <span>{{ activity.duration }}</span>
+        <span class="badge rounded-pill text-bg-light border">{{ activity.duration }}</span>
       </div>
     </article>
   </div>

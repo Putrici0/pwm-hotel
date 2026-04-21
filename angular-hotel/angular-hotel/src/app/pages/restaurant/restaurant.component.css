@@ -8,9 +8,8 @@
 }
 
 .hero-mini {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 2rem;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 2rem;
 }
@@ -37,9 +36,8 @@
 }
 
 .dish-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.2rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .dish-card {
@@ -62,8 +60,125 @@
   margin-bottom: 0.55rem;
 }
 
-@media (max-width: 900px) {
+@media (min-width: 577px) and (max-width: 900px) {
+  .restaurant-page {
+    padding: 2.25rem 0;
+  }
+
+  .hero-mini { gap: 1.2rem; }
+
+  .hero-mini img {
+    max-height: 360px;
+  }
+
+  .dish-card img {
+    height: 190px;
+  }
+}
+
+@media (max-width: 576px) {
   .hero-mini {
-    grid-template-columns: 1fr;
+    position: relative;
+    min-height: 320px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .hero-mini__text {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    padding: 1rem;
+    color: #fff;
+  }
+
+  .hero-mini__text h1 {
+    color: #fff;
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .hero-mini__text p {
+    font-size: 0.92rem;
+    line-height: 1.35;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hero-mini__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-mini__media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .hero-mini::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.75) 100%);
+    z-index: 1;
+  }
+
+  .dish-card {
+    position: relative;
+    min-height: 300px;
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .dish-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.75) 100%);
+    z-index: 1;
+  }
+
+  .dish-card img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .dish-card__body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    color: #fff;
+    padding: 1rem;
+  }
+
+  .dish-card__body h3 {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dish-card__body p {
+    font-size: 0.92rem;
+    line-height: 1.35;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }

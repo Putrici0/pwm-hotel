@@ -1,8 +1,8 @@
 <app-header></app-header>
 
-<section class="restaurant-page wrapper">
-  <div class="hero-mini">
-    <div>
+<section class="restaurant-page wrapper container-fluid">
+  <div class="hero-mini row g-4 align-items-center">
+    <div class="hero-mini__text col-12 col-lg-7">
       <h1>Restauración</h1>
       <p>
         La propuesta gastronómica del hotel combina cocina reconocible, presentación cuidada y un
@@ -13,15 +13,17 @@
         pensado para aportar variedad.
       </p>
     </div>
-    <img [src]="menuImage" alt="Restaurante del hotel" />
+    <div class="hero-mini__media col-12 col-lg-5">
+      <img [src]="menuImage" alt="Restaurante del hotel" class="img-fluid w-100" />
+    </div>
   </div>
 
   <div class="menu-section">
     <h2>Entrantes</h2>
-    <div class="dish-grid">
-      <article class="dish-card" *ngFor="let item of starters">
+    <div class="dish-grid row g-4">
+      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of starters">
         <img [src]="item.imageUrl" [alt]="item.title" />
-        <div class="dish-card__body">
+        <div class="dish-card__body card-body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -31,10 +33,10 @@
 
   <div class="menu-section">
     <h2>Primeros platos</h2>
-    <div class="dish-grid">
-      <article class="dish-card" *ngFor="let item of firstDishes">
+    <div class="dish-grid row g-4">
+      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of firstDishes">
         <img [src]="item.imageUrl" [alt]="item.title" />
-        <div class="dish-card__body">
+        <div class="dish-card__body card-body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -44,10 +46,10 @@
 
   <div class="menu-section">
     <h2>Segundos platos</h2>
-    <div class="dish-grid">
-      <article class="dish-card" *ngFor="let item of secondDishes">
+    <div class="dish-grid row g-4">
+      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of secondDishes">
         <img [src]="item.imageUrl" [alt]="item.title" />
-        <div class="dish-card__body">
+        <div class="dish-card__body card-body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -57,10 +59,10 @@
 
   <div class="menu-section">
     <h2>Postres</h2>
-    <div class="dish-grid">
-      <article class="dish-card" *ngFor="let item of desserts">
+    <div class="dish-grid row g-4">
+      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of desserts">
         <img [src]="item.imageUrl" [alt]="item.title" />
-        <div class="dish-card__body">
+        <div class="dish-card__body card-body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>

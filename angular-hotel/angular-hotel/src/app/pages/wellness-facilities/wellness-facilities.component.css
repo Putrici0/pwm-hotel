@@ -18,9 +18,8 @@
 }
 
 .cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .facility-card {
@@ -43,4 +42,63 @@
 .facility-card__body h2 {
   color: #123b44;
   margin-bottom: 0.6rem;
+}
+
+@media (min-width: 577px) and (max-width: 900px) {
+  .wellness-page {
+    padding: 2.25rem 0;
+  }
+
+  .facility-card img {
+    height: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .facility-card {
+    position: relative;
+    min-height: 300px;
+    border-radius: 14px;
+    box-shadow: none;
+  }
+
+  .facility-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.75) 100%);
+    z-index: 1;
+  }
+
+  .facility-card img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .facility-card__body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    color: #fff;
+    padding: 1rem;
+  }
+
+  .facility-card__body h2 {
+    color: #fff;
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .facility-card__body p {
+    font-size: 0.92rem;
+    line-height: 1.35;
+    margin-bottom: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }

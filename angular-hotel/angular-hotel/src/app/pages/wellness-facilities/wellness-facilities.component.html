@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<section class="wellness-page wrapper">
+<section class="wellness-page wrapper container-fluid">
   <div class="page-header">
     <h1>Wellness</h1>
     <p>
@@ -9,10 +9,10 @@
     </p>
   </div>
 
-  <div class="cards-grid">
-    <article class="facility-card" *ngFor="let item of facilities">
+  <div class="cards-grid row g-4">
+    <article class="facility-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let item of facilities">
       <img [src]="item.imageUrl" [alt]="item.title" />
-      <div class="facility-card__body">
+      <div class="facility-card__body card-body">
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
       </div>

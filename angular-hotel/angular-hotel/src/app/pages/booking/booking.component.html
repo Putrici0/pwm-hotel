@@ -1,108 +1,126 @@
 <app-header></app-header>
 
-<section class="booking-page wrapper">
-  <div class="booking-hero">
-    <div>
+<section class="booking-page wrapper container-fluid">
+  <div class="booking-hero row g-4 align-items-center">
+    <div class="col-12 col-lg-7">
       <h1>Reserva tu estancia en Isla Dorada</h1>
       <p>
-        Esta página ya queda preparada para conectarse a un CRUD real de reservas. Ahora mismo
-        guarda la reserva en Firestore dentro de la colección <strong>bookings</strong>.
+        Esta pagina ya queda preparada para conectarse a un CRUD real de reservas. Ahora mismo
+        guarda la reserva en Firestore dentro de la coleccion <strong>bookings</strong>.
       </p>
     </div>
-    <img [src]="heroImage" alt="Piscina del hotel Isla Dorada" />
+    <div class="col-12 col-lg-5">
+      <img [src]="heroImage" alt="Piscina del hotel Isla Dorada" class="img-fluid w-100" />
+    </div>
   </div>
 
-  <div class="booking-grid">
-    <div class="panel">
-      <h2>Buscar disponibilidad</h2>
+  <div class="booking-grid row g-4">
+    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
+      <div class="card-body">
+        <h2>Buscar disponibilidad</h2>
 
-      <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="form-grid">
-        <label>
-          Fecha de entrada
-          <input type="date" formControlName="checkin" />
-        </label>
+        <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de entrada</label>
+            <input type="date" formControlName="checkin" class="form-control" />
+          </div>
 
-        <label>
-          Fecha de salida
-          <input type="date" formControlName="checkout" />
-        </label>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de salida</label>
+            <input type="date" formControlName="checkout" class="form-control" />
+          </div>
 
-        <label>
-          Número de huéspedes
-          <input type="number" formControlName="guests" min="1" />
-        </label>
+          <div class="col-12">
+            <label class="form-label">Numero de huespedes</label>
+            <input type="number" formControlName="guests" min="1" class="form-control" />
+          </div>
 
-        <label class="checkbox">
-          <input type="checkbox" formControlName="includeFamilySuite" />
-          Incluir opciones familiares
-        </label>
-
-        <button type="submit">Buscar habitaciones</button>
-      </form>
-
-      <div *ngIf="submitted" class="rooms-result">
-        <h3>Habitaciones disponibles</h3>
-
-        <p *ngIf="filteredRooms.length === 0">
-          No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
-        </p>
-
-        <div class="room-list">
-          <article class="room-option" *ngFor="let room of filteredRooms">
-            <img [src]="room.img" [alt]="room.name" />
-            <div>
-              <h4>{{ room.name }}</h4>
-              <p>Máx. {{ room.maxGuests }} personas</p>
-              <button type="button" (click)="selectRoom(room)">
-                {{ selectedRoomName === room.name ? 'Seleccionada' : 'Seleccionar' }}
-              </button>
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
+              <label class="form-check-label" for="includeFamilySuite">
+                Incluir opciones familiares
+              </label>
             </div>
-          </article>
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary w-100">Buscar habitaciones</button>
+          </div>
+        </form>
+
+        <div *ngIf="submitted" class="rooms-result mt-4">
+          <h3>Habitaciones disponibles</h3>
+
+          <p *ngIf="filteredRooms.length === 0">
+            No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
+          </p>
+
+          <div class="room-list">
+            <article class="room-option" *ngFor="let room of filteredRooms">
+              <img [src]="room.img" [alt]="room.name" />
+              <div>
+                <h4>{{ room.name }}</h4>
+                <p>Max. {{ room.maxGuests }} personas</p>
+                <button type="button" (click)="selectRoom(room)" class="btn btn-outline-primary btn-sm">
+                  {{ selectedRoomName === room.name ? 'Seleccionada' : 'Seleccionar' }}
+                </button>
+              </div>
+            </article>
+          </div>
         </div>
       </div>
     </div>
 
-    <div class="panel">
-      <h2>Confirmar reserva</h2>
+    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
+      <div class="card-body">
+        <h2>Confirmar reserva</h2>
 
-      <div class="summary-box">
-        <p><strong>Entrada:</strong> {{ summaryCheckin }}</p>
-        <p><strong>Salida:</strong> {{ summaryCheckout }}</p>
-        <p><strong>Habitación:</strong> {{ selectedRoomName || 'Sin seleccionar' }}</p>
-      </div>
+        <div class="summary-box">
+          <p><strong>Entrada:</strong> {{ summaryCheckin }}</p>
+          <p><strong>Salida:</strong> {{ summaryCheckout }}</p>
+          <p><strong>Habitacion:</strong> {{ selectedRoomName || 'Sin seleccionar' }}</p>
+        </div>
 
-      <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="form-grid">
-        <label>
-          Nombre
-          <input type="text" formControlName="name" />
-        </label>
+        <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="name" class="form-control" />
+          </div>
 
-        <label>
-          Apellidos
-          <input type="text" formControlName="lastName" />
-        </label>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Apellidos</label>
+            <input type="text" formControlName="lastName" class="form-control" />
+          </div>
 
-        <label>
-          Correo electrónico
-          <input type="email" formControlName="email" />
-        </label>
+          <div class="col-12">
+            <label class="form-label">Correo electronico</label>
+            <input type="email" formControlName="email" class="form-control" />
+          </div>
 
-        <label class="checkbox">
-          <input type="checkbox" formControlName="privacy" />
-          Acepto la política de privacidad
-        </label>
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" formControlName="privacy" class="form-check-input" id="privacyCheck" />
+              <label class="form-check-label" for="privacyCheck">
+                Acepto la politica de privacidad
+              </label>
+            </div>
+          </div>
 
-        <button type="submit" [disabled]="sending">
-          {{ sending ? 'Guardando...' : 'Confirmar reserva' }}
-        </button>
-      </form>
+          <div class="col-12">
+            <button type="submit" [disabled]="sending" class="btn btn-success w-100">
+              {{ sending ? 'Guardando...' : 'Confirmar reserva' }}
+            </button>
+          </div>
+        </form>
 
-      <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 
-      <div *ngIf="bookingDone" class="success-box">
-        <div class="success-box__icon">✔</div>
-        <h3>Reserva registrada correctamente</h3>
-        <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
+        <div *ngIf="bookingDone" class="success-box mt-3">
+          <div class="success-box__icon">OK</div>
+          <h3>Reserva registrada correctamente</h3>
+          <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
+        </div>
       </div>
     </div>
   </div>
