@@ -1,6 +1,6 @@
 .footer {
-  background: #123b44;
-  color: #ffffff;
+  background: var(--mar-navy);
+  color: var(--blanco-puro);
   padding: 2.5rem 1.5rem 1.25rem;
   margin-top: 2rem;
 }
@@ -23,13 +23,13 @@
 .footer__left h3 {
   font-size: 1.8rem;
   margin-bottom: 1rem;
-  color: #d8b36a;
+  color: var(--arena-sable);
 }
 
 .footer__contact p {
   margin-bottom: 0.45rem;
   font-size: 0.95rem;
-  color: #f1ebe1;
+  color: var(--arena-clara);
 }
 
 .footer__center {
@@ -42,8 +42,8 @@
   width: 92px;
   height: 92px;
   border-radius: 22px;
-  background: #d8b36a;
-  color: #123b44;
+  background: var(--arena-sable);
+  color: var(--mar-navy);
   display: grid;
   place-items: center;
   font-size: 2rem;
@@ -57,14 +57,14 @@
 }
 
 .footer__grid strong {
-  color: #d8b36a;
+  color: var(--arena-sable);
   font-size: 1.05rem;
   margin-bottom: 0.5rem;
   display: inline-block;
 }
 
 .footer__grid a {
-  color: #f1ebe1;
+  color: var(--arena-clara);
   text-decoration: none;
 }
 

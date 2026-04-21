@@ -39,10 +39,6 @@ export class HeaderComponent {
     this.accountDropdownOpen = !this.accountDropdownOpen;
   }
 
-  get showAdminOption(): boolean {
-    return this.authService.isAdmin();
-  }
-
   get showLogout(): boolean {
     return this.authService.isLoggedIn();
   }

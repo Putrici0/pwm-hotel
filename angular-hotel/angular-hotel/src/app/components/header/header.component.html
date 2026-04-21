@@ -39,7 +39,6 @@
         </div>
 
         <ul class="dropdown-menu">
-          <li><a routerLink="/services" (click)="closeMenu()">Servicios</a></li>
           <li><a routerLink="/restaurant" (click)="closeMenu()">Restauración</a></li>
           <li><a routerLink="/wellness-facilities" (click)="closeMenu()">Bienestar</a></li>
           <li><a routerLink="/activities" (click)="closeMenu()">Actividades</a></li>
@@ -61,17 +60,11 @@
         </div>
 
         <ul class="dropdown-menu dropdown-right">
-          <li>
-            <a [routerLink]="accountRoute" (click)="closeMenu()">
-              {{ showLogout ? 'Mi cuenta' : 'Login' }}
-            </a>
-          </li>
-          <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
-          <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
-          @if (showAdminOption) {
-            <li><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
-          }
-          @if (showLogout) {
+          @if (!showLogout) {
+            <li><a [routerLink]="accountRoute" (click)="closeMenu()">Login</a></li>
+            <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
+            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
+          } @else {
             <li><a href="#" (click)="logout($event)">Log out</a></li>
           }
         </ul>
