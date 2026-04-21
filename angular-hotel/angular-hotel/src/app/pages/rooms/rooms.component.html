@@ -1,34 +1,19 @@
 <app-header></app-header>
 
-<section class="rooms-page wrapper container-fluid">
-  <div class="page-header">
-    <h1>Habitaciones</h1>
-    <p>
-      La oferta de habitaciones de Isla Dorada Hotel está diseñada para adaptarse a diferentes
-      estilos de viaje. Cada opción combina imagen cuidada, confort y una distribución coherente
-      con el tipo de estancia.
-    </p>
-  </div>
-
-  <div class="rooms-grid row g-4">
-    <article class="room-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let room of rooms">
-      <img [src]="room.imageUrl" [alt]="room.title" />
-      <div class="room-card__body card-body">
+<main class="rooms-page page-rooms">
+  <section class="rooms-wrapper" *ngIf="rooms$ | async as rooms">
+    <section
+      *ngFor="let room of rooms; let i = index"
+      [class]="i % 2 === 0 ? 'text-image-right room-section' : 'text-image-left room-section'"
+    >
+      <div class="text-image-right__text">
         <h2>{{ room.title }}</h2>
-        <p>{{ room.description }}</p>
-
-        <ul class="room-meta list-unstyled">
-          <li><strong>Capacidad:</strong> {{ room.capacity }}</li>
-          <li><strong>Tamaño:</strong> {{ room.size }}</li>
-          <li><strong>Precio:</strong> {{ room.priceFrom }}</li>
-        </ul>
-
-        <div class="features d-flex flex-wrap gap-2">
-          <span class="badge rounded-pill text-bg-light border" *ngFor="let feature of room.features">{{ feature }}</span>
-        </div>
+        <p [innerHTML]="room.description"></p>
       </div>
-    </article>
-  </div>
-</section>
+
+      <div class="text-image-right__image" [style.background]="room.imageGradient"></div>
+    </section>
+  </section>
+</main>
 
 <app-footer></app-footer>
