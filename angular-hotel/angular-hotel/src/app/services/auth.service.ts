@@ -158,6 +158,33 @@ export class AuthService {
     await sendPasswordResetEmail(this.auth, normalizedEmail);
   }
 
+  async waitForSessionReady(timeoutMs = 4000): Promise<void> {
+    if (this.auth.currentUser || localStorage.getItem('loggedUserUid')) {
+      return;
+    }
+
+    await new Promise<void>((resolve) => {
+      let resolved = false;
+      const timeoutId = window.setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          unsubscribe();
+          resolve();
+        }
+      }, timeoutMs);
+
+      const unsubscribe = onAuthStateChanged(this.auth, () => {
+        if (resolved) {
+          return;
+        }
+        resolved = true;
+        window.clearTimeout(timeoutId);
+        unsubscribe();
+        resolve();
+      });
+    });
+  }
+
   private async syncSessionFromUser(user: User): Promise<void> {
     const email = user.email || '';
     let role: 'admin' | 'user';

@@ -1,6 +1,16 @@
 <app-header></app-header>
 
-<main class="account-main-container" *ngIf="accountConfig && user">
+<main class="account-main-container" *ngIf="accountConfig">
+  <div class="account-card" *ngIf="isLoadingUser && !user.email && !user.nombre && !user.apellidos">
+    <h2>Cargando tu cuenta...</h2>
+  </div>
+
+  <div class="account-card" *ngIf="!isLoadingUser && userLoadError && !user.email">
+    <h2>No pudimos cargar tus datos</h2>
+    <p>{{ userLoadError }}</p>
+  </div>
+
+  <ng-container *ngIf="!userLoadError || user.email">
   <div id="account-header-section" class="account-header-section">
     <h1>{{ getHeaderGreeting() }}</h1>
     <p>{{ accountConfig.title.description }}</p>
@@ -23,6 +33,9 @@
       <ng-container *ngIf="currentTab === 'datos'">
         <div class="account-card">
           <h2>Tus Datos Personales</h2>
+          <div *ngIf="statusMessage" class="account-status" [class.success]="statusType === 'success'" [class.danger]="statusType === 'danger'">
+            {{ statusMessage }}
+          </div>
 
           <form class="account-form" (ngSubmit)="saveData()">
             <div class="account-form-grid">
@@ -84,8 +97,8 @@
                 {{ accountConfig.actions.buttons[0] }}
               </button>
 
-              <button type="submit" class="account-btn-save" *ngIf="isEditingData">
-                {{ accountConfig.actions.buttons[1] }}
+              <button type="submit" class="account-btn-save" *ngIf="isEditingData" [disabled]="isSavingData">
+                {{ isSavingData ? 'Guardando...' : accountConfig.actions.buttons[1] }}
               </button>
 
               <button type="button" class="account-btn-secondary" (click)="openPasswordSection()">
@@ -197,6 +210,7 @@
       </ng-container>
     </div>
   </div>
+  </ng-container>
 </main>
 
 <app-footer></app-footer>

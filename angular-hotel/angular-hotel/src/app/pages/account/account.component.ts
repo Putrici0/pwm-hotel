@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -55,6 +55,7 @@ export class AccountComponent implements OnInit {
   private readonly adminDataService = inject(AdminDataService);
   private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
+  private readonly ngZone = inject(NgZone);
 
   private userUid = '';
 
@@ -71,12 +72,23 @@ export class AccountComponent implements OnInit {
   };
   currentTab: AccountTabId = 'datos';
 
-  user: AccountUser | null = null;
+  user: AccountUser = {
+    nombre: '',
+    apellidos: '',
+    email: '',
+    dni: '',
+    nacimiento: ''
+  };
+  isLoadingUser = true;
+  userLoadError = '';
   adminDb: AdminDb = {};
   userReservations: ReservationItem[] = [];
 
   isEditingData = false;
   showPasswordSection = false;
+  isSavingData = false;
+  statusType: 'success' | 'danger' | '' = '';
+  statusMessage = '';
 
   editableData = {
     nombre: '',
@@ -112,7 +124,10 @@ export class AccountComponent implements OnInit {
   ];
 
   async ngOnInit(): Promise<void> {
-    await this.initializeUserAndData();
+    this.accountConfig = this.defaultAccountConfig;
+    this.bootstrapLocalUser();
+
+    void this.initializeUserAndData();
     void this.adminDataService.ensureInitialized().then(() => {
       this.adminDb = this.adminDataService.getDb();
       this.adminDataService.watchSection('rooms').subscribe((rooms) => {
@@ -132,12 +147,19 @@ export class AccountComponent implements OnInit {
       .getSection<any>('account')
       .pipe(catchError(() => of(this.defaultAccountConfig)))
       .subscribe((data) => {
-        this.accountConfig = data || this.defaultAccountConfig;
+        this.accountConfig = {
+          ...this.defaultAccountConfig,
+          ...(data || {}),
+          title: {
+            ...this.defaultAccountConfig.title,
+            ...((data && data.title) || {})
+          },
+          actions: {
+            ...this.defaultAccountConfig.actions,
+            ...((data && data.actions) || {})
+          }
+        };
       });
-
-    if (!this.accountConfig) {
-      this.accountConfig = this.defaultAccountConfig;
-    }
   }
 
   setTab(tabId: AccountTabId): void {
@@ -153,14 +175,29 @@ export class AccountComponent implements OnInit {
     this.syncEditableData();
   }
 
-  private async initializeUserAndData(): Promise<void> {
-    this.userUid = this.authService.getLoggedUserUid();
-    let loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
+  private bootstrapLocalUser(): void {
+    const loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
+    const nombre = localStorage.getItem('loggedUserNombre') || '';
+    const apellidos = localStorage.getItem('loggedUserApellidos') || '';
 
-    if (!loggedEmail) {
-      loggedEmail = 'user@ulpgc.es';
-      localStorage.setItem('loggedUserEmail', loggedEmail);
-    }
+    this.user = {
+      nombre,
+      apellidos,
+      email: loggedEmail,
+      dni: '',
+      nacimiento: ''
+    };
+    this.syncEditableData();
+    this.isLoadingUser = false;
+  }
+
+  private async initializeUserAndData(): Promise<void> {
+    this.isLoadingUser = true;
+    this.userLoadError = '';
+    await this.authService.waitForSessionReady();
+
+    this.userUid = this.authService.getLoggedUserUid();
+    const loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
 
     const baseUser: AccountUser = {
       nombre: '',
@@ -174,12 +211,21 @@ export class AccountComponent implements OnInit {
       this.user = baseUser;
       this.syncEditableData();
       this.adminDb = this.adminDataService.getDb();
+      this.isLoadingUser = false;
       return;
     }
 
     try {
       const userRef = doc(this.firestore, 'users', this.userUid);
-      const userSnapshot = await getDoc(userRef);
+      const userSnapshot = await Promise.race([
+        getDoc(userRef),
+        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 7000))
+      ]);
+
+      if (!userSnapshot) {
+        this.isLoadingUser = false;
+        return;
+      }
 
       if (!userSnapshot.exists()) {
         await setDoc(
@@ -208,11 +254,14 @@ export class AccountComponent implements OnInit {
         };
       }
     } catch {
-      this.user = baseUser;
+      if (!this.user.email) {
+        this.user = baseUser;
+      }
     }
 
     this.syncEditableData();
     this.adminDb = this.adminDataService.getDb();
+    this.isLoadingUser = false;
   }
 
   private syncEditableData(): void {
@@ -229,10 +278,23 @@ export class AccountComponent implements OnInit {
   }
 
   async saveData(): Promise<void> {
-    if (!this.user || !this.userUid) {
+    this.clearStatus();
+
+    if (this.isSavingData) {
       return;
     }
 
+    if (!this.userUid) {
+      await this.authService.waitForSessionReady(3000);
+      this.userUid = this.authService.getLoggedUserUid();
+    }
+
+    if (!this.userUid) {
+      this.setStatus('danger', 'No se pudo guardar: sesion no disponible.');
+      return;
+    }
+
+    this.setSavingData(true);
     this.user = {
       ...this.user,
       nombre: this.editableData.nombre,
@@ -242,22 +304,35 @@ export class AccountComponent implements OnInit {
     };
 
     try {
-      await setDoc(
-        doc(this.firestore, 'users', this.userUid),
-        {
-          email: this.user.email,
-          nombre: this.user.nombre,
-          apellidos: this.user.apellidos,
-          dni: this.user.dni || '',
-          nacimiento: this.user.nacimiento || '',
-          updatedAt: serverTimestamp()
-        },
-        { merge: true }
+      await this.withTimeout(
+        setDoc(
+          doc(this.firestore, 'users', this.userUid),
+          {
+            email: this.user.email,
+            nombre: this.user.nombre,
+            apellidos: this.user.apellidos,
+            dni: this.user.dni || '',
+            nacimiento: this.user.nacimiento || '',
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        ),
+        10000,
+        'timeout'
       );
-      window.alert('Datos guardados.');
-      this.isEditingData = false;
-    } catch {
-      window.alert('No se pudieron guardar los datos en Firestore.');
+      this.setStatus('success', 'Datos guardados.');
+      this.setEditingData(false);
+      localStorage.setItem('loggedUserNombre', this.user.nombre || '');
+      localStorage.setItem('loggedUserApellidos', this.user.apellidos || '');
+    } catch (error) {
+      const message = String((error as { message?: string })?.message || '');
+      if (message === 'timeout') {
+        this.setStatus('danger', 'Guardado agotado por tiempo. Revisa conexion e intentalo de nuevo.');
+      } else {
+        this.setStatus('danger', 'No se pudieron guardar los datos en Firestore.');
+      }
+    } finally {
+      this.setSavingData(false);
     }
   }
 
@@ -273,18 +348,17 @@ export class AccountComponent implements OnInit {
   }
 
   async updatePassword(): Promise<void> {
-    if (!this.user) {
-      return;
-    }
+    this.clearStatus();
 
     if (this.passwordForm.next !== this.passwordForm.confirm) {
-      window.alert('Las contrasenas no coinciden.');
+      this.setStatus('danger', 'Las contrasenas no coinciden.');
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!*']).{6,}$/;
     if (!passwordRegex.test(this.passwordForm.next)) {
-      window.alert(
+      this.setStatus(
+        'danger',
         "La contrasena debe tener al menos 6 caracteres, una mayuscula, un numero y un caracter especial (? ! * ')"
       );
       return;
@@ -292,11 +366,11 @@ export class AccountComponent implements OnInit {
 
     try {
       await this.authService.updatePassword(this.user.email, this.passwordForm.next);
-      window.alert('Contrasena cambiada.');
+      this.setStatus('success', 'Contrasena cambiada.');
       this.showPasswordSection = false;
       this.resetPasswordForm();
     } catch {
-      window.alert('No se pudo actualizar la contrasena. Reautenticate e intentalo de nuevo.');
+      this.setStatus('danger', 'No se pudo actualizar la contrasena. Reautenticate e intentalo de nuevo.');
     }
   }
 
@@ -309,7 +383,7 @@ export class AccountComponent implements OnInit {
   }
 
   getHeaderGreeting(): string {
-    if (!this.user) {
+    if (!this.user.email && !this.user.nombre && !this.user.apellidos) {
       return 'Hola';
     }
 
@@ -318,10 +392,6 @@ export class AccountComponent implements OnInit {
   }
 
   getReservationsForUser(): ReservationItem[] {
-    if (!this.user) {
-      return [];
-    }
-
     return [...this.userReservations].sort(
       (a, b) => new Date(String(b.entrada || '')).getTime() - new Date(String(a.entrada || '')).getTime()
     );
@@ -393,10 +463,6 @@ export class AccountComponent implements OnInit {
   }
 
   cancelReservation(reservation: ReservationItem): void {
-    if (!this.user) {
-      return;
-    }
-
     if (!window.confirm('Cancelar reserva?')) {
       return;
     }
@@ -412,5 +478,40 @@ export class AccountComponent implements OnInit {
 
   async goToBooking(): Promise<void> {
     await this.router.navigateByUrl('/booking');
+  }
+
+  private setStatus(type: 'success' | 'danger', message: string): void {
+    this.statusType = type;
+    this.statusMessage = message;
+  }
+
+  private clearStatus(): void {
+    this.statusType = '';
+    this.statusMessage = '';
+  }
+
+  private setSavingData(value: boolean): void {
+    this.ngZone.run(() => {
+      this.isSavingData = value;
+    });
+  }
+
+  private setEditingData(value: boolean): void {
+    this.ngZone.run(() => {
+      this.isEditingData = value;
+    });
+  }
+
+  private async withTimeout<T>(promise: Promise<T>, ms: number, timeoutMessage: string): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error(timeoutMessage)), ms);
+    });
+
+    try {
+      return await Promise.race([promise, timeoutPromise]);
+    } finally {
+      clearTimeout(timeoutId!);
+    }
   }
 }
