@@ -1,0 +1,315 @@
+/* css por pagina ACCOUNT ACTIONS  */
+.account-header-section {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background-color: var(--mar-navy);
+    color: var(--arena-clara);
+}
+
+.account-header-section h1 {
+    color: var(--arena-sable);
+    margin-bottom: 0.5rem;
+    font-size: 2.2rem;
+}
+
+.account-main-container {
+    min-height: calc(100vh - 400px);
+    background-color: var(--arena-clara);
+}
+
+.account-dashboard {
+    max-width: 1200px;
+    margin: 2rem auto 4rem auto;
+    padding: 0 1.5rem;
+}
+
+.account-tabs-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #ccc;
+    justify-content: center;
+}
+
+.account-tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--mar-navy);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+}
+
+.account-tab-btn.active {
+    border-bottom: 3px solid var(--mar-navy);
+    color: var(--mar-navy);
+    opacity: 1;
+    background: white;
+}
+
+.account-card {
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.account-card h2 {
+    color: var(--mar-navy);
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--arena-sable);
+    padding-bottom: 0.5rem;
+}
+
+.account-status {
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.account-status.success {
+    background: #eaf7ee;
+    color: #1e7e34;
+    border: 1px solid #b7e4c3;
+}
+
+.account-status.danger {
+    background: #fdecec;
+    color: #b42318;
+    border: 1px solid #f7c2c2;
+}
+
+.account-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: var(--mar-navy);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-group input:disabled {
+    background-color: #f9f9f9;
+    color: #666;
+}
+
+.readonly-email {
+    background-color: #f0f0f0;
+}
+
+.account-form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.account-btn-primary, .account-btn-save {
+    background-color: var(--mar-navy);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.account-btn-save {
+    background-color: #28a745;
+}
+
+.account-btn-save:disabled {
+    opacity: 0.75;
+    cursor: not-allowed;
+}
+
+.account-btn-secondary {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.account-btn-cancel {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.account-table-wrapper {
+    overflow-x: auto;
+}
+
+.account-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.account-table th,
+.account-table td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.account-table th {
+    background-color: var(--mar-navy);
+    color: white;
+}
+
+.account-room-img {
+    width: 100px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.reservation-total {
+    color: var(--mar-navy);
+    font-weight: bold;
+}
+
+.discount-code {
+    background-color: var(--arena-sable);
+    color: var(--mar-navy);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: bold;
+    border: 1px dashed var(--mar-navy);
+}
+
+.account-divider {
+    margin: 2rem 0 1rem;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+.password-section h3 {
+    color: var(--mar-navy);
+    margin-bottom: 1rem;
+}
+
+.no-res-card {
+    text-align: center;
+    padding: 3rem;
+}
+
+.reserve-now-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    text-decoration: none;
+}
+
+.account-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1200;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+}
+
+.account-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.account-modal__content {
+    position: relative;
+    width: min(420px, 100%);
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+}
+
+.account-modal__content h3 {
+    color: var(--mar-navy);
+    margin-bottom: 0.6rem;
+}
+
+.account-modal__content p {
+    margin-bottom: 1rem;
+}
+
+.account-modal__actions {
+    display: flex;
+    gap: 0.6rem;
+    justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .account-dashboard {
+        margin: 1rem auto 2rem auto;
+        padding: 0 0.75rem;
+    }
+
+    .account-tabs-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        overflow: visible;
+        justify-content: stretch;
+        border-bottom: none;
+        padding-bottom: 0;
+        margin-bottom: 1rem;
+    }
+
+    .account-tab-btn {
+        width: 100%;
+        text-align: left;
+        border-radius: 8px;
+        border: 1px solid #d9d9d9;
+        border-bottom: 1px solid #d9d9d9;
+        background: #fff;
+        opacity: 1;
+        padding: 0.75rem 0.9rem;
+        font-size: 1rem;
+    }
+
+    .account-tab-btn.active {
+        border: 1px solid var(--mar-navy);
+        background: var(--mar-navy);
+        color: #fff;
+    }
+
+    .account-card {
+        padding: 1rem;
+    }
+
+    .account-modal__actions {
+        flex-direction: column;
+    }
+
+    .account-modal__actions button,
+    .account-modal__content > button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,161 @@
+<app-header></app-header>
+
+<section class="booking-page wrapper container-fluid">
+  <div class="booking-hero row g-4 align-items-center">
+    <div class="col-12 col-lg-7">
+      <h1>Reserva tu estancia en Isla Dorada</h1>
+      <p>
+        Esta pagina ya queda preparada para conectarse a un CRUD real de reservas. Ahora mismo
+        guarda la reserva en Firestore dentro de la coleccion <strong>reservations</strong>.
+      </p>
+    </div>
+    <div class="col-12 col-lg-5">
+    <img [src]="heroImage" alt="Piscina del hotel Isla Dorada" class="img-fluid w-100" referrerpolicy="no-referrer" />
+    </div>
+  </div>
+
+  <div class="booking-grid row g-4">
+    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
+      <div class="card-body">
+        <h2>Buscar disponibilidad</h2>
+
+        <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de entrada</label>
+            <input type="date" formControlName="checkin" class="form-control" />
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de salida</label>
+            <input type="date" formControlName="checkout" class="form-control" />
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Numero de huespedes</label>
+            <input type="number" formControlName="guests" min="1" class="form-control" />
+          </div>
+
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
+              <label class="form-check-label" for="includeFamilySuite">
+                Incluir opciones familiares
+              </label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div *ngIf="searchErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
+              {{ searchErrorMessage }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Buscar habitaciones</button>
+          </div>
+        </form>
+
+        <div *ngIf="submitted" class="rooms-result mt-4">
+          <h3>Habitaciones disponibles</h3>
+
+          <p *ngIf="filteredRooms.length === 0">
+            No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
+          </p>
+
+          <div class="room-list">
+            <article class="room-option" *ngFor="let room of filteredRooms">
+                <img [src]="room.img" [alt]="room.name" referrerpolicy="no-referrer" />
+              <div>
+                <h4>{{ room.name }}</h4>
+                <p>Max. {{ room.maxGuests }} personas</p>
+                <p class="mb-0">Precio: {{ room.price }} EUR/noche</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
+      <div class="card-body">
+        <h2>Confirmar reserva</h2>
+
+        <div class="summary-box">
+          <p><strong>Entrada:</strong> {{ summaryCheckin }}</p>
+          <p><strong>Salida:</strong> {{ summaryCheckout }}</p>
+          <p><strong>Habitacion:</strong> {{ selectedRoomName || 'Sin seleccionar' }}</p>
+        </div>
+
+        <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Nombre <span class="text-danger">*</span></label>
+            <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="isCheckoutInvalid('nombre')" />
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('nombre')">Campo obligatorio.</div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">Apellidos <span class="text-danger">*</span></label>
+            <input type="text" formControlName="apellidos" class="form-control" [class.is-invalid]="isCheckoutInvalid('apellidos')" />
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('apellidos')">Campo obligatorio.</div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">Telefono <span class="text-danger">*</span></label>
+            <input type="text" formControlName="telefono" class="form-control" [class.is-invalid]="isCheckoutInvalid('telefono')" />
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('telefono')">Telefono no valido.</div>
+          </div>
+
+          <div class="col-12 col-md-6">
+            <label class="form-label">DNI / Pasaporte <span class="text-danger">*</span></label>
+            <input type="text" formControlName="dni" class="form-control" [class.is-invalid]="isCheckoutInvalid('dni')" />
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('dni')">Campo obligatorio.</div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Correo electronico <span class="text-danger">*</span></label>
+            <input type="email" formControlName="email" class="form-control" [class.is-invalid]="isCheckoutInvalid('email')" />
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('email')">Email no valido.</div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Habitacion <span class="text-danger">*</span></label>
+            <select formControlName="habitacion" class="form-select" [class.is-invalid]="isCheckoutInvalid('habitacion')">
+              <option value="" disabled>Selecciona una habitacion</option>
+              <option *ngFor="let room of filteredRooms" [value]="room.name">{{ room.name }}</option>
+            </select>
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('habitacion')">Selecciona una habitacion.</div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" formControlName="privacy" class="form-check-input" id="privacyCheck" />
+              <label class="form-check-label" for="privacyCheck">
+                Acepto la politica de privacidad <span class="text-danger">*</span>
+              </label>
+            </div>
+            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('privacy')">Debes aceptar la politica de privacidad.</div>
+          </div>
+
+          <div class="col-12">
+            <div *ngIf="checkoutErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
+              {{ checkoutErrorMessage }}
+            </div>
+            <button type="submit" [disabled]="sending" class="btn btn-success w-100">
+              {{ sending ? 'Guardando...' : 'Confirmar reserva' }}
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="bookingDone" class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-success-title">
+    <div class="booking-modal__backdrop" (click)="closeSuccessModal()"></div>
+    <div class="booking-modal__content">
+      <div class="success-box__icon">OK</div>
+      <h3 id="booking-success-title">Reserva registrada correctamente</h3>
+      <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
+      <button type="button" class="btn btn-primary w-100" (click)="closeSuccessModal()">Cerrar</button>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>
