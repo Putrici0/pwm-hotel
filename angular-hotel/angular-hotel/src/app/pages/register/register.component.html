@@ -99,7 +99,9 @@
 
         <div id="register-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
 
-        <button type="submit" class="auth-btn-primary">{{ registerData.form.submitText }}</button>
+        <button type="submit" class="auth-btn-primary" [disabled]="sending">
+          {{ sending ? 'Creando cuenta...' : registerData.form.submitText }}
+        </button>
       </form>
     </div>
   </section>

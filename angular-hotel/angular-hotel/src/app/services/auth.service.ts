@@ -15,6 +15,15 @@ import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/f
 interface UserAccessDocument {
   email: string;
   isAdmin: boolean;
+  nombre?: string;
+  apellidos?: string;
+  dni?: string;
+  nacimiento?: string;
+}
+
+interface RegisterProfileInput {
+  name: string;
+  lastName: string;
 }
 
 @Injectable({
@@ -23,15 +32,19 @@ interface UserAccessDocument {
 export class AuthService {
   private readonly auth = inject(Auth);
   private readonly firestore = inject(Firestore);
+  private currentRole: 'admin' | 'user' | null = null;
+  private roleSyncPromise: Promise<void> | null = null;
 
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
       if (!user?.email) {
+        this.currentRole = null;
+        this.roleSyncPromise = null;
         this.clearLocalSession();
         return;
       }
 
-      void this.syncSessionFromUser(user);
+      this.roleSyncPromise = this.syncSessionFromUser(user);
     });
   }
 
@@ -48,6 +61,8 @@ export class AuthService {
 
   logout(): void {
     void signOut(this.auth);
+    this.currentRole = null;
+    this.roleSyncPromise = null;
     this.clearLocalSession();
   }
 
@@ -56,18 +71,42 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.isLoggedIn() && localStorage.getItem('userRole') === 'admin';
+    return this.isLoggedIn() && this.currentRole === 'admin';
+  }
+
+  async isAdminAsync(): Promise<boolean> {
+    await this.ensureRoleReady();
+    return this.isAdmin();
   }
 
   getLoggedUserEmail(): string {
     return this.auth.currentUser?.email || localStorage.getItem('loggedUserEmail') || '';
   }
 
-  async register(email: string, password: string): Promise<{ ok: boolean; message?: string }> {
+  getLoggedUserUid(): string {
+    return this.auth.currentUser?.uid || localStorage.getItem('loggedUserUid') || '';
+  }
+
+  getLoggedUserDisplayName(): string {
+    const nombre = localStorage.getItem('loggedUserNombre') || '';
+    const apellidos = localStorage.getItem('loggedUserApellidos') || '';
+    return `${nombre} ${apellidos}`.trim();
+  }
+
+  async register(
+    email: string,
+    password: string,
+    profile: RegisterProfileInput
+  ): Promise<{ ok: boolean; message?: string }> {
     const normalizedEmail = email.trim().toLowerCase();
     try {
       const credentials = await createUserWithEmailAndPassword(this.auth, normalizedEmail, password);
-      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false);
+      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
+        nombre: profile.name.trim(),
+        apellidos: profile.lastName.trim(),
+        dni: '',
+        nacimiento: ''
+      });
       await signOut(this.auth);
       this.clearLocalSession();
       return { ok: true };
@@ -121,24 +160,48 @@ export class AuthService {
 
   private async syncSessionFromUser(user: User): Promise<void> {
     const email = user.email || '';
-    let role: 'admin' | 'user' = 'user';
+    let role: 'admin' | 'user';
+    let nombre = '';
+    let apellidos = '';
 
     try {
       const accessDoc = await this.ensureUserAccessDocument(user.uid, email, false);
       role = accessDoc.isAdmin ? 'admin' : 'user';
+      nombre = String(accessDoc.nombre || '');
+      apellidos = String(accessDoc.apellidos || '');
     } catch {
       role = 'user';
     }
 
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('loggedUserUid', user.uid);
     localStorage.setItem('loggedUserEmail', email);
-    localStorage.setItem('userRole', role);
+    localStorage.setItem('loggedUserNombre', nombre);
+    localStorage.setItem('loggedUserApellidos', apellidos);
+    this.currentRole = role;
+  }
+
+  private async ensureRoleReady(): Promise<void> {
+    if (this.currentRole !== null) {
+      return;
+    }
+
+    if (this.roleSyncPromise) {
+      await this.roleSyncPromise;
+      return;
+    }
+
+    if (this.auth.currentUser) {
+      this.roleSyncPromise = this.syncSessionFromUser(this.auth.currentUser);
+      await this.roleSyncPromise;
+    }
   }
 
   private async ensureUserAccessDocument(
     uid: string,
     email: string,
-    defaultIsAdmin: boolean
+    defaultIsAdmin: boolean,
+    profile?: Partial<Pick<UserAccessDocument, 'nombre' | 'apellidos' | 'dni' | 'nacimiento'>>
   ): Promise<UserAccessDocument> {
     const normalizedEmail = email.toLowerCase();
     const userAccessRef = doc(this.firestore, 'users', uid);
@@ -148,13 +211,21 @@ export class AuthService {
       await setDoc(userAccessRef, {
         email: normalizedEmail,
         isAdmin: defaultIsAdmin,
+        nombre: profile?.nombre || '',
+        apellidos: profile?.apellidos || '',
+        dni: profile?.dni || '',
+        nacimiento: profile?.nacimiento || '',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       });
 
       return {
         email: normalizedEmail,
-        isAdmin: defaultIsAdmin
+        isAdmin: defaultIsAdmin,
+        nombre: profile?.nombre || '',
+        apellidos: profile?.apellidos || '',
+        dni: profile?.dni || '',
+        nacimiento: profile?.nacimiento || ''
       };
     }
 
@@ -162,11 +233,33 @@ export class AuthService {
     const isAdmin = userAccessData.isAdmin === true;
     const storedEmail = typeof userAccessData.email === 'string' ? userAccessData.email.toLowerCase() : normalizedEmail;
 
+    const patch: Record<string, unknown> = {};
+
     if (storedEmail !== normalizedEmail) {
+      patch['email'] = normalizedEmail;
+    }
+
+    if (profile?.nombre !== undefined) {
+      patch['nombre'] = profile.nombre;
+    }
+
+    if (profile?.apellidos !== undefined) {
+      patch['apellidos'] = profile.apellidos;
+    }
+
+    if (profile?.dni !== undefined) {
+      patch['dni'] = profile.dni;
+    }
+
+    if (profile?.nacimiento !== undefined) {
+      patch['nacimiento'] = profile.nacimiento;
+    }
+
+    if (Object.keys(patch).length > 0) {
       await setDoc(
         userAccessRef,
         {
-          email: normalizedEmail,
+          ...patch,
           updatedAt: serverTimestamp()
         },
         { merge: true }
@@ -175,14 +268,20 @@ export class AuthService {
 
     return {
       email: storedEmail !== normalizedEmail ? normalizedEmail : storedEmail,
-      isAdmin
+      isAdmin,
+      nombre: String(userAccessData.nombre || ''),
+      apellidos: String(userAccessData.apellidos || ''),
+      dni: String(userAccessData.dni || ''),
+      nacimiento: String(userAccessData.nacimiento || '')
     };
   }
 
   private clearLocalSession(): void {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('loggedUserUid');
     localStorage.removeItem('loggedUserEmail');
-    localStorage.removeItem('userRole');
+    localStorage.removeItem('loggedUserNombre');
+    localStorage.removeItem('loggedUserApellidos');
   }
 
   private extractErrorCode(error: unknown): string {

@@ -43,8 +43,8 @@
 
         <div id="login-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
 
-        <button type="submit" id="btn-login" class="auth-btn-primary">
-          {{ loginData.form.primaryButtonText }}
+        <button type="submit" id="btn-login" class="auth-btn-primary" [disabled]="sending">
+          {{ sending ? 'Validando...' : loginData.form.primaryButtonText }}
         </button>
 
         <a routerLink="/register" id="btn-register" class="auth-btn-secondary">

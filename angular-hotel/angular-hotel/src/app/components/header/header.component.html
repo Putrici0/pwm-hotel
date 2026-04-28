@@ -63,6 +63,10 @@
             <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
             <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
           } @else {
+            <li><a routerLink="/account" (click)="closeMenu()">Mi cuenta</a></li>
+            @if (isAdmin) {
+              <li><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
+            }
             <li><a href="#" (click)="logout($event)">Log out</a></li>
           }
         </ul>
@@ -70,3 +74,10 @@
     </ul>
   </nav>
 </header>
+
+<div class="container mt-3" *ngIf="flashMessage">
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ flashMessage }}
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeFlash()"></button>
+  </div>
+</div>

@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { BookingComponent } from './pages/booking/booking.component';
+import BookingComponent from './pages/booking/booking.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { RestaurantComponent } from './pages/restaurant/restaurant.component';
@@ -17,7 +17,7 @@ import { accountGuard, adminGuard } from './guards/auth.guards';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'booking', component: BookingComponent },
+  { path: 'booking', component: BookingComponent, canActivate: [accountGuard] },
   { path: 'rooms', component: RoomsComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'restaurant', component: RestaurantComponent },

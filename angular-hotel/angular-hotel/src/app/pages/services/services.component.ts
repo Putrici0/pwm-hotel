@@ -1,9 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component } from '@angular/core';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
-import { SiteDataService } from '../../services/site-data.service';
 
 interface ServiceItem {
   title: string;
@@ -19,46 +17,27 @@ interface ServiceItem {
   styleUrl: './services.component.css'
 })
 export class ServicesComponent {
-  private readonly siteDataService = inject(SiteDataService);
-
   services: ServiceItem[] = [
     {
       title: 'Instalaciones wellness',
       description:
-        'Espacios dedicados al descanso, la desconexión y el cuidado personal durante la estancia.',
+        'Espacios dedicados al descanso, la desconexion y el cuidado personal durante la estancia.',
       imageUrl:
-        'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg'
+        'https://static9.depositphotos.com/1007593/1127/i/600/depositphotos_11276642-stock-photo-luxury-place-resort.jpg'
     },
     {
-      title: 'Restauración',
+      title: 'Restauracion',
       description:
-        'Propuesta gastronómica cuidada con opciones equilibradas y menús adaptados a distintos momentos del día.',
+        'Propuesta gastronomica cuidada con opciones equilibradas y menus adaptados a distintos momentos del dia.',
       imageUrl:
-        'https://st5.depositphotos.com/42736210/69761/i/600/depositphotos_697613704-stock-photo-chic-scandinavian-ambiance-cozy-elegant.jpg'
+        'https://st.depositphotos.com/1518767/3618/i/600/depositphotos_36186243-stock-photo-work-surface-and-kitchen-equipment.jpg'
     },
     {
       title: 'Actividades',
       description:
-        'Oferta de ocio para completar la experiencia del huésped dentro y fuera del hotel.',
+        'Oferta de ocio para completar la experiencia del huesped dentro y fuera del hotel.',
       imageUrl:
-        'https://st.depositphotos.com/1212973/2035/i/600/depositphotos_20355519-stock-photo-active-lifestyle-concept.jpg'
+        'https://st.depositphotos.com/1518767/3618/i/600/depositphotos_36186243-stock-photo-work-surface-and-kitchen-equipment.jpg'
     }
   ];
-
-  constructor() {
-    this.siteDataService.getImageCatalog()
-      .pipe(takeUntilDestroyed())
-      .subscribe((catalog) => {
-        const serviceKeys = [
-          'services-services-item-1-instalaciones-wellness',
-          'services-services-item-2-restauracion',
-          'services-services-item-3-actividades'
-        ];
-
-        this.services = this.services.map((item, index) => ({
-          ...item,
-          imageUrl: this.siteDataService.resolveImage(catalog, serviceKeys[index], item.imageUrl)
-        }));
-      });
-  }
 }

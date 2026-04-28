@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
@@ -13,7 +14,15 @@ interface AccountUser {
   nombre: string;
   apellidos: string;
   email: string;
-  password: string;
+  dni?: string;
+  nacimiento?: string;
+}
+
+interface UserProfileDocument {
+  email?: string;
+  isAdmin?: boolean;
+  nombre?: string;
+  apellidos?: string;
   dni?: string;
   nacimiento?: string;
 }
@@ -31,7 +40,7 @@ interface ReservationItem {
 type AdminItem = Record<string, string | number | null | undefined>;
 type AdminDb = Record<string, AdminItem[]>;
 
-type AccountTabId = 'datos' | 'reservas' | 'descuentos';
+type AccountTabId = 'datos' | 'reservas' | 'descuentos' | 'admin';
 
 @Component({
   selector: 'app-account',
@@ -44,16 +53,19 @@ export class AccountComponent implements OnInit {
   private readonly siteDataService = inject(SiteDataService);
   private readonly authService = inject(AuthService);
   private readonly adminDataService = inject(AdminDataService);
+  private readonly firestore = inject(Firestore);
   private readonly router = inject(Router);
+
+  private userUid = '';
 
   accountConfig: any = null;
   private readonly defaultAccountConfig = {
     title: {
       title: 'Tu cuenta',
-      description: 'Aquí puedes ver tus reservas, consultar tus descuentos y actualizar tus datos personales.'
+      description: 'Aqui puedes ver tus reservas, consultar tus descuentos y actualizar tus datos personales.'
     },
     actions: {
-      buttons: ['Cambiar tus datos', 'Guardar Cambios', 'Cambiar contraseña']
+      buttons: ['Cambiar tus datos', 'Guardar Cambios', 'Cambiar contrasena']
     },
     users: []
   };
@@ -61,6 +73,7 @@ export class AccountComponent implements OnInit {
 
   user: AccountUser | null = null;
   adminDb: AdminDb = {};
+  userReservations: ReservationItem[] = [];
 
   isEditingData = false;
   showPasswordSection = false;
@@ -78,28 +91,42 @@ export class AccountComponent implements OnInit {
     confirm: ''
   };
 
-  readonly tabs: Array<{ id: AccountTabId; label: string }> = [
+  private readonly baseTabs: Array<{ id: Exclude<AccountTabId, 'admin'>; label: string }> = [
     { id: 'datos', label: 'Consultar tus datos' },
     { id: 'reservas', label: 'Consultar tus reservas' },
     { id: 'descuentos', label: 'Consultar los descuentos reservados a ti' }
   ];
 
+  get tabs(): Array<{ id: AccountTabId; label: string }> {
+    if (!this.authService.isAdmin()) {
+      return this.baseTabs;
+    }
+
+    return [...this.baseTabs, { id: 'admin', label: 'Admin' }];
+  }
+
   readonly discounts = [
-    { code: 'RESTAURANTE20', description: '20% de descuento en el Menú Fijo.' },
+    { code: 'RESTAURANTE20', description: '20% de descuento en el Menu Fijo.' },
     { code: 'ACTIVIDAD15', description: '15% de descuento en actividades.' },
     { code: 'SPARELAX', description: '1 hora de Spa gratis.' }
   ];
 
   async ngOnInit(): Promise<void> {
-    this.initializeUserAndData();
-    void this.adminDataService
-      .ensureInitialized()
-      .then(() => {
-        this.adminDb = this.adminDataService.getDb();
-      })
-      .catch(() => {
-        this.adminDb = this.adminDataService.getDb();
+    await this.initializeUserAndData();
+    void this.adminDataService.ensureInitialized().then(() => {
+      this.adminDb = this.adminDataService.getDb();
+      this.adminDataService.watchSection('rooms').subscribe((rooms) => {
+        this.adminDb = {
+          ...this.adminDb,
+          rooms
+        };
       });
+      if (this.user?.email) {
+        this.adminDataService.getUserReservations(this.user.email).subscribe((reservations) => {
+          this.userReservations = reservations as ReservationItem[];
+        });
+      }
+    });
 
     this.siteDataService
       .getSection<any>('account')
@@ -114,6 +141,11 @@ export class AccountComponent implements OnInit {
   }
 
   setTab(tabId: AccountTabId): void {
+    if (tabId === 'admin') {
+      void this.router.navigateByUrl('/admin');
+      return;
+    }
+
     this.currentTab = tabId;
     this.isEditingData = false;
     this.showPasswordSection = false;
@@ -121,7 +153,8 @@ export class AccountComponent implements OnInit {
     this.syncEditableData();
   }
 
-  private initializeUserAndData(): void {
+  private async initializeUserAndData(): Promise<void> {
+    this.userUid = this.authService.getLoggedUserUid();
     let loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
 
     if (!loggedEmail) {
@@ -129,45 +162,57 @@ export class AccountComponent implements OnInit {
       localStorage.setItem('loggedUserEmail', loggedEmail);
     }
 
-    const users = this.getStoredUsers();
-    let currentUser = users.find((candidate) => candidate.email === loggedEmail) || null;
+    const baseUser: AccountUser = {
+      nombre: '',
+      apellidos: '',
+      email: loggedEmail,
+      dni: '',
+      nacimiento: ''
+    };
 
-    if (!currentUser) {
-      currentUser = {
-        nombre: 'Estudiante',
-        apellidos: 'ULPGC',
-        email: loggedEmail,
-        password: 'Password123!',
-        dni: '',
-        nacimiento: ''
-      };
-
-      users.push(currentUser);
-      this.saveStoredUsers(users);
-    }
-
-    this.user = { ...currentUser };
-    this.syncEditableData();
-    this.adminDb = this.adminDataService.getDb();
-  }
-
-  private getStoredUsers(): AccountUser[] {
-    const raw = localStorage.getItem('hotelUsers');
-
-    if (!raw) {
-      return [];
+    if (!this.userUid) {
+      this.user = baseUser;
+      this.syncEditableData();
+      this.adminDb = this.adminDataService.getDb();
+      return;
     }
 
     try {
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? (parsed as AccountUser[]) : [];
-    } catch {
-      return [];
-    }
-  }
+      const userRef = doc(this.firestore, 'users', this.userUid);
+      const userSnapshot = await getDoc(userRef);
 
-  private saveStoredUsers(users: AccountUser[]): void {
-    localStorage.setItem('hotelUsers', JSON.stringify(users));
+      if (!userSnapshot.exists()) {
+        await setDoc(
+          userRef,
+          {
+            email: loggedEmail,
+            isAdmin: false,
+            nombre: '',
+            apellidos: '',
+            dni: '',
+            nacimiento: '',
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+          },
+          { merge: true }
+        );
+        this.user = baseUser;
+      } else {
+        const userData = userSnapshot.data() as UserProfileDocument;
+        this.user = {
+          nombre: String(userData.nombre || ''),
+          apellidos: String(userData.apellidos || ''),
+          email: String(userData.email || loggedEmail),
+          dni: String(userData.dni || ''),
+          nacimiento: String(userData.nacimiento || '')
+        };
+      }
+    } catch {
+      this.user = baseUser;
+    }
+
+    this.syncEditableData();
+    this.adminDb = this.adminDataService.getDb();
   }
 
   private syncEditableData(): void {
@@ -183,8 +228,8 @@ export class AccountComponent implements OnInit {
     this.isEditingData = true;
   }
 
-  saveData(): void {
-    if (!this.user) {
+  async saveData(): Promise<void> {
+    if (!this.user || !this.userUid) {
       return;
     }
 
@@ -196,16 +241,24 @@ export class AccountComponent implements OnInit {
       nacimiento: this.editableData.nacimiento
     };
 
-    const users = this.getStoredUsers();
-    const userIndex = users.findIndex((candidate) => candidate.email === this.user?.email);
-
-    if (userIndex >= 0) {
-      users[userIndex] = this.user;
-      this.saveStoredUsers(users);
+    try {
+      await setDoc(
+        doc(this.firestore, 'users', this.userUid),
+        {
+          email: this.user.email,
+          nombre: this.user.nombre,
+          apellidos: this.user.apellidos,
+          dni: this.user.dni || '',
+          nacimiento: this.user.nacimiento || '',
+          updatedAt: serverTimestamp()
+        },
+        { merge: true }
+      );
+      window.alert('Datos guardados.');
+      this.isEditingData = false;
+    } catch {
+      window.alert('No se pudieron guardar los datos en Firestore.');
     }
-
-    window.alert('Datos guardados.');
-    this.isEditingData = false;
   }
 
   openPasswordSection(): void {
@@ -219,44 +272,32 @@ export class AccountComponent implements OnInit {
     this.resetPasswordForm();
   }
 
-  updatePassword(): void {
+  async updatePassword(): Promise<void> {
     if (!this.user) {
       return;
     }
 
-    if (this.passwordForm.current !== this.user.password) {
-      window.alert('Contraseña actual incorrecta.');
-      return;
-    }
-
     if (this.passwordForm.next !== this.passwordForm.confirm) {
-      window.alert('Las contraseñas no coinciden.');
+      window.alert('Las contrasenas no coinciden.');
       return;
     }
 
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!*']).{6,}$/;
     if (!passwordRegex.test(this.passwordForm.next)) {
       window.alert(
-        "La contraseña debe tener al menos 6 caracteres, una mayúscula, un número y un carácter especial (? ! * ')"
+        "La contrasena debe tener al menos 6 caracteres, una mayuscula, un numero y un caracter especial (? ! * ')"
       );
       return;
     }
 
-    this.user = {
-      ...this.user,
-      password: this.passwordForm.next
-    };
-
-    const users = this.getStoredUsers();
-    const userIndex = users.findIndex((candidate) => candidate.email === this.user?.email);
-    if (userIndex >= 0) {
-      users[userIndex] = this.user;
-      this.saveStoredUsers(users);
+    try {
+      await this.authService.updatePassword(this.user.email, this.passwordForm.next);
+      window.alert('Contrasena cambiada.');
+      this.showPasswordSection = false;
+      this.resetPasswordForm();
+    } catch {
+      window.alert('No se pudo actualizar la contrasena. Reautenticate e intentalo de nuevo.');
     }
-
-    window.alert('Contraseña cambiada.');
-    this.showPasswordSection = false;
-    this.resetPasswordForm();
   }
 
   private resetPasswordForm(): void {
@@ -272,25 +313,16 @@ export class AccountComponent implements OnInit {
       return 'Hola';
     }
 
-    return `Hola ${this.user.nombre} ${this.user.apellidos}`;
+    const fullName = `${this.user.nombre || ''} ${this.user.apellidos || ''}`.trim();
+    return fullName ? `Hola ${fullName}` : `Hola ${this.user.email}`;
   }
 
   getReservationsForUser(): ReservationItem[] {
-    if (!this.user || !this.accountConfig) {
+    if (!this.user) {
       return [];
     }
 
-    const jsonUser = Array.isArray(this.accountConfig?.users)
-      ? this.accountConfig.users.find((candidate: any) => candidate.email === this.user?.email)
-      : null;
-
-    const jsonReservations = jsonUser?.reservations || [];
-    const adminReservations = (this.adminDb['reservations'] || []).filter(
-      (reservation) => String(reservation['email'] || '') === this.user?.email
-    );
-
-    const merged = [...jsonReservations, ...adminReservations] as ReservationItem[];
-    return merged.sort(
+    return [...this.userReservations].sort(
       (a, b) => new Date(String(b.entrada || '')).getTime() - new Date(String(a.entrada || '')).getTime()
     );
   }
@@ -334,7 +366,7 @@ export class AccountComponent implements OnInit {
       return '-';
     }
 
-    return `${roomPrice * nights} €`;
+    return `${roomPrice * nights} EUR`;
   }
 
   getReservationImage(reservation: ReservationItem): string {
@@ -365,24 +397,17 @@ export class AccountComponent implements OnInit {
       return;
     }
 
-    if (!window.confirm('¿Cancelar reserva?')) {
+    if (!window.confirm('Cancelar reserva?')) {
       return;
     }
 
-    const nextReservations = (this.adminDb['reservations'] || []).filter((item) => {
-      return !(
-        String(item['email'] || '') === this.user?.email &&
-        String(item['entrada'] || '') === String(reservation.entrada || '') &&
-        String(item['habitacion'] || item['id'] || '') === String(reservation.habitacion || reservation.id || '')
-      );
-    });
+    const reservationId = String((reservation as Record<string, unknown>)['id'] || '');
+    if (!reservationId) {
+      window.alert('No se pudo cancelar la reserva: falta el identificador.');
+      return;
+    }
 
-    this.adminDb = {
-      ...this.adminDb,
-      reservations: nextReservations
-    };
-
-    this.adminDataService.saveDb(this.adminDb);
+    void this.adminDataService.deleteItemById('reservations', reservationId);
   }
 
   async goToBooking(): Promise<void> {

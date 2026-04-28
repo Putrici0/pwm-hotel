@@ -55,20 +55,30 @@ export class LoginComponent {
   password = '';
   showPassword = false;
   errorMessage = '';
+  sending = false;
 
   async submit(): Promise<void> {
+    if (this.sending) {
+      return;
+    }
+
     this.errorMessage = '';
+    this.sending = true;
     const ok = await this.authService.login(this.email, this.password);
     if (!ok) {
       this.errorMessage = 'Credenciales incorrectas. Intentalo de nuevo.';
+      this.sending = false;
       return;
     }
 
-    if (this.authService.isAdmin()) {
-      await this.router.navigateByUrl('/admin');
-      return;
-    }
-
-    await this.router.navigateByUrl('/account');
+    const destination = this.authService.isAdmin() ? '/admin' : '/account';
+    sessionStorage.setItem(
+      'app_flash_success',
+      this.authService.isAdmin()
+        ? 'Sesion iniciada correctamente. Bienvenido al panel de administracion.'
+        : `Sesion iniciada correctamente. Bienvenido${this.authService.getLoggedUserDisplayName() ? `, ${this.authService.getLoggedUserDisplayName()}` : ' de nuevo'}.`
+    );
+    await this.router.navigateByUrl(destination);
+    this.sending = false;
   }
 }

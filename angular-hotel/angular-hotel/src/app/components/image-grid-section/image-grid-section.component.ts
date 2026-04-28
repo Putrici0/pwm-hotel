@@ -1,7 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { ImageGridSection } from '../../models/home.model';
+
+interface ImageGridItem {
+  title: string;
+  description: string;
+  imageGradient: string;
+  imageLink?: string;
+}
+
+interface ImageGridSection {
+  title: string;
+  items: ImageGridItem[];
+}
 
 @Component({
   selector: 'app-image-grid-section',

@@ -78,11 +78,18 @@ export class RegisterComponent {
   showPassword1 = false;
   showPassword2 = false;
   errorMessage = '';
+  sending = false;
 
   async submit(): Promise<void> {
+    if (this.sending) {
+      return;
+    }
+
     this.errorMessage = '';
+    this.sending = true;
     if (this.formModel.password !== this.formModel.confirmPassword) {
       this.errorMessage = 'Las contrasenas no coinciden.';
+      this.sending = false;
       return;
     }
 
@@ -90,15 +97,22 @@ export class RegisterComponent {
     if (!passwordRegex.test(this.formModel.password)) {
       this.errorMessage =
         'La contrasena debe tener al menos 6 caracteres, una mayuscula, un numero y un caracter especial entre ? ! *';
+      this.sending = false;
       return;
     }
 
-    const result = await this.authService.register(this.formModel.email, this.formModel.password);
+    const result = await this.authService.register(this.formModel.email, this.formModel.password, {
+      name: this.formModel.name,
+      lastName: this.formModel.lastName
+    });
     if (!result.ok) {
       this.errorMessage = result.message || 'No se pudo registrar el usuario.';
+      this.sending = false;
       return;
     }
 
+    sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesion.');
     await this.router.navigateByUrl('/login');
+    this.sending = false;
   }
 }

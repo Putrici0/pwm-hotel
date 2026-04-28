@@ -1,11 +1,13 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterLink],
+  imports: [CommonModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
@@ -13,11 +15,17 @@ export class HeaderComponent {
   menuOpen = false;
   servicesDropdownOpen = false;
   accountDropdownOpen = false;
+  flashMessage = '';
 
   constructor(
     private readonly authService: AuthService,
     private readonly router: Router
-  ) {}
+  ) {
+    this.consumeFlashMessage();
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => this.consumeFlashMessage());
+  }
 
   toggleMenu(): void {
     this.menuOpen = !this.menuOpen;
@@ -47,10 +55,30 @@ export class HeaderComponent {
     return this.authService.isLoggedIn() ? '/account' : '/login';
   }
 
+  get isAdmin(): boolean {
+    return this.authService.isAdmin();
+  }
+
   logout(event: Event): void {
     event.preventDefault();
     this.authService.logout();
     this.closeMenu();
     this.router.navigateByUrl('/login');
+  }
+
+  closeFlash(): void {
+    this.flashMessage = '';
+  }
+
+  private consumeFlashMessage(): void {
+    const flash = sessionStorage.getItem('app_flash_success') || '';
+    if (!flash) {
+      return;
+    }
+    this.flashMessage = flash;
+    sessionStorage.removeItem('app_flash_success');
+    setTimeout(() => {
+      this.flashMessage = '';
+    }, 3500);
   }
 }

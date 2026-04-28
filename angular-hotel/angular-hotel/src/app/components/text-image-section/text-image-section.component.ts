@@ -1,6 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { TextImageSection } from '../../models/home.model';
+
+interface TextImageSection {
+  title: string;
+  description: string;
+  imageGradient: string;
+  imageLink?: string;
+}
 
 @Component({
   selector: 'app-text-image-section',

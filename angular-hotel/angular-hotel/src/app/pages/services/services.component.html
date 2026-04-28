@@ -11,7 +11,7 @@
 
   <div class="cards-grid">
     <article class="service-card" *ngFor="let item of services">
-      <img [src]="item.imageUrl" [alt]="item.title" />
+      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
       <div class="service-card__body">
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>

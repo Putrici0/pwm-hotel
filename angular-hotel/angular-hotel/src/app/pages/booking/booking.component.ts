@@ -1,17 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AdminDataService } from '../../services/admin-data.service';
+import { AuthService } from '../../services/auth.service';
 import { BookingsService } from '../../services/bookings.service';
-import { SiteDataService } from '../../services/site-data.service';
 
 interface RoomOption {
   id: string;
   name: string;
   maxGuests: number;
   img: string;
+  price: number;
 }
 
 @Component({
@@ -21,53 +23,39 @@ interface RoomOption {
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
-export class BookingComponent {
+class BookingComponent {
   private readonly fb = inject(FormBuilder);
   private readonly bookingsService = inject(BookingsService);
-  private readonly siteDataService = inject(SiteDataService);
-  private readonly roomImageKeys: Record<string, string> = {
-    'suite-mar': 'initialdata-rooms-item-1-suite-mar-premium',
-    'deluxe-terr': 'initialdata-rooms-item-2-habitacion-deluxe-terraza',
-    familiar: 'initialdata-rooms-item-3-habitacion-familiar',
-    cozy: 'initialdata-rooms-item-4-habitacion-cozy'
-  };
+  private readonly adminDataService = inject(AdminDataService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
   heroImage =
     'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
 
-  availableRooms: RoomOption[] = [
-    {
-      id: 'suite-mar',
-      name: 'Suite Mar Premium',
-      maxGuests: 2,
-      img: 'https://st2.depositphotos.com/4142621/6549/i/600/depositphotos_65494105-stock-photo-luxury-hotel-room.jpg'
-    },
-    {
-      id: 'deluxe-terr',
-      name: 'Habitación Deluxe Terraza',
-      maxGuests: 4,
-      img: 'https://st2.depositphotos.com/1000441/6460/i/600/depositphotos_64609101-stock-photo-large-terrace-with-loungers.jpg'
-    },
-    {
-      id: 'familiar',
-      name: 'Habitación Familiar',
-      maxGuests: 6,
-      img: 'https://st3.depositphotos.com/1016811/17863/i/600/depositphotos_178638268-stock-photo-triple-beds-in-a-luxury.jpg'
-    },
-    {
-      id: 'cozy',
-      name: 'Habitación Cozy',
-      maxGuests: 2,
-      img: 'https://st4.depositphotos.com/12985790/22759/i/600/depositphotos_227591792-stock-photo-black-suitcase-travel-hotel-room.jpg'
-    }
-  ];
+  availableRooms: RoomOption[] = [];
 
   filteredRooms: RoomOption[] = [];
-  selectedRoomName = '';
   submitted = false;
   bookingDone = false;
   sending = false;
-  errorMessage = '';
+  searchErrorMessage = '';
+  checkoutErrorMessage = '';
+  attemptedConfirm = false;
+
+  constructor() {
+    void this.adminDataService.ensureInitialized().then(() => {
+      this.adminDataService.watchSection('rooms').subscribe((rooms) => {
+        this.availableRooms = rooms.map((room) => ({
+          id: String(room['id'] || ''),
+          name: String(room['nombre'] || ''),
+          maxGuests: Number(room['huespedes'] || 0),
+          img: String(room['imagen'] || ''),
+          price: Number(room['precio'] || 0)
+        }));
+      });
+    });
+  }
 
   readonly searchForm = this.fb.group({
     checkin: ['', Validators.required],
@@ -77,83 +65,120 @@ export class BookingComponent {
   });
 
   readonly checkoutForm = this.fb.group({
-    name: ['', Validators.required],
-    lastName: ['', Validators.required],
+    nombre: ['', Validators.required],
+    apellidos: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
+    telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\s()-]{7,20}$/)]],
+    dni: ['', Validators.required],
+    habitacion: ['', Validators.required],
     privacy: [false, Validators.requiredTrue]
   });
 
-  constructor() {
-    this.siteDataService.getImageCatalog()
-      .pipe(takeUntilDestroyed())
-      .subscribe((catalog) => {
-        this.heroImage = this.siteDataService.resolveImage(
-          catalog,
-          'booking-header-reserva-tu-estancia-en-isla-dorada',
-          this.heroImage
-        );
-
-        this.availableRooms = this.availableRooms.map((room) => ({
-          ...room,
-          img: this.siteDataService.resolveImage(catalog, this.roomImageKeys[room.id], room.img)
-        }));
-
-        if (this.filteredRooms.length) {
-          this.filteredRooms = this.filteredRooms.map((room) => ({
-            ...room,
-            img: this.siteDataService.resolveImage(catalog, this.roomImageKeys[room.id], room.img)
-          }));
-        }
-      });
-  }
-
   searchAvailability(): void {
-    const guests = Number(this.searchForm.value.guests || 0);
-    this.filteredRooms = this.availableRooms.filter((room) => room.maxGuests >= guests);
-    this.selectedRoomName = '';
-    this.submitted = true;
-    this.bookingDone = false;
-    this.errorMessage = '';
-  }
-
-  selectRoom(room: RoomOption): void {
-    this.selectedRoomName = room.name;
-    this.bookingDone = false;
-  }
-
-  async confirmBooking(): Promise<void> {
-    if (!this.selectedRoomName) {
-      this.errorMessage = 'Selecciona una habitación antes de confirmar.';
+    const checkin = String(this.searchForm.value.checkin || '');
+    const checkout = String(this.searchForm.value.checkout || '');
+    const checkinDate = new Date(checkin);
+    const checkoutDate = new Date(checkout);
+    if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
+      this.searchForm.markAllAsTouched();
+      this.searchErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
+      this.checkoutErrorMessage = '';
+      this.submitted = false;
+      this.filteredRooms = [];
+      this.checkoutForm.patchValue({ habitacion: '' });
       return;
     }
 
+    const guests = Number(this.searchForm.value.guests || 0);
+    this.filteredRooms = this.availableRooms.filter((room) => room.maxGuests >= guests);
+    const selectedRoom = String(this.checkoutForm.value.habitacion || '');
+    const selectedStillAvailable = this.filteredRooms.some((room) => room.name === selectedRoom);
+    if (!selectedStillAvailable) {
+      this.checkoutForm.patchValue({ habitacion: '' });
+    }
+    this.submitted = true;
+    this.bookingDone = false;
+    this.searchErrorMessage = '';
+    this.checkoutErrorMessage = '';
+  }
+
+  async confirmBooking(): Promise<void> {
+    if (!this.authService.isLoggedIn()) {
+      this.checkoutErrorMessage = 'Debes iniciar sesion para poder reservar.';
+      this.searchErrorMessage = '';
+      void this.router.navigateByUrl('/login');
+      return;
+    }
+
+    this.attemptedConfirm = true;
     if (this.checkoutForm.invalid || this.searchForm.invalid) {
       this.checkoutForm.markAllAsTouched();
       this.searchForm.markAllAsTouched();
-      this.errorMessage = 'Revisa los datos del formulario.';
+      this.checkoutErrorMessage = 'Revisa los datos del formulario.';
+      this.searchErrorMessage = '';
+      return;
+    }
+
+    const checkin = String(this.searchForm.value.checkin || '');
+    const checkout = String(this.searchForm.value.checkout || '');
+    const checkinDate = new Date(checkin);
+    const checkoutDate = new Date(checkout);
+    if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
+      this.checkoutErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
+      this.searchErrorMessage = '';
+      return;
+    }
+
+    const selectedRoom = this.availableRooms.find((room) => room.name === (this.checkoutForm.value.habitacion || ''));
+    const guests = Number(this.searchForm.value.guests || 0);
+    if (!selectedRoom) {
+      this.checkoutErrorMessage = 'Selecciona una habitacion valida.';
+      this.searchErrorMessage = '';
+      return;
+    }
+    if (guests > selectedRoom.maxGuests) {
+      this.checkoutErrorMessage = `La habitacion seleccionada permite como maximo ${selectedRoom.maxGuests} huespedes.`;
+      this.searchErrorMessage = '';
       return;
     }
 
     this.sending = true;
-    this.errorMessage = '';
+    this.bookingDone = false;
+    this.checkoutErrorMessage = '';
+    this.searchErrorMessage = '';
 
     try {
-      await this.bookingsService.createBooking({
-        name: this.checkoutForm.value.name || '',
-        lastName: this.checkoutForm.value.lastName || '',
-        email: this.checkoutForm.value.email || '',
-        checkin: this.searchForm.value.checkin || '',
-        checkout: this.searchForm.value.checkout || '',
-        guests: Number(this.searchForm.value.guests || 0),
-        roomName: this.selectedRoomName,
-        familySuite: !!this.searchForm.value.includeFamilySuite,
-        createdAt: new Date().toISOString()
-      });
+      await this.withTimeout(
+        this.bookingsService.createBooking({
+          nombre: this.checkoutForm.value.nombre || '',
+          apellidos: this.checkoutForm.value.apellidos || '',
+          email: this.checkoutForm.value.email || '',
+          telefono: this.checkoutForm.value.telefono || '',
+          dni: this.checkoutForm.value.dni || '',
+          entrada: this.searchForm.value.checkin || '',
+          salida: this.searchForm.value.checkout || '',
+          huespedes: Number(this.searchForm.value.guests || 0),
+          habitacion: this.checkoutForm.value.habitacion || '',
+          cliente: `${this.checkoutForm.value.nombre || ''} ${this.checkoutForm.value.apellidos || ''}`.trim(),
+          familySuite: !!this.searchForm.value.includeFamilySuite,
+          createdAt: new Date().toISOString()
+        }),
+        10000,
+        'timeout'
+      );
 
       this.bookingDone = true;
     } catch (error) {
       console.error(error);
-      this.errorMessage = 'No se pudo guardar la reserva.';
+      const code = String((error as { code?: string; message?: string })?.code || '');
+      const message = String((error as { message?: string })?.message || '');
+      if (code.includes('permission-denied') || message.toLowerCase().includes('permission')) {
+        this.checkoutErrorMessage = 'No tienes permisos para crear reservas. Inicia sesion con una cuenta valida.';
+      } else if (message === 'timeout') {
+        this.checkoutErrorMessage = 'La operacion tardo demasiado. Intenta de nuevo.';
+      } else {
+        this.checkoutErrorMessage = 'No se pudo guardar la reserva.';
+      }
     } finally {
       this.sending = false;
     }
@@ -165,6 +190,18 @@ export class BookingComponent {
 
   get summaryCheckout(): string {
     return this.formatSummaryDate(this.searchForm.value.checkout || '');
+  }
+
+  get selectedRoomName(): string {
+    return String(this.checkoutForm.value.habitacion || '');
+  }
+
+  isCheckoutInvalid(controlName: 'nombre' | 'apellidos' | 'telefono' | 'dni' | 'email' | 'habitacion' | 'privacy'): boolean {
+    const control = this.checkoutForm.get(controlName);
+    if (!control) {
+      return false;
+    }
+    return control.invalid && (control.touched || this.attemptedConfirm);
   }
 
   private formatSummaryDate(rawDate: string): string {
@@ -179,4 +216,21 @@ export class BookingComponent {
 
     return new Intl.DateTimeFormat('es-ES').format(parsedDate);
   }
+
+  private async withTimeout<T>(promise: Promise<T>, ms: number, timeoutMessage: string): Promise<T> {
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error(timeoutMessage)), ms);
+    });
+
+    try {
+      return await Promise.race([promise, timeoutPromise]);
+    } finally {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    }
+  }
 }
+
+export default BookingComponent

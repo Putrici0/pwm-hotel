@@ -9,9 +9,9 @@
     </p>
   </div>
 
-  <div class="cards-grid row g-4">
+  <div class="cards-grid row g-4" *ngIf="facilities$ | async as facilities">
     <article class="facility-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let item of facilities">
-      <img [src]="item.imageUrl" [alt]="item.title" />
+      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
       <div class="facility-card__body card-body">
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
