@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<main *ngIf="loginData$ | async as loginData">
+<main *ngIf="loginData">
   <section id="auth-login-section" class="auth-section">
     <div class="auth-card">
       <form id="login-form-element" (ngSubmit)="submit()">
@@ -25,23 +25,16 @@
             required
           />
           <button type="button" id="toggle-password" class="toggle-password-btn" (click)="showPassword = !showPassword">
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
               <circle cx="12" cy="12" r="3"></circle>
             </svg>
           </button>
         </div>
 
-        <div id="login-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <div class="error-msg" [hidden]="!errorMessage" style="color: white; background-color: #d9534f; padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; display: block;">
+          {{ errorMessage }}
+        </div>
 
         <button type="submit" id="btn-login" class="auth-btn-primary" [disabled]="sending">
           {{ sending ? 'Validando...' : loginData.form.primaryButtonText }}
