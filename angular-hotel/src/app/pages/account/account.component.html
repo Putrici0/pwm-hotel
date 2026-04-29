@@ -1,7 +1,7 @@
 <app-header></app-header>
 
 <main class="account-main-container" *ngIf="accountConfig">
-  <div class="account-card" *ngIf="isLoadingUser && !user.email && !user.nombre && !user.apellidos">
+  <div class="account-card" *ngIf="isLoadingUser && !user.email">
     <h2>Cargando tu cuenta...</h2>
   </div>
 
@@ -10,145 +10,94 @@
     <p>{{ userLoadError }}</p>
   </div>
 
-  <ng-container *ngIf="!userLoadError || user.email">
-  <div id="account-header-section" class="account-header-section">
-    <h1>{{ getHeaderGreeting() }}</h1>
-    <p>{{ accountConfig.title.description }}</p>
-  </div>
-
-  <div class="account-dashboard">
-    <div id="account-tabs" class="account-tabs-wrapper">
-      <button
-        *ngFor="let tab of tabs"
-        class="account-tab-btn"
-        [class.active]="currentTab === tab.id"
-        type="button"
-        (click)="setTab(tab.id)"
-      >
-        {{ tab.label }}
-      </button>
+  <ng-container *ngIf="!isLoadingUser && user.email">
+    <div class="account-header-section">
+      <h1>{{ getHeaderGreeting() }}</h1>
+      <p>{{ accountConfig.title.description }}</p>
     </div>
 
-    <div id="account-content" class="account-content-area">
-      <ng-container *ngIf="currentTab === 'datos'">
-        <div class="account-card">
-          <h2>Tus Datos Personales</h2>
-          <div *ngIf="statusMessage" class="account-status" [class.success]="statusType === 'success'" [class.danger]="statusType === 'danger'">
-            {{ statusMessage }}
-          </div>
+    <div class="account-dashboard">
+      <div class="account-tabs-wrapper">
+        <button
+          *ngFor="let tab of tabs"
+          class="account-tab-btn"
+          [class.active]="currentTab === tab.id"
+          (click)="setTab(tab.id)"
+        >
+          {{ tab.label }}
+        </button>
+      </div>
 
-          <form class="account-form" (ngSubmit)="saveData()">
-            <div class="account-form-grid">
-              <div class="form-group">
-                <label>Nombre</label>
-                <input
-                  type="text"
-                  name="user-nombre"
-                  [(ngModel)]="editableData.nombre"
-                  [disabled]="!isEditingData"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Apellidos</label>
-                <input
-                  type="text"
-                  name="user-apellidos"
-                  [(ngModel)]="editableData.apellidos"
-                  [disabled]="!isEditingData"
-                  required
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Email</label>
-                <input type="email" [value]="user.email" disabled class="readonly-email" />
-              </div>
-
-              <div class="form-group">
-                <label>DNI</label>
-                <input
-                  type="text"
-                  name="user-dni"
-                  [(ngModel)]="editableData.dni"
-                  [disabled]="!isEditingData"
-                />
-              </div>
-
-              <div class="form-group">
-                <label>Fecha de Nacimiento</label>
-                <input
-                  type="date"
-                  name="user-nacimiento"
-                  [(ngModel)]="editableData.nacimiento"
-                  [disabled]="!isEditingData"
-                />
-              </div>
+      <div class="account-content-area">
+        <ng-container *ngIf="currentTab === 'datos'">
+          <div class="account-card">
+            <h2>Tus Datos Personales</h2>
+            <div *ngIf="statusMessage" class="account-status" [class.success]="statusType === 'success'" [class.danger]="statusType === 'danger'">
+              {{ statusMessage }}
             </div>
 
-            <div class="account-form-actions" *ngIf="!showPasswordSection">
-              <button
-                type="button"
-                class="account-btn-primary"
-                *ngIf="!isEditingData"
-                (click)="enableDataEdit()"
-              >
-                {{ accountConfig.actions.buttons[0] }}
-              </button>
-
-              <button type="submit" class="account-btn-save" *ngIf="isEditingData" [disabled]="isSavingData">
-                {{ isSavingData ? 'Guardando...' : accountConfig.actions.buttons[1] }}
-              </button>
-
-              <button type="button" class="account-btn-secondary" (click)="openPasswordSection()">
-                {{ accountConfig.actions.buttons[2] }}
-              </button>
-            </div>
-          </form>
-
-          <div class="password-section" *ngIf="showPasswordSection">
-            <hr class="account-divider" />
-            <h3>Cambiar Contraseña</h3>
-
-            <form class="account-form" (ngSubmit)="updatePassword()">
+            <form class="account-form" (ngSubmit)="saveData()">
               <div class="account-form-grid">
                 <div class="form-group">
-                  <label>Contraseña Actual</label>
-                  <input type="password" name="pass-current" [(ngModel)]="passwordForm.current" required />
+                  <label>Nombre</label>
+                  <input type="text" name="nombre" [(ngModel)]="editableData.nombre" [disabled]="!isEditingData" required />
                 </div>
-
                 <div class="form-group">
-                  <label>Nueva Contraseña</label>
-                  <input type="password" name="pass-new" [(ngModel)]="passwordForm.next" required />
+                  <label>Apellidos</label>
+                  <input type="text" name="apellidos" [(ngModel)]="editableData.apellidos" [disabled]="!isEditingData" required />
                 </div>
-
                 <div class="form-group">
-                  <label>Confirmar Nueva Contraseña</label>
-                  <input type="password" name="pass-confirm" [(ngModel)]="passwordForm.confirm" required />
+                  <label>Email</label>
+                  <input type="email" [value]="user.email" disabled class="readonly-email" />
+                </div>
+                <div class="form-group">
+                  <label>DNI</label>
+                  <input type="text" name="dni" [(ngModel)]="editableData.dni" [disabled]="!isEditingData" />
+                </div>
+                <div class="form-group">
+                  <label>Fecha de Nacimiento</label>
+                  <input type="date" name="nacimiento" [(ngModel)]="editableData.nacimiento" [disabled]="!isEditingData" />
                 </div>
               </div>
 
-              <div class="account-form-actions">
-                <button type="submit" class="account-btn-primary">Actualizar Contraseña</button>
-                <button type="button" class="account-btn-cancel" (click)="cancelPasswordChange()">Cancelar</button>
+              <div class="account-form-actions" *ngIf="!showPasswordSection">
+                <button type="button" class="account-btn-primary" *ngIf="!isEditingData" (click)="enableDataEdit()">
+                  {{ accountConfig.actions.buttons[0] }}
+                </button>
+                <button type="submit" class="account-btn-save" *ngIf="isEditingData" [disabled]="isSavingData">
+                  {{ isSavingData ? 'Guardando...' : accountConfig.actions.buttons[1] }}
+                </button>
+                <button type="button" class="account-btn-secondary" (click)="openPasswordSection()">
+                  {{ accountConfig.actions.buttons[2] }}
+                </button>
               </div>
             </form>
+
+            <div class="password-section" *ngIf="showPasswordSection">
+              <hr class="account-divider" />
+              <h3>Cambiar Contraseña</h3>
+              <form class="account-form" (ngSubmit)="updatePassword()">
+                <p class="info-text">Por seguridad, te enviaremos un email para que elijas una nueva contraseña.</p>
+                <div class="account-form-actions">
+                  <button type="submit" class="account-btn-primary">Enviar Email de Restablecimiento</button>
+                  <button type="button" class="account-btn-cancel" (click)="cancelPasswordChange()">Cancelar</button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
 
-      <ng-container *ngIf="currentTab === 'reservas'">
-        <div class="account-card no-res-card" *ngIf="!hasReservations()">
-          <h2>No tienes reservas</h2>
-          <button type="button" class="account-btn-primary reserve-now-btn" (click)="goToBooking()">Reservar Ahora</button>
-        </div>
+        <ng-container *ngIf="currentTab === 'reservas'">
+          <div class="account-card no-res-card" *ngIf="!hasReservations()">
+            <h2>No tienes reservas todavía</h2>
+            <button type="button" class="account-btn-primary reserve-now-btn" (click)="goToBooking()">Reservar Ahora</button>
+          </div>
 
-        <div class="account-card" *ngIf="hasReservations()">
-          <h2>Tus Reservas</h2>
-          <div class="account-table-wrapper">
-            <table class="account-table">
-              <thead>
+          <div class="account-card" *ngIf="hasReservations()">
+            <h2>Tus Reservas</h2>
+            <div class="account-table-wrapper">
+              <table class="account-table">
+                <thead>
                 <tr>
                   <th>Imagen</th>
                   <th>Habitación</th>
@@ -158,79 +107,70 @@
                   <th>Total</th>
                   <th>Acción</th>
                 </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let reservation of getReservationsForUser()">
+                </thead>
+                <tbody>
+                <tr *ngFor="let res of getReservationsForUser()">
+                  <td><img [src]="getReservationImage(res)" class="account-room-img" alt="Habitación" /></td>
+                  <td><strong>{{ res.habitacion }}</strong></td>
+                  <td>{{ res.entrada }}</td>
+                  <td>{{ res.salida }}</td>
+                  <td>{{ res.huespedes }}</td>
+                  <td class="reservation-total">{{ getReservationTotal(res) }}</td>
                   <td>
-                    <img [src]="getReservationImage(reservation)" class="account-room-img" alt="Habitación" />
-                  </td>
-                  <td><strong>{{ reservation.habitacion || reservation.id }}</strong></td>
-                  <td>{{ reservation.entrada }}</td>
-                  <td>{{ reservation.salida }}</td>
-                  <td>{{ reservation.huespedes || '-' }}</td>
-                  <td class="reservation-total">{{ getReservationTotal(reservation) }}</td>
-                  <td>
-                    <button
-                      *ngIf="isFutureReservation(reservation)"
-                      type="button"
-                      class="account-btn-cancel"
-                      (click)="cancelReservation(reservation)"
-                    >
-                      Cancelar
-                    </button>
-                    <span *ngIf="!isFutureReservation(reservation)">Completada</span>
+                    <button *ngIf="isFutureReservation(res)" class="account-btn-cancel" (click)="cancelReservation(res)">Cancelar</button>
+                    <span *ngIf="!isFutureReservation(res)" class="status-done">Completada</span>
                   </td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
 
-      <ng-container *ngIf="currentTab === 'descuentos'">
-        <div class="account-card">
-          <h2>Tus Descuentos</h2>
-          <div class="account-table-wrapper">
-            <table class="account-table">
-              <thead>
+        <ng-container *ngIf="currentTab === 'descuentos'">
+          <div class="account-card">
+            <h2>Tus Descuentos Exclusivos</h2>
+            <div class="account-table-wrapper">
+              <table class="account-table">
+                <thead>
                 <tr>
                   <th>Código</th>
                   <th>Descripción</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 <tr *ngFor="let discount of discounts">
                   <td><span class="discount-code">{{ discount.code }}</span></td>
                   <td>{{ discount.description }}</td>
                 </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+      </div>
     </div>
-  </div>
   </ng-container>
 </main>
 
-<div *ngIf="pendingReservationToCancel" class="account-modal" role="dialog" aria-modal="true" aria-labelledby="cancel-reservation-title">
+<div *ngIf="pendingReservationToCancel" class="account-modal">
   <div class="account-modal__backdrop" (click)="closeCancelModal()"></div>
   <div class="account-modal__content">
-    <h3 id="cancel-reservation-title">Confirmar cancelacion</h3>
-    <p>¿Seguro que quieres cancelar esta reserva?</p>
+    <h3>Confirmar cancelación</h3>
+    <p>¿Estás seguro de que deseas cancelar tu estancia en <strong>{{ pendingReservationToCancel.habitacion }}</strong>?</p>
     <div class="account-modal__actions">
-      <button type="button" class="account-btn-secondary" (click)="closeCancelModal()">No</button>
-      <button type="button" class="account-btn-cancel" (click)="confirmCancelReservation()">Si, cancelar</button>
+      <button class="account-btn-secondary" (click)="closeCancelModal()">No, mantener</button>
+      <button class="account-btn-cancel" (click)="confirmCancelReservation()">Sí, cancelar</button>
     </div>
   </div>
 </div>
 
-<div *ngIf="modalMessage" class="account-modal" role="dialog" aria-modal="true" aria-labelledby="account-message-title">
+<div *ngIf="modalMessage" class="account-modal">
   <div class="account-modal__backdrop" (click)="closeMessageModal()"></div>
   <div class="account-modal__content">
-    <h3 id="account-message-title">Aviso</h3>
+    <h3>Aviso</h3>
     <p>{{ modalMessage }}</p>
-    <button type="button" class="account-btn-primary" (click)="closeMessageModal()">Cerrar</button>
+    <button class="account-btn-primary" (click)="closeMessageModal()">Entendido</button>
   </div>
 </div>
 

@@ -11,6 +11,7 @@ import {
   updatePassword as firebaseUpdatePassword
 } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable } from 'rxjs'; // Importar BehaviorSubject y Observable
 
 interface UserAccessDocument {
   email: string;
@@ -35,16 +36,23 @@ export class AuthService {
   private currentRole: 'admin' | 'user' | null = null;
   private roleSyncPromise: Promise<void> | null = null;
 
+  // Nuevo BehaviorSubject para el email del usuario
+  // Inicializamos con el email de localStorage o null si no hay
+  private readonly _loggedUserEmail = new BehaviorSubject<string | null>(localStorage.getItem('loggedUserEmail') || null);
+  readonly loggedUserEmail$: Observable<string | null> = this._loggedUserEmail.asObservable();
+
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
       if (!user?.email) {
         this.currentRole = null;
         this.roleSyncPromise = null;
         this.clearLocalSession();
+        this._loggedUserEmail.next(null); // Emitir null si no hay usuario
         return;
       }
 
       this.roleSyncPromise = this.syncSessionFromUser(user);
+      this._loggedUserEmail.next(user.email); // Emitir el email del usuario
     });
   }
 
@@ -53,6 +61,7 @@ export class AuthService {
       const normalizedEmail = email.trim().toLowerCase();
       const credentials = await signInWithEmailAndPassword(this.auth, normalizedEmail, password);
       await this.syncSessionFromUser(credentials.user);
+      this._loggedUserEmail.next(credentials.user.email); // Emitir el email tras login
       return true;
     } catch {
       return false;
@@ -64,6 +73,7 @@ export class AuthService {
     this.currentRole = null;
     this.roleSyncPromise = null;
     this.clearLocalSession();
+    this._loggedUserEmail.next(null); // Emitir null tras logout
   }
 
   isLoggedIn(): boolean {
@@ -109,6 +119,7 @@ export class AuthService {
       });
       await signOut(this.auth);
       this.clearLocalSession();
+      this._loggedUserEmail.next(null); // Asegurar que el email se limpia tras el registro y logout
       return { ok: true };
     } catch (error: unknown) {
       const code = this.extractErrorCode(error);
@@ -206,6 +217,7 @@ export class AuthService {
     localStorage.setItem('loggedUserNombre', nombre);
     localStorage.setItem('loggedUserApellidos', apellidos);
     this.currentRole = role;
+    this._loggedUserEmail.next(email); // Asegurar que el email se emite aquí también
   }
 
   private async ensureRoleReady(): Promise<void> {
@@ -309,6 +321,7 @@ export class AuthService {
     localStorage.removeItem('loggedUserEmail');
     localStorage.removeItem('loggedUserNombre');
     localStorage.removeItem('loggedUserApellidos');
+    this._loggedUserEmail.next(null); // Emitir null cuando la sesión se limpia
   }
 
   private extractErrorCode(error: unknown): string {
