@@ -40,6 +40,7 @@ export class AdminComponent implements OnInit {
         { key: 'nombre', label: 'Nombre', type: 'text' },
         { key: 'descripcion', label: 'Descripción', type: 'textarea' },
         { key: 'huespedes', label: 'Huéspedes', type: 'number' },
+        { key: 'cantidad', label: 'Cantidad (Stock)', type: 'number' },
         { key: 'precio', label: 'Precio', type: 'number' },
         { key: 'imagen', label: 'URL Imagen', type: 'text' }
       ]
@@ -126,7 +127,7 @@ export class AdminComponent implements OnInit {
   adminBookingCapacity = 0;
   adminBookingNights = 0;
   adminBookingError = '';
-  adminBookingValidationVisible = false; // Control para mostrar errores de campos vacíos
+  adminBookingValidationVisible = false;
 
   async ngOnInit(): Promise<void> {
     this.sections.forEach((section) => {
@@ -205,9 +206,6 @@ export class AdminComponent implements OnInit {
   }
 
   async saveEdit(): Promise<void> {
-    this.editValidationVisible = true;
-    if (!this.validateForm('edit')) return;
-
     this.saving = true;
     try {
       await this.adminDataService.updateItem(this.currentSection.id, this.editingId, this.coerceValues(this.editForm));
@@ -217,6 +215,7 @@ export class AdminComponent implements OnInit {
       this.editErrorMessage = 'Error al intentar guardar los cambios.';
     } finally {
       this.saving = false;
+      this.pendingAction = null;
       this.cdr.detectChanges();
     }
   }
@@ -259,8 +258,17 @@ export class AdminComponent implements OnInit {
     this.pendingAction = 'create';
   }
 
+  requestSaveEdit(): void {
+    this.editValidationVisible = true;
+    if (!this.validateForm('edit')) return;
+    this.pendingAction = 'edit';
+  }
+
   cancelAction(): void { this.pendingAction = null; }
-  async confirmAction(): Promise<void> { if (this.pendingAction === 'create') await this.createItem(); }
+  async confirmAction(): Promise<void> {
+    if (this.pendingAction === 'create') await this.createItem();
+    if (this.pendingAction === 'edit') await this.saveEdit();
+  }
 
   // --- MÉTODOS DE FORMULARIO CRUD NORMAL ---
 
@@ -333,15 +341,21 @@ export class AdminComponent implements OnInit {
   }
 
   searchAdminRooms(): void {
+
+    this.ngZone.run(() => {
+      this.adminBookingError = '';
+      this.cdr.detectChanges();
+    });
+
     if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
       this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
       return;
     }
 
-    const inDate = new Date(this.bookingSearch.checkin);
-    const outDate = new Date(this.bookingSearch.checkout);
+    const inDate = new Date(this.bookingSearch.checkin).getTime();
+    const outDate = new Date(this.bookingSearch.checkout).getTime();
 
-    if (isNaN(inDate.getTime()) || isNaN(outDate.getTime()) || inDate >= outDate) {
+    if (isNaN(inDate) || isNaN(outDate) || inDate >= outDate) {
       this.adminBookingError = 'Fechas no válidas. La entrada debe ser anterior a la salida.';
       return;
     }
@@ -357,39 +371,67 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    this.adminBookingError = '';
-    this.adminBookingNights = Math.ceil(Math.abs(outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
+    this.adminBookingNights = Math.ceil(Math.abs(outDate - inDate) / (1000 * 60 * 60 * 24));
 
     let rooms = this.rowsBySection['rooms'] || [];
-    if (rooms.length === 0) {
-      this.adminBookingError = 'No hay habitaciones registradas en la base de datos para mostrar.';
-      return;
-    }
+    const reservations = this.rowsBySection['reservations'] || [];
 
-    // LÓGICA DE FILTRADO FAMILIAR APLICADA AL DETALLE
+    // CÁLCULO DE DISPONIBILIDAD MATEMÁTICA
+    rooms = rooms.map(r => {
+      const stock = Number(r['cantidad']) || 1;
+      const roomName = String(r['nombre']);
+
+      let overlappingCount = 0;
+      reservations.forEach(res => {
+        if (String(res['habitacion']).includes(roomName)) {
+          const resIn = new Date(String(res['entrada'])).getTime();
+          const resOut = new Date(String(res['salida'])).getTime();
+
+          if (inDate < resOut && outDate > resIn) {
+            const regex = new RegExp(roomName, 'g');
+            const matches = String(res['habitacion']).match(regex);
+            if (matches) overlappingCount += matches.length;
+          }
+        }
+      });
+      return { ...r, _availableStock: stock - overlappingCount };
+    }).filter(r => r._availableStock > 0);
+
+    // LÓGICA DE FILTRADO FAMILIAR
     if (this.bookingSearch.includeFamily) {
       if (this.bookingSearch.guests <= 3) {
-        // Muestra habitaciones desde 3 hasta 6 huéspedes
         rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
       } else if (this.bookingSearch.guests === 4) {
-        // Muestra habitaciones desde 4 hasta 6 huéspedes
         rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
       } else if (this.bookingSearch.guests >= 5) {
-        // Muestra SOLO las de 6 huéspedes (familiar)
         rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
       }
     } else {
-      // Si NO se incluye la opción familiar, ocultamos la familiar y mostramos las combinaciones posibles
       rooms = rooms.filter(r => String(r['id']) !== 'familiar' && !String(r['nombre']).toLowerCase().includes('familiar'));
     }
 
-    this.adminAvailableRooms = rooms;
-    this.adminSelectedRooms = [];
-    this.adminBookingCapacity = 0;
+    // ¡LA SOLUCIÓN INFALIBLE!
+    if (rooms.length === 0) {
+      this.ngZone.run(() => {
+        this.adminBookingError = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
+        this.adminShowRooms = false;
+        this.adminShowCheckout = false;
+        this.adminBookingStep = 1;
+        this.cdr.detectChanges();
+      });
+      return;
+    }
 
-    this.adminBookingStep = 2;
-    this.adminShowRooms = true;
-    this.adminShowCheckout = false;
+
+    this.ngZone.run(() => {
+      this.adminAvailableRooms = rooms;
+      this.adminSelectedRooms = [];
+      this.adminBookingCapacity = 0;
+      this.adminBookingStep = 2;
+      this.adminShowRooms = true;
+      this.adminShowCheckout = false;
+      this.cdr.detectChanges();
+    });
   }
 
   toggleAdminRoom(room: any): void {
@@ -426,7 +468,6 @@ export class AdminComponent implements OnInit {
     return this.adminSelectedRooms.reduce((acc, r) => acc + (Number(r.precio) * this.adminBookingNights), 0);
   }
 
-  // Comprueba si un campo individual del checkout está vacío/inválido
   isBookingFieldInvalid(field: 'nombre' | 'apellidos' | 'email'): boolean {
     if (!this.adminBookingValidationVisible) return false;
     if (!this.bookingCheckout[field] || this.bookingCheckout[field].trim() === '') return true;
@@ -442,13 +483,11 @@ export class AdminComponent implements OnInit {
     this.adminBookingValidationVisible = true;
     this.adminBookingError = '';
 
-    // 1. Comprobar campos obligatorios (nombre, apellidos, email)
     if (!this.bookingCheckout.nombre || !this.bookingCheckout.apellidos || !this.bookingCheckout.email) {
       this.adminBookingError = 'Por favor, rellena los campos marcados en rojo.';
       return;
     }
 
-    // 2. Comprobar que el correo es válido
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(this.bookingCheckout.email)) {
       this.adminBookingError = 'El correo electrónico introducido no es válido.';
@@ -501,7 +540,10 @@ export class AdminComponent implements OnInit {
     this.createForm = {};
     this.createValidationVisible = false;
     this.createErrorMessage = '';
-    this.currentSection.fields.forEach((field) => this.createForm[field.key] = '');
+    this.currentSection.fields.forEach((field) => {
+      if (field.key === 'cantidad') this.createForm[field.key] = '1';
+      else this.createForm[field.key] = '';
+    });
     this.ensureSelectDefaults(this.createForm);
   }
 

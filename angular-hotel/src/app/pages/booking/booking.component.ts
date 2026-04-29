@@ -15,6 +15,8 @@ interface RoomOption {
   maxGuests: number;
   img: string;
   price: number;
+  cantidad: number;
+  _availableStock?: number;
 }
 
 @Component({
@@ -42,6 +44,8 @@ class BookingComponent {
   availableRooms: RoomOption[] = [];
   filteredRooms: RoomOption[] = [];
   selectedRoomsArr: RoomOption[] = [];
+  allReservations: any[] = [];
+
   currentCapacity = 0;
   totalNights = 0;
   requestedGuests = 0;
@@ -66,9 +70,14 @@ class BookingComponent {
           name: String(room['nombre'] || ''),
           maxGuests: Number(room['huespedes'] || 0),
           img: String(room['imagen'] || ''),
-          price: Number(room['precio'] || 0)
+          price: Number(room['precio'] || 0),
+          cantidad: Number(room['cantidad'] || 1)
         }));
         this.cdr.detectChanges();
+      });
+
+      this.adminDataService.watchSection('reservations').subscribe((reservations) => {
+        this.allReservations = reservations;
       });
     });
   }
@@ -76,16 +85,16 @@ class BookingComponent {
   readonly searchForm = this.fb.group({
     checkin: ['', Validators.required],
     checkout: ['', Validators.required],
-    guests: [2, [Validators.required, Validators.min(1)]],
+    guests: [2, [Validators.required, Validators.min(1), Validators.max(6)]],
     includeFamilySuite: [false]
   });
 
   readonly checkoutForm = this.fb.group({
     nombre: ['', Validators.required],
     apellidos: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\s()-]{7,20}$/)]],
-    dni: ['', Validators.required],
+    email: ['', [Validators.required, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)]],
+    telefono: [''],
+    dni: [''],
     privacy: [false, Validators.requiredTrue]
   });
 
@@ -111,17 +120,59 @@ class BookingComponent {
       return;
     }
 
+    if (Number(this.searchForm.value.guests) > 6) {
+      this.searchErrorMessage = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
+      this.submitted = false;
+      this.cdr.detectChanges();
+      return;
+    }
+
     const diffTime = Math.abs(checkoutDate.getTime() - checkinDate.getTime());
     this.totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     this.requestedGuests = Number(this.searchForm.value.guests || 0);
 
-    let availableRoomsFiltered = this.availableRooms;
-    if (this.searchForm.value.includeFamilySuite === false) {
-      availableRoomsFiltered = availableRoomsFiltered.filter(r => r.id !== 'familiar');
+    const inTime = checkinDate.getTime();
+    const outTime = checkoutDate.getTime();
+
+    // 1. CÁLCULO DE DISPONIBILIDAD MATEMÁTICA CON INVENTARIO
+    let availableRoomsFiltered = this.availableRooms.map(room => {
+      let overlappingCount = 0;
+      this.allReservations.forEach(res => {
+        if (String(res['habitacion']).includes(room.name)) {
+          const resIn = new Date(String(res['entrada'])).getTime();
+          const resOut = new Date(String(res['salida'])).getTime();
+          if (inTime < resOut && outTime > resIn) {
+            const regex = new RegExp(room.name, 'g');
+            const matches = String(res['habitacion']).match(regex);
+            if (matches) overlappingCount += matches.length;
+          }
+        }
+      });
+      return { ...room, _availableStock: room.cantidad - overlappingCount };
+    }).filter(r => r._availableStock! > 0);
+
+    // 2. LÓGICA DE FILTRADO FAMILIAR
+    if (this.searchForm.value.includeFamilySuite) {
+      if (this.requestedGuests <= 3) {
+        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 3 && r.maxGuests <= 6);
+      } else if (this.requestedGuests === 4) {
+        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 4 && r.maxGuests <= 6);
+      } else if (this.requestedGuests >= 5) {
+        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 6);
+      }
+    } else {
+      availableRoomsFiltered = availableRoomsFiltered.filter(r => r.id !== 'familiar' && !r.name.toLowerCase().includes('familiar'));
+    }
+
+    // ¡AQUÍ ESTÁ TU MENSAJE EXACTO!
+    if (availableRoomsFiltered.length === 0) {
+      this.searchErrorMessage = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
+      this.submitted = false; // No mostramos el paso 2
+      this.cdr.detectChanges();
+      return;
     }
 
     this.filteredRooms = availableRoomsFiltered;
-
     this.submitted = true;
     this.bookingDone = false;
     this.searchErrorMessage = '';
@@ -134,11 +185,9 @@ class BookingComponent {
     const roomIndex = this.selectedRoomsArr.findIndex(selected => selected.id === room.id);
 
     if (roomIndex > -1) {
-      // Room is already selected, so deselect it
       this.currentCapacity -= this.selectedRoomsArr[roomIndex].maxGuests;
       this.selectedRoomsArr.splice(roomIndex, 1);
     } else {
-      // Room is not selected, so select it
       this.selectedRoomsArr.push(room);
       this.currentCapacity += room.maxGuests;
     }
@@ -188,7 +237,7 @@ class BookingComponent {
       if (this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
         this.checkoutErrorMessage = 'Por favor, selecciona suficientes habitaciones para todos los huéspedes.';
       } else {
-        this.checkoutErrorMessage = 'Revisa los datos del formulario.';
+        this.checkoutErrorMessage = 'Revisa los datos del formulario (Email, Privacidad, etc.).';
       }
       this.searchErrorMessage = '';
       this.cdr.detectChanges();
@@ -212,42 +261,27 @@ class BookingComponent {
     this.searchErrorMessage = '';
 
     try {
-      const bookingPromises = this.selectedRoomsArr.map(room => {
-        return this.bookingsService.createBooking({
-          nombre: this.checkoutForm.value.nombre || '',
-          apellidos: this.checkoutForm.value.apellidos || '',
-          email: this.checkoutForm.value.email || '',
-          telefono: this.checkoutForm.value.telefono || '',
-          dni: this.checkoutForm.value.dni || '',
-          entrada: this.searchForm.value.checkin || '',
-          salida: this.searchForm.value.checkout || '',
-          huespedes: this.requestedGuests, // Total guests for the booking
-          habitacion: room.name, // Each room is booked individually
-          cliente: `${this.checkoutForm.value.nombre || ''} ${this.checkoutForm.value.apellidos || ''}`.trim(),
-          familySuite: !!this.searchForm.value.includeFamilySuite,
-          createdAt: new Date().toISOString()
-        });
-      });
+      const roomNames = this.selectedRoomsArr.map(r => r.name).join(', ');
 
-      await this.withTimeout(
-        Promise.all(bookingPromises),
-        10000,
-        'timeout'
-      );
+      await this.bookingsService.createBooking({
+        nombre: this.checkoutForm.value.nombre || '',
+        apellidos: this.checkoutForm.value.apellidos || '',
+        email: this.checkoutForm.value.email || '',
+        telefono: this.checkoutForm.value.telefono || 'No especificado',
+        dni: this.checkoutForm.value.dni || 'No especificado',
+        entrada: this.searchForm.value.checkin || '',
+        salida: this.searchForm.value.checkout || '',
+        huespedes: this.requestedGuests,
+        habitacion: roomNames,
+        cliente: `${this.checkoutForm.value.nombre || ''} ${this.checkoutForm.value.apellidos || ''}`.trim(),
+        familySuite: !!this.searchForm.value.includeFamilySuite,
+        createdAt: new Date().toISOString()
+      });
 
       this.bookingDone = true;
       this.resetFormsAfterSuccess();
     } catch (error) {
-      console.error(error);
-      const code = String((error as { code?: string; message?: string })?.code || '');
-      const message = String((error as { message?: string })?.message || '');
-      if (code.includes('permission-denied') || message.toLowerCase().includes('permission')) {
-        this.checkoutErrorMessage = 'No tienes permisos para crear reservas. Inicia sesion con una cuenta valida.';
-      } else if (message === 'timeout') {
-        this.checkoutErrorMessage = 'La operacion tardo demasiado. Intenta de nuevo.';
-      } else {
-        this.checkoutErrorMessage = 'No se pudo guardar la reserva.';
-      }
+      this.checkoutErrorMessage = 'No se pudo guardar la reserva. Verifica permisos o intenta más tarde.';
     } finally {
       this.setSending(false);
       this.cdr.detectChanges();
@@ -291,40 +325,19 @@ class BookingComponent {
     return new Intl.DateTimeFormat('es-ES').format(parsedDate);
   }
 
-  private async withTimeout<T>(promise: Promise<T>, ms: number, timeoutMessage: string): Promise<T> {
-    let timeoutId: ReturnType<typeof setTimeout> | null = null;
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      timeoutId = setTimeout(() => reject(new Error(timeoutMessage)), ms);
-    });
-
-    try {
-      return await Promise.race([promise, timeoutPromise]);
-    } finally {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    }
-  }
-
   private setSending(value: boolean): void {
     if (this.sendingWatchdog) {
       clearTimeout(this.sendingWatchdog);
       this.sendingWatchdog = null;
     }
-
-    this.ngZone.run(() => {
-      this.sending = value;
-    });
+    this.ngZone.run(() => { this.sending = value; });
 
     if (value) {
       this.sendingWatchdog = setTimeout(() => {
-        this.ngZone.run(() => {
-          this.sending = false;
-        });
+        this.ngZone.run(() => { this.sending = false; });
         this.requestViewRefresh();
       }, 15000);
     }
-
     this.requestViewRefresh();
   }
 
@@ -334,20 +347,8 @@ class BookingComponent {
   }
 
   private resetFormsAfterSuccess(): void {
-    this.checkoutForm.reset({
-      nombre: '',
-      apellidos: '',
-      email: '',
-      telefono: '',
-      dni: '',
-      privacy: false
-    });
-    this.searchForm.reset({
-      checkin: '',
-      checkout: '',
-      guests: 2,
-      includeFamilySuite: false
-    });
+    this.checkoutForm.reset({ nombre: '', apellidos: '', email: '', telefono: '', dni: '', privacy: false });
+    this.searchForm.reset({ checkin: '', checkout: '', guests: 2, includeFamilySuite: false });
     this.filteredRooms = [];
     this.selectedRoomsArr = [];
     this.currentCapacity = 0;
@@ -362,20 +363,11 @@ class BookingComponent {
   }
 
   private requestViewRefresh(): void {
-    try {
-      this.cdr.detectChanges();
-    } catch {
-      // no-op
-    }
+    try { this.cdr.detectChanges(); } catch { }
   }
 
   private async prefillLoggedUserData(): Promise<void> {
-    const patch: Partial<{
-      nombre: string;
-      apellidos: string;
-      email: string;
-      dni: string;
-    }> = {
+    const patch: Partial<{ nombre: string; apellidos: string; email: string; dni: string; }> = {
       nombre: localStorage.getItem('loggedUserNombre') || '',
       apellidos: localStorage.getItem('loggedUserApellidos') || '',
       email: this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '',
@@ -393,16 +385,11 @@ class BookingComponent {
           patch.email = String(userData['email'] || patch.email || '');
           patch.dni = String(userData['dni'] || '');
         }
-      } catch {
-        // no-op
-      }
+      } catch { }
     }
 
     this.checkoutForm.patchValue({
-      nombre: patch.nombre || '',
-      apellidos: patch.apellidos || '',
-      email: patch.email || '',
-      dni: patch.dni || ''
+      nombre: patch.nombre || '', apellidos: patch.apellidos || '', email: patch.email || '', dni: patch.dni || ''
     });
     this.requestViewRefresh();
   }

@@ -1,9 +1,9 @@
 /* admin-panel.css restaurado */
 
-
+/* FUENTES Y COLORES GLOBALES DEL ADMIN */
 .admin-dashboard-container {
   width: 100%;
-  max-width: 100%; /* Ocupar pantalla completa */
+  max-width: 100%;
   padding: 1rem 2rem;
   box-sizing: border-box;
 }
@@ -18,7 +18,6 @@
   font-weight: bold;
 }
 
-/* Solo las descripciones y textos largos en grosor normal */
 .long-text-cell {
   font-weight: normal;
   color: var(--mar-navy);
@@ -68,7 +67,7 @@
   text-align: left;
   border-bottom: 1px solid var(--arena-clara);
   vertical-align: middle;
-  white-space: nowrap; /* Evita que las columnas colapsen */
+  white-space: nowrap;
 }
 
 .admin-table th {
@@ -138,6 +137,7 @@
   cursor: pointer;
 }
 
+/* ¡AQUÍ ESTÁ LA MAGIA DEL SCROLL EN EL MODAL DE EDICIÓN! */
 .custom-modal-content {
   background-color: var(--blanco-puro);
   padding: 2.5rem;
@@ -146,6 +146,17 @@
   max-width: 500px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  max-height: 85vh; /* Evita que crezca más allá de la pantalla */
+  overflow-y: auto; /* Activa el scroll interno */
+}
+
+/* Estilo para la barrita de scroll del modal */
+.custom-modal-content::-webkit-scrollbar {
+  width: 8px;
+}
+.custom-modal-content::-webkit-scrollbar-thumb {
+  background-color: var(--arena-sable);
+  border-radius: 4px;
 }
 
 .custom-modal-actions {

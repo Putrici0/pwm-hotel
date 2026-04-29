@@ -85,7 +85,10 @@
               <option *ngFor="let option of getFieldOptions(field)" [value]="option">{{ option }}</option>
             </select>
 
-            <input *ngIf="field.type !== 'textarea' && field.type !== 'select'" class="edit-input" [type]="field.type"
+            <input *ngIf="field.type !== 'textarea' && field.type !== 'select'" class="edit-input"
+                   [type]="field.type"
+                   [attr.max]="field.key === 'huespedes' ? 6 : null"
+                   [attr.min]="field.type === 'number' ? 1 : null"
                    [style.borderColor]="isCreateFieldInvalid(field) ? 'red' : ''"
                    [(ngModel)]="createForm[field.key]" [name]="field.key" required />
 
@@ -240,7 +243,12 @@
           <option *ngFor="let option of getFieldOptions(field)" [value]="option">{{ option }}</option>
         </select>
 
-        <input *ngIf="field.type !== 'textarea' && field.type !== 'select'" class="edit-input" [style.borderColor]="isEditFieldInvalid(field) ? 'red' : ''" [type]="field.type" [(ngModel)]="editForm[field.key]" [name]="'edit-'+field.key" />
+        <input *ngIf="field.type !== 'textarea' && field.type !== 'select'" class="edit-input"
+               [style.borderColor]="isEditFieldInvalid(field) ? 'red' : ''"
+               [type]="field.type"
+               [attr.max]="field.key === 'huespedes' ? 6 : null"
+               [attr.min]="field.type === 'number' ? 1 : null"
+               [(ngModel)]="editForm[field.key]" [name]="'edit-'+field.key" />
 
         <div *ngIf="isEditFieldInvalid(field)" style="color: red; font-size: 0.85rem; margin-top: 5px;">
           Este campo es obligatorio.
@@ -253,7 +261,7 @@
 
       <div class="custom-modal-actions" style="margin-top:1.5rem;">
         <button type="button" class="admin-btn-cancel" (click)="cancelEdit()">Cancelar</button>
-        <button type="button" class="admin-btn-save" (click)="saveEdit()">Guardar Cambios</button>
+        <button type="button" class="admin-btn-save" (click)="requestSaveEdit()">Guardar Cambios</button>
       </div>
     </form>
   </div>
@@ -273,7 +281,7 @@
 <div class="custom-modal-overlay" [class.active]="!!pendingAction">
   <div class="custom-modal-content">
     <h3>Confirmar acción</h3>
-    <p class="long-text-cell" style="margin-bottom: 2rem;">Se va a guardar el nuevo elemento en la base de datos.</p>
+    <p class="long-text-cell" style="margin-bottom: 2rem;">Se van a guardar estos datos en la base de datos.</p>
     <div class="custom-modal-actions">
       <button type="button" class="admin-btn-edit" (click)="cancelAction()">Cancelar</button>
       <button type="button" class="admin-btn-save" (click)="confirmAction()">Confirmar</button>
