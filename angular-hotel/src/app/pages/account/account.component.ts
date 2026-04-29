@@ -128,21 +128,9 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   async ngOnInit(): Promise<void> {
     this.accountConfig = this.defaultAccountConfig;
-    this.bootstrapLocalUser();
-    this.syncVisibleReservations();
+    await this.initializeUserAndData(); // Esto asegura que this.user.email esté disponible
 
-    void this.authService.waitForSessionReady(7000).then(() => {
-      const sessionEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
-      if (sessionEmail && !this.user.email) {
-        this.user = {
-          ...this.user,
-          email: sessionEmail
-        };
-      }
-      this.syncVisibleReservations();
-    });
-
-    void this.initializeUserAndData();
+    // Ahora que this.user.email está disponible, podemos suscribirnos a las reservas
     void this.adminDataService.ensureInitialized().then(() => {
       this.adminDb = this.adminDataService.getDb();
       this.adminDataService.watchSection('rooms').subscribe((rooms) => {
@@ -153,10 +141,9 @@ export class AccountComponent implements OnInit, OnDestroy {
       });
       this.adminDataService.watchSection('reservations').subscribe((reservations) => {
         this.allReservations = reservations as ReservationItem[];
-        this.syncVisibleReservations();
+        this.syncVisibleReservations(); // Solo se llama aquí, garantizando allReservations está actualizado
       });
     });
-
   }
 
   setTab(tabId: AccountTabId): void {
@@ -169,103 +156,71 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.isEditingData = false;
     this.showPasswordSection = false;
     this.resetPasswordForm();
-    this.syncVisibleReservations();
-  }
-
-  private bootstrapLocalUser(): void {
-    const loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
-    const nombre = localStorage.getItem('loggedUserNombre') || '';
-    const apellidos = localStorage.getItem('loggedUserApellidos') || '';
-
-    this.user = {
-      nombre,
-      apellidos,
-      email: loggedEmail,
-      dni: '',
-      nacimiento: this.normalizeBirthDate(localStorage.getItem('loggedUserNacimiento') || '')
-    };
-    this.syncEditableData();
-    this.isLoadingUser = false;
+    // No llamar syncVisibleReservations aquí, ya se maneja por la suscripción
   }
 
   private async initializeUserAndData(): Promise<void> {
-    const initStartedAt = Date.now();
     this.isLoadingUser = true;
     this.userLoadError = '';
     await this.authService.waitForSessionReady();
 
     this.userUid = this.authService.getLoggedUserUid();
-    const loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
+    let loggedEmail = this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '';
 
-    const baseUser: AccountUser = {
-      nombre: '',
-      apellidos: '',
-      email: loggedEmail,
+    // Inicializar user con los datos locales disponibles
+    this.user = {
+      nombre: localStorage.getItem('loggedUserNombre') || '',
+      apellidos: localStorage.getItem('loggedUserApellidos') || '',
+      email: loggedEmail, // Usar el email más actual
       dni: '',
-      nacimiento: ''
+      nacimiento: this.normalizeBirthDate(localStorage.getItem('loggedUserNacimiento') || '')
     };
 
     if (!this.userUid) {
-      this.user = baseUser;
+      // No hay usuario logueado, solo usar datos de localStorage
       this.syncEditableData();
-      this.adminDb = this.adminDataService.getDb();
-      this.syncVisibleReservations();
       this.isLoadingUser = false;
       return;
     }
 
     try {
       const userRef = doc(this.firestore, 'users', this.userUid);
-      const userSnapshot = await Promise.race([
-        getDoc(userRef),
-        new Promise<null>((resolve) => window.setTimeout(() => resolve(null), 7000))
-      ]);
+      const userSnapshot = await getDoc(userRef);
 
-      if (!userSnapshot) {
-        this.syncVisibleReservations();
-        this.isLoadingUser = false;
-        return;
-      }
-
-      if (!userSnapshot.exists()) {
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data() as UserProfileDocument;
+        this.user = {
+          nombre: String(userData.nombre || this.user.nombre), // Preferir datos de Firestore, fallback a local
+          apellidos: String(userData.apellidos || this.user.apellidos),
+          email: String(userData.email || loggedEmail), // Asegurar que el email se actualiza desde Firestore si está disponible
+          dni: String(userData.dni || ''),
+          nacimiento: this.normalizeBirthDate(String(userData.nacimiento || ''))
+        };
+      } else {
+        // El documento del usuario no existe, crearlo con los datos locales actuales
         await setDoc(
           userRef,
           {
             email: loggedEmail,
             isAdmin: false,
-            nombre: '',
-            apellidos: '',
-            dni: '',
-            nacimiento: '',
+            nombre: this.user.nombre,
+            apellidos: this.user.apellidos,
             createdAt: serverTimestamp(),
             updatedAt: serverTimestamp()
           },
           { merge: true }
         );
-        if (initStartedAt >= this.lastLocalProfileUpdateAt) {
-          this.user = baseUser;
-        }
-      } else {
-        const userData = userSnapshot.data() as UserProfileDocument;
-        if (initStartedAt >= this.lastLocalProfileUpdateAt) {
-          this.user = {
-            nombre: String(userData.nombre || ''),
-            apellidos: String(userData.apellidos || ''),
-            email: String(userData.email || loggedEmail),
-            dni: String(userData.dni || ''),
-            nacimiento: this.normalizeBirthDate(String(userData.nacimiento || ''))
-          };
-        }
+        // this.user ya está configurado desde localStorage, no es necesario reasignar baseUser
       }
-    } catch {
+    } catch (error) {
+      console.error('Error initializing user data from Firestore:', error);
+      // Si Firestore falla, asegurar que el objeto user tenga al menos el email
       if (!this.user.email) {
-        this.user = baseUser;
+        this.user.email = loggedEmail;
       }
     }
 
     this.syncEditableData();
-    this.adminDb = this.adminDataService.getDb();
-    this.syncVisibleReservations();
     this.isLoadingUser = false;
   }
 
@@ -516,16 +471,28 @@ export class AccountComponent implements OnInit, OnDestroy {
 
   private syncVisibleReservations(): void {
     const email = this.getActiveUserEmail();
+    console.log('syncVisibleReservations called. Active User Email:', email);
+    console.log('All Reservations:', this.allReservations);
+
+    if (!email) {
+      this.userReservations = [];
+      this.requestViewRefresh();
+      console.log('No active email, userReservations cleared.');
+      return;
+    }
     this.userReservations = this.allReservations.filter(
       (reservation) => String(reservation.email || '').trim().toLowerCase() === email
     );
+    console.log('Filtered User Reservations:', this.userReservations);
     this.requestViewRefresh();
   }
 
   private getActiveUserEmail(): string {
-    return String(this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || this.user?.email || '')
+    const email = String(this.user?.email || this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '')
       .trim()
       .toLowerCase();
+    console.log('getActiveUserEmail returning:', email);
+    return email;
   }
 
   private setStatus(type: 'success' | 'danger', message: string): void {

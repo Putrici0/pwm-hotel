@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, NgZone, inject } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, inject } from '@angular/core';
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,7 +22,8 @@ interface RoomOption {
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, HeaderComponent, FooterComponent],
   templateUrl: './booking.component.html',
-  styleUrl: './booking.component.css'
+  styleUrl: './booking.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 class BookingComponent {
   private readonly fb = inject(FormBuilder);
@@ -39,8 +40,15 @@ class BookingComponent {
     'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
 
   availableRooms: RoomOption[] = [];
-
   filteredRooms: RoomOption[] = [];
+  selectedRoomsArr: RoomOption[] = [];
+  currentCapacity = 0;
+  totalNights = 0;
+  requestedGuests = 0;
+  statusBarMessage = 'Por favor, selecciona habitaciones para tus huéspedes.';
+  statusBarBackground = '#D4C4A8';
+  showCheckoutSection = false;
+
   submitted = false;
   bookingDone = false;
   sending = false;
@@ -60,6 +68,7 @@ class BookingComponent {
           img: String(room['imagen'] || ''),
           price: Number(room['precio'] || 0)
         }));
+        this.cdr.detectChanges();
       });
     });
   }
@@ -77,36 +86,91 @@ class BookingComponent {
     email: ['', [Validators.required, Validators.email]],
     telefono: ['', [Validators.required, Validators.pattern(/^[0-9+\s()-]{7,20}$/)]],
     dni: ['', Validators.required],
-    habitacion: ['', Validators.required],
     privacy: [false, Validators.requiredTrue]
   });
 
   searchAvailability(): void {
+    this.selectedRoomsArr = [];
+    this.currentCapacity = 0;
+    this.showCheckoutSection = false;
+    this.statusBarBackground = '#D4C4A8';
+    this.statusBarMessage = 'Por favor, selecciona habitaciones para tus huéspedes.';
+
     const checkin = String(this.searchForm.value.checkin || '');
     const checkout = String(this.searchForm.value.checkout || '');
     const checkinDate = new Date(checkin);
     const checkoutDate = new Date(checkout);
+
     if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
       this.searchForm.markAllAsTouched();
       this.searchErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
       this.checkoutErrorMessage = '';
       this.submitted = false;
       this.filteredRooms = [];
-      this.checkoutForm.patchValue({ habitacion: '' });
+      this.cdr.detectChanges();
       return;
     }
 
-    const guests = Number(this.searchForm.value.guests || 0);
-    this.filteredRooms = this.availableRooms.filter((room) => room.maxGuests >= guests);
-    const selectedRoom = String(this.checkoutForm.value.habitacion || '');
-    const selectedStillAvailable = this.filteredRooms.some((room) => room.name === selectedRoom);
-    if (!selectedStillAvailable) {
-      this.checkoutForm.patchValue({ habitacion: '' });
+    const diffTime = Math.abs(checkoutDate.getTime() - checkinDate.getTime());
+    this.totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    this.requestedGuests = Number(this.searchForm.value.guests || 0);
+
+    let availableRoomsFiltered = this.availableRooms;
+    if (this.searchForm.value.includeFamilySuite === false) {
+      availableRoomsFiltered = availableRoomsFiltered.filter(r => r.id !== 'familiar');
     }
+
+    this.filteredRooms = availableRoomsFiltered;
+
     this.submitted = true;
     this.bookingDone = false;
     this.searchErrorMessage = '';
     this.checkoutErrorMessage = '';
+    this.updateStatusBar();
+    this.cdr.detectChanges();
+  }
+
+  selectRoom(room: RoomOption): void {
+    const roomIndex = this.selectedRoomsArr.findIndex(selected => selected.id === room.id);
+
+    if (roomIndex > -1) {
+      // Room is already selected, so deselect it
+      this.currentCapacity -= this.selectedRoomsArr[roomIndex].maxGuests;
+      this.selectedRoomsArr.splice(roomIndex, 1);
+    } else {
+      // Room is not selected, so select it
+      this.selectedRoomsArr.push(room);
+      this.currentCapacity += room.maxGuests;
+    }
+
+    this.updateStatusBar();
+    this.cdr.detectChanges();
+  }
+
+  isRoomSelected(room: RoomOption): boolean {
+    return this.selectedRoomsArr.some(selected => selected.id === room.id);
+  }
+
+  getRoomButtonText(room: RoomOption): string {
+    if (this.isRoomSelected(room)) {
+      return 'Cambiar';
+    }
+    if (this.currentCapacity >= this.requestedGuests) {
+      return 'Cupo lleno';
+    }
+    return 'Seleccionar';
+  }
+
+  updateStatusBar(): void {
+    if (this.currentCapacity < this.requestedGuests) {
+      this.statusBarMessage = `Llevas ${this.currentCapacity} plazas. Faltan ${this.requestedGuests - this.currentCapacity} más. Añade otra habitación.`;
+      this.statusBarBackground = '#e67e22';
+      this.showCheckoutSection = false;
+    } else {
+      this.statusBarMessage = `¡Perfecto! Completa tus datos abajo.`;
+      this.statusBarBackground = '#27ae60';
+      this.showCheckoutSection = true;
+    }
   }
 
   async confirmBooking(): Promise<void> {
@@ -118,11 +182,16 @@ class BookingComponent {
     }
 
     this.attemptedConfirm = true;
-    if (this.checkoutForm.invalid || this.searchForm.invalid) {
+    if (this.checkoutForm.invalid || this.searchForm.invalid || this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
       this.checkoutForm.markAllAsTouched();
       this.searchForm.markAllAsTouched();
-      this.checkoutErrorMessage = 'Revisa los datos del formulario.';
+      if (this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
+        this.checkoutErrorMessage = 'Por favor, selecciona suficientes habitaciones para todos los huéspedes.';
+      } else {
+        this.checkoutErrorMessage = 'Revisa los datos del formulario.';
+      }
       this.searchErrorMessage = '';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -133,19 +202,7 @@ class BookingComponent {
     if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
       this.checkoutErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
       this.searchErrorMessage = '';
-      return;
-    }
-
-    const selectedRoom = this.availableRooms.find((room) => room.name === (this.checkoutForm.value.habitacion || ''));
-    const guests = Number(this.searchForm.value.guests || 0);
-    if (!selectedRoom) {
-      this.checkoutErrorMessage = 'Selecciona una habitacion valida.';
-      this.searchErrorMessage = '';
-      return;
-    }
-    if (guests > selectedRoom.maxGuests) {
-      this.checkoutErrorMessage = `La habitacion seleccionada permite como maximo ${selectedRoom.maxGuests} huespedes.`;
-      this.searchErrorMessage = '';
+      this.cdr.detectChanges();
       return;
     }
 
@@ -155,8 +212,8 @@ class BookingComponent {
     this.searchErrorMessage = '';
 
     try {
-      await this.withTimeout(
-        this.bookingsService.createBooking({
+      const bookingPromises = this.selectedRoomsArr.map(room => {
+        return this.bookingsService.createBooking({
           nombre: this.checkoutForm.value.nombre || '',
           apellidos: this.checkoutForm.value.apellidos || '',
           email: this.checkoutForm.value.email || '',
@@ -164,12 +221,16 @@ class BookingComponent {
           dni: this.checkoutForm.value.dni || '',
           entrada: this.searchForm.value.checkin || '',
           salida: this.searchForm.value.checkout || '',
-          huespedes: Number(this.searchForm.value.guests || 0),
-          habitacion: this.checkoutForm.value.habitacion || '',
+          huespedes: this.requestedGuests, // Total guests for the booking
+          habitacion: room.name, // Each room is booked individually
           cliente: `${this.checkoutForm.value.nombre || ''} ${this.checkoutForm.value.apellidos || ''}`.trim(),
           familySuite: !!this.searchForm.value.includeFamilySuite,
           createdAt: new Date().toISOString()
-        }),
+        });
+      });
+
+      await this.withTimeout(
+        Promise.all(bookingPromises),
         10000,
         'timeout'
       );
@@ -189,6 +250,7 @@ class BookingComponent {
       }
     } finally {
       this.setSending(false);
+      this.cdr.detectChanges();
     }
   }
 
@@ -200,11 +262,15 @@ class BookingComponent {
     return this.formatSummaryDate(this.searchForm.value.checkout || '');
   }
 
-  get selectedRoomName(): string {
-    return String(this.checkoutForm.value.habitacion || '');
+  get selectedRoomNames(): string {
+    return this.selectedRoomsArr.map(room => room.name).join(', ') || 'Sin seleccionar';
   }
 
-  isCheckoutInvalid(controlName: 'nombre' | 'apellidos' | 'telefono' | 'dni' | 'email' | 'habitacion' | 'privacy'): boolean {
+  get totalBookingPrice(): number {
+    return this.selectedRoomsArr.reduce((total, room) => total + (room.price * this.totalNights), 0);
+  }
+
+  isCheckoutInvalid(controlName: 'nombre' | 'apellidos' | 'telefono' | 'dni' | 'email' | 'privacy'): boolean {
     const control = this.checkoutForm.get(controlName);
     if (!control) {
       return false;
@@ -274,7 +340,6 @@ class BookingComponent {
       email: '',
       telefono: '',
       dni: '',
-      habitacion: '',
       privacy: false
     });
     this.searchForm.reset({
@@ -284,8 +349,16 @@ class BookingComponent {
       includeFamilySuite: false
     });
     this.filteredRooms = [];
+    this.selectedRoomsArr = [];
+    this.currentCapacity = 0;
+    this.totalNights = 0;
+    this.requestedGuests = 0;
+    this.statusBarMessage = 'Por favor, selecciona habitaciones para tus huéspedes.';
+    this.statusBarBackground = '#D4C4A8';
+    this.showCheckoutSection = false;
     this.submitted = false;
     this.attemptedConfirm = false;
+    this.cdr.detectChanges();
   }
 
   private requestViewRefresh(): void {

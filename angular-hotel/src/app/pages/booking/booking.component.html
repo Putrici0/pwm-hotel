@@ -14,76 +14,104 @@
     </div>
   </div>
 
-  <div class="booking-grid row g-4">
-    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
-      <div class="card-body">
-        <h2>Buscar disponibilidad</h2>
+  <!-- Contenedor principal AZUL MARINO para búsqueda y selección de habitaciones -->
+  <div class="booking-main-content-wrapper">
+    <div class="booking-grid-single-column">
+      <div class="panel card border-0 shadow-sm">
+        <div class="card-body">
+          <h2>Buscar disponibilidad</h2>
 
-        <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
-          <div class="col-12 col-md-6">
-            <label class="form-label">Fecha de entrada</label>
-            <input type="date" formControlName="checkin" class="form-control" />
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">Fecha de salida</label>
-            <input type="date" formControlName="checkout" class="form-control" />
-          </div>
-
-          <div class="col-12">
-            <label class="form-label">Numero de huespedes</label>
-            <input type="number" formControlName="guests" min="1" class="form-control" />
-          </div>
-
-          <div class="col-12">
-            <div class="form-check">
-              <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
-              <label class="form-check-label" for="includeFamilySuite">
-                Incluir opciones familiares
-              </label>
+          <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
+            <div class="col-12 col-md-6">
+              <label class="form-label">Fecha de entrada</label>
+              <input type="date" formControlName="checkin" class="form-control" />
             </div>
-          </div>
 
-          <div class="col-12">
-            <div *ngIf="searchErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
-              {{ searchErrorMessage }}
+            <div class="col-12 col-md-6">
+              <label class="form-label">Fecha de salida</label>
+              <input type="date" formControlName="checkout" class="form-control" />
             </div>
-            <button type="submit" class="btn btn-primary w-100">Buscar habitaciones</button>
-          </div>
-        </form>
 
-        <div *ngIf="submitted" class="rooms-result mt-4">
-          <h3>Habitaciones disponibles</h3>
+            <div class="col-12">
+              <label class="form-label">Numero de huespedes</label>
+              <input type="number" formControlName="guests" min="1" class="form-control" />
+            </div>
 
-          <p *ngIf="filteredRooms.length === 0">
-            No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
-          </p>
-
-          <div class="room-list">
-            <article class="room-option" *ngFor="let room of filteredRooms">
-                <img [src]="room.img" [alt]="room.name" referrerpolicy="no-referrer" />
-              <div>
-                <h4>{{ room.name }}</h4>
-                <p>Max. {{ room.maxGuests }} personas</p>
-                <p class="mb-0">Precio: {{ room.price }} EUR/noche</p>
+            <div class="col-12">
+              <div class="form-check">
+                <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
+                <label class="form-check-label" for="includeFamilySuite">
+                  Incluir opciones familiares
+                </label>
               </div>
-            </article>
+            </div>
+
+            <div class="col-12">
+              <div *ngIf="searchErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
+                {{ searchErrorMessage }}
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Buscar habitaciones</button>
+            </div>
+          </form>
+
+          <div *ngIf="submitted" class="rooms-result mt-4">
+            <div id="room-selection-list" [style.display]="filteredRooms.length > 0 ? 'block' : 'none'" style="margin-top: 2rem;">
+              <h3 class="room-list-title">Habitaciones Disponibles</h3>
+              <div class="room-options-container">
+                  <!-- Booking Status Bar -->
+                  <div id="booking-status-bar" [ngStyle]="{'background': statusBarBackground}"
+                       style="padding: 15px; text-align: center; margin-bottom: 20px; font-weight: bold; border-radius: 5px;">
+                      {{ statusBarMessage }}
+                  </div>
+
+                  <!-- Room Cards -->
+                  <p *ngIf="filteredRooms.length === 0" class="no-rooms-message">
+                    No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
+                  </p>
+                  <article class="room-option-card" *ngFor="let room of filteredRooms">
+                      <div class="room-option-img" [style.backgroundImage]="'url(\'' + room.img + '\')'"></div>
+                      <div class="room-option-details">
+                          <div>
+                              <div class="room-option-title">{{ room.name }}</div>
+                              <div class="room-option-info">Capacidad: {{ room.maxGuests }} personas</div>
+                              <div class="room-option-price">
+                                  {{ room.price }}€ / noche (Total: {{ room.price * totalNights }}€ por {{ totalNights }} noches)
+                              </div>
+                          </div>
+                          <button type="button" class="btn-select-room"
+                                  [disabled]="(currentCapacity >= requestedGuests && !isRoomSelected(room))"
+                                  [ngClass]="{'btn-selected': isRoomSelected(room), 'btn-disabled': (currentCapacity >= requestedGuests && !isRoomSelected(room))}"
+                                  (click)="selectRoom(room)">
+                              {{ getRoomButtonText(room) }}
+                          </button>
+                      </div>
+                  </article>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="panel col-12 col-lg-6 card border-0 shadow-sm">
+  <!-- Contenedor BLANCO para el resumen y el formulario final -->
+  <div class="checkout-section-wrapper" *ngIf="showCheckoutSection">
+    <div class="panel card border-0 shadow-sm">
       <div class="card-body">
         <h2>Confirmar reserva</h2>
 
-        <div class="summary-box">
-          <p><strong>Entrada:</strong> {{ summaryCheckin }}</p>
-          <p><strong>Salida:</strong> {{ summaryCheckout }}</p>
-          <p><strong>Habitacion:</strong> {{ selectedRoomName || 'Sin seleccionar' }}</p>
+        <div class="booking-summary">
+            <div class="summary-item"><span>Check-in:</span> <span>{{ summaryCheckin }}</span></div>
+            <div class="summary-item"><span>Check-out:</span> <span>{{ summaryCheckout }}</span></div>
+            <div class="summary-item"><span>Noches:</span> <span>{{ totalNights }}</span></div>
+            <div class="summary-item"><span>Huéspedes:</span> <span>{{ requestedGuests }}</span></div>
+            <div class="summary-item"><span>Habitaciones:</span> <span>{{ selectedRoomNames }}</span></div>
+            <div class="summary-item total-price">
+                <span>Total a pagar:</span> <span>{{ totalBookingPrice }} €</span>
+            </div>
         </div>
 
-        <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3">
+        <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3" *ngIf="!bookingDone">
           <div class="col-12 col-md-6">
             <label class="form-label">Nombre <span class="text-danger">*</span></label>
             <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="isCheckoutInvalid('nombre')" />
@@ -115,15 +143,6 @@
           </div>
 
           <div class="col-12">
-            <label class="form-label">Habitacion <span class="text-danger">*</span></label>
-            <select formControlName="habitacion" class="form-select" [class.is-invalid]="isCheckoutInvalid('habitacion')">
-              <option value="" disabled>Selecciona una habitacion</option>
-              <option *ngFor="let room of filteredRooms" [value]="room.name">{{ room.name }}</option>
-            </select>
-            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('habitacion')">Selecciona una habitacion.</div>
-          </div>
-
-          <div class="col-12">
             <div class="form-check">
               <input type="checkbox" formControlName="privacy" class="form-check-input" id="privacyCheck" />
               <label class="form-check-label" for="privacyCheck">
@@ -142,6 +161,13 @@
             </button>
           </div>
         </form>
+
+        <div id="success-message" class="success-message" *ngIf="bookingDone">
+            <div class="success-icon">&#10004;</div>
+            <h3>Reserva registrada correctamente</h3>
+            <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
+            <button type="button" class="btn btn-primary w-100" (click)="closeSuccessModal()">Cerrar</button>
+        </div>
 
       </div>
     </div>

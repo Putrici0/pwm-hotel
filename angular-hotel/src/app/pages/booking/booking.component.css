@@ -1,185 +1,368 @@
-.wrapper {
-  width: min(1120px, calc(100% - 2rem));
-  margin: 0 auto;
-}
-
+/* booking.css */
 .booking-page {
-  padding: 3rem 0;
+  padding-bottom: 3rem; /* Añadido para dar espacio al footer */
 }
 
 .booking-hero {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   margin-bottom: 2rem;
 }
 
-.booking-hero h1 {
-  color: #123b44;
-  margin-bottom: 0.8rem;
+/* Contenedor principal AZUL MARINO para búsqueda y selección de habitaciones */
+.booking-main-content-wrapper {
+    max-width: 800px; /* Ancho máximo para el "cuadrado" */
+    margin: 2rem auto; /* Centrar horizontalmente */
+    background-color: var(--mar-navy); /* Fondo azul marino */
+    padding: 2rem;
+    border-radius: var(--radius-card); /* Bordes redondeados */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
+    color: var(--arena-sable); /* Color de texto general para este bloque */
 }
 
-.booking-hero img {
-  width: 100%;
-  border-radius: 20px;
+.booking-grid-single-column {
+    display: flex;
+    flex-direction: column; /* Apilar verticalmente */
+    gap: 1.5rem; /* Espacio entre las secciones */
 }
 
-.booking-grid {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
+.booking-grid-single-column .panel {
+    background-color: var(--mar-navy); /* Mantener fondo azul marino para el panel interno */
+    border: none;
+    box-shadow: none; /* Eliminar sombra para que el contenedor principal la maneje */
+    border-radius: var(--radius-card);
 }
 
-.panel {
-  background: #fff;
-  border-radius: 20px;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+.booking-grid-single-column .card-body {
+    padding: 1.5rem;
 }
 
-.panel h2,
-.panel h3 {
-  color: #123b44;
-  margin-bottom: 0.9rem;
+.booking-main-content-wrapper h2 {
+    color: var(--arena-sable); /* Título en color sable */
+    text-align: center;
+    margin-bottom: 1.5rem;
 }
 
-.form-grid {
-  display: grid;
-  gap: 1rem;
+.booking-main-content-wrapper .form-label {
+    color: var(--arena-sable); /* Etiquetas del formulario en color sable */
 }
 
-.form-grid label {
-  display: grid;
-  gap: 0.4rem;
-  font-weight: 600;
-  color: #123b44;
+.booking-main-content-wrapper .form-control {
+    background-color: var(--arena-sable); /* Fondo de input en color sable */
+    color: var(--mar-navy); /* Texto de input en azul marino */
+    border: 1px solid var(--arena-hover);
 }
 
-.form-grid input {
-  padding: 0.8rem;
-  border: 1px solid #d8d8d8;
-  border-radius: 12px;
+.booking-main-content-wrapper .form-control:focus {
+    background-color: var(--blanco-puro); /* Fondo blanco al enfocar */
+    color: var(--mar-navy);
+    border-color: var(--mar-navy);
 }
 
-.checkbox {
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.7rem !important;
+.booking-main-content-wrapper .form-check-label {
+    color: var(--arena-sable); /* Checkbox label en color sable */
 }
 
-.checkbox input {
-  width: 18px;
-  height: 18px;
-  padding: 0;
+.booking-main-content-wrapper .btn-primary {
+    background-color: var(--arena-sable); /* Botón principal en color sable */
+    color: var(--mar-navy); /* Texto del botón en azul marino */
+    border: none;
 }
 
-.form-grid button,
-.room-option button {
-  padding: 0.85rem 1rem;
-  border: 0;
-  border-radius: 999px;
-  background: #d8b36a;
-  color: #123b44;
-  font-weight: 800;
-  cursor: pointer;
+.booking-main-content-wrapper .btn-primary:hover {
+    background-color: var(--arena-hover);
+    color: var(--mar-navy);
 }
 
-.rooms-result {
-  margin-top: 1.4rem;
+/* Título "Habitaciones Disponibles" */
+.room-list-title {
+    background-color: var(--mar-navy); /* Fondo azul marino */
+    color: var(--arena-sable) !important; /* Texto sable */
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
 }
 
-.room-list {
-  display: grid;
-  gap: 0.9rem;
+/* Estilos para la barra de estado de la reserva */
+#booking-status-bar {
+    color: var(--mar-navy) !important; /* Texto azul marino */
+    background-color: var(--arena-sable) !important; /* Fondo sable */
 }
 
-.room-option {
-  display: grid;
-  grid-template-columns: 120px 1fr;
-  gap: 1rem;
-  align-items: center;
-  background: #faf7f2;
-  border-radius: 16px;
-  padding: 0.75rem;
+/* Mensaje de no habitaciones disponibles */
+.no-rooms-message {
+    color: var(--arena-sable); /* Texto sable */
+    text-align: center;
+    margin-top: 1rem;
 }
 
-.room-option img {
-  width: 100%;
-  height: 90px;
-  object-fit: cover;
-  object-position: center center;
-  border-radius: 12px;
+/* Estilos para las tarjetas de habitación (cuadradito blanco) */
+.room-option-card {
+    background-color: var(--blanco-puro); /* Fondo blanco */
+    border-radius: 8px;
+    display: flex;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid var(--arena-sable);
+    color: var(--mar-navy); /* Texto azul marino */
 }
 
-.summary-box,
-.success-box {
-  background: #faf7f2;
-  border-radius: 16px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+.room-option-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.success-box {
-  margin-top: 1rem;
-  text-align: center;
+.room-option-img {
+    width: 150px;
+    background-color: #eee;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
 }
 
-.success-box__icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #d8b36a;
-  color: #123b44;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  margin: 0 auto 0.7rem;
+.room-option-details {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
 }
 
+.room-option-title {
+    color: var(--mar-navy);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.room-option-info {
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.room-option-price {
+    color: var(--mar-navy); /* Precio en azul marino */
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.btn-select-room {
+    background-color: var(--mar-navy); /* Botón seleccionar en azul marino */
+    color: var(--arena-sable); /* Texto del botón en sable */
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    align-self: flex-start;
+    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+}
+
+.btn-select-room:hover:not(:disabled) {
+    background-color: var(--arena-hover);
+    color: var(--mar-navy);
+}
+
+.btn-select-room.btn-selected {
+    background-color: var(--arena-sable); /* Botón seleccionado en sable */
+    color: var(--mar-navy); /* Texto del botón seleccionado en azul marino */
+    cursor: pointer; /* Mantener cursor de puntero para "Cambiar" */
+}
+
+.btn-select-room:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Contenedor BLANCO para el resumen y el formulario final */
+.checkout-section-wrapper {
+    max-width: 800px; /* Mismo ancho que el contenedor principal */
+    margin: 2rem auto; /* Centrar horizontalmente */
+    background-color: var(--blanco-puro); /* Fondo blanco */
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    color: var(--mar-navy); /* Color de texto general para este bloque */
+}
+
+.checkout-section-wrapper h2 {
+    color: var(--mar-navy); /* Título en azul marino */
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+/* Summary Box (cuadrado sable con texto azul marino) */
+.booking-summary {
+    background-color: var(--arena-sable); /* Fondo sable */
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--arena-hover);
+    color: var(--mar-navy); /* Texto azul marino */
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.summary-item:last-child {
+    margin-bottom: 0;
+    padding-top: 10px;
+    border-top: 1px dashed var(--mar-navy); /* Línea divisoria azul marino */
+}
+
+.summary-item.total-price {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Formulario de datos personales (campos blancos con texto azul marino) */
+.checkout-section-wrapper .form-label {
+    color: var(--mar-navy); /* Etiquetas del formulario en azul marino */
+}
+
+.checkout-section-wrapper .form-control {
+    background-color: var(--blanco-puro); /* Fondo de input en blanco */
+    color: var(--mar-navy); /* Texto de input en azul marino */
+    border: 1px solid var(--mar-navy); /* Borde azul marino */
+}
+
+.checkout-section-wrapper .form-control:focus {
+    border-color: var(--arena-sable); /* Borde sable al enfocar */
+    box-shadow: 0 0 0 0.25rem rgba(212, 196, 168, 0.25); /* Sombra sable */
+}
+
+.checkout-section-wrapper .form-check-label {
+    color: var(--mar-navy); /* Checkbox label en azul marino */
+}
+
+.checkout-section-wrapper .btn-success {
+    background-color: var(--arena-sable); /* Botón de reserva en sable */
+    color: var(--mar-navy); /* Texto del botón en azul marino */
+    border: none;
+}
+
+.checkout-section-wrapper .btn-success:hover {
+    background-color: var(--arena-hover);
+    color: var(--mar-navy);
+}
+
+/* Estilos para el mensaje de éxito */
+.success-message {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--mar-navy); /* Texto azul marino */
+}
+
+.success-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #27ae60; /* Color verde para el icono de éxito */
+}
+
+.success-message h3 {
+    color: var(--mar-navy);
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.success-message p {
+    color: #555;
+}
+
+/* Estilos para el modal de éxito */
 .booking-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1200;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
 }
 
 .booking-modal__backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .booking-modal__content {
-  position: relative;
-  width: min(420px, 100%);
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.25rem;
-  text-align: center;
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
+    background-color: var(--blanco-puro);
+    padding: 2rem;
+    border-radius: var(--radius-card);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    z-index: 1051;
+    color: var(--mar-navy);
 }
 
-.booking-modal__content h3 {
-  margin-bottom: 0.5rem;
+.success-box__icon {
+    font-size: 3rem;
+    color: #27ae60;
+    margin-bottom: 1rem;
 }
 
-.booking-modal__content p {
-  margin-bottom: 1rem;
-}
-
-.error {
-  color: #b3261e;
-  font-weight: 700;
-  margin-top: 1rem;
-}
-
+/* Media Queries */
 @media (max-width: 900px) {
-  .room-option {
-    grid-template-columns: 1fr;
-  }
+    .booking-main-content-wrapper,
+    .checkout-section-wrapper {
+        padding: 1.5rem;
+        margin: 1.5rem auto;
+    }
 
-  .room-option img {
-    height: 180px;
-  }
+    .room-option-card {
+        flex-direction: column;
+    }
+
+    .room-option-img {
+        width: 100%;
+        height: 180px;
+    }
+
+    .btn-select-room {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 576px) {
+    .booking-main-content-wrapper,
+    .checkout-section-wrapper {
+        padding: 1rem;
+        margin: 1rem auto;
+    }
+
+    .booking-grid-single-column .card-body {
+        padding: 1rem;
+    }
+
+    .booking-main-content-wrapper h2,
+    .checkout-section-wrapper h2 {
+        font-size: 1.5rem;
+    }
+
+    .room-option-img {
+        height: 150px;
+    }
+
+    .booking-summary {
+        padding: 1rem;
+    }
+
+    .success-message h3 {
+        font-size: 1.5rem;
+    }
 }
