@@ -77,7 +77,7 @@ export class AdminComponent implements OnInit {
       id: 'reservations',
       label: 'Reservas',
       fields: [
-        { key: 'cliente', label: 'Cliente', type: 'text' },
+        { key: 'cliente', label: 'Cliente (Nombre y Apellidos)', type: 'text' },
         { key: 'email', label: 'Email', type: 'email' },
         { key: 'telefono', label: 'Teléfono', type: 'text' },
         { key: 'dni', label: 'DNI / Pasaporte', type: 'text' },
@@ -115,6 +115,10 @@ export class AdminComponent implements OnInit {
   restaurantFilter = 'entrantes';
 
   // --- LÓGICA RESERVAS CLON BOOKING ---
+  adminBookingStep = 1;
+  adminShowRooms = false;
+  adminShowCheckout = false;
+
   bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
   bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
   adminAvailableRooms: any[] = [];
@@ -122,9 +126,7 @@ export class AdminComponent implements OnInit {
   adminBookingCapacity = 0;
   adminBookingNights = 0;
   adminBookingError = '';
-
-  adminShowRooms = false;
-  adminShowCheckout = false;
+  adminBookingValidationVisible = false; // Control para mostrar errores de campos vacíos
 
   async ngOnInit(): Promise<void> {
     this.sections.forEach((section) => {
@@ -199,6 +201,7 @@ export class AdminComponent implements OnInit {
     this.editForm = {};
     this.showEditModal = false;
     this.editValidationVisible = false;
+    this.editErrorMessage = '';
   }
 
   async saveEdit(): Promise<void> {
@@ -259,7 +262,7 @@ export class AdminComponent implements OnInit {
   cancelAction(): void { this.pendingAction = null; }
   async confirmAction(): Promise<void> { if (this.pendingAction === 'create') await this.createItem(); }
 
-  // --- MÉTODOS DE FORMULARIO FALTANTES ---
+  // --- MÉTODOS DE FORMULARIO CRUD NORMAL ---
 
   getFieldOptions(field: AdminField): string[] {
     if (field.optionsFromSection && field.optionsFromKey) {
@@ -299,9 +302,9 @@ export class AdminComponent implements OnInit {
   private validateForm(mode: 'create' | 'edit'): boolean {
     const formValues = mode === 'create' ? this.createForm : this.editForm;
     const missingField = this.currentSection.fields.find((field) => !this.hasValue(formValues[field.key]));
+
     if (missingField) {
-      const message = 'Todos los campos son obligatorios.';
-      this.setStatus('danger', message);
+      const message = 'Por favor, rellena todos los campos obligatorios indicados en rojo.';
       if (mode === 'create') {
         this.createErrorMessage = message;
       } else {
@@ -309,11 +312,16 @@ export class AdminComponent implements OnInit {
       }
       return false;
     }
+
+    if (mode === 'create') this.createErrorMessage = '';
+    else this.editErrorMessage = '';
+
     return true;
   }
 
   // --- LÓGICA RESERVAS CLON BOOKING ---
   resetAdminBooking(): void {
+    this.adminBookingStep = 1;
     this.bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
     this.bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
     this.adminSelectedRooms = [];
@@ -321,6 +329,7 @@ export class AdminComponent implements OnInit {
     this.adminBookingError = '';
     this.adminShowRooms = false;
     this.adminShowCheckout = false;
+    this.adminBookingValidationVisible = false;
   }
 
   searchAdminRooms(): void {
@@ -343,6 +352,11 @@ export class AdminComponent implements OnInit {
       return;
     }
 
+    if (this.bookingSearch.guests > 6) {
+      this.adminBookingError = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
+      return;
+    }
+
     this.adminBookingError = '';
     this.adminBookingNights = Math.ceil(Math.abs(outDate.getTime() - inDate.getTime()) / (1000 * 60 * 60 * 24));
 
@@ -352,13 +366,28 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    if (!this.bookingSearch.includeFamily) {
+    // LÓGICA DE FILTRADO FAMILIAR APLICADA AL DETALLE
+    if (this.bookingSearch.includeFamily) {
+      if (this.bookingSearch.guests <= 3) {
+        // Muestra habitaciones desde 3 hasta 6 huéspedes
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
+      } else if (this.bookingSearch.guests === 4) {
+        // Muestra habitaciones desde 4 hasta 6 huéspedes
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
+      } else if (this.bookingSearch.guests >= 5) {
+        // Muestra SOLO las de 6 huéspedes (familiar)
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
+      }
+    } else {
+      // Si NO se incluye la opción familiar, ocultamos la familiar y mostramos las combinaciones posibles
       rooms = rooms.filter(r => String(r['id']) !== 'familiar' && !String(r['nombre']).toLowerCase().includes('familiar'));
     }
 
     this.adminAvailableRooms = rooms;
     this.adminSelectedRooms = [];
     this.adminBookingCapacity = 0;
+
+    this.adminBookingStep = 2;
     this.adminShowRooms = true;
     this.adminShowCheckout = false;
   }
@@ -382,13 +411,47 @@ export class AdminComponent implements OnInit {
     return this.adminSelectedRooms.some(r => r.id === room.id);
   }
 
+  goToAdminCheckout(): void {
+    if (this.adminBookingCapacity < this.bookingSearch.guests) {
+      this.adminBookingError = 'Capacidad insuficiente para los huéspedes requeridos.';
+      return;
+    }
+    this.adminBookingError = '';
+    this.adminBookingStep = 3;
+    this.adminShowCheckout = true;
+    this.adminBookingValidationVisible = false;
+  }
+
   get adminTotalBookingPrice(): number {
     return this.adminSelectedRooms.reduce((acc, r) => acc + (Number(r.precio) * this.adminBookingNights), 0);
   }
 
+  // Comprueba si un campo individual del checkout está vacío/inválido
+  isBookingFieldInvalid(field: 'nombre' | 'apellidos' | 'email'): boolean {
+    if (!this.adminBookingValidationVisible) return false;
+    if (!this.bookingCheckout[field] || this.bookingCheckout[field].trim() === '') return true;
+
+    if (field === 'email') {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return !emailRegex.test(this.bookingCheckout.email);
+    }
+    return false;
+  }
+
   async confirmAdminBooking(): Promise<void> {
+    this.adminBookingValidationVisible = true;
+    this.adminBookingError = '';
+
+    // 1. Comprobar campos obligatorios (nombre, apellidos, email)
     if (!this.bookingCheckout.nombre || !this.bookingCheckout.apellidos || !this.bookingCheckout.email) {
-      this.adminBookingError = 'Por favor, rellena todos los campos obligatorios.';
+      this.adminBookingError = 'Por favor, rellena los campos marcados en rojo.';
+      return;
+    }
+
+    // 2. Comprobar que el correo es válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.bookingCheckout.email)) {
+      this.adminBookingError = 'El correo electrónico introducido no es válido.';
       return;
     }
 
@@ -400,8 +463,8 @@ export class AdminComponent implements OnInit {
         nombre: this.bookingCheckout.nombre,
         apellidos: this.bookingCheckout.apellidos,
         email: this.bookingCheckout.email,
-        telefono: this.bookingCheckout.telefono,
-        dni: this.bookingCheckout.dni,
+        telefono: this.bookingCheckout.telefono || 'No especificado',
+        dni: this.bookingCheckout.dni || 'No especificado',
         habitacion: roomNames,
         entrada: this.bookingSearch.checkin,
         salida: this.bookingSearch.checkout,
@@ -414,7 +477,7 @@ export class AdminComponent implements OnInit {
       this.showCreateForm = false;
       this.resetAdminBooking();
     } catch (e) {
-      this.adminBookingError = 'Error al intentar crear la reserva.';
+      this.adminBookingError = 'Error al intentar crear la reserva en la base de datos.';
     } finally {
       this.saving = false;
       this.cdr.detectChanges();
@@ -437,6 +500,7 @@ export class AdminComponent implements OnInit {
   private resetCreateForm(): void {
     this.createForm = {};
     this.createValidationVisible = false;
+    this.createErrorMessage = '';
     this.currentSection.fields.forEach((field) => this.createForm[field.key] = '');
     this.ensureSelectDefaults(this.createForm);
   }
