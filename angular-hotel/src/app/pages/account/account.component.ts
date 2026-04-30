@@ -58,14 +58,13 @@ export class AccountComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
 
   private userUid = '';
-  private savingDataWatchdog: ReturnType<typeof setTimeout> | null = null;
   private destroy$ = new Subject<void>();
 
   accountConfig: any = null;
   private readonly defaultAccountConfig = {
     title: {
       title: 'Tu cuenta',
-      description: 'Aquí puedes ver tus reservas, consultar tus descuentos y actualizar tus datos personales.'
+      description: 'Aquí puedes actualizar tus datos personales y gestionar tu actividad.'
     },
     actions: {
       buttons: ['Cambiar tus datos', 'Guardar Cambios', 'Cambiar contraseña']
@@ -97,16 +96,20 @@ export class AccountComponent implements OnInit, OnDestroy {
     { code: 'SPARELAX', description: '1 hora de Spa gratis.' }
   ];
 
+  // --- LÓGICA DE PESTAÑAS (TABS) PARA ADMIN vs USUARIO ---
   get tabs(): Array<{ id: AccountTabId; label: string }> {
-    const base = [
-      { id: 'datos' as AccountTabId, label: 'Consultar tus datos' },
-      { id: 'reservas' as AccountTabId, label: 'Consultar tus reservas' },
-      { id: 'descuentos' as AccountTabId, label: 'Consultar descuentos' }
-    ];
     if (this.authService.isAdmin()) {
-      base.push({ id: 'admin', label: 'Admin' });
+      return [
+        { id: 'datos' as AccountTabId, label: 'Tus datos' },
+        { id: 'admin', label: 'Panel de Admin' }
+      ];
+    } else {
+      return [
+        { id: 'datos' as AccountTabId, label: 'Consultar tus datos' },
+        { id: 'reservas' as AccountTabId, label: 'Consultar tus reservas' },
+        { id: 'descuentos' as AccountTabId, label: 'Consultar descuentos' }
+      ];
     }
-    return base;
   }
 
   async ngOnInit(): Promise<void> {
@@ -114,24 +117,22 @@ export class AccountComponent implements OnInit, OnDestroy {
     await this.adminDataService.ensureInitialized();
     await this.initializeUserProfileData();
 
-    // Lógica de suscripción reactiva para Reservas
-    combineLatest([
-      this.authService.loggedUserEmail$.pipe(filter(email => !!email)),
-      this.authService.isAdmin()
-        ? this.adminDataService.watchSection('reservations')
-        : this.getUserReservationsObservable()
-    ]).pipe(
-      takeUntil(this.destroy$)
-    ).subscribe(([userEmail, reservations]) => {
-      this.ngZone.run(() => {
-        this.user.email = userEmail || '';
-        this.allReservations = reservations as ReservationItem[];
-        this.syncVisibleReservations(userEmail || '');
-        this.cdr.detectChanges();
+    if (!this.authService.isAdmin()) {
+      combineLatest([
+        this.authService.loggedUserEmail$.pipe(filter(email => !!email)),
+        this.getUserReservationsObservable()
+      ]).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(([userEmail, reservations]) => {
+        this.ngZone.run(() => {
+          this.user.email = userEmail || '';
+          this.allReservations = reservations as ReservationItem[];
+          this.syncVisibleReservations(userEmail || '');
+          this.cdr.detectChanges();
+        });
       });
-    });
+    }
 
-    // Suscripción a Habitaciones (para imágenes y precios)
     this.adminDataService.watchSection('rooms').pipe(
       takeUntil(this.destroy$)
     ).subscribe((rooms) => {
@@ -142,7 +143,6 @@ export class AccountComponent implements OnInit, OnDestroy {
     });
   }
 
-  // MÉTODO CLAVE: Crea un observable filtrado por el email del usuario logueado
   private getUserReservationsObservable(): Observable<ReservationItem[]> {
     return new Observable<ReservationItem[]>(subscriber => {
       const email = this.authService.getLoggedUserEmail();
@@ -157,8 +157,8 @@ export class AccountComponent implements OnInit, OnDestroy {
         const items = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as ReservationItem[];
         subscriber.next(items);
       }, (error) => {
-        console.error("Firestore Error (Rules?):", error);
-        subscriber.next([]); // Devolvemos vacío si falla por permisos
+        console.error("Firestore Error:", error);
+        subscriber.next([]);
       });
       return () => unsubscribe();
     });
@@ -210,27 +210,35 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
 
-  // --- MÉTODOS DE CÁLCULO ---
+  // --- MÉTODOS DE CÁLCULO DE RESERVAS MÚLTIPLES ---
 
   getReservationTotal(reservation: ReservationItem): string {
-    const room = this.getRoomByName(String(reservation.habitacion || ''));
-    if (!room) return '-';
-
     const checkin = new Date(String(reservation.entrada));
     const checkout = new Date(String(reservation.salida));
     const diff = Math.abs(checkout.getTime() - checkin.getTime());
     const nights = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
 
-    return `${Number(room['precio'] || 0) * nights} EUR`;
+    const roomNames = String(reservation.habitacion || '').split(',').map(n => n.trim());
+    let totalPrice = 0;
+
+    roomNames.forEach(name => {
+      const room = this.getRoomByName(name);
+      if (room) {
+        totalPrice += (Number(room['precio'] || 0) * nights);
+      }
+    });
+
+    return totalPrice > 0 ? `${totalPrice} EUR` : '-';
   }
 
   getReservationImage(reservation: ReservationItem): string {
-    const room = this.getRoomByName(String(reservation.habitacion || ''));
-    return room ? String(room['imagen'] || '') : 'assets/img/default-room.jpg';
+    const roomNames = String(reservation.habitacion || '').split(',').map(n => n.trim());
+    const firstRoom = this.getRoomByName(roomNames[0]);
+    return firstRoom ? String(firstRoom['imagen'] || '') : 'assets/img/default-room.jpg';
   }
 
   getRoomByName(name: string): AdminItem | undefined {
-    return (this.adminDb['rooms'] || []).find(r => String(r['nombre']) === name);
+    return (this.adminDb['rooms'] || []).find(r => String(r['nombre']).trim() === name.trim());
   }
 
   isFutureReservation(reservation: ReservationItem): boolean {
@@ -297,8 +305,6 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.setStatus('danger', 'Error al intentar cambiar la contraseña.');
     }
   }
-
-  // --- UTILIDADES ---
 
   setTab(tabId: AccountTabId): void {
     if (tabId === 'admin') { this.router.navigateByUrl('/admin'); return; }

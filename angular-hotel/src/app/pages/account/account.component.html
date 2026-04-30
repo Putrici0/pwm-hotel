@@ -29,6 +29,7 @@
       </div>
 
       <div class="account-content-area">
+
         <ng-container *ngIf="currentTab === 'datos'">
           <div class="account-card">
             <h2>Tus Datos Personales</h2>
@@ -79,7 +80,7 @@
               <form class="account-form" (ngSubmit)="updatePassword()">
                 <p class="info-text">Por seguridad, te enviaremos un email para que elijas una nueva contraseña.</p>
                 <div class="account-form-actions">
-                  <button type="submit" class="account-btn-primary">Enviar Email de Restablecimiento</button>
+                  <button type="submit" class="account-btn-primary">Enviar Email</button>
                   <button type="button" class="account-btn-cancel" (click)="cancelPasswordChange()">Cancelar</button>
                 </div>
               </form>
@@ -148,6 +149,7 @@
             </div>
           </div>
         </ng-container>
+
       </div>
     </div>
   </ng-container>

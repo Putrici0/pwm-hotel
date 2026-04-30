@@ -12,6 +12,7 @@ interface AdminField {
   options?: string[];
   optionsFromSection?: CrudSectionId;
   optionsFromKey?: string;
+  isCalculated?: boolean;
 }
 
 interface AdminSection {
@@ -78,14 +79,15 @@ export class AdminComponent implements OnInit {
       id: 'reservations',
       label: 'Reservas',
       fields: [
-        { key: 'cliente', label: 'Cliente (Nombre y Apellidos)', type: 'text' },
+        { key: 'cliente', label: 'Cliente', type: 'text' },
         { key: 'email', label: 'Email', type: 'email' },
         { key: 'telefono', label: 'Teléfono', type: 'text' },
-        { key: 'dni', label: 'DNI / Pasaporte', type: 'text' },
+        { key: 'dni', label: 'DNI', type: 'text' },
         { key: 'habitacion', label: 'Habitación', type: 'text' },
         { key: 'entrada', label: 'Entrada', type: 'date' },
         { key: 'salida', label: 'Salida', type: 'date' },
-        { key: 'huespedes', label: 'Huéspedes', type: 'number' }
+        { key: 'huespedes', label: 'Huéspedes', type: 'number' },
+        { key: 'totalPrice', label: 'Total Pagado', type: 'text', isCalculated: true }
       ]
     }
   ];
@@ -115,10 +117,12 @@ export class AdminComponent implements OnInit {
   selectedImageModal: string | null = null;
   restaurantFilter = 'entrantes';
 
-  // --- LÓGICA RESERVAS ---
-  adminBookingSubmitted = false;
-  adminNoRoomsError = false;
+  // --- LÓGICA RESERVAS (TODAS LAS VARIABLES RESTAURADAS) ---
+  adminBookingStep = 1;
+  adminShowRooms = false;
   adminShowCheckout = false;
+  adminBookingSubmitted = false; // <-- Recuperado
+  adminNoRoomsError = false;     // <-- Recuperado
 
   bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
   bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
@@ -133,7 +137,17 @@ export class AdminComponent implements OnInit {
     this.sections.forEach((section) => {
       this.adminDataService.watchSection(section.id).subscribe((rows) => {
         this.ngZone.run(() => {
-          this.rowsBySection = { ...this.rowsBySection, [section.id]: rows };
+          this.rowsBySection[section.id] = rows;
+
+          if (section.id === 'rooms' || section.id === 'reservations') {
+            if (this.rowsBySection['reservations'] && this.rowsBySection['reservations'].length > 0) {
+              this.rowsBySection['reservations'] = this.rowsBySection['reservations'].map(res => ({
+                ...res,
+                totalPrice: this.calculateReservationTotal(res)
+              }));
+            }
+          }
+
           this.cdr.detectChanges();
         });
       });
@@ -142,25 +156,56 @@ export class AdminComponent implements OnInit {
     void this.adminDataService.ensureInitialized();
   }
 
+  // --- CÁLCULO DEL PRECIO TOTAL EN TABLA DE RESERVAS ---
+  private calculateReservationTotal(res: AdminItem): string {
+    const checkin = new Date(String(res['entrada'] || ''));
+    const checkout = new Date(String(res['salida'] || ''));
+    if (isNaN(checkin.getTime()) || isNaN(checkout.getTime())) return '-';
+
+    const diff = Math.abs(checkout.getTime() - checkin.getTime());
+    const nights = Math.ceil(diff / (1000 * 60 * 60 * 24)) || 1;
+
+    const roomNames = String(res['habitacion'] || '').split(',').map(n => n.trim());
+    let totalPrice = 0;
+
+    const allRooms = this.rowsBySection['rooms'] || [];
+    roomNames.forEach(name => {
+      const room = allRooms.find(r => String(r['nombre']).trim() === name);
+      if (room) {
+        totalPrice += (Number(room['precio'] || 0) * nights);
+      }
+    });
+
+    return totalPrice > 0 ? `${totalPrice} €` : (String(res['totalPrice'] || 'No registrado'));
+  }
+
   get currentSection(): AdminSection {
     return this.sections.find((s) => s.id === this.currentSectionId) || this.sections[0];
   }
 
   get tableFields(): AdminField[] {
+    let fields = this.currentSection.fields;
     if (this.currentSectionId === 'restaurant') {
-      return this.currentSection.fields.filter(f => f.key !== 'categoria');
+      fields = fields.filter(f => f.key !== 'categoria');
     }
-    return this.currentSection.fields;
+    return fields;
   }
 
   get filteredRows(): AdminItem[] {
     let rows = this.rowsBySection[this.currentSectionId] || [];
+
     if (this.currentSectionId === 'restaurant') {
       rows = rows.filter(r => String(r['categoria'] || '').toLowerCase() === this.restaurantFilter);
     }
+
     if (this.currentSectionId === 'reservations') {
       rows = [...rows].sort((a, b) => new Date(String(a['entrada'])).getTime() - new Date(String(b['entrada'])).getTime());
+      rows = rows.map(res => ({
+        ...res,
+        totalPrice: this.calculateReservationTotal(res)
+      }));
     }
+
     return rows;
   }
 
@@ -193,7 +238,9 @@ export class AdminComponent implements OnInit {
     this.editingId = String(row['id'] || '');
     this.editForm = {};
     this.currentSection.fields.forEach((field) => {
-      this.editForm[field.key] = String(row[field.key] ?? '');
+      if (!field.isCalculated) {
+        this.editForm[field.key] = String(row[field.key] ?? '');
+      }
     });
     this.ensureSelectDefaults(this.editForm);
     this.showEditModal = true;
@@ -283,11 +330,13 @@ export class AdminComponent implements OnInit {
   }
 
   isCreateFieldInvalid(field: AdminField): boolean {
+    if (field.isCalculated) return false;
     if (!this.createValidationVisible) return false;
     return !this.hasValue(this.createForm[field.key]);
   }
 
   isEditFieldInvalid(field: AdminField): boolean {
+    if (field.isCalculated) return false;
     if (!this.editValidationVisible) return false;
     return !this.hasValue(this.editForm[field.key]);
   }
@@ -298,7 +347,7 @@ export class AdminComponent implements OnInit {
 
   private ensureSelectDefaults(formTarget: Record<string, string>): void {
     this.currentSection.fields.forEach((field) => {
-      if (field.type !== 'select') return;
+      if (field.type !== 'select' || field.isCalculated) return;
       const options = this.getFieldOptions(field);
       const current = String(formTarget[field.key] || '');
       if (!options.includes(current)) {
@@ -309,7 +358,7 @@ export class AdminComponent implements OnInit {
 
   private validateForm(mode: 'create' | 'edit'): boolean {
     const formValues = mode === 'create' ? this.createForm : this.editForm;
-    const missingField = this.currentSection.fields.find((field) => !this.hasValue(formValues[field.key]));
+    const missingField = this.currentSection.fields.find((field) => !field.isCalculated && !this.hasValue(formValues[field.key]));
 
     if (missingField) {
       const message = 'Por favor, rellena todos los campos obligatorios indicados en rojo.';
@@ -323,114 +372,114 @@ export class AdminComponent implements OnInit {
     return true;
   }
 
-  // --- LÓGICA RESERVAS ---
-  resetAdminBooking(): void {
-    this.adminBookingSubmitted = false;
-    this.adminNoRoomsError = false;
-    this.bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
-    this.bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
-    this.adminSelectedRooms = [];
-    this.adminBookingCapacity = 0;
-    this.adminBookingError = '';
-    this.adminShowCheckout = false;
-    this.adminBookingValidationVisible = false;
-  }
-
+  // --- FUNCIONES RECUPERADAS PARA MULTI-SELECCIÓN Y ERRORES ---
   resetSearchForm(): void {
     this.adminBookingSubmitted = false;
     this.adminNoRoomsError = false;
     this.adminBookingError = '';
   }
 
-  searchAdminRooms(): void {
-    this.ngZone.run(() => {
-      this.adminBookingError = '';
-      this.adminNoRoomsError = false;
-      this.cdr.detectChanges();
-
-      if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
-        this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
-        return;
-      }
-
-      const inDate = new Date(this.bookingSearch.checkin).getTime();
-      const outDate = new Date(this.bookingSearch.checkout).getTime();
-
-      if (isNaN(inDate) || isNaN(outDate) || inDate >= outDate) {
-        this.adminBookingError = 'Fechas no válidas. La entrada debe ser anterior a la salida.';
-        return;
-      }
-
-      this.bookingSearch.guests = Number(this.bookingSearch.guests);
-      if (this.bookingSearch.guests < 1) {
-        this.adminBookingError = 'El número de huéspedes debe ser al menos 1.';
-        return;
-      }
-      if (this.bookingSearch.guests > 6) {
-        this.adminBookingError = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
-        return;
-      }
-
-      this.adminBookingNights = Math.ceil(Math.abs(outDate - inDate) / (1000 * 60 * 60 * 24));
-
-      let rooms = this.rowsBySection['rooms'] || [];
-      const reservations = this.rowsBySection['reservations'] || [];
-
-      // CÁLCULO ESTRICTO DE STOCK
-      rooms = rooms.map(r => {
-        const rawStock = r['cantidad'];
-        const stock = (rawStock !== undefined && rawStock !== null && rawStock !== '') ? Number(rawStock) : 1;
-        const roomName = String(r['nombre']);
-
-        let overlappingCount = 0;
-        reservations.forEach(res => {
-          if (String(res['habitacion']).includes(roomName)) {
-            const resIn = new Date(String(res['entrada'])).getTime();
-            const resOut = new Date(String(res['salida'])).getTime();
-
-            if (inDate < resOut && outDate > resIn) {
-              const regex = new RegExp(roomName, 'g');
-              const matches = String(res['habitacion']).match(regex);
-              if (matches) overlappingCount += matches.length;
-            }
-          }
-        });
-        return { ...r, _availableStock: stock - overlappingCount };
-      }).filter(r => r._availableStock > 0);
-
-      // LÓGICA DE FILTRADO FAMILIAR
-      if (this.bookingSearch.includeFamily) {
-        if (this.bookingSearch.guests <= 3) {
-          rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
-        } else if (this.bookingSearch.guests === 4) {
-          rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
-        } else if (this.bookingSearch.guests >= 5) {
-          rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
-        }
-      }
-      // Si no hay checkbox, no filtramos por familia, lo mostramos todo tal cual.
-
-      if (rooms.length === 0) {
-        setTimeout(() => {
-          this.adminBookingError = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
-          this.adminNoRoomsError = true;
-          this.adminBookingSubmitted = true;
-          this.cdr.detectChanges();
-        }, 0);
-        return;
-      }
-
-      this.adminAvailableRooms = rooms;
-      this.adminSelectedRooms = [];
-      this.adminBookingCapacity = 0;
-
-      this.adminBookingSubmitted = true;
-      this.adminShowCheckout = false;
-      this.cdr.detectChanges();
-    });
+  resetAdminBooking(): void {
+    this.adminBookingStep = 1;
+    this.bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
+    this.bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
+    this.adminSelectedRooms = [];
+    this.adminBookingCapacity = 0;
+    this.adminBookingError = '';
+    this.adminShowRooms = false;
+    this.adminShowCheckout = false;
+    this.adminBookingValidationVisible = false;
+    this.adminBookingSubmitted = false;
+    this.adminNoRoomsError = false;
   }
 
-  // --- LÓGICA PARA AÑADIR/QUITAR LA MISMA HABITACIÓN VARIAS VECES ---
+  searchAdminRooms(): void {
+    this.adminBookingError = '';
+    this.adminNoRoomsError = false;
+
+    if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
+      this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
+      return;
+    }
+
+    const inDate = new Date(this.bookingSearch.checkin).getTime();
+    const outDate = new Date(this.bookingSearch.checkout).getTime();
+
+    if (isNaN(inDate) || isNaN(outDate) || inDate >= outDate) {
+      this.adminBookingError = 'Fechas no válidas. La entrada debe ser anterior a la salida.';
+      return;
+    }
+
+    this.bookingSearch.guests = Number(this.bookingSearch.guests);
+    if (this.bookingSearch.guests < 1) {
+      this.adminBookingError = 'El número de huéspedes debe ser al menos 1.';
+      return;
+    }
+
+    if (this.bookingSearch.guests > 6) {
+      this.adminBookingError = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
+      return;
+    }
+
+    this.adminBookingNights = Math.ceil(Math.abs(outDate - inDate) / (1000 * 60 * 60 * 24));
+
+    let rooms = this.rowsBySection['rooms'] || [];
+    const reservations = this.rowsBySection['reservations'] || [];
+
+    // CÁLCULO DE STOCK REAL ESTRICTO
+    rooms = rooms.map(r => {
+      const rawStock = r['cantidad'];
+      const stock = (rawStock !== undefined && rawStock !== null && rawStock !== '') ? Number(rawStock) : 1;
+      const roomName = String(r['nombre']);
+
+      let overlappingCount = 0;
+      reservations.forEach(res => {
+        if (String(res['habitacion']).includes(roomName)) {
+          const resIn = new Date(String(res['entrada'])).getTime();
+          const resOut = new Date(String(res['salida'])).getTime();
+
+          if (inDate < resOut && outDate > resIn) {
+            const regex = new RegExp(roomName, 'g');
+            const matches = String(res['habitacion']).match(regex);
+            if (matches) overlappingCount += matches.length;
+          }
+        }
+      });
+      return { ...r, _availableStock: stock - overlappingCount };
+    }).filter(r => r._availableStock > 0);
+
+    if (this.bookingSearch.includeFamily) {
+      if (this.bookingSearch.guests <= 3) {
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
+      } else if (this.bookingSearch.guests === 4) {
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
+      } else if (this.bookingSearch.guests >= 5) {
+        rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
+      }
+    } else {
+      rooms = rooms.filter(r => Number(r['huespedes']) >= 1);
+    }
+
+    if (rooms.length === 0) {
+      setTimeout(() => {
+        this.adminBookingError = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
+        this.adminNoRoomsError = true;
+        this.adminBookingSubmitted = true;
+        this.cdr.detectChanges();
+      }, 0);
+      return;
+    }
+
+    this.adminAvailableRooms = rooms;
+    this.adminSelectedRooms = [];
+    this.adminBookingCapacity = 0;
+
+    this.adminBookingStep = 2;
+    this.adminBookingSubmitted = true;
+    this.adminShowRooms = true;
+    this.adminShowCheckout = false;
+  }
+
   getSelectedRoomCount(room: any): number {
     return this.adminSelectedRooms.filter(r => r.id === room.id).length;
   }
@@ -451,6 +500,17 @@ export class AdminComponent implements OnInit {
       this.adminBookingCapacity -= Number(room.huespedes || 0);
       this.adminShowCheckout = this.adminBookingCapacity >= this.bookingSearch.guests;
     }
+  }
+
+  goToAdminCheckout(): void {
+    if (this.adminBookingCapacity < this.bookingSearch.guests) {
+      this.adminBookingError = 'Capacidad insuficiente para los huéspedes requeridos.';
+      return;
+    }
+    this.adminBookingError = '';
+    this.adminBookingStep = 3;
+    this.adminShowCheckout = true;
+    this.adminBookingValidationVisible = false;
   }
 
   get adminTotalBookingPrice(): number {
@@ -497,6 +557,7 @@ export class AdminComponent implements OnInit {
         entrada: this.bookingSearch.checkin,
         salida: this.bookingSearch.checkout,
         huespedes: this.bookingSearch.guests,
+        totalPrice: `${this.adminTotalBookingPrice} €`, // Guardamos en la BD directamente
         createdAt: new Date().toISOString()
       };
 
@@ -512,11 +573,15 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  getFieldString(row: AdminItem, key: string): string { return String(row[key] ?? ''); }
+  getFieldString(row: AdminItem, key: string): string {
+    if (key === 'totalPrice' && !row[key]) return 'Calculando...';
+    return String(row[key] ?? '');
+  }
 
   private coerceValues(values: Record<string, string>): AdminItem {
     const output: AdminItem = {};
     this.currentSection.fields.forEach((field) => {
+      if (field.isCalculated) return;
       const raw = String(values[field.key] || '').trim();
       if (field.type === 'number') output[field.key] = Number(raw) || 0;
       else output[field.key] = raw;
@@ -529,8 +594,10 @@ export class AdminComponent implements OnInit {
     this.createValidationVisible = false;
     this.createErrorMessage = '';
     this.currentSection.fields.forEach((field) => {
-      if (field.key === 'cantidad') this.createForm[field.key] = '1';
-      else this.createForm[field.key] = '';
+      if (!field.isCalculated) {
+        if (field.key === 'cantidad') this.createForm[field.key] = '1';
+        else this.createForm[field.key] = '';
+      }
     });
     this.ensureSelectDefaults(this.createForm);
   }
