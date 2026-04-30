@@ -132,8 +132,10 @@ export class AdminComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.sections.forEach((section) => {
       this.adminDataService.watchSection(section.id).subscribe((rows) => {
-        this.rowsBySection = { ...this.rowsBySection, [section.id]: rows };
-        this.cdr.detectChanges();
+        this.ngZone.run(() => {
+          this.rowsBySection = { ...this.rowsBySection, [section.id]: rows };
+          this.cdr.detectChanges();
+        });
       });
     });
     this.resetCreateForm();
@@ -270,8 +272,6 @@ export class AdminComponent implements OnInit {
     if (this.pendingAction === 'edit') await this.saveEdit();
   }
 
-  // --- MÉTODOS DE FORMULARIO CRUD NORMAL ---
-
   getFieldOptions(field: AdminField): string[] {
     if (field.optionsFromSection && field.optionsFromKey) {
       const sourceRows = this.rowsBySection[field.optionsFromSection] || [];
@@ -313,21 +313,16 @@ export class AdminComponent implements OnInit {
 
     if (missingField) {
       const message = 'Por favor, rellena todos los campos obligatorios indicados en rojo.';
-      if (mode === 'create') {
-        this.createErrorMessage = message;
-      } else {
-        this.editErrorMessage = message;
-      }
+      if (mode === 'create') this.createErrorMessage = message;
+      else this.editErrorMessage = message;
       return false;
     }
 
     if (mode === 'create') this.createErrorMessage = '';
     else this.editErrorMessage = '';
-
     return true;
   }
 
-  // --- LÓGICA RESERVAS CLON BOOKING ---
   resetAdminBooking(): void {
     this.adminBookingStep = 1;
     this.bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
@@ -341,11 +336,7 @@ export class AdminComponent implements OnInit {
   }
 
   searchAdminRooms(): void {
-
-    this.ngZone.run(() => {
-      this.adminBookingError = '';
-      this.cdr.detectChanges();
-    });
+    this.adminBookingError = '';
 
     if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
       this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
@@ -376,7 +367,7 @@ export class AdminComponent implements OnInit {
     let rooms = this.rowsBySection['rooms'] || [];
     const reservations = this.rowsBySection['reservations'] || [];
 
-    // CÁLCULO DE DISPONIBILIDAD MATEMÁTICA
+    // CÁLCULO DE STOCK REAL
     rooms = rooms.map(r => {
       const stock = Number(r['cantidad']) || 1;
       const roomName = String(r['nombre']);
@@ -397,7 +388,7 @@ export class AdminComponent implements OnInit {
       return { ...r, _availableStock: stock - overlappingCount };
     }).filter(r => r._availableStock > 0);
 
-    // LÓGICA DE FILTRADO FAMILIAR
+    // FILTRO FAMILIAR
     if (this.bookingSearch.includeFamily) {
       if (this.bookingSearch.guests <= 3) {
         rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
@@ -410,28 +401,15 @@ export class AdminComponent implements OnInit {
       rooms = rooms.filter(r => String(r['id']) !== 'familiar' && !String(r['nombre']).toLowerCase().includes('familiar'));
     }
 
-    // ¡LA SOLUCIÓN INFALIBLE!
-    if (rooms.length === 0) {
-      this.ngZone.run(() => {
-        this.adminBookingError = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
-        this.adminShowRooms = false;
-        this.adminShowCheckout = false;
-        this.adminBookingStep = 1;
-        this.cdr.detectChanges();
-      });
-      return;
-    }
+    // Asignamos resultados. Si es 0, la vista del Paso 2 mostrará el recuadro rojo.
+    this.adminAvailableRooms = rooms;
+    this.adminSelectedRooms = [];
+    this.adminBookingCapacity = 0;
 
-
-    this.ngZone.run(() => {
-      this.adminAvailableRooms = rooms;
-      this.adminSelectedRooms = [];
-      this.adminBookingCapacity = 0;
-      this.adminBookingStep = 2;
-      this.adminShowRooms = true;
-      this.adminShowCheckout = false;
-      this.cdr.detectChanges();
-    });
+    // AVANZAMOS AL PASO 2 PASE LO QUE PASE
+    this.adminBookingStep = 2;
+    this.adminShowRooms = true;
+    this.adminShowCheckout = false;
   }
 
   toggleAdminRoom(room: any): void {
@@ -445,7 +423,6 @@ export class AdminComponent implements OnInit {
         this.adminBookingCapacity += Number(room.huespedes || 0);
       }
     }
-
     this.adminShowCheckout = this.adminBookingCapacity >= this.bookingSearch.guests;
   }
 
@@ -523,7 +500,6 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  // --- UTILS ---
   getFieldString(row: AdminItem, key: string): string { return String(row[key] ?? ''); }
 
   private coerceValues(values: Record<string, string>): AdminItem {
@@ -548,8 +524,16 @@ export class AdminComponent implements OnInit {
   }
 
   private setStatus(type: 'success' | 'danger', message: string): void {
-    this.statusType = type;
-    this.statusMessage = message;
-    setTimeout(() => { this.statusMessage = ''; this.cdr.detectChanges(); }, 5000);
+    this.ngZone.run(() => {
+      this.statusType = type;
+      this.statusMessage = message;
+      this.cdr.detectChanges();
+    });
+    setTimeout(() => {
+      this.ngZone.run(() => {
+        this.statusMessage = '';
+        this.cdr.detectChanges();
+      });
+    }, 5000);
   }
 }

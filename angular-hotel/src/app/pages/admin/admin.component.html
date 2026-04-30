@@ -97,7 +97,7 @@
             </div>
           </div>
 
-          <div class="error-msg" *ngIf="createErrorMessage" style="color:red; margin-bottom:1rem; text-align: center; font-weight: bold;">
+          <div class="error-msg" *ngIf="createErrorMessage" style="background-color: #dc3545; color: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; text-align: center; border: 2px solid darkred; font-size: 1.1rem;">
             {{ createErrorMessage }}
           </div>
 
@@ -107,7 +107,7 @@
 
       <div *ngIf="currentSectionId === 'reservations'">
 
-        <div class="booking-main-content-wrapper">
+        <div class="booking-main-content-wrapper" *ngIf="adminBookingStep === 1">
           <h2>Buscar disponibilidad (Modo Admin)</h2>
 
           <div class="admin-manage-form">
@@ -131,15 +131,21 @@
             </label>
           </div>
 
-          <div class="error-msg" *ngIf="adminBookingError && adminBookingStep === 1" style="color:red; margin-bottom:1rem; text-align: center; font-weight: bold;">
+          <div class="error-msg" *ngIf="adminBookingError && adminBookingStep === 1" style="background-color: #dc3545; color: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; text-align: center; border: 2px solid darkred; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
             {{adminBookingError}}
           </div>
 
           <button type="button" class="btn-primary" style="width: 100%; padding: 1rem; border-radius: 6px; font-weight: bold;" (click)="searchAdminRooms()">Buscar habitaciones</button>
+        </div>
 
-          <div *ngIf="adminShowRooms" style="margin-top: 2.5rem;">
-            <h3 class="room-list-title">Habitaciones Disponibles</h3>
+        <div class="booking-main-content-wrapper" *ngIf="adminShowRooms">
+          <h3 class="room-list-title">Resultados de Disponibilidad</h3>
 
+          <div *ngIf="adminAvailableRooms.length === 0" style="background-color: #dc3545; color: white; padding: 20px; margin-top: 1.5rem; border-radius: 8px; font-weight: bold; text-align: center; border: 2px solid darkred; font-size: 1.2rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
+            Lo siento, pero no hay más habitaciones disponibles para estas fechas y combinación de huéspedes.
+          </div>
+
+          <ng-container *ngIf="adminAvailableRooms.length > 0">
             <div class="booking-status-bar" [style.background]="adminBookingCapacity >= bookingSearch.guests ? '#27ae60' : '#D4C4A8'" [style.color]="adminBookingCapacity >= bookingSearch.guests ? 'white' : 'var(--mar-navy)'">
               <span *ngIf="adminBookingCapacity < bookingSearch.guests">Llevas {{adminBookingCapacity}} plazas. Faltan {{bookingSearch.guests - adminBookingCapacity}} más.</span>
               <span *ngIf="adminBookingCapacity >= bookingSearch.guests">¡Perfecto! Completa los datos abajo.</span>
@@ -161,6 +167,11 @@
                 </button>
               </div>
             </div>
+          </ng-container>
+
+          <div style="display:flex; gap:1rem; margin-top:2rem;">
+            <button type="button" class="admin-btn-cancel" style="width:100%; padding: 1rem;" (click)="adminBookingStep = 1; adminShowRooms = false;">Atrás</button>
+            <button *ngIf="adminAvailableRooms.length > 0" type="button" class="admin-btn-submit" style="margin-top:0;" (click)="goToAdminCheckout()">Continuar</button>
           </div>
         </div>
 
@@ -208,13 +219,16 @@
             </div>
           </div>
 
-          <div class="error-msg" *ngIf="adminBookingError && adminBookingStep === 3" style="color:red; margin-bottom:1rem; text-align: center; font-weight: bold;">
+          <div class="error-msg" *ngIf="adminBookingError && adminBookingStep === 3" style="background-color: #dc3545; color: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; text-align: center; border: 2px solid darkred; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
             {{adminBookingError}}
           </div>
 
-          <button type="button" class="btn-success" style="width: 100%; padding: 1rem; border-radius: 6px; font-weight: bold;" (click)="confirmAdminBooking()">
-            {{ saving ? 'Guardando...' : 'Confirmar reserva' }}
-          </button>
+          <div style="display:flex; gap:1rem; margin-top:1rem;">
+            <button type="button" class="admin-btn-cancel" style="width:100%; padding: 1rem;" (click)="adminBookingStep = 2; adminShowCheckout = false;">Atrás</button>
+            <button type="button" class="btn-success" style="width: 100%; padding: 1rem; border-radius: 6px; font-weight: bold; margin-top: 0;" (click)="confirmAdminBooking()">
+              {{ saving ? 'Guardando...' : 'Confirmar reserva' }}
+            </button>
+          </div>
         </div>
 
       </div>
@@ -255,7 +269,7 @@
         </div>
       </div>
 
-      <div class="error-msg" *ngIf="editErrorMessage" style="color:red; margin-top:1rem; text-align: center; font-weight: bold;">
+      <div class="error-msg" *ngIf="editErrorMessage" style="background-color: #dc3545; color: white; padding: 15px; margin-top: 20px; border-radius: 6px; font-weight: bold; text-align: center; border: 2px solid darkred; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">
         {{ editErrorMessage }}
       </div>
 
