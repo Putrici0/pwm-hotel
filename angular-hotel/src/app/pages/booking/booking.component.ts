@@ -38,7 +38,7 @@ export class BookingComponent {
   private readonly firestore = inject(Firestore);
   private sendingWatchdog: ReturnType<typeof setTimeout> | null = null;
 
-  heroImage = 'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
+  heroImage = 'https://masdunas.es/wp-content/uploads/2018/10/dunas-moviles-edit-1024x286.png';
 
   availableRooms: RoomOption[] = [];
   filteredRooms: RoomOption[] = [];

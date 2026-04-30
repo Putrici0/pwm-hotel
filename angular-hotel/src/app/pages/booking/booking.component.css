@@ -1,368 +1,393 @@
 /* booking.css */
 .booking-page {
-  padding-bottom: 3rem; /* Añadido para dar espacio al footer */
+  padding-bottom: 3rem;
 }
 
+/* --- ESTILOS DE LA CABECERA (UNA LÍNEA PARA CADA COSA) --- */
 .booking-hero {
   margin-bottom: 2rem;
 }
 
-/* Contenedor principal AZUL MARINO para búsqueda y selección de habitaciones */
+.hero-text {
+  max-width: 1200px; /* Muy ancho para que quepa todo */
+  padding: 0 15px;
+}
+
+.hero-title {
+  color: var(--mar-navy);
+  font-weight: bold;
+  font-size: 2.5rem; /* Tamaño más pequeño que antes (era 3.5rem) */
+  margin-bottom: 0.5rem;
+}
+
+.hero-desc {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.hero-image-container {
+  max-width: 1000px; /* Tamaño intermedio (ni muy pequeño ni el 100% de la pantalla) */
+  padding: 0 15px;
+}
+
+.hero-banner-img {
+  width: 100%;
+  height: 350px; /* Altura intermedia proporcionada */
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Magia para ordenadores: Forzar a que NO salte de línea */
+@media (min-width: 992px) {
+  .hero-title, .hero-desc {
+    white-space: nowrap; /* Esto obliga al texto a quedarse en una sola línea horizontal */
+  }
+}
+
+/* Ajustes para móviles */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2rem; }
+  .hero-banner-img { height: 200px; }
+}
+
+/* --- CONTENEDOR AZUL MARINO (COMO LO TENÍAS ANTES) --- */
 .booking-main-content-wrapper {
-    max-width: 800px; /* Ancho máximo para el "cuadrado" */
-    margin: 2rem auto; /* Centrar horizontalmente */
-    background-color: var(--mar-navy); /* Fondo azul marino */
-    padding: 2rem;
-    border-radius: var(--radius-card); /* Bordes redondeados */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Sombra para profundidad */
-    color: var(--arena-sable); /* Color de texto general para este bloque */
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: var(--mar-navy);
+  padding: 2rem;
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  color: var(--arena-sable);
 }
 
 .booking-grid-single-column {
-    display: flex;
-    flex-direction: column; /* Apilar verticalmente */
-    gap: 1.5rem; /* Espacio entre las secciones */
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .booking-grid-single-column .panel {
-    background-color: var(--mar-navy); /* Mantener fondo azul marino para el panel interno */
-    border: none;
-    box-shadow: none; /* Eliminar sombra para que el contenedor principal la maneje */
-    border-radius: var(--radius-card);
+  background-color: var(--mar-navy);
+  border: none;
+  box-shadow: none;
+  border-radius: var(--radius-card);
 }
 
 .booking-grid-single-column .card-body {
-    padding: 1.5rem;
+  padding: 1.5rem;
 }
 
 .booking-main-content-wrapper h2 {
-    color: var(--arena-sable); /* Título en color sable */
-    text-align: center;
-    margin-bottom: 1.5rem;
+  color: var(--arena-sable);
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
 .booking-main-content-wrapper .form-label {
-    color: var(--arena-sable); /* Etiquetas del formulario en color sable */
+  color: var(--arena-sable);
 }
 
 .booking-main-content-wrapper .form-control {
-    background-color: var(--arena-sable); /* Fondo de input en color sable */
-    color: var(--mar-navy); /* Texto de input en azul marino */
-    border: 1px solid var(--arena-hover);
+  background-color: var(--arena-sable);
+  color: var(--mar-navy);
+  border: 1px solid var(--arena-hover);
 }
 
 .booking-main-content-wrapper .form-control:focus {
-    background-color: var(--blanco-puro); /* Fondo blanco al enfocar */
-    color: var(--mar-navy);
-    border-color: var(--mar-navy);
+  background-color: var(--blanco-puro);
+  color: var(--mar-navy);
+  border-color: var(--mar-navy);
 }
 
 .booking-main-content-wrapper .form-check-label {
-    color: var(--arena-sable); /* Checkbox label en color sable */
+  color: var(--arena-sable);
 }
 
 .booking-main-content-wrapper .btn-primary {
-    background-color: var(--arena-sable); /* Botón principal en color sable */
-    color: var(--mar-navy); /* Texto del botón en azul marino */
-    border: none;
+  background-color: var(--arena-sable);
+  color: var(--mar-navy);
+  border: none;
 }
 
 .booking-main-content-wrapper .btn-primary:hover {
-    background-color: var(--arena-hover);
-    color: var(--mar-navy);
+  background-color: var(--arena-hover);
+  color: var(--mar-navy);
 }
 
 /* Título "Habitaciones Disponibles" */
 .room-list-title {
-    background-color: var(--mar-navy); /* Fondo azul marino */
-    color: var(--arena-sable) !important; /* Texto sable */
-    text-align: center;
-    margin-bottom: 1.5rem;
-    font-size: 1.5rem;
-    padding: 0.5rem;
-    border-radius: 8px;
+  background-color: var(--mar-navy);
+  color: var(--arena-sable) !important;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 8px;
 }
 
 /* Estilos para la barra de estado de la reserva */
 #booking-status-bar {
-    color: var(--mar-navy) !important; /* Texto azul marino */
-    background-color: var(--arena-sable) !important; /* Fondo sable */
+  color: var(--blanco-puro) !important;
 }
 
 /* Mensaje de no habitaciones disponibles */
 .no-rooms-message {
-    color: var(--arena-sable); /* Texto sable */
-    text-align: center;
-    margin-top: 1rem;
+  color: var(--arena-sable);
+  text-align: center;
+  margin-top: 1rem;
 }
 
-/* Estilos para las tarjetas de habitación (cuadradito blanco) */
+/* Estilos para las tarjetas de habitación */
 .room-option-card {
-    background-color: var(--blanco-puro); /* Fondo blanco */
-    border-radius: 8px;
-    display: flex;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid var(--arena-sable);
-    color: var(--mar-navy); /* Texto azul marino */
+  background-color: var(--blanco-puro);
+  border-radius: 8px;
+  display: flex;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid var(--arena-sable);
+  color: var(--mar-navy);
 }
 
 .room-option-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .room-option-img {
-    width: 150px;
-    background-color: #eee;
-    background-size: cover;
-    background-position: center;
-    flex-shrink: 0;
+  width: 150px;
+  background-color: #eee;
+  background-size: cover;
+  background-position: center;
+  flex-shrink: 0;
 }
 
 .room-option-details {
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .room-option-title {
-    color: var(--mar-navy);
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+  color: var(--mar-navy);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .room-option-info {
-    color: #555;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+  color: #555;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
 }
 
 .room-option-price {
-    color: var(--mar-navy); /* Precio en azul marino */
-    font-weight: bold;
-    margin-top: 5px;
+  color: var(--mar-navy);
+  font-weight: bold;
+  margin-top: 5px;
 }
 
 .btn-select-room {
-    background-color: var(--mar-navy); /* Botón seleccionar en azul marino */
-    color: var(--arena-sable); /* Texto del botón en sable */
-    border: none;
-    padding: 0.6rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    align-self: flex-start;
-    transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+  background-color: var(--mar-navy);
+  color: var(--arena-sable);
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  align-self: flex-start;
+  transition: background-color 0.2s, color 0.2s, opacity 0.2s;
 }
 
 .btn-select-room:hover:not(:disabled) {
-    background-color: var(--arena-hover);
-    color: var(--mar-navy);
-}
-
-.btn-select-room.btn-selected {
-    background-color: var(--arena-sable); /* Botón seleccionado en sable */
-    color: var(--mar-navy); /* Texto del botón seleccionado en azul marino */
-    cursor: pointer; /* Mantener cursor de puntero para "Cambiar" */
+  background-color: var(--arena-hover);
+  color: var(--mar-navy);
 }
 
 .btn-select-room:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 /* Contenedor BLANCO para el resumen y el formulario final */
 .checkout-section-wrapper {
-    max-width: 800px; /* Mismo ancho que el contenedor principal */
-    margin: 2rem auto; /* Centrar horizontalmente */
-    background-color: var(--blanco-puro); /* Fondo blanco */
-    padding: 2rem;
-    border-radius: var(--radius-card);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    color: var(--mar-navy); /* Color de texto general para este bloque */
+  max-width: 800px;
+  margin: 2rem auto;
+  background-color: var(--blanco-puro);
+  padding: 2rem;
+  border-radius: var(--radius-card);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  color: var(--mar-navy);
 }
 
 .checkout-section-wrapper h2 {
-    color: var(--mar-navy); /* Título en azul marino */
-    text-align: center;
-    margin-bottom: 1.5rem;
+  color: var(--mar-navy);
+  text-align: center;
+  margin-bottom: 1.5rem;
 }
 
-/* Summary Box (cuadrado sable con texto azul marino) */
 .booking-summary {
-    background-color: var(--arena-sable); /* Fondo sable */
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--arena-hover);
-    color: var(--mar-navy); /* Texto azul marino */
+  background-color: var(--arena-sable);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--arena-hover);
+  color: var(--mar-navy);
 }
 
 .summary-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
 }
 
 .summary-item:last-child {
-    margin-bottom: 0;
-    padding-top: 10px;
-    border-top: 1px dashed var(--mar-navy); /* Línea divisoria azul marino */
+  margin-bottom: 0;
+  padding-top: 10px;
+  border-top: 1px dashed var(--mar-navy);
 }
 
 .summary-item.total-price {
-    font-weight: bold;
-    font-size: 1.1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
 }
 
-/* Formulario de datos personales (campos blancos con texto azul marino) */
 .checkout-section-wrapper .form-label {
-    color: var(--mar-navy); /* Etiquetas del formulario en azul marino */
+  color: var(--mar-navy);
 }
 
 .checkout-section-wrapper .form-control {
-    background-color: var(--blanco-puro); /* Fondo de input en blanco */
-    color: var(--mar-navy); /* Texto de input en azul marino */
-    border: 1px solid var(--mar-navy); /* Borde azul marino */
+  background-color: var(--blanco-puro);
+  color: var(--mar-navy);
+  border: 1px solid var(--mar-navy);
 }
 
 .checkout-section-wrapper .form-control:focus {
-    border-color: var(--arena-sable); /* Borde sable al enfocar */
-    box-shadow: 0 0 0 0.25rem rgba(212, 196, 168, 0.25); /* Sombra sable */
+  border-color: var(--arena-sable);
+  box-shadow: 0 0 0 0.25rem rgba(212, 196, 168, 0.25);
 }
 
 .checkout-section-wrapper .form-check-label {
-    color: var(--mar-navy); /* Checkbox label en azul marino */
+  color: var(--mar-navy);
 }
 
 .checkout-section-wrapper .btn-success {
-    background-color: var(--arena-sable); /* Botón de reserva en sable */
-    color: var(--mar-navy); /* Texto del botón en azul marino */
-    border: none;
+  background-color: var(--arena-sable);
+  color: var(--mar-navy);
+  border: none;
 }
 
 .checkout-section-wrapper .btn-success:hover {
-    background-color: var(--arena-hover);
-    color: var(--mar-navy);
+  background-color: var(--arena-hover);
+  color: var(--mar-navy);
 }
 
-/* Estilos para el mensaje de éxito */
 .success-message {
-    text-align: center;
-    padding: 2rem 0;
-    color: var(--mar-navy); /* Texto azul marino */
+  text-align: center;
+  padding: 2rem 0;
+  color: var(--mar-navy);
 }
 
 .success-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #27ae60; /* Color verde para el icono de éxito */
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  color: #27ae60;
 }
 
 .success-message h3 {
-    color: var(--mar-navy);
-    font-size: 1.8rem;
-    margin-bottom: 0.5rem;
+  color: var(--mar-navy);
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
 }
 
 .success-message p {
-    color: #555;
+  color: #555;
 }
 
-/* Estilos para el modal de éxito */
 .booking-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1050;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
 }
 
 .booking-modal__backdrop {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .booking-modal__content {
-    background-color: var(--blanco-puro);
-    padding: 2rem;
-    border-radius: var(--radius-card);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    max-width: 400px;
-    width: 90%;
-    position: relative;
-    z-index: 1051;
-    color: var(--mar-navy);
+  background-color: var(--blanco-puro);
+  padding: 2rem;
+  border-radius: var(--radius-card);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+  position: relative;
+  z-index: 1051;
+  color: var(--mar-navy);
 }
 
 .success-box__icon {
-    font-size: 3rem;
-    color: #27ae60;
-    margin-bottom: 1rem;
+  font-size: 3rem;
+  color: #27ae60;
+  margin-bottom: 1rem;
 }
 
 /* Media Queries */
 @media (max-width: 900px) {
-    .booking-main-content-wrapper,
-    .checkout-section-wrapper {
-        padding: 1.5rem;
-        margin: 1.5rem auto;
-    }
-
-    .room-option-card {
-        flex-direction: column;
-    }
-
-    .room-option-img {
-        width: 100%;
-        height: 180px;
-    }
-
-    .btn-select-room {
-        align-self: stretch;
-    }
+  .booking-main-content-wrapper,
+  .checkout-section-wrapper {
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+  }
+  .room-option-card {
+    flex-direction: column;
+  }
+  .room-option-img {
+    width: 100%;
+    height: 180px;
+  }
+  .btn-select-room {
+    align-self: stretch;
+  }
 }
 
 @media (max-width: 576px) {
-    .booking-main-content-wrapper,
-    .checkout-section-wrapper {
-        padding: 1rem;
-        margin: 1rem auto;
-    }
-
-    .booking-grid-single-column .card-body {
-        padding: 1rem;
-    }
-
-    .booking-main-content-wrapper h2,
-    .checkout-section-wrapper h2 {
-        font-size: 1.5rem;
-    }
-
-    .room-option-img {
-        height: 150px;
-    }
-
-    .booking-summary {
-        padding: 1rem;
-    }
-
-    .success-message h3 {
-        font-size: 1.5rem;
-    }
+  .booking-main-content-wrapper,
+  .checkout-section-wrapper {
+    padding: 1rem;
+    margin: 1rem auto;
+  }
+  .booking-grid-single-column .card-body {
+    padding: 1rem;
+  }
+  .booking-main-content-wrapper h2,
+  .checkout-section-wrapper h2 {
+    font-size: 1.5rem;
+  }
+  .room-option-img {
+    height: 150px;
+  }
+  .booking-summary {
+    padding: 1rem;
+  }
+  .success-message h3 {
+    font-size: 1.5rem;
+  }
 }
