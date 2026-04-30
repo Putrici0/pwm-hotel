@@ -16,7 +16,7 @@ interface RoomOption {
   img: string;
   price: number;
   cantidad: number;
-  _availableStock?: number;
+  _availableStock: number;
 }
 
 @Component({
@@ -27,7 +27,7 @@ interface RoomOption {
   styleUrl: './booking.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-class BookingComponent {
+export class BookingComponent {
   private readonly fb = inject(FormBuilder);
   private readonly bookingsService = inject(BookingsService);
   private readonly adminDataService = inject(AdminDataService);
@@ -38,8 +38,7 @@ class BookingComponent {
   private readonly firestore = inject(Firestore);
   private sendingWatchdog: ReturnType<typeof setTimeout> | null = null;
 
-  heroImage =
-    'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
+  heroImage = 'https://st2.depositphotos.com/4695029/7141/i/600/depositphotos_71419053-stock-photo-beautiful-swimming-pool.jpg';
 
   availableRooms: RoomOption[] = [];
   filteredRooms: RoomOption[] = [];
@@ -65,14 +64,21 @@ class BookingComponent {
 
     void this.adminDataService.ensureInitialized().then(() => {
       this.adminDataService.watchSection('rooms').subscribe((rooms) => {
-        this.availableRooms = rooms.map((room) => ({
-          id: String(room['id'] || ''),
-          name: String(room['nombre'] || ''),
-          maxGuests: Number(room['huespedes'] || 0),
-          img: String(room['imagen'] || ''),
-          price: Number(room['precio'] || 0),
-          cantidad: Number(room['cantidad'] || 1)
-        }));
+        this.availableRooms = rooms.map((room) => {
+          // LÓGICA ESTRICTA DE STOCK PARA EVITAR QUE EL 0 SE CONVIERTA EN 1
+          const rawStock = room['cantidad'];
+          const stockVal = (rawStock !== undefined && rawStock !== null && rawStock !== '') ? Number(rawStock) : 1;
+
+          return {
+            id: String(room['id'] || ''),
+            name: String(room['nombre'] || ''),
+            maxGuests: Number(room['huespedes'] || 0),
+            img: String(room['imagen'] || ''),
+            price: Number(room['precio'] || 0),
+            cantidad: stockVal,
+            _availableStock: 0
+          };
+        });
         this.cdr.detectChanges();
       });
 
@@ -104,6 +110,7 @@ class BookingComponent {
     this.showCheckoutSection = false;
     this.statusBarBackground = '#D4C4A8';
     this.statusBarMessage = 'Por favor, selecciona habitaciones para tus huéspedes.';
+    this.searchErrorMessage = '';
 
     const checkin = String(this.searchForm.value.checkin || '');
     const checkout = String(this.searchForm.value.checkout || '');
@@ -113,29 +120,18 @@ class BookingComponent {
     if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
       this.searchForm.markAllAsTouched();
       this.searchErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
-      this.checkoutErrorMessage = '';
-      this.submitted = false;
-      this.filteredRooms = [];
-      this.cdr.detectChanges();
-      return;
-    }
-
-    if (Number(this.searchForm.value.guests) > 6) {
-      this.searchErrorMessage = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
       this.submitted = false;
       this.cdr.detectChanges();
       return;
     }
-
-    const diffTime = Math.abs(checkoutDate.getTime() - checkinDate.getTime());
-    this.totalNights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    this.requestedGuests = Number(this.searchForm.value.guests || 0);
 
     const inTime = checkinDate.getTime();
     const outTime = checkoutDate.getTime();
+    this.totalNights = Math.ceil(Math.abs(outTime - inTime) / (1000 * 60 * 60 * 24));
+    this.requestedGuests = Number(this.searchForm.value.guests || 0);
 
-    // 1. CÁLCULO DE DISPONIBILIDAD MATEMÁTICA CON INVENTARIO
-    let availableRoomsFiltered = this.availableRooms.map(room => {
+    // 1. FILTRAR POR STOCK REAL
+    let roomsWithStock = this.availableRooms.map(room => {
       let overlappingCount = 0;
       this.allReservations.forEach(res => {
         if (String(res['habitacion']).includes(room.name)) {
@@ -149,65 +145,57 @@ class BookingComponent {
         }
       });
       return { ...room, _availableStock: room.cantidad - overlappingCount };
-    }).filter(r => r._availableStock! > 0);
+    }).filter(r => r._availableStock > 0);
 
-    // 2. LÓGICA DE FILTRADO FAMILIAR
+    // 2. APLICAR LÓGICA DE FAMILIA
     if (this.searchForm.value.includeFamilySuite) {
       if (this.requestedGuests <= 3) {
-        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 3 && r.maxGuests <= 6);
+        roomsWithStock = roomsWithStock.filter(r => r.maxGuests >= 3 && r.maxGuests <= 6);
       } else if (this.requestedGuests === 4) {
-        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 4 && r.maxGuests <= 6);
+        roomsWithStock = roomsWithStock.filter(r => r.maxGuests >= 4 && r.maxGuests <= 6);
       } else if (this.requestedGuests >= 5) {
-        availableRoomsFiltered = availableRoomsFiltered.filter(r => r.maxGuests >= 6);
+        roomsWithStock = roomsWithStock.filter(r => r.maxGuests >= 6);
       }
     } else {
-      availableRoomsFiltered = availableRoomsFiltered.filter(r => r.id !== 'familiar' && !r.name.toLowerCase().includes('familiar'));
+      roomsWithStock = roomsWithStock.filter(r => r.maxGuests >= 1);
     }
 
-    // ¡AQUÍ ESTÁ TU MENSAJE EXACTO!
-    if (availableRoomsFiltered.length === 0) {
+    if (roomsWithStock.length === 0) {
       this.searchErrorMessage = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
-      this.submitted = false; // No mostramos el paso 2
+      this.submitted = false;
       this.cdr.detectChanges();
       return;
     }
 
-    this.filteredRooms = availableRoomsFiltered;
+    this.filteredRooms = roomsWithStock;
     this.submitted = true;
     this.bookingDone = false;
-    this.searchErrorMessage = '';
-    this.checkoutErrorMessage = '';
     this.updateStatusBar();
     this.cdr.detectChanges();
   }
 
-  selectRoom(room: RoomOption): void {
-    const roomIndex = this.selectedRoomsArr.findIndex(selected => selected.id === room.id);
+  getSelectedCount(room: RoomOption): number {
+    return this.selectedRoomsArr.filter(r => r.id === room.id).length;
+  }
 
-    if (roomIndex > -1) {
-      this.currentCapacity -= this.selectedRoomsArr[roomIndex].maxGuests;
-      this.selectedRoomsArr.splice(roomIndex, 1);
-    } else {
-      this.selectedRoomsArr.push(room);
-      this.currentCapacity += room.maxGuests;
-    }
+  addRoom(room: RoomOption): void {
+    if (this.currentCapacity >= this.requestedGuests) return;
+    if (this.getSelectedCount(room) >= room._availableStock) return;
 
+    this.selectedRoomsArr.push(room);
+    this.currentCapacity += room.maxGuests;
     this.updateStatusBar();
     this.cdr.detectChanges();
   }
 
-  isRoomSelected(room: RoomOption): boolean {
-    return this.selectedRoomsArr.some(selected => selected.id === room.id);
-  }
-
-  getRoomButtonText(room: RoomOption): string {
-    if (this.isRoomSelected(room)) {
-      return 'Cambiar';
+  removeRoom(room: RoomOption): void {
+    const idx = this.selectedRoomsArr.findIndex(r => r.id === room.id);
+    if (idx > -1) {
+      this.currentCapacity -= this.selectedRoomsArr[idx].maxGuests;
+      this.selectedRoomsArr.splice(idx, 1);
+      this.updateStatusBar();
+      this.cdr.detectChanges();
     }
-    if (this.currentCapacity >= this.requestedGuests) {
-      return 'Cupo lleno';
-    }
-    return 'Seleccionar';
   }
 
   updateStatusBar(): void {
@@ -224,45 +212,22 @@ class BookingComponent {
 
   async confirmBooking(): Promise<void> {
     if (!this.authService.isLoggedIn()) {
-      this.checkoutErrorMessage = 'Debes iniciar sesion para poder reservar.';
-      this.searchErrorMessage = '';
+      this.checkoutErrorMessage = 'Debes iniciar sesión para poder reservar.';
       void this.router.navigateByUrl('/login');
       return;
     }
 
     this.attemptedConfirm = true;
-    if (this.checkoutForm.invalid || this.searchForm.invalid || this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
+    if (this.checkoutForm.invalid || this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
       this.checkoutForm.markAllAsTouched();
-      this.searchForm.markAllAsTouched();
-      if (this.selectedRoomsArr.length === 0 || this.currentCapacity < this.requestedGuests) {
-        this.checkoutErrorMessage = 'Por favor, selecciona suficientes habitaciones para todos los huéspedes.';
-      } else {
-        this.checkoutErrorMessage = 'Revisa los datos del formulario (Email, Privacidad, etc.).';
-      }
-      this.searchErrorMessage = '';
-      this.cdr.detectChanges();
-      return;
-    }
-
-    const checkin = String(this.searchForm.value.checkin || '');
-    const checkout = String(this.searchForm.value.checkout || '');
-    const checkinDate = new Date(checkin);
-    const checkoutDate = new Date(checkout);
-    if (Number.isNaN(checkinDate.getTime()) || Number.isNaN(checkoutDate.getTime()) || checkinDate >= checkoutDate) {
-      this.checkoutErrorMessage = 'La fecha de entrada debe ser anterior a la fecha de salida.';
-      this.searchErrorMessage = '';
+      this.checkoutErrorMessage = 'Revisa los datos del formulario y asegúrate de haber seleccionado suficientes plazas.';
       this.cdr.detectChanges();
       return;
     }
 
     this.setSending(true);
-    this.bookingDone = false;
-    this.checkoutErrorMessage = '';
-    this.searchErrorMessage = '';
-
     try {
       const roomNames = this.selectedRoomsArr.map(r => r.name).join(', ');
-
       await this.bookingsService.createBooking({
         nombre: this.checkoutForm.value.nombre || '',
         apellidos: this.checkoutForm.value.apellidos || '',
@@ -277,122 +242,69 @@ class BookingComponent {
         familySuite: !!this.searchForm.value.includeFamilySuite,
         createdAt: new Date().toISOString()
       });
-
       this.bookingDone = true;
       this.resetFormsAfterSuccess();
     } catch (error) {
-      this.checkoutErrorMessage = 'No se pudo guardar la reserva. Verifica permisos o intenta más tarde.';
+      this.checkoutErrorMessage = 'No se pudo guardar la reserva.';
     } finally {
       this.setSending(false);
       this.cdr.detectChanges();
     }
   }
 
-  get summaryCheckin(): string {
-    return this.formatSummaryDate(this.searchForm.value.checkin || '');
-  }
-
-  get summaryCheckout(): string {
-    return this.formatSummaryDate(this.searchForm.value.checkout || '');
-  }
-
-  get selectedRoomNames(): string {
-    return this.selectedRoomsArr.map(room => room.name).join(', ') || 'Sin seleccionar';
-  }
-
-  get totalBookingPrice(): number {
-    return this.selectedRoomsArr.reduce((total, room) => total + (room.price * this.totalNights), 0);
-  }
+  get summaryCheckin(): string { return this.formatSummaryDate(this.searchForm.value.checkin || ''); }
+  get summaryCheckout(): string { return this.formatSummaryDate(this.searchForm.value.checkout || ''); }
+  get selectedRoomNames(): string { return this.selectedRoomsArr.map(room => room.name).join(', ') || 'Sin seleccionar'; }
+  get totalBookingPrice(): number { return this.selectedRoomsArr.reduce((total, room) => total + (room.price * this.totalNights), 0); }
 
   isCheckoutInvalid(controlName: 'nombre' | 'apellidos' | 'telefono' | 'dni' | 'email' | 'privacy'): boolean {
     const control = this.checkoutForm.get(controlName);
-    if (!control) {
-      return false;
-    }
-    return control.invalid && (control.touched || this.attemptedConfirm);
+    return !!control && control.invalid && (control.touched || this.attemptedConfirm);
   }
 
   private formatSummaryDate(rawDate: string): string {
-    if (!rawDate) {
-      return '--/--/----';
-    }
-
+    if (!rawDate) return '--/--/----';
     const parsedDate = new Date(rawDate);
-    if (Number.isNaN(parsedDate.getTime())) {
-      return rawDate;
-    }
-
-    return new Intl.DateTimeFormat('es-ES').format(parsedDate);
+    return Number.isNaN(parsedDate.getTime()) ? rawDate : new Intl.DateTimeFormat('es-ES').format(parsedDate);
   }
 
   private setSending(value: boolean): void {
-    if (this.sendingWatchdog) {
-      clearTimeout(this.sendingWatchdog);
-      this.sendingWatchdog = null;
-    }
     this.ngZone.run(() => { this.sending = value; });
-
-    if (value) {
-      this.sendingWatchdog = setTimeout(() => {
-        this.ngZone.run(() => { this.sending = false; });
-        this.requestViewRefresh();
-      }, 15000);
-    }
-    this.requestViewRefresh();
+    this.cdr.detectChanges();
   }
 
   closeSuccessModal(): void {
     this.bookingDone = false;
-    this.requestViewRefresh();
-  }
-
-  private resetFormsAfterSuccess(): void {
-    this.checkoutForm.reset({ nombre: '', apellidos: '', email: '', telefono: '', dni: '', privacy: false });
-    this.searchForm.reset({ checkin: '', checkout: '', guests: 2, includeFamilySuite: false });
-    this.filteredRooms = [];
-    this.selectedRoomsArr = [];
-    this.currentCapacity = 0;
-    this.totalNights = 0;
-    this.requestedGuests = 0;
-    this.statusBarMessage = 'Por favor, selecciona habitaciones para tus huéspedes.';
-    this.statusBarBackground = '#D4C4A8';
-    this.showCheckoutSection = false;
-    this.submitted = false;
-    this.attemptedConfirm = false;
     this.cdr.detectChanges();
   }
 
-  private requestViewRefresh(): void {
-    try { this.cdr.detectChanges(); } catch { }
+  private resetFormsAfterSuccess(): void {
+    this.checkoutForm.reset();
+    this.searchForm.reset({ guests: 2, includeFamilySuite: false });
+    this.submitted = false;
+    this.showCheckoutSection = false;
+    this.selectedRoomsArr = [];
+    this.currentCapacity = 0;
+    this.cdr.detectChanges();
   }
 
   private async prefillLoggedUserData(): Promise<void> {
-    const patch: Partial<{ nombre: string; apellidos: string; email: string; dni: string; }> = {
-      nombre: localStorage.getItem('loggedUserNombre') || '',
-      apellidos: localStorage.getItem('loggedUserApellidos') || '',
-      email: this.authService.getLoggedUserEmail() || localStorage.getItem('loggedUserEmail') || '',
-      dni: ''
-    };
-
-    const uid = this.authService.getLoggedUserUid() || localStorage.getItem('loggedUserUid') || '';
+    const uid = this.authService.getLoggedUserUid();
     if (uid) {
       try {
-        const userSnapshot = await getDoc(doc(this.firestore, 'users', uid));
-        if (userSnapshot.exists()) {
-          const userData = userSnapshot.data() as Record<string, unknown>;
-          patch.nombre = String(userData['nombre'] || patch.nombre || '');
-          patch.apellidos = String(userData['apellidos'] || patch.apellidos || '');
-          patch.email = String(userData['email'] || patch.email || '');
-          patch.dni = String(userData['dni'] || '');
+        const userSnap = await getDoc(doc(this.firestore, 'users', uid));
+        if (userSnap.exists()) {
+          const data = userSnap.data();
+          this.checkoutForm.patchValue({
+            nombre: data['nombre'] || '',
+            apellidos: data['apellidos'] || '',
+            email: data['email'] || ''
+          });
+          this.cdr.detectChanges();
         }
-      } catch { }
+      } catch {}
     }
-
-    this.checkoutForm.patchValue({
-      nombre: patch.nombre || '', apellidos: patch.apellidos || '', email: patch.email || '', dni: patch.dni || ''
-    });
-    this.requestViewRefresh();
   }
 }
 
-export default BookingComponent
+export default BookingComponent;

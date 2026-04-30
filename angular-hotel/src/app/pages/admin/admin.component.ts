@@ -115,9 +115,9 @@ export class AdminComponent implements OnInit {
   selectedImageModal: string | null = null;
   restaurantFilter = 'entrantes';
 
-  // --- LÓGICA RESERVAS CLON BOOKING ---
-  adminBookingStep = 1;
-  adminShowRooms = false;
+  // --- LÓGICA RESERVAS ---
+  adminBookingSubmitted = false;
+  adminNoRoomsError = false;
   adminShowCheckout = false;
 
   bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
@@ -323,122 +323,134 @@ export class AdminComponent implements OnInit {
     return true;
   }
 
+  // --- LÓGICA RESERVAS ---
   resetAdminBooking(): void {
-    this.adminBookingStep = 1;
+    this.adminBookingSubmitted = false;
+    this.adminNoRoomsError = false;
     this.bookingSearch = { checkin: '', checkout: '', guests: 2, includeFamily: false };
     this.bookingCheckout = { nombre: '', apellidos: '', email: '', telefono: '', dni: '' };
     this.adminSelectedRooms = [];
     this.adminBookingCapacity = 0;
     this.adminBookingError = '';
-    this.adminShowRooms = false;
     this.adminShowCheckout = false;
     this.adminBookingValidationVisible = false;
+  }
+
+  resetSearchForm(): void {
+    this.adminBookingSubmitted = false;
+    this.adminNoRoomsError = false;
+    this.adminBookingError = '';
   }
 
   searchAdminRooms(): void {
-    this.adminBookingError = '';
+    this.ngZone.run(() => {
+      this.adminBookingError = '';
+      this.adminNoRoomsError = false;
+      this.cdr.detectChanges();
 
-    if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
-      this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
-      return;
-    }
-
-    const inDate = new Date(this.bookingSearch.checkin).getTime();
-    const outDate = new Date(this.bookingSearch.checkout).getTime();
-
-    if (isNaN(inDate) || isNaN(outDate) || inDate >= outDate) {
-      this.adminBookingError = 'Fechas no válidas. La entrada debe ser anterior a la salida.';
-      return;
-    }
-
-    this.bookingSearch.guests = Number(this.bookingSearch.guests);
-    if (this.bookingSearch.guests < 1) {
-      this.adminBookingError = 'El número de huéspedes debe ser al menos 1.';
-      return;
-    }
-
-    if (this.bookingSearch.guests > 6) {
-      this.adminBookingError = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
-      return;
-    }
-
-    this.adminBookingNights = Math.ceil(Math.abs(outDate - inDate) / (1000 * 60 * 60 * 24));
-
-    let rooms = this.rowsBySection['rooms'] || [];
-    const reservations = this.rowsBySection['reservations'] || [];
-
-    // CÁLCULO DE STOCK REAL
-    rooms = rooms.map(r => {
-      const stock = Number(r['cantidad']) || 1;
-      const roomName = String(r['nombre']);
-
-      let overlappingCount = 0;
-      reservations.forEach(res => {
-        if (String(res['habitacion']).includes(roomName)) {
-          const resIn = new Date(String(res['entrada'])).getTime();
-          const resOut = new Date(String(res['salida'])).getTime();
-
-          if (inDate < resOut && outDate > resIn) {
-            const regex = new RegExp(roomName, 'g');
-            const matches = String(res['habitacion']).match(regex);
-            if (matches) overlappingCount += matches.length;
-          }
-        }
-      });
-      return { ...r, _availableStock: stock - overlappingCount };
-    }).filter(r => r._availableStock > 0);
-
-    // FILTRO FAMILIAR
-    if (this.bookingSearch.includeFamily) {
-      if (this.bookingSearch.guests <= 3) {
-        rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
-      } else if (this.bookingSearch.guests === 4) {
-        rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
-      } else if (this.bookingSearch.guests >= 5) {
-        rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
+      if (!this.bookingSearch.checkin || !this.bookingSearch.checkout) {
+        this.adminBookingError = 'Por favor, selecciona las fechas de entrada y salida.';
+        return;
       }
-    } else {
-      rooms = rooms.filter(r => String(r['id']) !== 'familiar' && !String(r['nombre']).toLowerCase().includes('familiar'));
-    }
 
-    // Asignamos resultados. Si es 0, la vista del Paso 2 mostrará el recuadro rojo.
-    this.adminAvailableRooms = rooms;
-    this.adminSelectedRooms = [];
-    this.adminBookingCapacity = 0;
+      const inDate = new Date(this.bookingSearch.checkin).getTime();
+      const outDate = new Date(this.bookingSearch.checkout).getTime();
 
-    // AVANZAMOS AL PASO 2 PASE LO QUE PASE
-    this.adminBookingStep = 2;
-    this.adminShowRooms = true;
-    this.adminShowCheckout = false;
+      if (isNaN(inDate) || isNaN(outDate) || inDate >= outDate) {
+        this.adminBookingError = 'Fechas no válidas. La entrada debe ser anterior a la salida.';
+        return;
+      }
+
+      this.bookingSearch.guests = Number(this.bookingSearch.guests);
+      if (this.bookingSearch.guests < 1) {
+        this.adminBookingError = 'El número de huéspedes debe ser al menos 1.';
+        return;
+      }
+      if (this.bookingSearch.guests > 6) {
+        this.adminBookingError = 'El sistema solo permite reservar para un máximo de 6 huéspedes.';
+        return;
+      }
+
+      this.adminBookingNights = Math.ceil(Math.abs(outDate - inDate) / (1000 * 60 * 60 * 24));
+
+      let rooms = this.rowsBySection['rooms'] || [];
+      const reservations = this.rowsBySection['reservations'] || [];
+
+      // CÁLCULO ESTRICTO DE STOCK
+      rooms = rooms.map(r => {
+        const rawStock = r['cantidad'];
+        const stock = (rawStock !== undefined && rawStock !== null && rawStock !== '') ? Number(rawStock) : 1;
+        const roomName = String(r['nombre']);
+
+        let overlappingCount = 0;
+        reservations.forEach(res => {
+          if (String(res['habitacion']).includes(roomName)) {
+            const resIn = new Date(String(res['entrada'])).getTime();
+            const resOut = new Date(String(res['salida'])).getTime();
+
+            if (inDate < resOut && outDate > resIn) {
+              const regex = new RegExp(roomName, 'g');
+              const matches = String(res['habitacion']).match(regex);
+              if (matches) overlappingCount += matches.length;
+            }
+          }
+        });
+        return { ...r, _availableStock: stock - overlappingCount };
+      }).filter(r => r._availableStock > 0);
+
+      // LÓGICA DE FILTRADO FAMILIAR
+      if (this.bookingSearch.includeFamily) {
+        if (this.bookingSearch.guests <= 3) {
+          rooms = rooms.filter(r => Number(r['huespedes']) >= 3 && Number(r['huespedes']) <= 6);
+        } else if (this.bookingSearch.guests === 4) {
+          rooms = rooms.filter(r => Number(r['huespedes']) >= 4 && Number(r['huespedes']) <= 6);
+        } else if (this.bookingSearch.guests >= 5) {
+          rooms = rooms.filter(r => Number(r['huespedes']) >= 6);
+        }
+      }
+      // Si no hay checkbox, no filtramos por familia, lo mostramos todo tal cual.
+
+      if (rooms.length === 0) {
+        setTimeout(() => {
+          this.adminBookingError = 'Lo siento, pero no hay más habitaciones disponibles para estas fechas.';
+          this.adminNoRoomsError = true;
+          this.adminBookingSubmitted = true;
+          this.cdr.detectChanges();
+        }, 0);
+        return;
+      }
+
+      this.adminAvailableRooms = rooms;
+      this.adminSelectedRooms = [];
+      this.adminBookingCapacity = 0;
+
+      this.adminBookingSubmitted = true;
+      this.adminShowCheckout = false;
+      this.cdr.detectChanges();
+    });
   }
 
-  toggleAdminRoom(room: any): void {
-    const idx = this.adminSelectedRooms.findIndex(r => r.id === room.id);
-    if (idx > -1) {
-      this.adminBookingCapacity -= Number(room.huespedes || 0);
-      this.adminSelectedRooms.splice(idx, 1);
-    } else {
-      if (this.adminBookingCapacity < this.bookingSearch.guests) {
-        this.adminSelectedRooms.push(room);
-        this.adminBookingCapacity += Number(room.huespedes || 0);
-      }
-    }
+  // --- LÓGICA PARA AÑADIR/QUITAR LA MISMA HABITACIÓN VARIAS VECES ---
+  getSelectedRoomCount(room: any): number {
+    return this.adminSelectedRooms.filter(r => r.id === room.id).length;
+  }
+
+  addAdminRoom(room: any): void {
+    if (this.adminBookingCapacity >= this.bookingSearch.guests) return;
+    if (this.getSelectedRoomCount(room) >= room._availableStock) return;
+
+    this.adminSelectedRooms.push(room);
+    this.adminBookingCapacity += Number(room.huespedes || 0);
     this.adminShowCheckout = this.adminBookingCapacity >= this.bookingSearch.guests;
   }
 
-  isRoomSelected(room: any): boolean {
-    return this.adminSelectedRooms.some(r => r.id === room.id);
-  }
-
-  goToAdminCheckout(): void {
-    if (this.adminBookingCapacity < this.bookingSearch.guests) {
-      this.adminBookingError = 'Capacidad insuficiente para los huéspedes requeridos.';
-      return;
+  removeAdminRoom(room: any): void {
+    const idx = this.adminSelectedRooms.findIndex(r => r.id === room.id);
+    if (idx > -1) {
+      this.adminSelectedRooms.splice(idx, 1);
+      this.adminBookingCapacity -= Number(room.huespedes || 0);
+      this.adminShowCheckout = this.adminBookingCapacity >= this.bookingSearch.guests;
     }
-    this.adminBookingError = '';
-    this.adminBookingStep = 3;
-    this.adminShowCheckout = true;
-    this.adminBookingValidationVisible = false;
   }
 
   get adminTotalBookingPrice(): number {

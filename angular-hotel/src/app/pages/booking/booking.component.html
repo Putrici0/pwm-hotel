@@ -4,178 +4,160 @@
   <div class="booking-hero row g-4 align-items-center">
     <div class="col-12 col-lg-7">
       <h1>Reserva tu estancia en Isla Dorada</h1>
-      <p>
-        Esta pagina ya queda preparada para conectarse a un CRUD real de reservas. Ahora mismo
-        guarda la reserva en Firestore dentro de la coleccion <strong>reservations</strong>.
-      </p>
+      <p>Vive una experiencia inolvidable en el paraíso. Gestiona tu reserva de forma fácil y segura.</p>
     </div>
     <div class="col-12 col-lg-5">
-      <img [src]="heroImage" alt="Piscina del hotel Isla Dorada" class="img-fluid w-100" referrerpolicy="no-referrer" />
+      <img [src]="heroImage" alt="Piscina Isla Dorada" class="img-fluid w-100" referrerpolicy="no-referrer" />
     </div>
   </div>
 
   <div class="booking-main-content-wrapper">
-    <div class="booking-grid-single-column">
-      <div class="panel card border-0 shadow-sm">
-        <div class="card-body">
-          <h2>Buscar disponibilidad</h2>
+    <div class="card border-0 bg-transparent">
+      <div class="card-body p-0">
+        <h2 class="mb-4">Buscar disponibilidad</h2>
 
-          <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
-            <div class="col-12 col-md-6">
-              <label class="form-label">Fecha de entrada</label>
-              <input type="date" formControlName="checkin" class="form-control" />
-            </div>
+        <form [formGroup]="searchForm" (ngSubmit)="searchAvailability()" class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de entrada</label>
+            <input type="date" formControlName="checkin" class="form-control" />
+          </div>
 
-            <div class="col-12 col-md-6">
-              <label class="form-label">Fecha de salida</label>
-              <input type="date" formControlName="checkout" class="form-control" />
-            </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label">Fecha de salida</label>
+            <input type="date" formControlName="checkout" class="form-control" />
+          </div>
 
-            <div class="col-12">
-              <label class="form-label">Numero de huespedes (Max. 6)</label>
-              <input type="number" formControlName="guests" min="1" max="6" class="form-control" />
-            </div>
+          <div class="col-12">
+            <label class="form-label">Número de huéspedes (Máx. 6)</label>
+            <input type="number" formControlName="guests" min="1" max="6" class="form-control" />
+          </div>
 
-            <div class="col-12">
-              <div class="form-check">
-                <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
-                <label class="form-check-label" for="includeFamilySuite">
-                  Incluir opciones familiares
-                </label>
-              </div>
-            </div>
-
-            <div class="col-12">
-              <div *ngIf="searchErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
-                {{ searchErrorMessage }}
-              </div>
-              <button type="submit" class="btn btn-primary w-100">Buscar habitaciones</button>
-            </div>
-          </form>
-
-          <div *ngIf="submitted" class="rooms-result mt-4">
-            <div id="room-selection-list" [style.display]="filteredRooms.length > 0 ? 'block' : 'none'" style="margin-top: 2rem;">
-              <h3 class="room-list-title">Habitaciones Disponibles</h3>
-              <div class="room-options-container">
-                <div id="booking-status-bar" [ngStyle]="{'background': statusBarBackground}"
-                     style="padding: 15px; text-align: center; margin-bottom: 20px; font-weight: bold; border-radius: 5px;">
-                  {{ statusBarMessage }}
-                </div>
-
-                <p *ngIf="filteredRooms.length === 0" class="no-rooms-message">
-                  No hay habitaciones disponibles para {{ searchForm.value.guests }} personas.
-                </p>
-                <article class="room-option-card" *ngFor="let room of filteredRooms">
-                  <div class="room-option-img" [style.backgroundImage]="'url(\'' + room.img + '\')'"></div>
-                  <div class="room-option-details">
-                    <div>
-                      <div class="room-option-title">{{ room.name }}</div>
-                      <div class="room-option-info">Capacidad: {{ room.maxGuests }} personas</div>
-                      <div class="room-option-price">
-                        {{ room.price }}€ / noche (Total: {{ room.price * totalNights }}€ por {{ totalNights }} noches)
-                      </div>
-                    </div>
-                    <button type="button" class="btn-select-room"
-                            [disabled]="(currentCapacity >= requestedGuests && !isRoomSelected(room))"
-                            [ngClass]="{'btn-selected': isRoomSelected(room), 'btn-disabled': (currentCapacity >= requestedGuests && !isRoomSelected(room))}"
-                            (click)="selectRoom(room)">
-                      {{ getRoomButtonText(room) }}
-                    </button>
-                  </div>
-                </article>
-              </div>
+          <div class="col-12">
+            <div class="form-check">
+              <input type="checkbox" formControlName="includeFamilySuite" class="form-check-input" id="includeFamilySuite" />
+              <label class="form-check-label" for="includeFamilySuite">
+                Activar modo familiar (Habitaciones de 3 a 6 plazas)
+              </label>
             </div>
           </div>
+
+          <div class="col-12">
+            <div *ngIf="searchErrorMessage" style="background-color: #dc3545; color: white; padding: 15px; margin-bottom: 20px; border-radius: 6px; font-weight: bold; text-align: center; border: 2px solid darkred;">
+              {{ searchErrorMessage }}
+            </div>
+            <button type="submit" class="btn btn-primary w-100 py-3 font-weight-bold">BUSCAR HABITACIONES</button>
+          </div>
+        </form>
+
+        <div *ngIf="submitted" class="mt-5">
+          <h3 class="room-list-title">Habitaciones Disponibles</h3>
+
+          <div id="booking-status-bar" [ngStyle]="{'background': statusBarBackground}"
+               style="padding: 15px; text-align: center; margin-bottom: 25px; font-weight: bold; border-radius: 5px; color: white;">
+            {{ statusBarMessage }}
+          </div>
+
+          <article class="room-option-card" *ngFor="let room of filteredRooms">
+            <div class="room-option-img" [style.backgroundImage]="'url(' + room.img + ')'"></div>
+            <div class="room-option-details">
+              <div>
+                <div class="room-option-title">{{ room.name }}</div>
+                <div class="room-option-info">Capacidad máxima: {{ room.maxGuests }} personas</div>
+                <div class="room-option-price">{{ room.price }}€ / noche</div>
+
+                <div *ngIf="room._availableStock <= 5" style="color: #dc3545; font-size: 0.85rem; font-weight: bold; margin-top: 5px;">
+                  ⚠️ ¡Solo quedan {{ room._availableStock }} disponibles!
+                </div>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 12px; margin-top: 15px;">
+                <button type="button" class="btn-select-room bg-danger text-white"
+                        *ngIf="getSelectedCount(room) > 0" (click)="removeRoom(room)">-</button>
+
+                <span *ngIf="getSelectedCount(room) > 0" style="font-weight: bold; color: var(--mar-navy); font-size: 1.1rem;">
+                  {{ getSelectedCount(room) }}
+                </span>
+
+                <button type="button" class="btn-select-room"
+                        [disabled]="currentCapacity >= requestedGuests || getSelectedCount(room) >= room._availableStock"
+                        (click)="addRoom(room)">
+                  + Añadir
+                </button>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </div>
 
   <div class="checkout-section-wrapper" *ngIf="showCheckoutSection">
-    <div class="panel card border-0 shadow-sm">
-      <div class="card-body">
-        <h2>Confirmar reserva</h2>
+    <h2>Confirmar reserva</h2>
 
-        <div class="booking-summary">
-          <div class="summary-item"><span>Check-in:</span> <span>{{ summaryCheckin }}</span></div>
-          <div class="summary-item"><span>Check-out:</span> <span>{{ summaryCheckout }}</span></div>
-          <div class="summary-item"><span>Noches:</span> <span>{{ totalNights }}</span></div>
-          <div class="summary-item"><span>Huéspedes:</span> <span>{{ requestedGuests }}</span></div>
-          <div class="summary-item"><span>Habitaciones:</span> <span>{{ selectedRoomNames }}</span></div>
-          <div class="summary-item total-price">
-            <span>Total a pagar:</span> <span>{{ totalBookingPrice }} €</span>
-          </div>
-        </div>
-
-        <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3" *ngIf="!bookingDone">
-          <div class="col-12 col-md-6">
-            <label class="form-label">Nombre <span class="text-danger">*</span></label>
-            <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="isCheckoutInvalid('nombre')" />
-            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('nombre')">Campo obligatorio.</div>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">Apellidos <span class="text-danger">*</span></label>
-            <input type="text" formControlName="apellidos" class="form-control" [class.is-invalid]="isCheckoutInvalid('apellidos')" />
-            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('apellidos')">Campo obligatorio.</div>
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">Telefono (Opcional)</label>
-            <input type="text" formControlName="telefono" class="form-control" />
-          </div>
-
-          <div class="col-12 col-md-6">
-            <label class="form-label">DNI / Pasaporte (Opcional)</label>
-            <input type="text" formControlName="dni" class="form-control" />
-          </div>
-
-          <div class="col-12">
-            <label class="form-label">Correo electronico <span class="text-danger">*</span></label>
-            <input type="email" formControlName="email" class="form-control" [class.is-invalid]="isCheckoutInvalid('email')" />
-            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('email')">Email no valido.</div>
-          </div>
-
-          <div class="col-12">
-            <div class="form-check">
-              <input type="checkbox" formControlName="privacy" class="form-check-input" id="privacyCheck" />
-              <label class="form-check-label" for="privacyCheck">
-                Acepto la politica de privacidad <span class="text-danger">*</span>
-              </label>
-            </div>
-            <div class="invalid-feedback d-block" *ngIf="isCheckoutInvalid('privacy')">Debes aceptar la politica de privacidad.</div>
-          </div>
-
-          <div class="col-12">
-            <div *ngIf="checkoutErrorMessage" class="alert alert-danger py-2 px-3 mb-2" role="alert">
-              {{ checkoutErrorMessage }}
-            </div>
-            <button type="submit" [disabled]="sending" class="btn btn-success w-100">
-              {{ sending ? 'Guardando...' : 'Confirmar reserva' }}
-            </button>
-          </div>
-        </form>
-
-        <div id="success-message" class="success-message" *ngIf="bookingDone">
-          <div class="success-icon">&#10004;</div>
-          <h3>Reserva registrada correctamente</h3>
-          <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
-          <button type="button" class="btn btn-primary w-100" (click)="closeSuccessModal()">Cerrar</button>
-        </div>
-
+    <div class="booking-summary">
+      <div class="summary-item"><span>Check-in:</span> <strong>{{ summaryCheckin }}</strong></div>
+      <div class="summary-item"><span>Check-out:</span> <strong>{{ summaryCheckout }}</strong></div>
+      <div class="summary-item"><span>Noches:</span> <strong>{{ totalNights }}</strong></div>
+      <div class="summary-item"><span>Huéspedes:</span> <strong>{{ requestedGuests }}</strong></div>
+      <div class="summary-item"><span>Habitaciones:</span> <strong>{{ selectedRoomNames }}</strong></div>
+      <div class="summary-item total-price">
+        <span>TOTAL A PAGAR:</span> <strong>{{ totalBookingPrice }} €</strong>
       </div>
     </div>
-  </div>
 
-  <div *ngIf="bookingDone" class="booking-modal" role="dialog" aria-modal="true" aria-labelledby="booking-success-title">
-    <div class="booking-modal__backdrop" (click)="closeSuccessModal()"></div>
-    <div class="booking-modal__content">
-      <div class="success-box__icon">OK</div>
-      <h3 id="booking-success-title">Reserva registrada correctamente</h3>
-      <p>Hemos guardado tu solicitud de reserva en el sistema.</p>
-      <button type="button" class="btn btn-primary w-100" (click)="closeSuccessModal()">Cerrar</button>
+    <form [formGroup]="checkoutForm" (ngSubmit)="confirmBooking()" class="row g-3" *ngIf="!bookingDone">
+      <div class="col-12 col-md-6">
+        <label class="form-label">Nombre *</label>
+        <input type="text" formControlName="nombre" class="form-control" [class.is-invalid]="isCheckoutInvalid('nombre')" />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">Apellidos *</label>
+        <input type="text" formControlName="apellidos" class="form-control" [class.is-invalid]="isCheckoutInvalid('apellidos')" />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">Teléfono (Opcional)</label>
+        <input type="text" formControlName="telefono" class="form-control" />
+      </div>
+
+      <div class="col-12 col-md-6">
+        <label class="form-label">DNI / Pasaporte (Opcional)</label>
+        <input type="text" formControlName="dni" class="form-control" />
+      </div>
+
+      <div class="col-12">
+        <label class="form-label">Correo electrónico *</label>
+        <input type="email" formControlName="email" class="form-control" [class.is-invalid]="isCheckoutInvalid('email')" />
+      </div>
+
+      <div class="col-12">
+        <div class="form-check">
+          <input type="checkbox" formControlName="privacy" class="form-check-input" id="privacyCheck" />
+          <label class="form-check-label" for="privacyCheck">
+            Acepto la política de privacidad *
+          </label>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div *ngIf="checkoutErrorMessage" class="alert alert-danger font-weight-bold">
+          {{ checkoutErrorMessage }}
+        </div>
+        <button type="submit" [disabled]="sending" class="btn btn-success w-100 py-3 font-weight-bold">
+          {{ sending ? 'PROCESANDO...' : 'CONFIRMAR RESERVAHORA' }}
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="bookingDone" class="text-center py-4">
+      <div style="font-size: 4rem; color: #27ae60;">✔</div>
+      <h3>¡Reserva completada!</h3>
+      <p>Tu estancia en Isla Dorada ha sido registrada con éxito. Te esperamos.</p>
+      <button type="button" class="btn btn-primary px-5" (click)="closeSuccessModal()">ENTENDIDO</button>
     </div>
   </div>
+
 </section>
 
 <app-footer></app-footer>
