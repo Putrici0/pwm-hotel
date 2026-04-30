@@ -10,13 +10,17 @@
   </div>
 
   <div class="cards-grid">
-    <article class="service-card" *ngFor="let item of services">
+    <a class="service-card" *ngFor="let item of services" [routerLink]="item.route" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
       <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
       <div class="service-card__body">
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
+
+        <div style="margin-top: 1rem; color: var(--mar-navy); font-weight: bold; text-decoration: underline;">
+          Descubrir más
+        </div>
       </div>
-    </article>
+    </a>
   </div>
 </section>
 
