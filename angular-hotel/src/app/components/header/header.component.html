@@ -34,10 +34,10 @@
 
       <li class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen">
         <div class="dropdown-trigger" style="display: flex; align-items: center;">
-          <a class="nav-link" routerLink="/services" (click)="closeMenu()" style="padding-right: 5px;">
+          <a class="nav-link" routerLink="/services" (click)="closeMenu()" style="padding-right: 2px;">
             Servicios
           </a>
-          <button type="button" (click)="toggleServicesDropdown($event)" style="background: transparent; border: none; padding: 0.5rem; cursor: pointer; color: inherit; display: flex; align-items: center;">
+          <button class="nav-link" type="button" (click)="toggleServicesDropdown($event)" style="background: transparent; border: none; padding: 0.5rem; cursor: pointer; display: flex; align-items: center;">
             <span class="dropdown-caret">▾</span>
           </button>
         </div>
