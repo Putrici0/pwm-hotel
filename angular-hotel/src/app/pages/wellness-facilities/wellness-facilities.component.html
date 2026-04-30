@@ -9,15 +9,22 @@
     </p>
   </div>
 
-  <div class="cards-grid row g-4" *ngIf="facilities$ | async as facilities">
-    <article class="facility-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let item of facilities">
-      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-      <div class="facility-card__body card-body">
+  <div class="facility-list" *ngIf="facilities$ | async as facilities">
+    <article class="facility-list-item" *ngFor="let item of facilities">
+      <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
+      <div class="facility-list-item__body">
         <h2>{{ item.title }}</h2>
         <p>{{ item.description }}</p>
       </div>
     </article>
   </div>
 </section>
+
+<div class="image-modal-overlay" [class.active]="!!selectedImageModal" (click)="closeImageModal()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <button type="button" class="image-modal-close" (click)="closeImageModal()">&times;</button>
+    <img [src]="selectedImageModal" *ngIf="selectedImageModal" alt="Vista ampliada">
+  </div>
+</div>
 
 <app-footer></app-footer>

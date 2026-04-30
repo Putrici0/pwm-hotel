@@ -9,16 +9,26 @@
     </p>
   </div>
 
-  <div class="cards-grid row g-4" *ngIf="activities$ | async as activities">
-    <article class="activity-card card h-100 col-12 col-md-6 col-xl-4" *ngFor="let activity of activities">
-      <img [src]="activity.imageUrl" [alt]="activity.title" referrerpolicy="no-referrer" />
-      <div class="activity-card__body card-body">
+  <div class="activity-list" *ngIf="activities$ | async as activities">
+    <article class="activity-list-item" *ngFor="let activity of activities">
+      <img [src]="activity.imageUrl" [alt]="activity.title" class="zoomable-img" (click)="openImageModal(activity.imageUrl)" referrerpolicy="no-referrer" />
+
+      <div class="activity-list-item__body">
         <h2>{{ activity.title }}</h2>
         <p>{{ activity.description }}</p>
-        <span class="badge rounded-pill text-bg-light border">{{ activity.duration }}</span>
+        <div>
+          <span class="activity-badge">{{ activity.duration }}</span>
+        </div>
       </div>
     </article>
   </div>
 </section>
+
+<div class="image-modal-overlay" [class.active]="!!selectedImageModal" (click)="closeImageModal()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <button type="button" class="image-modal-close" (click)="closeImageModal()">&times;</button>
+    <img [src]="selectedImageModal" *ngIf="selectedImageModal" alt="Vista ampliada">
+  </div>
+</div>
 
 <app-footer></app-footer>

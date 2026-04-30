@@ -22,6 +22,9 @@ interface ActivityItem {
 export class ActivitiesComponent {
   private readonly adminDataService = inject(AdminDataService);
 
+  // Variable para controlar la imagen ampliada
+  selectedImageModal: string | null = null;
+
   readonly activities$ = this.adminDataService.watchSection('activities').pipe(
     map((activities) =>
       activities.map((activity) => ({
@@ -35,5 +38,16 @@ export class ActivitiesComponent {
 
   constructor() {
     void this.adminDataService.ensureInitialized();
+  }
+
+  // Funciones para el modal de la foto grande
+  openImageModal(url: string): void {
+    if (url) {
+      this.selectedImageModal = url;
+    }
+  }
+
+  closeImageModal(): void {
+    this.selectedImageModal = null;
   }
 }

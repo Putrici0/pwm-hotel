@@ -21,6 +21,9 @@ interface FacilityItem {
 export class WellnessFacilitiesComponent {
   private readonly adminDataService = inject(AdminDataService);
 
+  // Variable para controlar la imagen ampliada
+  selectedImageModal: string | null = null;
+
   readonly facilities$ = this.adminDataService.watchSection('wellness').pipe(
     map((facilities) =>
       facilities.map((item) => ({
@@ -33,5 +36,16 @@ export class WellnessFacilitiesComponent {
 
   constructor() {
     void this.adminDataService.ensureInitialized();
+  }
+
+  // Funciones para abrir y cerrar la foto grande
+  openImageModal(url: string): void {
+    if (url) {
+      this.selectedImageModal = url;
+    }
+  }
+
+  closeImageModal(): void {
+    this.selectedImageModal = null;
   }
 }

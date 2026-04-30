@@ -14,16 +14,16 @@
       </p>
     </div>
     <div class="hero-mini__media col-12 col-lg-5">
-    <img [src]="menuImage" alt="Restaurante del hotel" class="img-fluid w-100" referrerpolicy="no-referrer" />
+      <img [src]="menuImage" alt="Restaurante del hotel" class="img-fluid w-100" referrerpolicy="no-referrer" />
     </div>
   </div>
 
   <div class="menu-section">
     <h2>Entrantes</h2>
-    <div class="dish-grid row g-4" *ngIf="starters$ | async as starters">
-      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of starters">
-                <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-        <div class="dish-card__body card-body">
+    <div class="dish-list" *ngIf="starters$ | async as starters">
+      <article class="dish-list-item" *ngFor="let item of starters">
+        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
+        <div class="dish-list-item__body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -33,10 +33,10 @@
 
   <div class="menu-section">
     <h2>Primeros platos</h2>
-    <div class="dish-grid row g-4" *ngIf="firstDishes$ | async as firstDishes">
-      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of firstDishes">
-                <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-        <div class="dish-card__body card-body">
+    <div class="dish-list" *ngIf="firstDishes$ | async as firstDishes">
+      <article class="dish-list-item" *ngFor="let item of firstDishes">
+        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
+        <div class="dish-list-item__body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -46,10 +46,10 @@
 
   <div class="menu-section">
     <h2>Segundos platos</h2>
-    <div class="dish-grid row g-4" *ngIf="secondDishes$ | async as secondDishes">
-      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of secondDishes">
-                <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-        <div class="dish-card__body card-body">
+    <div class="dish-list" *ngIf="secondDishes$ | async as secondDishes">
+      <article class="dish-list-item" *ngFor="let item of secondDishes">
+        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
+        <div class="dish-list-item__body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -59,10 +59,10 @@
 
   <div class="menu-section">
     <h2>Postres</h2>
-    <div class="dish-grid row g-4" *ngIf="desserts$ | async as desserts">
-      <article class="dish-card card h-100 col-12 col-md-6 col-xl-3" *ngFor="let item of desserts">
-                <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-        <div class="dish-card__body card-body">
+    <div class="dish-list" *ngIf="desserts$ | async as desserts">
+      <article class="dish-list-item" *ngFor="let item of desserts">
+        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
+        <div class="dish-list-item__body">
           <h3>{{ item.title }}</h3>
           <p>{{ item.description }}</p>
         </div>
@@ -70,5 +70,12 @@
     </div>
   </div>
 </section>
+
+<div class="image-modal-overlay" [class.active]="!!selectedImageModal" (click)="closeImageModal()">
+  <div class="image-modal-content" (click)="$event.stopPropagation()">
+    <button type="button" class="image-modal-close" (click)="closeImageModal()">&times;</button>
+    <img [src]="selectedImageModal" *ngIf="selectedImageModal" alt="Vista ampliada">
+  </div>
+</div>
 
 <app-footer></app-footer>

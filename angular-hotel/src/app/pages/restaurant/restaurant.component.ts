@@ -21,8 +21,10 @@ interface Dish {
 export class RestaurantComponent {
   private readonly adminDataService = inject(AdminDataService);
 
-  menuImage =
-    'https://st4.depositphotos.com/12982378/30973/i/600/depositphotos_309733034-stock-photo-selective-focus-surprised-man-holding.jpg';
+  menuImage = 'https://st4.depositphotos.com/12982378/30973/i/600/depositphotos_309733034-stock-photo-selective-focus-surprised-man-holding.jpg';
+
+  // Variable para controlar la imagen ampliada
+  selectedImageModal: string | null = null;
 
   private readonly dishes$ = this.adminDataService.watchSection('restaurant').pipe(
     map((rows) =>
@@ -42,5 +44,16 @@ export class RestaurantComponent {
 
   constructor() {
     void this.adminDataService.ensureInitialized();
+  }
+
+  // Funciones para abrir y cerrar el visor de imágenes
+  openImageModal(url: string): void {
+    if (url) {
+      this.selectedImageModal = url;
+    }
+  }
+
+  closeImageModal(): void {
+    this.selectedImageModal = null;
   }
 }
