@@ -19,16 +19,16 @@ interface CardItem {
 })
 export class HomeComponent {
   introImage =
-    'https://st.depositphotos.com/1001203/3353/i/600/depositphotos_33534605-stock-photo-swimming-pool-and-building-of.jpg';
+    'https://media.jet2.com/is/image/jet2/LPA_70514_Seaside_Palm_Beach_Hotel_0822_12?';
 
   islandImage =
-    'https://st4.depositphotos.com/12052680/38846/i/600/depositphotos_388465436-stock-photo-landscape-puerto-mogan-gran-canaria.jpg';
+    'https://www.espanafascinante.com/media/espanafascinante/images/2023/06/22/20230622081318425979.jpg';
 
   locationImage =
-    'https://st3.depositphotos.com/1005233/19549/i/600/depositphotos_195497640-stock-photo-view-businessman-holding-rendering-pin.jpg';
+    'https://i.etsystatic.com/6481221/r/il/7b8821/2261914167/il_fullxfull.2261914167_b2vu.jpg';
 
   roomsImage =
-    'https://st3.depositphotos.com/9880800/16871/i/600/depositphotos_168711620-stock-photo-exhausted-businessman-lying-on-bed.jpg';
+    'https://www.hotelesrh.com/images/content/1/c318_12.jpg';
 
   services: CardItem[] = [
     {
@@ -36,7 +36,7 @@ export class HomeComponent {
       description:
         'Espacios de relax, piscina y zonas pensadas para el bienestar durante toda la estancia.',
       imageUrl:
-        'https://st5.depositphotos.com/20397274/81073/i/600/depositphotos_810735234-stock-photo-german-word-aktien-word-written.jpg',
+        'https://chandonrealestate.com/wp-content/uploads/2019/04/spa-murcia.jpg',
       link: '/wellness-facilities'
     },
     {
@@ -44,7 +44,7 @@ export class HomeComponent {
       description:
         'Cocina equilibrada, propuestas variadas y una experiencia gastronomica cuidada.',
       imageUrl:
-        'https://st5.depositphotos.com/42736210/69761/i/600/depositphotos_697613704-stock-photo-chic-scandinavian-ambiance-cozy-elegant.jpg',
+        'https://www.hotelesdunas.com/data/webp/cropped_wf5tvvq-5c88c3b6e63255dfd18f08811fc3a216.webp',
       link: '/restaurant'
     },
     {
@@ -52,7 +52,7 @@ export class HomeComponent {
       description:
         'Planes para descubrir la isla, desconectar y completar la experiencia mas alla del hotel.',
       imageUrl:
-        'https://st.depositphotos.com/1212973/2035/i/600/depositphotos_20355519-stock-photo-active-lifestyle-concept.jpg',
+        'https://www.grancanaria.com/turismo/fileadmin/diseno2014/img/wellness/cabeceras_estaticas/calma.jpg',
       link: '/activities'
     }
   ];
@@ -63,21 +63,21 @@ export class HomeComponent {
       description:
         'Trabajamos para optimizar el consumo energetico con criterios de sostenibilidad y mantenimiento responsable.',
       imageUrl:
-        'https://st5.depositphotos.com/17357706/64422/i/600/depositphotos_644221886-stock-photo-environmental-protection-renewable-sustainable-energy.jpg'
+        'https://asefapi.es/wp-content/uploads/2022/05/istockphoto-1311617386-170667a.jpg'
     },
     {
       title: 'Consumo responsable de agua',
       description:
         'Promovemos un uso racional del agua mediante habitos de ahorro y sistemas de control del consumo.',
       imageUrl:
-        'https://static4.depositphotos.com/1015060/494/i/600/depositphotos_4949128-stock-photo-child-hands-holding-globe-green.jpg'
+        'https://www.sallo.es/wp-content/themes/theme_sallo/img-cont/header.jpg'
     },
     {
       title: 'Gestion de residuos',
       description:
         'Fomentamos la separacion y correcta gestion de residuos para reducir el impacto ambiental del alojamiento.',
       imageUrl:
-        'https://st.depositphotos.com/1229718/3570/i/600/depositphotos_35703041-stock-photo-recycle-garbage-concept.jpg'
+        'https://medicinagaditana.es/wp-content/uploads/2019/06/medio-ambiente.jpg'
     }
   ];
 }
