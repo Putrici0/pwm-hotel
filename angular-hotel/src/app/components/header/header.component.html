@@ -33,9 +33,12 @@
       </li>
 
       <li class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen">
-        <div class="dropdown-trigger">
-          <button class="nav-link nav-link--dropdown" type="button" (click)="toggleServicesDropdown($event)">
-            Servicios <span class="dropdown-caret">▾</span>
+        <div class="dropdown-trigger" style="display: flex; align-items: center;">
+          <a class="nav-link" routerLink="/services" (click)="closeMenu()" style="padding-right: 5px;">
+            Servicios
+          </a>
+          <button type="button" (click)="toggleServicesDropdown($event)" style="background: transparent; border: none; padding: 0.5rem; cursor: pointer; color: inherit; display: flex; align-items: center;">
+            <span class="dropdown-caret">▾</span>
           </button>
         </div>
 
@@ -80,4 +83,4 @@
     {{ flashMessage }}
     <button type="button" class="btn-close" aria-label="Close" (click)="closeFlash()"></button>
   </div>
-</div>
+</div>\
