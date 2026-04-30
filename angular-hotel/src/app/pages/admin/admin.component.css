@@ -1,9 +1,10 @@
-/* admin-panel.css restaurado */
+/* admin-panel.css restaurado y 100% RESPONSIVE */
 
 /* FUENTES Y COLORES GLOBALES DEL ADMIN */
 .admin-dashboard-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 1200px; /* Un máximo para que no se vea infinito en pantallas gigantes */
+  margin: 0 auto; /* Lo centramos */
   padding: 1rem 2rem;
   box-sizing: border-box;
 }
@@ -24,14 +25,15 @@
   font-size: 0.95em;
   line-height: 1.4;
   white-space: normal;
-  display: inline-block;
-  max-width: 400px;
+  display: block; /* Cambiado a block para que ocupe bien el espacio */
+  max-width: 350px; /* Un poco más estrecho para móviles */
+  word-wrap: break-word; /* Para que rompa las palabras largas si hace falta */
 }
 
 /* HEADER DEL ADMIN */
 .admin-header-section {
   text-align: center;
-  padding: 2rem;
+  padding: 2rem 1rem;
   background-color: var(--mar-navy);
   color: var(--arena-clara);
 }
@@ -39,23 +41,26 @@
 .admin-header-section h1 {
   color: var(--arena-sable);
   margin-bottom: 0.5rem;
+  font-size: clamp(1.8rem, 4vw, 2.5rem); /* Se adapta al tamaño de la pantalla */
 }
 
-/* CONTENEDOR BEIGE COMPLETO */
+/* CONTENEDOR BEIGE COMPLETO - RESPONSIVE SCROLL */
 .table-sand-wrapper {
   background-color: var(--arena-clara);
-  padding: 2rem;
+  padding: 1.5rem; /* Un poco menos de padding interior */
   border-radius: var(--radius-card);
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   margin-bottom: 2rem;
   width: 100%;
   box-sizing: border-box;
-  overflow-x: auto;
+  overflow-x: auto; /* ESTO ES LA MAGIA: Si la tabla es muy ancha, sale barra de scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* Scroll suave en móviles iOS */
 }
 
 /* TABLA AL 100% */
 .admin-table {
   width: 100%;
+  min-width: 800px; /* Forzamos un mínimo para que no se aplaste. Si no cabe, hace scroll */
   border-collapse: collapse;
   background: var(--blanco-puro);
   border-radius: 8px;
@@ -63,22 +68,22 @@
 }
 
 .admin-table th, .admin-table td {
-  padding: 1.5rem 1rem;
+  padding: 1.2rem 1rem; /* Ajustado */
   text-align: left;
   border-bottom: 1px solid var(--arena-clara);
   vertical-align: middle;
-  white-space: nowrap;
 }
 
 .admin-table th {
   background-color: var(--mar-navy);
   color: var(--blanco-puro);
+  white-space: nowrap; /* Títulos siempre en una línea */
 }
 
 /* IMÁGENES TABLA */
 .room-thumbnail {
-  width: 90px;
-  height: 70px;
+  width: 80px;
+  height: 60px;
   object-fit: cover;
   border-radius: 4px;
   border: 2px solid var(--arena-sable);
@@ -105,6 +110,8 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
+  padding: 1rem; /* Para que en móvil no pegue a los bordes */
+  box-sizing: border-box;
 }
 
 .image-modal-overlay.active, .custom-modal-overlay.active {
@@ -114,13 +121,13 @@
 
 .image-modal-content {
   position: relative;
-  max-width: 90%;
+  max-width: 100%;
   max-height: 90vh;
 }
 
 .image-modal-content img {
   max-width: 100%;
-  max-height: 90vh;
+  max-height: 85vh;
   border-radius: 8px;
   box-shadow: 0 10px 25px rgba(0,0,0,0.5);
   display: block;
@@ -135,46 +142,43 @@
   background: none;
   border: none;
   cursor: pointer;
+  line-height: 1;
 }
 
-/* ¡AQUÍ ESTÁ LA MAGIA DEL SCROLL EN EL MODAL DE EDICIÓN! */
+/* MAGIA DEL SCROLL EN EL MODAL DE EDICIÓN! */
 .custom-modal-content {
   background-color: var(--blanco-puro);
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: var(--radius-card);
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   text-align: center;
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  max-height: 85vh; /* Evita que crezca más allá de la pantalla */
-  overflow-y: auto; /* Activa el scroll interno */
+  max-height: 85vh;
+  overflow-y: auto;
 }
 
-/* Estilo para la barrita de scroll del modal */
-.custom-modal-content::-webkit-scrollbar {
-  width: 8px;
-}
-.custom-modal-content::-webkit-scrollbar-thumb {
-  background-color: var(--arena-sable);
-  border-radius: 4px;
-}
+.custom-modal-content::-webkit-scrollbar { width: 8px; }
+.custom-modal-content::-webkit-scrollbar-thumb { background-color: var(--arena-sable); border-radius: 4px; }
 
 .custom-modal-actions {
   display: flex;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 1rem;
   margin-top: 1.5rem;
+  flex-wrap: wrap; /* Si los botones no caben, se apilan */
 }
 
 /* FORMULARIO BÁSICO (No Booking) */
 .admin-form-card {
   background-color: var(--arena-clara);
-  padding: 2.5rem;
+  padding: 2rem;
   border-radius: var(--radius-card);
   max-width: 800px;
   margin: 0 auto;
   width: 100%;
   box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  box-sizing: border-box;
 }
 
 .admin-form-card h3 {
@@ -201,6 +205,7 @@
   background-color: var(--blanco-puro);
   color: var(--mar-navy);
   font-weight: bold;
+  box-sizing: border-box;
 }
 
 .edit-textarea {
@@ -208,16 +213,17 @@
   min-height: 100px;
 }
 
+/* FILTROS */
 .admin-filter-row {
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin-bottom: 1.5rem;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /* Clave para móviles */
 }
 
 .filter-btn {
-  padding: 0.6rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   border: 2px solid var(--mar-navy);
   background: white;
   color: var(--mar-navy);
@@ -225,6 +231,8 @@
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
+  flex-grow: 1; /* En móviles intentan ocupar el mismo ancho */
+  text-align: center;
 }
 
 .filter-btn:hover { background: var(--arena-sable); }
@@ -232,7 +240,7 @@
 
 .admin-manage-form {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Adaptable */
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -240,17 +248,18 @@
 /* PESTAÑAS (TABS) */
 .admin-tabs-wrapper {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.2rem;
   margin-bottom: 2rem;
   justify-content: center;
   border-bottom: 2px solid var(--arena-clara);
+  flex-wrap: wrap; /* Pestañas apilables en móvil */
 }
 
 .admin-tab-btn {
   background: transparent;
   border: none;
-  font-size: 1.1rem;
-  padding: 0.8rem 1.5rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem); /* Texto adaptable */
+  padding: 0.8rem 1rem;
   cursor: pointer;
   border-radius: 8px 8px 0 0;
   border-bottom: 3px solid transparent;
@@ -263,6 +272,7 @@
   border-bottom: 3px solid var(--mar-navy);
 }
 
+/* BOTONES GENERALES */
 .toggle-form-wrap { text-align: center; }
 
 .admin-btn-toggle-form {
@@ -276,8 +286,9 @@
   margin: 1rem auto;
   text-transform: uppercase;
   transition: all 0.3s;
+  width: 100%; /* Botón grande en móviles */
+  max-width: 300px;
 }
-
 .admin-btn-toggle-form.close-state { background-color: #dc3545; }
 
 .admin-form-wrapper {
@@ -287,11 +298,21 @@
 }
 .admin-form-wrapper.hidden { display: none; }
 
-/* BOTONES GENERALES */
 .admin-btn-submit { background-color: var(--mar-navy); color: white; border: none; padding: 1rem; border-radius: 6px; font-size: 1.1rem; cursor: pointer; width: 100%; margin-top: 1rem; text-transform: uppercase; }
-.admin-btn-save { background-color: #28a745; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+.admin-btn-save { background-color: #28a745; color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 4px; cursor: pointer; width: 100%; }
 .admin-btn-edit { background-color: var(--arena-sable); color: var(--mar-navy); border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
-.admin-btn-delete, .admin-btn-cancel { background-color: #dc3545; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 4px; cursor: pointer; }
+.admin-btn-delete, .admin-btn-cancel { background-color: #dc3545; color: white; border: none; padding: 0.8rem 1.2rem; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; }
+
+/* Para alinear los botones de Editar y Borrar en la tabla */
+.action-buttons-wrapper {
+  display: flex;
+  gap: 0.5rem;
+}
+.action-buttons-wrapper button {
+  width: auto; /* Estos NO ocupan todo el ancho */
+  padding: 0.5rem 1rem;
+}
+
 .btn-primary { background-color: var(--arena-sable); color: var(--mar-navy); border: none; cursor: pointer; }
 .btn-primary:hover { background-color: var(--arena-hover); color: var(--mar-navy); }
 .btn-success { background-color: var(--arena-sable); color: var(--mar-navy); border: none; cursor: pointer; }
@@ -306,6 +327,7 @@
   border-radius: var(--radius-card);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   color: var(--arena-sable);
+  box-sizing: border-box;
 }
 
 .booking-main-content-wrapper h2, .booking-main-content-wrapper label {
@@ -360,7 +382,7 @@
 }
 
 .room-option-img {
-  width: 150px;
+  width: 180px;
   background-color: #eee;
   background-size: cover;
   background-position: center;
@@ -368,7 +390,7 @@
 }
 
 .room-option-details {
-  padding: 1rem;
+  padding: 1.2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -428,6 +450,7 @@
   border-radius: var(--radius-card);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   color: var(--mar-navy);
+  box-sizing: border-box;
 }
 
 .checkout-section-wrapper h2 {
@@ -470,8 +493,47 @@
   box-shadow: 0 0 0 0.25rem rgba(212, 196, 168, 0.25);
 }
 
+/* --- MEDIA QUERIES RESPONSIVE (LA MAGIA MÓVIL) --- */
 @media (max-width: 900px) {
   .admin-dashboard-container { padding: 1rem; }
+  .table-sand-wrapper { padding: 1rem; }
+
+  .booking-main-content-wrapper,
+  .checkout-section-wrapper,
+  .admin-form-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
   .room-option-card { flex-direction: column; }
   .room-option-img { width: 100%; height: 200px; }
+  .btn-select-room { align-self: stretch; text-align: center; }
+
+  .custom-modal-content { padding: 1.5rem; }
+
+  /* Botones del modal de acción (Cancelar / Eliminar) */
+  .custom-modal-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 576px) {
+  .admin-header-section { padding: 1.5rem 1rem; }
+
+  .admin-tab-btn {
+    flex-grow: 1; /* Pestañas ocupan todo el ancho si hace falta */
+    text-align: center;
+  }
+
+  /* Los botones de formulario a un 100% de ancho para que sean fáciles de tocar */
+  .admin-btn-toggle-form,
+  .admin-btn-submit {
+    max-width: 100%;
+  }
+
+  .booking-summary { padding: 1rem; }
+
+  /* Ajuste de fuentes para que no saturen la pantalla pequeña */
+  .admin-form-card h3, .checkout-section-wrapper h2 { font-size: 1.5rem; }
 }
