@@ -148,6 +148,7 @@ La aplicacion maneja dos roles:
 - **Admin**: `admin@ulpgc.es`  
 - **Cliente 1**: `cliente1@ulpgc.es`  
 - **Cliente 2**: `cliente2@ulpgc.es`  
+- **Cliente 3**: `cliente3@ulpgc.es`
 - **Contrasena (todos)**: `pruebaPWM26?`
 
 ### Ejemplo completo: introducir y visualizar datos
