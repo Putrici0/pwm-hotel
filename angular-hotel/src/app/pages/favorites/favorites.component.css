@@ -3,6 +3,33 @@
   margin: 1.25rem auto 2rem;
 }
 
+.favorite-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d8dfe2;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.favorite-list li {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #edf1f3;
+}
+
+.favorite-list li:last-child {
+  border-bottom: 0;
+}
+
+.favorite-list a {
+  color: #123b44;
+  text-decoration: none;
+}
+
+.favorite-list a:hover {
+  text-decoration: underline;
+}
+
 .empty {
   margin-top: 1rem;
   color: #4f6166;

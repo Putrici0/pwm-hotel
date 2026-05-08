@@ -3,6 +3,10 @@
   margin: 1.25rem auto 2rem;
 }
 
+.detail-page h1 {
+  margin-bottom: 1rem;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -17,4 +21,16 @@ img {
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 1rem;
+}
+
+.fav-btn {
+  border: 0;
+  background: #c93535;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }

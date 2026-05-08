@@ -1,33 +1,29 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <div class="detail-page" *ngIf="dish$ | async as dish; else notFound">
-    <ion-toolbar>
-      <ion-title>Detalle del plato</ion-title>
-    </ion-toolbar>
+<div class="detail-page" *ngIf="dish$ | async as dish; else notFound">
+  <h1>Detalle del plato</h1>
 
-    <a routerLink="/menu" class="back-link">
-      <ion-icon name="arrow-back"></ion-icon>
-      Volver al menu
-    </a>
+  <a routerLink="/menu" class="back-link">
+    <ion-icon name="arrow-back"></ion-icon>
+    Volver al menu
+  </a>
 
-    <h1>{{ dish.title }}</h1>
-    <img *ngIf="dish.imageUrl" [src]="dish.imageUrl" [alt]="dish.title" referrerpolicy="no-referrer" />
-    <p>{{ dish.description || 'Sin descripcion disponible.' }}</p>
-    <p><strong>Categoria:</strong> {{ dish.category || 'Sin categoria' }}</p>
+  <h2>{{ dish.title }}</h2>
+  <img *ngIf="dish.imageUrl" [src]="dish.imageUrl" [alt]="dish.title" referrerpolicy="no-referrer" />
+  <p>{{ dish.description || 'Sin descripcion disponible.' }}</p>
+  <p><strong>Categoria:</strong> {{ dish.category || 'Sin categoria' }}</p>
 
-    <ion-button color="danger" (click)="toggleFavorite(dish.id)">
-      <ion-icon slot="start" [name]="isFavorite(dish.id) ? 'heart' : 'heart-outline'"></ion-icon>
-      {{ isFavorite(dish.id) ? 'Quitar favorito' : 'Anadir a favoritos' }}
-    </ion-button>
+  <button type="button" class="fav-btn" (click)="toggleFavorite(dish.id)">
+    <ion-icon slot="start" [name]="isFavorite(dish.id) ? 'heart' : 'heart-outline'"></ion-icon>
+    {{ isFavorite(dish.id) ? 'Quitar favorito' : 'Anadir a favoritos' }}
+  </button>
+</div>
+
+<ng-template #notFound>
+  <div class="detail-page">
+    <p>No se encontro el plato.</p>
+    <a routerLink="/menu">Volver</a>
   </div>
-
-  <ng-template #notFound>
-    <div class="detail-page">
-      <p>No se encontro el plato.</p>
-      <a routerLink="/menu">Volver</a>
-    </div>
-  </ng-template>
-</ion-content>
+</ng-template>
 
 <app-footer></app-footer>

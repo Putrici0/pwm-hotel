@@ -1,16 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import {
-  IonButton,
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonTitle,
-  IonToolbar
-} from '@ionic/angular/standalone';
+import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -27,13 +18,6 @@ import { MenuService } from '../../services/menu.service';
     RouterLink,
     HeaderComponent,
     FooterComponent,
-    IonContent,
-    IonToolbar,
-    IonTitle,
-    IonList,
-    IonItem,
-    IonLabel,
-    IonButton,
     IonIcon
   ],
   templateUrl: './menu.component.html',

@@ -3,6 +3,10 @@
   margin: 1.25rem auto 2rem;
 }
 
+.restaurant-page h1 {
+  margin-bottom: 1rem;
+}
+
 .intro {
   margin: 1rem 0;
   color: #344b52;
@@ -20,4 +24,44 @@
 
 .favorites-link:hover {
   text-decoration: underline;
+}
+
+.dish-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #d8dfe2;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.dish-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #edf1f3;
+}
+
+.dish-item:last-child {
+  border-bottom: 0;
+}
+
+.dish-link {
+  color: #123b44;
+  text-decoration: none;
+}
+
+.dish-link:hover {
+  text-decoration: underline;
+}
+
+.fav-btn {
+  border: 0;
+  background: transparent;
+  color: #c93535;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
 }

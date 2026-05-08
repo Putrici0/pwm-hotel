@@ -1,20 +1,16 @@
 <app-header></app-header>
 
-<ion-content [fullscreen]="true">
-  <div class="favorites-page">
-    <ion-toolbar>
-      <ion-title>Mis favoritos</ion-title>
-    </ion-toolbar>
+<div class="favorites-page">
+  <h1>Mis favoritos</h1>
 
-    <ion-list lines="full" *ngIf="favorites$ | async as favorites">
-      <ion-item *ngFor="let dish of favorites" [routerLink]="['/dish-page', dish.id]" detail="true">
-        <ion-label>{{ dish.title }}</ion-label>
-      </ion-item>
-      <p class="empty" *ngIf="favorites.length === 0">
-        Aun no tienes platos favoritos.
-      </p>
-    </ion-list>
-  </div>
-</ion-content>
+  <ul class="favorite-list" *ngIf="favorites$ | async as favorites">
+    <li *ngFor="let dish of favorites">
+      <a [routerLink]="['/dish-page', dish.id]">{{ dish.title }}</a>
+    </li>
+    <p class="empty" *ngIf="favorites.length === 0">
+      Aun no tienes platos favoritos.
+    </p>
+  </ul>
+</div>
 
 <app-footer></app-footer>
