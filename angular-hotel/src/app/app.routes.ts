@@ -3,8 +3,8 @@ import { HomeComponent } from './pages/home/home.component';
 import BookingComponent from './pages/booking/booking.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { ServicesComponent } from './pages/services/services.component';
-import { RestaurantComponent } from './pages/restaurant/restaurant.component';
-import { DishDetailComponent } from './pages/dish-detail/dish-detail.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { DishPageComponent } from './pages/dish-page/dish-page.component';
 import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { WellnessFacilitiesComponent } from './pages/wellness-facilities/wellness-facilities.component';
 import { ActivitiesComponent } from './pages/activities/activities.component';
@@ -22,8 +22,10 @@ export const routes: Routes = [
   { path: 'booking', component: BookingComponent, canActivate: [accountGuard] },
   { path: 'rooms', component: RoomsComponent },
   { path: 'services', component: ServicesComponent },
-  { path: 'restaurant', component: RestaurantComponent },
-  { path: 'restaurant/:id', component: DishDetailComponent },
+  { path: 'menu', component: MenuComponent },
+  { path: 'dish-page/:id', component: DishPageComponent },
+  { path: 'restaurant', redirectTo: 'menu', pathMatch: 'full' },
+  { path: 'restaurant/:id', redirectTo: 'menu' },
   { path: 'favorites', component: FavoritesComponent, canActivate: [accountGuard] },
   { path: 'wellness-facilities', component: WellnessFacilitiesComponent },
   { path: 'activities', component: ActivitiesComponent },

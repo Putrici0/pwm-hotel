@@ -1,0 +1,28 @@
+<app-header></app-header>
+
+<ion-content [fullscreen]="true">
+  <div class="restaurant-page">
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+
+    <p class="intro">
+      Toca un plato para ver sus detalles. Puedes marcarlo como favorito con el corazon.
+    </p>
+
+    <div class="actions">
+      <a routerLink="/favorites" class="favorites-link">Ver mis favoritos</a>
+    </div>
+
+    <ion-list lines="full" *ngIf="dishes$ | async as dishes">
+      <ion-item *ngFor="let dish of dishes" [routerLink]="['/dish-page', dish.id]" detail="true">
+        <ion-label>{{ dish.title }}</ion-label>
+        <ion-button slot="end" fill="clear" color="danger" (click)="toggleFavorite(dish, $event)">
+          <ion-icon [name]="isFavorite(dish) ? 'heart' : 'heart-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>
+
+<app-footer></app-footer>

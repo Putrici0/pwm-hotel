@@ -27,6 +27,21 @@ body {
   color: #2f3f44;
 }
 
+/* Ionic sets body/html for app-shell scrolling. In this hybrid migration
+   we keep classic document scroll enabled. */
+html,
+body {
+  position: static !important;
+  height: auto !important;
+  min-height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+
+ion-content {
+  --overflow: auto;
+}
+
 img {
   max-width: 100%;
 }

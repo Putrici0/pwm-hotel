@@ -1,0 +1,23 @@
+.restaurant-page {
+  width: min(900px, calc(100% - 2rem));
+  margin: 1.25rem auto 2rem;
+}
+
+.intro {
+  margin: 1rem 0;
+  color: #344b52;
+}
+
+.actions {
+  margin-bottom: 1rem;
+}
+
+.favorites-link {
+  color: #123b44;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.favorites-link:hover {
+  text-decoration: underline;
+}
