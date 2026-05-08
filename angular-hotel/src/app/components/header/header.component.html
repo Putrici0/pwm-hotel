@@ -16,7 +16,7 @@
     <span class="header-menu-toggle__line"></span>
   </button>
 
-  <div class="header-menu-backdrop" (click)="closeMenu()"></div>
+  <div class="header-menu-backdrop" *ngIf="menuOpen" (click)="closeMenu()"></div>
 
   <nav class="nav-menu">
     <button class="header-menu-close mobile-only" type="button" (click)="closeMenu()" aria-label="Cerrar menú">
