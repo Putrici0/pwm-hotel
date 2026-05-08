@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Isla Dorada</string>
+    <string name="title_activity_main">Isla Dorada</string>
+    <string name="package_name">com.ulpgc.isladorada</string>
+    <string name="custom_url_scheme">com.ulpgc.isladorada</string>
+</resources>
