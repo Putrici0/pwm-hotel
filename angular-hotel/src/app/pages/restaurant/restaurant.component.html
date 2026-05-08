@@ -1,81 +1,28 @@
 <app-header></app-header>
 
-<section class="restaurant-page wrapper container-fluid">
-  <div class="hero-mini row g-4 align-items-center">
-    <div class="hero-mini__text col-12 col-lg-7">
-      <h1>Restauración</h1>
-      <p>
-        La propuesta gastronómica del hotel combina cocina reconocible, presentación cuidada y un
-        enfoque cómodo para el huésped.
-      </p>
-      <p>
-        La carta se organiza en entrantes, primeros, segundos y postres, junto con un menú del día
-        pensado para aportar variedad.
-      </p>
-    </div>
-    <div class="hero-mini__media col-12 col-lg-5">
-      <img [src]="menuImage" alt="Restaurante del hotel" class="img-fluid w-100" referrerpolicy="no-referrer" />
-    </div>
-  </div>
+<ion-content [fullscreen]="true">
+  <div class="restaurant-page">
+    <ion-toolbar>
+      <ion-title>Carta del restaurante</ion-title>
+    </ion-toolbar>
 
-  <div class="menu-section">
-    <h2>Entrantes</h2>
-    <div class="dish-list" *ngIf="starters$ | async as starters">
-      <article class="dish-list-item" *ngFor="let item of starters">
-        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
-        <div class="dish-list-item__body">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-        </div>
-      </article>
-    </div>
-  </div>
+    <p class="intro">
+      Toca un plato para ver sus detalles. Puedes marcarlo como favorito con el corazon.
+    </p>
 
-  <div class="menu-section">
-    <h2>Primeros platos</h2>
-    <div class="dish-list" *ngIf="firstDishes$ | async as firstDishes">
-      <article class="dish-list-item" *ngFor="let item of firstDishes">
-        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
-        <div class="dish-list-item__body">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-        </div>
-      </article>
+    <div class="actions">
+      <a routerLink="/favorites" class="favorites-link">Ver mis favoritos</a>
     </div>
-  </div>
 
-  <div class="menu-section">
-    <h2>Segundos platos</h2>
-    <div class="dish-list" *ngIf="secondDishes$ | async as secondDishes">
-      <article class="dish-list-item" *ngFor="let item of secondDishes">
-        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
-        <div class="dish-list-item__body">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-        </div>
-      </article>
-    </div>
+    <ion-list lines="full" *ngIf="dishes$ | async as dishes">
+      <ion-item *ngFor="let dish of dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
+        <ion-label>{{ dish.title }}</ion-label>
+        <ion-button slot="end" fill="clear" color="danger" (click)="toggleFavorite(dish, $event)">
+          <ion-icon [name]="isFavorite(dish) ? 'heart' : 'heart-outline'"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
   </div>
-
-  <div class="menu-section">
-    <h2>Postres</h2>
-    <div class="dish-list" *ngIf="desserts$ | async as desserts">
-      <article class="dish-list-item" *ngFor="let item of desserts">
-        <img [src]="item.imageUrl" [alt]="item.title" class="zoomable-img" (click)="openImageModal(item.imageUrl)" referrerpolicy="no-referrer" />
-        <div class="dish-list-item__body">
-          <h3>{{ item.title }}</h3>
-          <p>{{ item.description }}</p>
-        </div>
-      </article>
-    </div>
-  </div>
-</section>
-
-<div class="image-modal-overlay" [class.active]="!!selectedImageModal" (click)="closeImageModal()">
-  <div class="image-modal-content" (click)="$event.stopPropagation()">
-    <button type="button" class="image-modal-close" (click)="closeImageModal()">&times;</button>
-    <img [src]="selectedImageModal" *ngIf="selectedImageModal" alt="Vista ampliada">
-  </div>
-</div>
+</ion-content>
 
 <app-footer></app-footer>

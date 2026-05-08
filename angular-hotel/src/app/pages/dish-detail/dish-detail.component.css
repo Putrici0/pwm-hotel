@@ -1,0 +1,20 @@
+.detail-page {
+  width: min(900px, calc(100% - 2rem));
+  margin: 1.25rem auto 2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1rem 0;
+  text-decoration: none;
+}
+
+img {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}

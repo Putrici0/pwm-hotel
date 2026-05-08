@@ -4,6 +4,8 @@ import BookingComponent from './pages/booking/booking.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { ServicesComponent } from './pages/services/services.component';
 import { RestaurantComponent } from './pages/restaurant/restaurant.component';
+import { DishDetailComponent } from './pages/dish-detail/dish-detail.component';
+import { FavoritesComponent } from './pages/favorites/favorites.component';
 import { WellnessFacilitiesComponent } from './pages/wellness-facilities/wellness-facilities.component';
 import { ActivitiesComponent } from './pages/activities/activities.component';
 import { ContactComponent } from './pages/contact/contact.component';
@@ -21,6 +23,8 @@ export const routes: Routes = [
   { path: 'rooms', component: RoomsComponent },
   { path: 'services', component: ServicesComponent },
   { path: 'restaurant', component: RestaurantComponent },
+  { path: 'restaurant/:id', component: DishDetailComponent },
+  { path: 'favorites', component: FavoritesComponent, canActivate: [accountGuard] },
   { path: 'wellness-facilities', component: WellnessFacilitiesComponent },
   { path: 'activities', component: ActivitiesComponent },
   { path: 'contact', component: ContactComponent },

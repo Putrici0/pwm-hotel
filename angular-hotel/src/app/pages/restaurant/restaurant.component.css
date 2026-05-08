@@ -1,213 +1,23 @@
-.wrapper {
-  width: min(1120px, calc(100% - 2rem));
-  margin: 0 auto;
-}
-
 .restaurant-page {
-  padding: 3rem 0;
+  width: min(900px, calc(100% - 2rem));
+  margin: 1.25rem auto 2rem;
 }
 
-.hero-mini {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 3rem;
+.intro {
+  margin: 1rem 0;
+  color: #344b52;
 }
 
-.hero-mini h1 {
+.actions {
+  margin-bottom: 1rem;
+}
+
+.favorites-link {
   color: #123b44;
-  margin-bottom: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
 }
 
-.hero-mini img {
-  width: 100%;
-  border-radius: 20px;
-  object-fit: cover;
-}
-
-.menu-section {
-  margin-top: 2.5rem;
-}
-
-.menu-section h2 {
-  color: #123b44;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #d4c4a8; /* Línea elegante de color arena-sable */
-  padding-bottom: 0.5rem;
-}
-
-/* --- NUEVO DISEÑO EN LISTA --- */
-.dish-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem; /* Espacio entre cada plato */
-}
-
-.dish-list-item {
-  display: flex;
-  flex-direction: row;
-  background: #fff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-  border: 1px solid #d4c4a8; /* Borde sable */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.dish-list-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.zoomable-img {
-  width: 250px;
-  height: 200px;
-  object-fit: cover;
-  cursor: zoom-in; /* Cursor de lupa */
-  flex-shrink: 0;
-  transition: opacity 0.2s ease;
-}
-
-.zoomable-img:hover {
-  opacity: 0.85; /* Ligero efecto al pasar el ratón para invitar al clic */
-}
-
-.dish-list-item__body {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.dish-list-item__body h3 {
-  color: #123b44;
-  margin-bottom: 0.5rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.dish-list-item__body p {
-  color: #555;
-  margin-bottom: 0;
-  font-size: 1rem;
-  line-height: 1.5;
-}
-
-/* --- ESTILOS DEL MODAL DE IMAGEN --- */
-.image-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(18, 59, 68, 0.9); /* Azul marino semi-transparente */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2000;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.image-modal-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.image-modal-content {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-}
-
-.image-modal-content img {
-  max-width: 100%;
-  max-height: 85vh;
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-}
-
-.image-modal-close {
-  position: absolute;
-  top: -40px;
-  right: 0;
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 2.5rem;
-  cursor: pointer;
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 768px) {
-  /* En móvil y tablets pequeñas apilamos la foto arriba y texto abajo */
-  .dish-list-item {
-    flex-direction: column;
-  }
-
-  .zoomable-img {
-    width: 100%;
-    height: 220px;
-  }
-}
-
-@media (max-width: 576px) {
-  /* Estilos originales del Hero para móviles que ya tenías */
-  .hero-mini {
-    position: relative;
-    min-height: 320px;
-    border-radius: 14px;
-    overflow: hidden;
-    margin-bottom: 1rem;
-    display: block;
-  }
-
-  .hero-mini__text {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2;
-    padding: 1rem;
-    color: #fff;
-  }
-
-  .hero-mini__text h1 {
-    color: #fff;
-    font-size: 1.35rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .hero-mini__text p {
-    font-size: 0.92rem;
-    line-height: 1.35;
-    margin-bottom: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .hero-mini__media {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero-mini__media img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-  }
-
-  .hero-mini::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 20%, rgba(0, 0, 0, 0.75) 100%);
-    z-index: 1;
-  }
+.favorites-link:hover {
+  text-decoration: underline;
 }
