@@ -1,5 +1,6 @@
 <app-header></app-header>
 
+<ion-content [fullscreen]="true">
 <main class="account-main-container" *ngIf="accountConfig">
   <div class="account-card" *ngIf="isLoadingUser && !user.email">
     <h2>Cargando tu cuenta...</h2>
@@ -176,4 +177,5 @@
   </div>
 </div>
 
+</ion-content>
 <app-footer></app-footer>

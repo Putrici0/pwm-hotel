@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { combineLatest, filter, Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { IonContent } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdminDataService } from '../../services/admin-data.service';
@@ -44,7 +45,7 @@ type AccountTabId = 'datos' | 'reservas' | 'descuentos' | 'admin';
 @Component({
   selector: 'app-account',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent, IonContent],
   templateUrl: './account.component.html',
   styleUrl: './account.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
