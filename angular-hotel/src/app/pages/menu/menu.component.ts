@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -18,6 +18,7 @@ import { MenuService } from '../../services/menu.service';
     RouterLink,
     HeaderComponent,
     FooterComponent,
+    IonContent,
     IonIcon
   ],
   templateUrl: './menu.component.html',
@@ -40,6 +41,6 @@ export class MenuComponent {
   toggleFavorite(dish: Dish, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.favoritesService.toggleFavorite(dish.id);
+    void this.favoritesService.toggleFavorite(dish.id);
   }
 }

@@ -1,110 +1,63 @@
 <app-header></app-header>
 
-<main *ngIf="registerData$ | async as registerData">
+<ion-content [fullscreen]="true" *ngIf="registerData$ | async as registerData">
   <section id="auth-register-section" class="auth-section">
     <div class="auth-card">
+      <ion-toolbar>
+        <ion-title>Registro</ion-title>
+      </ion-toolbar>
+
       <form id="register-form-element" (ngSubmit)="submit()">
-        <label>{{ registerData.form.labels.name }}</label>
-        <input
-          type="text"
-          [placeholder]="registerData.form.placeholders.name"
-          [(ngModel)]="formModel.name"
-          name="name"
-          required
-        />
+        <ion-item>
+          <ion-label position="stacked">{{ registerData.form.labels.name }}</ion-label>
+          <ion-input [(ngModel)]="formModel.name" name="name" [placeholder]="registerData.form.placeholders.name" required></ion-input>
+        </ion-item>
 
-        <label>{{ registerData.form.labels.lastName }}</label>
-        <input
-          type="text"
-          [placeholder]="registerData.form.placeholders.lastName"
-          [(ngModel)]="formModel.lastName"
-          name="lastName"
-          required
-        />
+        <ion-item>
+          <ion-label position="stacked">{{ registerData.form.labels.lastName }}</ion-label>
+          <ion-input [(ngModel)]="formModel.lastName" name="lastName" [placeholder]="registerData.form.placeholders.lastName" required></ion-input>
+        </ion-item>
 
-        <label>{{ registerData.form.labels.email }}</label>
-        <input
-          type="email"
-          [placeholder]="registerData.form.placeholders.email"
-          [(ngModel)]="formModel.email"
-          name="email"
-          required
-        />
+        <ion-item>
+          <ion-label position="stacked">{{ registerData.form.labels.email }}</ion-label>
+          <ion-input [(ngModel)]="formModel.email" type="email" name="email" [placeholder]="registerData.form.placeholders.email" required></ion-input>
+        </ion-item>
 
-        <label>{{ registerData.form.labels.password }}</label>
-        <div class="password-wrapper">
-          <input
-            [type]="showPassword1 ? 'text' : 'password'"
-            id="reg-password"
-            [placeholder]="registerData.form.placeholders.password"
-            [(ngModel)]="formModel.password"
-            name="password"
-            required
-          />
-          <button type="button" id="toggle-reg-pass" class="toggle-password-btn" (click)="showPassword1 = !showPassword1">
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
-        </div>
+        <ion-item>
+          <ion-label position="stacked">{{ registerData.form.labels.password }}</ion-label>
+          <ion-input [(ngModel)]="formModel.password" [type]="showPassword1 ? 'text' : 'password'" name="password" [placeholder]="registerData.form.placeholders.password" required></ion-input>
+          <ion-button slot="end" fill="clear" type="button" (click)="showPassword1 = !showPassword1">
+            <ion-icon [name]="showPassword1 ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+        </ion-item>
 
-        <label>{{ registerData.form.labels.confirmPassword }}</label>
-        <div class="password-wrapper">
-          <input
-            [type]="showPassword2 ? 'text' : 'password'"
-            id="reg-password-confirm"
-            [placeholder]="registerData.form.placeholders.confirmPassword"
-            [(ngModel)]="formModel.confirmPassword"
-            name="confirmPassword"
-            required
-          />
-          <button
-            type="button"
-            id="toggle-reg-pass-confirm"
-            class="toggle-password-btn"
-            (click)="showPassword2 = !showPassword2"
-          >
-            <svg
-              viewBox="0 0 24 24"
-              width="20"
-              height="20"
-              stroke="currentColor"
-              stroke-width="2"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
+        <ion-item>
+          <ion-label position="stacked">{{ registerData.form.labels.confirmPassword }}</ion-label>
+          <ion-input [(ngModel)]="formModel.confirmPassword" [type]="showPassword2 ? 'text' : 'password'" name="confirmPassword" [placeholder]="registerData.form.placeholders.confirmPassword" required></ion-input>
+          <ion-button slot="end" fill="clear" type="button" (click)="showPassword2 = !showPassword2">
+            <ion-icon [name]="showPassword2 ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div class="image-input-wrap">
+          <label for="profile-image">Imagen de perfil</label>
+          <input id="profile-image" type="file" accept="image/*" (change)="onImageSelected($event)" required />
+          <img *ngIf="imagePreview" [src]="imagePreview" alt="Vista previa de perfil" class="preview-image" />
         </div>
 
         <div class="auth-checkbox">
-          <input type="checkbox" [(ngModel)]="formModel.terms" name="terms" required />
-          <div>
-            <strong>{{ registerData.form.termsText }}</strong><br />
-          </div>
+          <ion-checkbox [(ngModel)]="formModel.terms" name="terms" required></ion-checkbox>
+          <strong>{{ registerData.form.termsText }}</strong>
         </div>
 
-        <div id="register-error" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</div>
+        <ion-text color="danger" class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</ion-text>
 
-        <button type="submit" class="auth-btn-primary" [disabled]="sending">
+        <ion-button expand="block" type="submit" [disabled]="sending">
           {{ sending ? 'Creando cuenta...' : registerData.form.submitText }}
-        </button>
+        </ion-button>
       </form>
     </div>
   </section>
-</main>
+</ion-content>
 
 <app-footer></app-footer>

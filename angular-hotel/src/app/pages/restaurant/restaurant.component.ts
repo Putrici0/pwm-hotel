@@ -56,6 +56,6 @@ export class RestaurantComponent {
   toggleFavorite(dish: Dish, event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.favoritesService.toggleFavorite(dish.id);
+    void this.favoritesService.toggleFavorite(dish.id);
   }
 }

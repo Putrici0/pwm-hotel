@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
+import { IonContent } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdminDataService } from '../../services/admin-data.service';
@@ -14,7 +15,7 @@ interface FacilityItem {
 @Component({
   selector: 'app-wellness-facilities',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent],
   templateUrl: './wellness-facilities.component.html',
   styleUrl: './wellness-facilities.component.css'
 })

@@ -1,144 +1,55 @@
-/* css por template AUTHENTICATION (auth-login.html, auth-register.html)*/
 .auth-section {
-    padding: 3rem 1rem;
-    display: flex;
-    justify-content: center;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
 }
 
 .auth-card {
-    width: 420px;
-    padding: 1.5rem;
-    background-color: var(--blanco-puro);
-    border: 2px solid var(--mar-navy);
-    border-radius: var(--radius-card);
-    box-shadow: 0 10px 30px rgba(26, 54, 93, 0.1);
+  width: min(520px, 100%);
+  background: #fff;
+  border: 1px solid #d8dfe2;
+  border-radius: 8px;
+  padding: 1rem;
 }
 
-.auth-card form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
+ion-toolbar {
+  --background: transparent;
+  --padding-start: 0;
+  --padding-end: 0;
+  margin-bottom: 0.5rem;
 }
 
-.auth-card label {
-    font-weight: 600;
-    color: var(--mar-navy);
-    margin-bottom: -0.8rem;
+form {
+  display: grid;
+  gap: 0.65rem;
 }
 
-.auth-card input:not([type="checkbox"]) {
-    padding: 0.8rem;
-    border: 1px solid var(--arena-sable);
-    border-radius: 6px;
-    background-color: var(--arena-clara);
-    color: var(--mar-navy);
-    transition: border-color 0.3s ease;
-    width: 100%;
-    box-sizing: border-box;
+.image-input-wrap {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.35rem 0.1rem;
 }
 
-.auth-card input:not([type="checkbox"]):focus {
-    outline: none;
-    border-color: var(--mar-navy);
-    background-color: var(--blanco-puro);
+.image-input-wrap label {
+  font-weight: 600;
+  color: #1b2a2f;
 }
 
-.auth-btn-primary,
-.auth-btn-secondary {
-    padding: 0.9rem;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.auth-btn-primary {
-    background-color: var(--mar-navy);
-    color: var(--blanco-puro);
-}
-
-.auth-btn-primary:hover {
-    background-color: var(--arena-sable);
-    color: var(--mar-navy);
-}
-
-.auth-btn-secondary {
-    background-color: var(--arena-clara);
-    color: var(--mar-navy);
-    border: 1px solid var(--mar-navy);
-}
-
-.auth-btn-secondary:hover {
-    background-color: var(--mar-navy);
-    color: var(--blanco-puro);
-}
-
-.auth-link {
-    text-align: right;
-    font-size: 0.9rem;
-    color: var(--mar-navy);
-    text-decoration: underline;
-    transition: color 0.3s ease;
-}
-
-.auth-link:hover {
-    color: var(--arena-sable);
+.preview-image {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #d8dfe2;
 }
 
 .auth-checkbox {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    color: var(--mar-navy);
-    margin-top: 0.5rem;
-}
-
-.auth-checkbox input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: var(--mar-navy);
-    cursor: pointer;
-    margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .error-msg {
-    color: #D8000C;
-    font-size: 0.9rem;
-    text-align: center;
-    display: none;
-    font-weight: bold;
-}
-
-@media (max-width: 900px) {
-    .auth-section {
-        padding: 2rem 0.85rem;
-    }
-
-    .auth-card {
-        width: 100%;
-        max-width: 520px;
-        padding: 1.25rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .auth-section {
-        padding: 2rem 0.75rem;
-    }
-
-    .auth-card {
-        padding: 1.25rem;
-    }
-
-    .auth-card form {
-        gap: 0.9rem;
-    }
-
-    .auth-btn-primary,
-    .auth-btn-secondary {
-        font-size: 0.9rem;
-        padding: 0.8rem;
-    }
+  display: block;
+  font-size: 0.9rem;
 }

@@ -3,6 +3,20 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
+import {
+  IonButton,
+  IonCheckbox,
+  IonContent,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonText,
+  IonTitle,
+  IonToolbar
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { eye, eyeOff } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AuthService } from '../../services/auth.service';
@@ -31,7 +45,22 @@ interface RegisterPageData {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, HeaderComponent, FooterComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    HeaderComponent,
+    FooterComponent,
+    IonContent,
+    IonToolbar,
+    IonTitle,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonButton,
+    IonCheckbox,
+    IonText,
+    IonIcon
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -74,6 +103,26 @@ export class RegisterComponent {
   showPassword2 = false;
   errorMessage = '';
   sending = false;
+  imagePreview = '';
+
+  constructor() {
+    addIcons({ eye, eyeOff });
+  }
+
+  async onImageSelected(event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    this.imagePreview = await new Promise<string>((resolve, reject) => {
+      reader.onload = () => resolve(String(reader.result || ''));
+      reader.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+      reader.readAsDataURL(file);
+    });
+  }
 
   async submit(): Promise<void> {
     if (this.sending) {
@@ -95,10 +144,16 @@ export class RegisterComponent {
       this.sending = false;
       return;
     }
+    if (!this.imagePreview) {
+      this.errorMessage = 'Debes seleccionar una imagen de perfil.';
+      this.sending = false;
+      return;
+    }
 
     const result = await this.authService.register(this.formModel.email, this.formModel.password, {
       name: this.formModel.name,
-      lastName: this.formModel.lastName
+      lastName: this.formModel.lastName,
+      photoDataUrl: this.imagePreview
     });
     if (!result.ok) {
       this.errorMessage = result.message || 'No se pudo registrar el usuario.';

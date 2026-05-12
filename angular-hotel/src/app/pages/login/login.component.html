@@ -1,48 +1,37 @@
 <app-header></app-header>
 
-<main *ngIf="loginData">
+<ion-content [fullscreen]="true" *ngIf="loginData">
   <section id="auth-login-section" class="auth-section">
     <div class="auth-card">
+      <ion-toolbar>
+        <ion-title>Iniciar sesion</ion-title>
+      </ion-toolbar>
+
       <form id="login-form-element" (ngSubmit)="submit()">
-        <label>{{ loginData.form.labels.email }}</label>
-        <input
-          type="email"
-          id="login-email"
-          [placeholder]="loginData.form.placeholders.email"
-          [(ngModel)]="email"
-          name="email"
-          required
-        />
+        <ion-item>
+          <ion-label position="stacked">{{ loginData.form.labels.email }}</ion-label>
+          <ion-input id="login-email" type="email" [(ngModel)]="email" name="email" [placeholder]="loginData.form.placeholders.email" required></ion-input>
+        </ion-item>
 
-        <label>{{ loginData.form.labels.password }}</label>
-        <div class="password-wrapper">
-          <input
-            [type]="showPassword ? 'text' : 'password'"
-            id="login-password"
-            [placeholder]="loginData.form.placeholders.password"
-            [(ngModel)]="password"
-            name="password"
-            required
-          />
-          <button type="button" id="toggle-password" class="toggle-password-btn" (click)="showPassword = !showPassword">
-            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-          </button>
-        </div>
+        <ion-item>
+          <ion-label position="stacked">{{ loginData.form.labels.password }}</ion-label>
+          <ion-input id="login-password" [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" [placeholder]="loginData.form.placeholders.password" required></ion-input>
+          <ion-button slot="end" fill="clear" type="button" (click)="showPassword = !showPassword">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+        </ion-item>
 
-        <div class="error-msg" [hidden]="!errorMessage" style="color: white; background-color: #d9534f; padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; display: block;">
+        <ion-text color="danger" class="error-msg" [hidden]="!errorMessage">
           {{ errorMessage }}
-        </div>
+        </ion-text>
 
-        <button type="submit" id="btn-login" class="auth-btn-primary" [disabled]="sending">
+        <ion-button expand="block" type="submit" id="btn-login" [disabled]="sending">
           {{ sending ? 'Validando...' : loginData.form.primaryButtonText }}
-        </button>
+        </ion-button>
 
-        <a routerLink="/register" id="btn-register" class="auth-btn-secondary">
+        <ion-button routerLink="/register" id="btn-register" expand="block" fill="outline">
           {{ loginData.form.secondaryButtonText }}
-        </a>
+        </ion-button>
 
         <a [routerLink]="['/change-password']" class="auth-link">
           {{ loginData.form.forgotPasswordText }}
@@ -50,6 +39,6 @@
       </form>
     </div>
   </section>
-</main>
+</ion-content>
 
 <app-footer></app-footer>

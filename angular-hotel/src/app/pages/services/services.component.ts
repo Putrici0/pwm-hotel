@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router'; // <-- IMPORTANTE: Para que funcionen los enlaces
+import { IonContent } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 
@@ -15,7 +16,7 @@ interface ServiceItem {
   selector: 'app-services',
   standalone: true,
   // Añadimos RouterModule a los imports
-  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, RouterModule, HeaderComponent, FooterComponent, IonContent],
   templateUrl: './services.component.html',
   styleUrl: './services.component.css'
 })

@@ -1,5 +1,6 @@
 <app-header></app-header>
 
+<ion-content [fullscreen]="true">
 <main class="rooms-page page-rooms">
   <section class="rooms-wrapper" *ngIf="rooms$ | async as rooms">
     <section
@@ -16,4 +17,5 @@
   </section>
 </main>
 
+</ion-content>
 <app-footer></app-footer>
