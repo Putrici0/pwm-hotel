@@ -29,7 +29,7 @@ export class HomeComponent {
     'https://i.etsystatic.com/6481221/r/il/7b8821/2261914167/il_fullxfull.2261914167_b2vu.jpg';
 
   roomsImage =
-    'https://www.hotelesrh.com/images/content/1/c318_12.jpg';
+    'https://api.fishhotels.com/api/sites/6bc7c722-5ff4-4aa8-92c6-714ba2ce0386/media-images/-xgb5370.jpg?cw=2000&ch=1125&cx=0&cy=104&s=xl&w=1200&h=675';
 
   services: CardItem[] = [
     {
