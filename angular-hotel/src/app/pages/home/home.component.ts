@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { IonContent, IonPage } from '@ionic/angular/standalone';
+import { IonContent } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
@@ -14,7 +14,7 @@ interface CardItem {
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonPage],
+  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

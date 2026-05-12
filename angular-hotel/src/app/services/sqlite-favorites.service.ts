@@ -13,10 +13,7 @@ export class SqliteFavoritesService {
 
   async getFavoritesByUser(email: string): Promise<string[]> {
     await this.ensureReady();
-
-    if (!this.db) {
-      return this.getWebFallback(email);
-    }
+    if (!this.db) return [];
 
     const result = await this.db.query('SELECT dish_id FROM favorites WHERE user_email = ? ORDER BY dish_id', [email]);
     const values = (result.values || []).map((row: Record<string, unknown>) => String(row['dish_id'] || ''));
@@ -25,17 +22,7 @@ export class SqliteFavoritesService {
 
   async setFavorite(email: string, dishId: string, isFavorite: boolean): Promise<void> {
     await this.ensureReady();
-
-    if (!this.db) {
-      const current = new Set(this.getWebFallback(email));
-      if (isFavorite) {
-        current.add(dishId);
-      } else {
-        current.delete(dishId);
-      }
-      localStorage.setItem(this.getFallbackKey(email), JSON.stringify([...current]));
-      return;
-    }
+    if (!this.db) return;
 
     if (isFavorite) {
       await this.db.run(
@@ -56,10 +43,7 @@ export class SqliteFavoritesService {
     this.initialized = true;
     const platform = Capacitor.getPlatform();
 
-    if (platform === 'web') {
-      this.db = null;
-      return;
-    }
+    if (platform === 'web') return;
 
     this.db = await this.sqlite.createConnection(this.dbName, false, 'no-encryption', 1, false);
     await this.db.open();
@@ -72,20 +56,4 @@ export class SqliteFavoritesService {
     `);
   }
 
-  private getFallbackKey(email: string): string {
-    return `favorite_dishes_${email || 'anonymous'}`;
-  }
-
-  private getWebFallback(email: string): string[] {
-    const raw = localStorage.getItem(this.getFallbackKey(email)) || '[]';
-    try {
-      const parsed = JSON.parse(raw) as unknown;
-      if (!Array.isArray(parsed)) {
-        return [];
-      }
-      return parsed.map((item) => String(item || '')).filter(Boolean);
-    } catch {
-      return [];
-    }
-  }
 }
