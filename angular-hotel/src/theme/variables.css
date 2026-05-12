@@ -1,10 +1,9 @@
-/**
- * Ionic Dark Theme
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+:root {
+  --ion-color-primary: #1A365D; /* --mar-navy */
+  --ion-color-primary-rgb: 26, 54, 93;
+  --ion-color-secondary: #D4C4A8; /* --arena-sable */
+  --ion-color-secondary-rgb: 212, 196, 168;
+  --ion-background-color: #EBE3D5; /* --arena-clara */
+  --ion-background-color-rgb: 235, 227, 213;
+  --ion-text-color: #1A365D; /* --mar-navy */
+}

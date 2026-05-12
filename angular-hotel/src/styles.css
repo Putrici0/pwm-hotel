@@ -27,38 +27,10 @@ body {
   color: #2f3f44;
 }
 
-/* Ionic sets body/html for app-shell scrolling. In this hybrid migration
-   we keep classic document scroll enabled. */
+/* Ionic sets body/html for app-shell scrolling. */
 html,
 body {
-  position: static !important;
-  height: auto !important;
-  min-height: 100%;
-  overflow-y: auto !important;
-  overflow-x: hidden;
-}
-
-app-root,
-router-outlet {
-  display: block;
-  position: relative !important;
-  height: auto !important;
-  min-height: 100%;
-  overflow: visible !important;
-}
-
-body,
-app-root,
-router-outlet {
-  touch-action: pan-y;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior-y: auto;
-}
-
-/* Android WebView / Ionic fallback: ensure no global lock class disables scroll */
-body.backdrop-no-scroll,
-body.menu-content-open {
-  overflow-y: auto !important;
+  height: 100%;
 }
 
 img {

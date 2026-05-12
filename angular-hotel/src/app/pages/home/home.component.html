@@ -1,108 +1,110 @@
-<app-header></app-header>
+<ion-page>
+  <app-header></app-header>
 
-<ion-content [fullscreen]="true">
-<section class="hero">
-  <div class="hero__content wrapper">
-    <div class="hero__text">
-      <span class="eyebrow">Isla Dorada Hotel</span>
-      <h1>Descanso, gastronomia y experiencias junto al mar</h1>
-      <p>
-        Isla Dorada Hotel es un alojamiento pensado para quienes quieren disfrutar de Gran Canaria
-        con comodidad, buena ubicacion y servicios que combinan descanso, ocio y bienestar.
-      </p>
-      <a class="hero__cta" href="/booking">Reservar estancia</a>
-    </div>
+  <ion-content [fullscreen]="true">
+    <section class="hero">
+      <div class="hero__content wrapper">
+        <div class="hero__text">
+          <span class="eyebrow">Isla Dorada Hotel</span>
+          <h1>Descanso, gastronomia y experiencias junto al mar</h1>
+          <p>
+            Isla Dorada Hotel es un alojamiento pensado para quienes quieren disfrutar de Gran Canaria
+            con comodidad, buena ubicacion y servicios que combinan descanso, ocio y bienestar.
+          </p>
+          <a class="hero__cta" href="/booking">Reservar estancia</a>
+        </div>
 
-    <div class="hero__media">
-      <img [src]="introImage" alt="Vista principal del hotel" referrerpolicy="no-referrer" />
-    </div>
-  </div>
-</section>
-
-<section class="section wrapper split">
-  <div class="split__media split__media--rooms">
-    <img [src]="roomsImage" alt="Habitaciones del hotel" referrerpolicy="no-referrer" />
-  </div>
-  <div class="split__text">
-    <h2>Habitaciones para cada tipo de viaje</h2>
-    <p>
-      El hotel ofrece propuestas pensadas para escapadas en pareja, viajes familiares, estancias de
-      descanso y visitas cortas orientadas a descubrir la isla.
-    </p>
-    <p>
-      La oferta incluye habitaciones acogedoras, opciones familiares y estancias premium con mas
-      amplitud y servicios adicionales.
-    </p>
-    <a class="split__cta" href="/rooms">Ver mas</a>
-  </div>
-</section>
-
-<section class="section wrapper">
-  <div class="section__header">
-    <h2>Servicios destacados</h2>
-    <p>Una experiencia completa de hotel con espacios y servicios adaptados a distintos perfiles.</p>
-  </div>
-
-  <div class="card-grid">
-    <article class="card" *ngFor="let item of services">
-      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-      <div class="card__body">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.description }}</p>
-        <a *ngIf="item.link" [href]="item.link">Ver mas</a>
+        <div class="hero__media">
+          <img [src]="introImage" alt="Vista principal del hotel" referrerpolicy="no-referrer" />
+        </div>
       </div>
-    </article>
-  </div>
-</section>
+    </section>
 
-<section class="section wrapper split split--reverse">
-  <div class="split__media">
-    <img [src]="islandImage" alt="Gran Canaria" referrerpolicy="no-referrer" />
-  </div>
-  <div class="split__text">
-    <h2>Gran Canaria, la isla del hotel</h2>
-    <p>
-      Gran Canaria combina playa, naturaleza y cultura en un mismo destino.
-    </p>
-    <p>
-      El hotel te permite moverte facil entre costa, ciudad y planes de ocio.
-    </p>
-  </div>
-</section>
-
-<section class="section wrapper split">
-  <div class="split__media">
-    <img [src]="locationImage" alt="Ubicacion del hotel" referrerpolicy="no-referrer" />
-  </div>
-  <div class="split__text">
-    <h2>Localizacion del hotel</h2>
-    <p>
-      Isla Dorada Hotel se situa en una zona bien conectada que facilita el acceso a playas,
-      comercios y puntos de interes del entorno.
-    </p>
-    <p>
-      Esta combinacion de accesibilidad y tranquilidad refuerza el valor de la estancia para
-      visitantes que buscan comodidad desde su llegada.
-    </p>
-  </div>
-</section>
-
-<section class="section wrapper">
-  <div class="section__header">
-    <h2>Compromiso con el entorno</h2>
-    <p>Sostenibilidad y mantenimiento responsable como parte del funcionamiento diario del hotel.</p>
-  </div>
-
-  <div class="card-grid">
-    <article class="card" *ngFor="let item of environmentItems">
-      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-      <div class="card__body">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.description }}</p>
+    <section class="section wrapper split">
+      <div class="split__media split__media--rooms">
+        <img [src]="roomsImage" alt="Habitaciones del hotel" referrerpolicy="no-referrer" />
       </div>
-    </article>
-  </div>
-</section>
+      <div class="split__text">
+        <h2>Habitaciones para cada tipo de viaje</h2>
+        <p>
+          El hotel ofrece propuestas pensadas para escapadas en pareja, viajes familiares, estancias de
+          descanso y visitas cortas orientadas a descubrir la isla.
+        </p>
+        <p>
+          La oferta incluye habitaciones acogedoras, opciones familiares y estancias premium con mas
+          amplitud y servicios adicionales.
+        </p>
+        <a class="split__cta" href="/rooms">Ver mas</a>
+      </div>
+    </section>
 
-</ion-content>
-<app-footer></app-footer>
+    <section class="section wrapper">
+      <div class="section__header">
+        <h2>Servicios destacados</h2>
+        <p>Una experiencia completa de hotel con espacios y servicios adaptados a distintos perfiles.</p>
+      </div>
+
+      <div class="card-grid">
+        <article class="card" *ngFor="let item of services">
+          <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
+          <div class="card__body">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+            <a *ngIf="item.link" [href]="item.link">Ver mas</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrapper split split--reverse">
+      <div class="split__media">
+        <img [src]="islandImage" alt="Gran Canaria" referrerpolicy="no-referrer" />
+      </div>
+      <div class="split__text">
+        <h2>Gran Canaria, la isla del hotel</h2>
+        <p>
+          Gran Canaria combina playa, naturaleza y cultura en un mismo destino.
+        </p>
+        <p>
+          El hotel te permite moverte facil entre costa, ciudad y planes de ocio.
+        </p>
+      </div>
+    </section>
+
+    <section class="section wrapper split">
+      <div class="split__media">
+        <img [src]="locationImage" alt="Ubicacion del hotel" referrerpolicy="no-referrer" />
+      </div>
+      <div class="split__text">
+        <h2>Localizacion del hotel</h2>
+        <p>
+          Isla Dorada Hotel se situa en una zona bien conectada que facilita el acceso a playas,
+          comercios y puntos de interes del entorno.
+        </p>
+        <p>
+          Esta combinacion de accesibilidad y tranquilidad refuerza el valor de la estancia para
+          visitantes que buscan comodidad desde su llegada.
+        </p>
+      </div>
+    </section>
+
+    <section class="section wrapper">
+      <div class="section__header">
+        <h2>Compromiso con el entorno</h2>
+        <p>Sostenibilidad y mantenimiento responsable como parte del funcionamiento diario del hotel.</p>
+      </div>
+
+      <div class="card-grid">
+        <article class="card" *ngFor="let item of environmentItems">
+          <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
+          <div class="card__body">
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.description }}</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <app-footer></app-footer>
+  </ion-content>
+</ion-page>
