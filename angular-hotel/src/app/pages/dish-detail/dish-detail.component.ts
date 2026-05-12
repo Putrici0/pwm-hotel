@@ -7,6 +7,7 @@ import { addIcons } from 'ionicons';
 import { arrowBack, heart, heartOutline } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AuthService } from '../../services/auth.service';
 import { DishesService } from '../../services/dishes.service';
 import { FavoritesService } from '../../services/favorites.service';
 
@@ -21,6 +22,7 @@ export class DishDetailComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
+  private readonly authService = inject(AuthService);
 
   readonly vm$ = combineLatest([
     this.dishesService.watchDishes(),
@@ -38,5 +40,9 @@ export class DishDetailComponent {
 
   toggleFavorite(dishId: string): void {
     void this.favoritesService.toggleFavorite(dishId);
+  }
+
+  canUseFavorites(): boolean {
+    return this.authService.isLoggedIn();
   }
 }

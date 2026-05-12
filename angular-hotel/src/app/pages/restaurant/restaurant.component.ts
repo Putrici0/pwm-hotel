@@ -15,6 +15,7 @@ import { addIcons } from 'ionicons';
 import { heart, heartOutline } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
+import { AuthService } from '../../services/auth.service';
 import { Dish } from '../../models/dish.model';
 import { DishesService } from '../../services/dishes.service';
 import { FavoritesService } from '../../services/favorites.service';
@@ -42,6 +43,7 @@ import { FavoritesService } from '../../services/favorites.service';
 export class RestaurantComponent {
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
+  private readonly authService = inject(AuthService);
 
   readonly dishes$ = this.dishesService.watchDishes();
 
@@ -57,5 +59,9 @@ export class RestaurantComponent {
     event.preventDefault();
     event.stopPropagation();
     void this.favoritesService.toggleFavorite(dish.id);
+  }
+
+  canUseFavorites(): boolean {
+    return this.authService.isLoggedIn();
   }
 }

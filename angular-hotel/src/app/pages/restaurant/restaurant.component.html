@@ -11,13 +11,18 @@
     </p>
 
     <div class="actions">
-      <a routerLink="/favorites" class="favorites-link">Ver mis favoritos</a>
+      <a *ngIf="canUseFavorites()" routerLink="/favorites" class="favorites-link">Ver mis favoritos</a>
     </div>
 
     <ion-list lines="full" *ngIf="dishes$ | async as dishes">
       <ion-item *ngFor="let dish of dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
         <ion-label>{{ dish.title }}</ion-label>
-        <ion-button slot="end" fill="clear" color="danger" (click)="toggleFavorite(dish, $event)">
+        <ion-button
+          *ngIf="canUseFavorites()"
+          slot="end"
+          fill="clear"
+          color="danger"
+          (click)="toggleFavorite(dish, $event)">
           <ion-icon [name]="isFavorite(dish) ? 'heart' : 'heart-outline'"></ion-icon>
         </ion-button>
       </ion-item>

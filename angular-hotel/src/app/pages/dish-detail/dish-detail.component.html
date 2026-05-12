@@ -17,7 +17,7 @@
     <p>{{ dish.description || 'Sin descripcion disponible.' }}</p>
     <p><strong>Categoria:</strong> {{ dish.category || 'Sin categoria' }}</p>
 
-    <ion-button color="danger" (click)="toggleFavorite(dish.id)">
+    <ion-button *ngIf="canUseFavorites()" color="danger" (click)="toggleFavorite(dish.id)">
       <ion-icon slot="start" [name]="vm.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
       {{ vm.isFavorite ? 'Quitar favorito' : 'Anadir a favoritos' }}
     </ion-button>
