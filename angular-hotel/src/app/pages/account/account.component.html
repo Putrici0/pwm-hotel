@@ -1,4 +1,6 @@
-<app-header></app-header>
+<ion-header>
+  <app-header></app-header>
+</ion-header>
 
 <ion-content [fullscreen]="true">
 <main class="account-main-container" *ngIf="accountConfig">
@@ -176,6 +178,8 @@
     <button class="account-btn-primary" (click)="closeMessageModal()">Entendido</button>
   </div>
 </div>
-
+  <app-footer></app-footer>
 </ion-content>
-<app-footer></app-footer>
+
+
+
