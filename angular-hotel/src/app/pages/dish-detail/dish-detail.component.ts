@@ -35,6 +35,6 @@ export class DishDetailComponent {
   }
 
   toggleFavorite(dishId: string): void {
-    this.favoritesService.toggleFavorite(dishId);
+    void this.favoritesService.toggleFavorite(dishId);
   }
 }

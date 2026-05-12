@@ -1,5 +1,6 @@
 <app-header></app-header>
 
+<ion-content [fullscreen]="true">
 <div class="detail-page" *ngIf="dish$ | async as dish; else notFound">
   <h1>Detalle del plato</h1>
 
@@ -26,4 +27,5 @@
   </div>
 </ng-template>
 
+</ion-content>
 <app-footer></app-footer>

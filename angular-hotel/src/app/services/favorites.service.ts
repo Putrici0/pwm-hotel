@@ -1,50 +1,53 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, NgZone, inject } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { SqliteFavoritesService } from './sqlite-favorites.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
   private readonly authService = inject(AuthService);
+  private readonly sqliteFavoritesService = inject(SqliteFavoritesService);
+  private readonly ngZone = inject(NgZone);
+  private readonly favoriteIds$ = new BehaviorSubject<Set<string>>(new Set<string>());
+  private activeUserEmail = '';
 
-  isFavorite(dishId: string): boolean {
-    return this.getFavoriteSet().has(dishId);
+  constructor() {
+    this.authService.loggedUserEmail$.subscribe((email) => {
+      void this.loadFavoritesForUser(String(email || '').trim().toLowerCase());
+    });
   }
 
-  toggleFavorite(dishId: string): boolean {
-    const favorites = this.getFavoriteSet();
-    if (favorites.has(dishId)) {
-      favorites.delete(dishId);
-    } else {
+  isFavorite(dishId: string): boolean {
+    return this.favoriteIds$.value.has(dishId);
+  }
+
+  async toggleFavorite(dishId: string): Promise<boolean> {
+    const favorites = new Set(this.favoriteIds$.value);
+    const shouldBeFavorite = !favorites.has(dishId);
+
+    if (shouldBeFavorite) {
       favorites.add(dishId);
+    } else {
+      favorites.delete(dishId);
     }
-    this.saveFavoriteSet(favorites);
-    return favorites.has(dishId);
+
+    this.favoriteIds$.next(favorites);
+
+    await this.sqliteFavoritesService.setFavorite(this.activeUserEmail, dishId, shouldBeFavorite);
+    return shouldBeFavorite;
   }
 
   getFavoriteIds(): string[] {
-    return [...this.getFavoriteSet()];
+    return [...this.favoriteIds$.value];
   }
 
-  private getStorageKey(): string {
-    const email = this.authService.getLoggedUserEmail().trim().toLowerCase();
-    return `favorite_dishes_${email || 'anonymous'}`;
-  }
-
-  private getFavoriteSet(): Set<string> {
-    const raw = localStorage.getItem(this.getStorageKey()) || '[]';
-    try {
-      const parsed = JSON.parse(raw) as unknown;
-      if (!Array.isArray(parsed)) {
-        return new Set<string>();
-      }
-      return new Set(parsed.map((id) => String(id)));
-    } catch {
-      return new Set<string>();
-    }
-  }
-
-  private saveFavoriteSet(favorites: Set<string>): void {
-    localStorage.setItem(this.getStorageKey(), JSON.stringify([...favorites]));
+  private async loadFavoritesForUser(email: string): Promise<void> {
+    this.activeUserEmail = email;
+    const favoriteIds = await this.sqliteFavoritesService.getFavoritesByUser(email);
+    this.ngZone.run(() => {
+      this.favoriteIds$.next(new Set(favoriteIds));
+    });
   }
 }

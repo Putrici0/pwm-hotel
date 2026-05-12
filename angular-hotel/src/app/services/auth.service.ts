@@ -11,6 +11,7 @@ import {
   updatePassword as firebaseUpdatePassword
 } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
+import { Storage, getDownloadURL, ref, uploadString } from '@angular/fire/storage';
 import { BehaviorSubject, Observable } from 'rxjs'; // Importar BehaviorSubject y Observable
 
 interface UserAccessDocument {
@@ -20,11 +21,13 @@ interface UserAccessDocument {
   apellidos?: string;
   dni?: string;
   nacimiento?: string;
+  photoUrl?: string;
 }
 
 interface RegisterProfileInput {
   name: string;
   lastName: string;
+  photoDataUrl: string;
 }
 
 @Injectable({
@@ -33,6 +36,7 @@ interface RegisterProfileInput {
 export class AuthService {
   private readonly auth = inject(Auth);
   private readonly firestore = inject(Firestore);
+  private readonly storage = inject(Storage);
   private currentRole: 'admin' | 'user' | null = null;
   private roleSyncPromise: Promise<void> | null = null;
 
@@ -115,7 +119,12 @@ export class AuthService {
         nombre: profile.name.trim(),
         apellidos: profile.lastName.trim(),
         dni: '',
-        nacimiento: ''
+        nacimiento: '',
+        photoUrl: ''
+      });
+      const photoUrl = await this.uploadProfilePhoto(credentials.user.uid, profile.photoDataUrl);
+      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
+        photoUrl
       });
       await signOut(this.auth);
       this.clearLocalSession();
@@ -240,7 +249,7 @@ export class AuthService {
     uid: string,
     email: string,
     defaultIsAdmin: boolean,
-    profile?: Partial<Pick<UserAccessDocument, 'nombre' | 'apellidos' | 'dni' | 'nacimiento'>>
+    profile?: Partial<Pick<UserAccessDocument, 'nombre' | 'apellidos' | 'dni' | 'nacimiento' | 'photoUrl'>>
   ): Promise<UserAccessDocument> {
     const normalizedEmail = email.toLowerCase();
     const userAccessRef = doc(this.firestore, 'users', uid);
@@ -254,6 +263,7 @@ export class AuthService {
         apellidos: profile?.apellidos || '',
         dni: profile?.dni || '',
         nacimiento: profile?.nacimiento || '',
+        photoUrl: profile?.photoUrl || '',
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       });
@@ -264,7 +274,8 @@ export class AuthService {
         nombre: profile?.nombre || '',
         apellidos: profile?.apellidos || '',
         dni: profile?.dni || '',
-        nacimiento: profile?.nacimiento || ''
+        nacimiento: profile?.nacimiento || '',
+        photoUrl: profile?.photoUrl || ''
       };
     }
 
@@ -293,6 +304,9 @@ export class AuthService {
     if (profile?.nacimiento !== undefined) {
       patch['nacimiento'] = profile.nacimiento;
     }
+    if (profile?.photoUrl !== undefined) {
+      patch['photoUrl'] = profile.photoUrl;
+    }
 
     if (Object.keys(patch).length > 0) {
       await setDoc(
@@ -311,8 +325,15 @@ export class AuthService {
       nombre: String(userAccessData.nombre || ''),
       apellidos: String(userAccessData.apellidos || ''),
       dni: String(userAccessData.dni || ''),
-      nacimiento: String(userAccessData.nacimiento || '')
+      nacimiento: String(userAccessData.nacimiento || ''),
+      photoUrl: String(userAccessData.photoUrl || '')
     };
+  }
+
+  private async uploadProfilePhoto(uid: string, dataUrl: string): Promise<string> {
+    const photoRef = ref(this.storage, `users/${uid}/profile.jpg`);
+    await uploadString(photoRef, dataUrl, 'data_url');
+    return getDownloadURL(photoRef);
   }
 
   private clearLocalSession(): void {

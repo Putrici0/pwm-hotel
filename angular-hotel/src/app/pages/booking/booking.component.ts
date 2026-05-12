@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgZone, inject }
 import { Firestore, doc, getDoc } from '@angular/fire/firestore';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IonContent } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdminDataService } from '../../services/admin-data.service';
@@ -22,7 +23,7 @@ interface RoomOption {
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, FooterComponent],
+  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, FooterComponent, IonContent],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,

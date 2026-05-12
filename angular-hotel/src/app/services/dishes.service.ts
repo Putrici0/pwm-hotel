@@ -18,7 +18,7 @@ export class DishesService {
       map((rows) =>
         rows
           .map((row) => ({
-            id: String(row['id'] || ''),
+            id: String(row['id'] || row.id || ''),
             title: String(row['nombre'] || '').trim(),
             description: String(row['descripcion'] || '').trim(),
             imageUrl: String(row['imagen'] || '').trim(),
