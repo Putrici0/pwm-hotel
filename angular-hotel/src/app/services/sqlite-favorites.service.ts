@@ -9,7 +9,7 @@ export class SqliteFavoritesService {
   private readonly dbName = 'hotel_favorites';
   private readonly sqlite = new SQLiteConnection(CapacitorSQLite);
   private db: SQLiteDBConnection | null = null;
-  private initialized = false;
+  private initPromise: Promise<void> | null = null;
 
   async getFavoritesByUser(email: string): Promise<string[]> {
     await this.ensureReady();
@@ -36,24 +36,25 @@ export class SqliteFavoritesService {
   }
 
   private async ensureReady(): Promise<void> {
-    if (this.initialized) {
-      return;
+    if (this.initPromise) {
+      return this.initPromise;
     }
 
-    this.initialized = true;
-    const platform = Capacitor.getPlatform();
+    this.initPromise = (async () => {
+      const platform = Capacitor.getPlatform();
+      if (platform === 'web') return;
 
-    if (platform === 'web') return;
+      this.db = await this.sqlite.createConnection(this.dbName, false, 'no-encryption', 1, false);
+      await this.db.open();
+      await this.db.execute(`
+        CREATE TABLE IF NOT EXISTS favorites (
+          user_email TEXT NOT NULL,
+          dish_id TEXT NOT NULL,
+          PRIMARY KEY (user_email, dish_id)
+        );
+      `);
+    })();
 
-    this.db = await this.sqlite.createConnection(this.dbName, false, 'no-encryption', 1, false);
-    await this.db.open();
-    await this.db.execute(`
-      CREATE TABLE IF NOT EXISTS favorites (
-        user_email TEXT NOT NULL,
-        dish_id TEXT NOT NULL,
-        PRIMARY KEY (user_email, dish_id)
-      );
-    `);
+    return this.initPromise;
   }
-
 }
