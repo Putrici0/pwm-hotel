@@ -1,25 +1,23 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="favorites-page">
+  <div class="favorites-page" *ngIf="vm$ | async as vm">
     <ion-toolbar>
       <ion-title>Mis favoritos</ion-title>
     </ion-toolbar>
 
-    <ion-list lines="full" *ngIf="dishes$ | async as dishes">
-      <ion-item *ngFor="let dish of dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
+    <ion-list lines="full">
+      <ion-item *ngFor="let dish of vm.dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
         <ion-label>{{ dish.title }}</ion-label>
-        <ion-badge color="danger" *ngIf="isFavorite(dish.id)">
+        <ion-badge color="danger" *ngIf="vm.favoriteIds.has(dish.id)">
           <ion-icon name="heart"></ion-icon>
           Favorito
         </ion-badge>
-        <ion-note slot="end" *ngIf="!isFavorite(dish.id)">No favorito</ion-note>
+        <ion-note slot="end" *ngIf="!vm.favoriteIds.has(dish.id)">No favorito</ion-note>
       </ion-item>
     </ion-list>
 
-    <p class="empty" *ngIf="favorites$ | async as favorites">
-      {{ favorites.length === 0 ? 'Aun no tienes platos favoritos.' : '' }}
-    </p>
+    <p class="empty">{{ vm.favorites.length === 0 ? 'Aun no tienes platos favoritos.' : '' }}</p>
   </div>
   <app-footer></app-footer>
 </ion-content>

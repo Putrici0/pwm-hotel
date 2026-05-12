@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart } from 'ionicons/icons';
@@ -35,20 +35,19 @@ export class FavoritesComponent {
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
 
-  readonly favorites$ = this.dishesService.watchDishes().pipe(
-    map((dishes) => {
-      const favoriteIds = new Set(this.favoritesService.getFavoriteIds());
-      return dishes.filter((dish) => favoriteIds.has(dish.id));
-    })
+  readonly vm$ = combineLatest([
+    this.dishesService.watchDishes(),
+    this.favoritesService.watchFavoriteIds()
+  ]).pipe(
+    map(([dishes, favoriteIds]) => ({
+      dishes,
+      favoriteIds,
+      favorites: dishes.filter((dish) => favoriteIds.has(dish.id))
+    }))
   );
-
-  readonly dishes$ = this.dishesService.watchDishes();
 
   constructor() {
     addIcons({ heart });
   }
 
-  isFavorite(dishId: string): boolean {
-    return this.favoritesService.isFavorite(dishId);
-  }
 }

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 import { IonButton, IonContent, IonIcon, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBack, heart, heartOutline } from 'ionicons/icons';
@@ -22,16 +22,18 @@ export class DishDetailComponent {
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
 
-  readonly dish$ = this.dishesService.watchDishes().pipe(
-    map((dishes) => dishes.find((dish) => dish.id === this.route.snapshot.paramMap.get('id')) || null)
+  readonly vm$ = combineLatest([
+    this.dishesService.watchDishes(),
+    this.favoritesService.watchFavoriteIds()
+  ]).pipe(
+    map(([dishes, favoriteIds]) => {
+      const dish = dishes.find((item) => item.id === this.route.snapshot.paramMap.get('id')) || null;
+      return { dish, isFavorite: !!dish && favoriteIds.has(dish.id) };
+    })
   );
 
   constructor() {
     addIcons({ arrowBack, heart, heartOutline });
-  }
-
-  isFavorite(dishId: string): boolean {
-    return this.favoritesService.isFavorite(dishId);
   }
 
   toggleFavorite(dishId: string): void {

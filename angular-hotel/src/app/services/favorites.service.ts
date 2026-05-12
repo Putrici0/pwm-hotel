@@ -1,5 +1,5 @@
 import { Injectable, NgZone, inject } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { SqliteFavoritesService } from './sqlite-favorites.service';
 
@@ -21,6 +21,10 @@ export class FavoritesService {
 
   isFavorite(dishId: string): boolean {
     return this.favoriteIds$.value.has(dishId);
+  }
+
+  watchFavoriteIds(): Observable<Set<string>> {
+    return this.favoriteIds$.asObservable();
   }
 
   async toggleFavorite(dishId: string): Promise<boolean> {

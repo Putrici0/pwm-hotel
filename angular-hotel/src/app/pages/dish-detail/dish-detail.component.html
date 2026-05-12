@@ -1,7 +1,8 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
-  <div class="detail-page" *ngIf="dish$ | async as dish; else notFound">
+  <div class="detail-page" *ngIf="vm$ | async as vm">
+    <ng-container *ngIf="vm.dish as dish; else notFound">
     <ion-toolbar>
       <ion-title>Detalle del plato</ion-title>
     </ion-toolbar>
@@ -17,9 +18,10 @@
     <p><strong>Categoria:</strong> {{ dish.category || 'Sin categoria' }}</p>
 
     <ion-button color="danger" (click)="toggleFavorite(dish.id)">
-      <ion-icon slot="start" [name]="isFavorite(dish.id) ? 'heart' : 'heart-outline'"></ion-icon>
-      {{ isFavorite(dish.id) ? 'Quitar favorito' : 'Anadir a favoritos' }}
+      <ion-icon slot="start" [name]="vm.isFavorite ? 'heart' : 'heart-outline'"></ion-icon>
+      {{ vm.isFavorite ? 'Quitar favorito' : 'Anadir a favoritos' }}
     </ion-button>
+    </ng-container>
   </div>
 
   <ng-template #notFound>
