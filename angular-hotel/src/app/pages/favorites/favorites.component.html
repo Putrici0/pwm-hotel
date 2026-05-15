@@ -9,14 +9,13 @@
       <ion-title>Mis favoritos</ion-title>
     </ion-toolbar>
 
-    <ion-list lines="full">
-      <ion-item *ngFor="let dish of vm.dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
+    <ion-list lines="full" *ngIf="vm.favorites.length > 0">
+      <ion-item *ngFor="let dish of vm.favorites" [routerLink]="['/restaurant', dish.id]" detail="true">
         <ion-label>{{ dish.title }}</ion-label>
-        <ion-badge color="danger" *ngIf="vm.favoriteIds.has(dish.id)">
+        <ion-badge color="danger">
           <ion-icon name="heart"></ion-icon>
           Favorito
         </ion-badge>
-        <ion-note slot="end" *ngIf="!vm.favoriteIds.has(dish.id)">No favorito</ion-note>
       </ion-item>
     </ion-list>
 
