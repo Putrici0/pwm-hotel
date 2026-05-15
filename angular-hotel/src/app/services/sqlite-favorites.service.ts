@@ -49,6 +49,14 @@ export class SqliteFavoritesService {
         await this.sqlite.initWebStore();
       }
 
+      try {
+        if (this.platform !== 'web') {
+          await this.sqlite.checkConnectionsConsistency();
+        }
+      } catch (e) {
+        console.warn('Error checking connections consistency', e);
+      }
+
       const hasConnection = await this.sqlite.isConnection(this.dbName, false);
       this.db = hasConnection.result
         ? await this.sqlite.retrieveConnection(this.dbName, false)
