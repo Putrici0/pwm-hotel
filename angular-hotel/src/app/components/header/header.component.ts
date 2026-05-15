@@ -3,13 +3,15 @@ import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import {
   IonButton,
-  IonContent,
   IonHeader,
+  IonIcon,
   IonItem,
   IonLabel,
   IonList,
   IonToolbar
 } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { chevronDownOutline, closeOutline, menuOutline } from 'ionicons/icons';
 import { filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
@@ -22,7 +24,7 @@ import { AuthService } from '../../services/auth.service';
     IonHeader,
     IonToolbar,
     IonButton,
-    IonContent,
+    IonIcon,
     IonList,
     IonItem,
     IonLabel
@@ -40,6 +42,7 @@ export class HeaderComponent {
     private readonly authService: AuthService,
     private readonly router: Router
   ) {
+    addIcons({ menuOutline, closeOutline, chevronDownOutline });
     this.consumeFlashMessage();
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
