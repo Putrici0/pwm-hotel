@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { combineLatest, map } from 'rxjs';
 import {
   IonButton,
   IonContent,
@@ -19,6 +20,7 @@ import { AuthService } from '../../services/auth.service';
 import { Dish } from '../../models/dish.model';
 import { DishesService } from '../../services/dishes.service';
 import { FavoritesService } from '../../services/favorites.service';
+import { ViewWillEnter, ViewDidEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-restaurant',
@@ -40,19 +42,35 @@ import { FavoritesService } from '../../services/favorites.service';
   templateUrl: './restaurant.component.html',
   styleUrl: './restaurant.component.css'
 })
-export class RestaurantComponent {
+export class RestaurantComponent implements OnInit, ViewWillEnter, ViewDidEnter {
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
   private readonly authService = inject(AuthService);
 
-  readonly dishes$ = this.dishesService.watchDishes();
+  readonly vm$ = combineLatest([
+    this.dishesService.watchDishes(),
+    this.favoritesService.watchFavoriteIds()
+  ]).pipe(
+    map(([dishes, favoriteIds]) => ({
+      dishes,
+      favoriteIds
+    }))
+  );
 
   constructor() {
     addIcons({ heart, heartOutline });
   }
 
-  isFavorite(dish: Dish): boolean {
-    return this.favoritesService.isFavorite(dish.id);
+  ngOnInit() {
+    this.favoritesService.refreshFavorites();
+  }
+
+  ionViewWillEnter() {
+    this.favoritesService.refreshFavorites();
+  }
+
+  ionViewDidEnter() {
+    this.favoritesService.refreshFavorites();
   }
 
   toggleFavorite(dish: Dish, event: Event): void {
