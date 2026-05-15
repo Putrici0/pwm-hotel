@@ -10,6 +10,7 @@ export class SqliteFavoritesService {
   private readonly sqlite = new SQLiteConnection(CapacitorSQLite);
   private db: SQLiteDBConnection | null = null;
   private initPromise: Promise<void> | null = null;
+  private readonly platform = Capacitor.getPlatform();
 
   async getFavoritesByUser(email: string): Promise<string[]> {
     await this.ensureReady();
@@ -29,10 +30,12 @@ export class SqliteFavoritesService {
         'INSERT OR IGNORE INTO favorites (user_email, dish_id) VALUES (?, ?)',
         [email, dishId]
       );
+      await this.persistWebStore();
       return;
     }
 
     await this.db.run('DELETE FROM favorites WHERE user_email = ? AND dish_id = ?', [email, dishId]);
+    await this.persistWebStore();
   }
 
   private async ensureReady(): Promise<void> {
@@ -41,10 +44,15 @@ export class SqliteFavoritesService {
     }
 
     this.initPromise = (async () => {
-      const platform = Capacitor.getPlatform();
-      if (platform === 'web') return;
+      if (this.platform === 'web') {
+        await customElements.whenDefined('jeep-sqlite');
+        await this.sqlite.initWebStore();
+      }
 
-      this.db = await this.sqlite.createConnection(this.dbName, false, 'no-encryption', 1, false);
+      const hasConnection = await this.sqlite.isConnection(this.dbName, false);
+      this.db = hasConnection.result
+        ? await this.sqlite.retrieveConnection(this.dbName, false)
+        : await this.sqlite.createConnection(this.dbName, false, 'no-encryption', 1, false);
       await this.db.open();
       await this.db.execute(`
         CREATE TABLE IF NOT EXISTS favorites (
@@ -53,8 +61,16 @@ export class SqliteFavoritesService {
           PRIMARY KEY (user_email, dish_id)
         );
       `);
+      await this.persistWebStore();
     })();
 
     return this.initPromise;
+  }
+
+  private async persistWebStore(): Promise<void> {
+    if (this.platform !== 'web') {
+      return;
+    }
+    await this.sqlite.saveToStore(this.dbName);
   }
 }
