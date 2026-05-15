@@ -47,6 +47,13 @@ export class FavoritesService {
     return [...this.favoriteIds$.value];
   }
 
+  async refreshFavorites(): Promise<void> {
+    const email = this.authService.getLoggedUserEmail();
+    if (email) {
+      await this.loadFavoritesForUser(email.trim().toLowerCase());
+    }
+  }
+
   private async loadFavoritesForUser(email: string): Promise<void> {
     this.activeUserEmail = email;
     const favoriteIds = await this.sqliteFavoritesService.getFavoritesByUser(email);

@@ -3,6 +3,9 @@
 <ion-content [fullscreen]="true">
   <div class="favorites-page" *ngIf="vm$ | async as vm">
     <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/"></ion-back-button>
+      </ion-buttons>
       <ion-title>Mis favoritos</ion-title>
     </ion-toolbar>
 

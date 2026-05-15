@@ -2,13 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { combineLatest, map } from 'rxjs';
-import { IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonTitle, IonToolbar, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { DishesService } from '../../services/dishes.service';
 import { FavoritesService } from '../../services/favorites.service';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-favorites',
@@ -26,12 +27,14 @@ import { FavoritesService } from '../../services/favorites.service';
     IonLabel,
     IonNote,
     IonBadge,
-    IonIcon
+    IonIcon,
+    IonButtons,
+    IonBackButton
   ],
   templateUrl: './favorites.component.html',
   styleUrl: './favorites.component.css'
 })
-export class FavoritesComponent {
+export class FavoritesComponent implements ViewWillEnter {
   private readonly dishesService = inject(DishesService);
   private readonly favoritesService = inject(FavoritesService);
 
@@ -50,4 +53,7 @@ export class FavoritesComponent {
     addIcons({ heart });
   }
 
+  ionViewWillEnter() {
+    this.favoritesService.refreshFavorites();
+  }
 }
