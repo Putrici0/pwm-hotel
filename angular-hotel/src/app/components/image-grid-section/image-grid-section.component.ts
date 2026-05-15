@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonGrid, IonRow, IonCol, IonText } from '@ionic/angular/standalone';
 
 interface ImageGridItem {
   title: string;
@@ -17,7 +18,7 @@ interface ImageGridSection {
 @Component({
   selector: 'app-image-grid-section',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonText],
   templateUrl: './image-grid-section.component.html',
   styleUrl: './image-grid-section.component.css'
 })

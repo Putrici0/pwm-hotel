@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonModal, IonText } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdminDataService } from '../../services/admin-data.service';
@@ -16,7 +16,7 @@ interface ActivityItem {
 @Component({
   selector: 'app-activities',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonText, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonModal, IonButton],
   templateUrl: './activities.component.html',
   styleUrl: './activities.component.css'
 })

@@ -1,13 +1,32 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonToolbar
+} from '@ionic/angular/standalone';
 import { filter } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [
+    CommonModule,
+    RouterLink,
+    IonHeader,
+    IonToolbar,
+    IonButton,
+    IonContent,
+    IonList,
+    IonItem,
+    IonLabel
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })

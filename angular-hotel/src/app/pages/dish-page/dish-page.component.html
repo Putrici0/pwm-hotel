@@ -14,10 +14,10 @@
   <p>{{ dish.description || 'Sin descripcion disponible.' }}</p>
   <p><strong>Categoria:</strong> {{ dish.category || 'Sin categoria' }}</p>
 
-  <button type="button" class="fav-btn" (click)="toggleFavorite(dish.id)">
+  <ion-button type="button" class="fav-btn" fill="clear" (click)="toggleFavorite(dish.id)">
     <ion-icon slot="start" [name]="isFavorite(dish.id) ? 'heart' : 'heart-outline'"></ion-icon>
     {{ isFavorite(dish.id) ? 'Quitar favorito' : 'Anadir a favoritos' }}
-  </button>
+  </ion-button>
 </div>
 
 <ng-template #notFound>

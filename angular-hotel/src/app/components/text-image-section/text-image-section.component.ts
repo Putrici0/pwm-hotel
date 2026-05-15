@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import { IonText } from '@ionic/angular/standalone';
 
 interface TextImageSection {
   title: string;
@@ -11,6 +12,7 @@ interface TextImageSection {
 @Component({
   selector: 'app-text-image-section',
   standalone: true,
+  imports: [IonText],
   templateUrl: './text-image-section.component.html',
   styleUrl: './text-image-section.component.css'
 })

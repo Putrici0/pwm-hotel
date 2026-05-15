@@ -5,13 +5,13 @@
     <section class="hero">
       <div class="hero__content wrapper">
         <div class="hero__text">
-          <span class="eyebrow">Isla Dorada Hotel</span>
-          <h1>Descanso, gastronomia y experiencias junto al mar</h1>
-          <p>
+          <ion-text class="eyebrow">Isla Dorada Hotel</ion-text>
+          <ion-text><h1>Descanso, gastronomia y experiencias junto al mar</h1></ion-text>
+          <ion-text><p>
             Isla Dorada Hotel es un alojamiento pensado para quienes quieren disfrutar de Gran Canaria
             con comodidad, buena ubicacion y servicios que combinan descanso, ocio y bienestar.
-          </p>
-          <a class="hero__cta" href="/booking">Reservar estancia</a>
+          </p></ion-text>
+          <ion-button class="hero__cta" fill="clear" href="/booking">Reservar estancia</ion-button>
         </div>
 
         <div class="hero__media">
@@ -25,16 +25,16 @@
         <img [src]="roomsImage" alt="Habitaciones del hotel" referrerpolicy="no-referrer" />
       </div>
       <div class="split__text">
-        <h2>Habitaciones para cada tipo de viaje</h2>
-        <p>
+        <ion-text><h2>Habitaciones para cada tipo de viaje</h2></ion-text>
+        <ion-text><p>
           El hotel ofrece propuestas pensadas para escapadas en pareja, viajes familiares, estancias de
           descanso y visitas cortas orientadas a descubrir la isla.
-        </p>
-        <p>
+        </p></ion-text>
+        <ion-text><p>
           La oferta incluye habitaciones acogedoras, opciones familiares y estancias premium con mas
           amplitud y servicios adicionales.
-        </p>
-        <a class="split__cta" href="/rooms">Ver mas</a>
+        </p></ion-text>
+        <ion-button class="split__cta" fill="clear" href="/rooms">Ver mas</ion-button>
       </div>
     </section>
 
@@ -45,14 +45,16 @@
       </div>
 
       <div class="card-grid">
-        <article class="card" *ngFor="let item of services">
+        <ion-card class="card" *ngFor="let item of services">
           <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-          <div class="card__body">
-            <h3>{{ item.title }}</h3>
+          <ion-card-header class="card__body">
+            <ion-card-title>{{ item.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card__body">
             <p>{{ item.description }}</p>
-            <a *ngIf="item.link" [href]="item.link">Ver mas</a>
-          </div>
-        </article>
+            <ion-button *ngIf="item.link" fill="clear" [href]="item.link">Ver mas</ion-button>
+          </ion-card-content>
+        </ion-card>
       </div>
     </section>
 
@@ -95,13 +97,15 @@
       </div>
 
       <div class="card-grid">
-        <article class="card" *ngFor="let item of environmentItems">
+        <ion-card class="card" *ngFor="let item of environmentItems">
           <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-          <div class="card__body">
-            <h3>{{ item.title }}</h3>
+          <ion-card-header class="card__body">
+            <ion-card-title>{{ item.title }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="card__body">
             <p>{{ item.description }}</p>
-          </div>
-        </article>
+          </ion-card-content>
+        </ion-card>
       </div>
     </section>
 

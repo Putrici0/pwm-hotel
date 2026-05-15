@@ -1,21 +1,21 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
-<main class="rooms-page page-rooms">
-  <section class="rooms-wrapper" *ngIf="rooms$ | async as rooms">
-    <section
-      *ngFor="let room of rooms; let i = index"
-      [class]="i % 2 === 0 ? 'text-image-right room-section' : 'text-image-left room-section'"
-    >
-      <div class="text-image-right__text">
-        <h2>{{ room.title }}</h2>
-        <p [innerHTML]="room.description"></p>
-      </div>
-
-      <div class="text-image-right__image" [style.background]="room.imageGradient"></div>
+  <main class="rooms-page page-rooms">
+    <section class="rooms-wrapper" *ngIf="rooms$ | async as rooms">
+      <ion-card
+        *ngFor="let room of rooms; let i = index"
+        [class]="i % 2 === 0 ? 'text-image-right room-section' : 'text-image-left room-section'"
+      >
+        <ion-card-header class="text-image-right__text">
+          <ion-card-title>{{ room.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="text-image-right__text">
+          <p [innerHTML]="room.description"></p>
+        </ion-card-content>
+        <div class="text-image-right__image" [style.background]="room.imageGradient"></div>
+      </ion-card>
     </section>
-  </section>
-</main>
+  </main>
   <app-footer></app-footer>
 </ion-content>
-

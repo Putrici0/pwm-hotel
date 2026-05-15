@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
-import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonButton, IonContent, IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { arrowBack, heart, heartOutline } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -13,7 +13,7 @@ import { MenuService } from '../../services/menu.service';
 @Component({
   selector: 'app-dish-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent, IonContent, IonIcon],
+  imports: [CommonModule, RouterLink, HeaderComponent, FooterComponent, IonContent, IonIcon, IonButton],
   templateUrl: './dish-page.component.html',
   styleUrl: './dish-page.component.css'
 })

@@ -1,29 +1,31 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true">
-<section class="services-page wrapper">
-  <div class="page-header">
-    <h1>Servicios</h1>
-    <p>
-      Isla Dorada Hotel articula su propuesta alrededor de servicios que mejoran la comodidad del
-      huésped y aportan valor a la experiencia global de alojamiento.
-    </p>
-  </div>
+  <section class="services-page wrapper">
+    <div class="page-header">
+      <ion-text><h1>Servicios</h1></ion-text>
+      <ion-text>
+        <p>
+          Isla Dorada Hotel articula su propuesta alrededor de servicios que mejoran la comodidad del
+          huesped y aportan valor a la experiencia global de alojamiento.
+        </p>
+      </ion-text>
+    </div>
 
-  <div class="cards-grid">
-    <a class="service-card" *ngFor="let item of services" [routerLink]="item.route" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
-      <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-      <div class="service-card__body">
-        <h2>{{ item.title }}</h2>
-        <p>{{ item.description }}</p>
-
-        <div style="margin-top: 1rem; color: var(--mar-navy); font-weight: bold; text-decoration: underline;">
-          Descubrir más
-        </div>
-      </div>
-    </a>
-  </div>
-</section>
+    <div class="cards-grid">
+      <ion-card class="service-card" *ngFor="let item of services" [routerLink]="item.route" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+        <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
+        <ion-card-header class="service-card__body">
+          <ion-card-title>{{ item.title }}</ion-card-title>
+        </ion-card-header>
+        <ion-card-content class="service-card__body">
+          <p>{{ item.description }}</p>
+          <div style="margin-top: 1rem; color: var(--mar-navy); font-weight: bold; text-decoration: underline;">
+            Descubrir mas
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </section>
   <app-footer></app-footer>
 </ion-content>
-

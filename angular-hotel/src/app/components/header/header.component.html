@@ -1,45 +1,47 @@
-<header class="header" [class.menu-open]="menuOpen">
-  <a class="logo-container" routerLink="/" (click)="closeMenu()">
-    <img class="logo-mark logo-mark--image" src="/img/logo.png" alt="Logo Isla Dorada" />
-    <div class="hotel-name">Isla Dorada</div>
-  </a>
-
-  <div class="main-action-container">
-    <a class="btn btn-primary btn-small" routerLink="/booking" (click)="closeMenu()">
-      Reserva ahora
+<ion-header class="header" [class.menu-open]="menuOpen">
+  <ion-toolbar>
+    <a class="logo-container" routerLink="/" (click)="closeMenu()">
+      <img class="logo-mark logo-mark--image" src="/img/logo.png" alt="Logo Isla Dorada" />
+      <div class="hotel-name">Isla Dorada</div>
     </a>
-  </div>
 
-  <button class="header-menu-toggle" type="button" (click)="toggleMenu()" aria-label="Abrir menú">
-    <span class="header-menu-toggle__line"></span>
-    <span class="header-menu-toggle__line"></span>
-    <span class="header-menu-toggle__line"></span>
-  </button>
+    <div class="main-action-container">
+      <ion-button class="btn btn-primary btn-small" fill="clear" routerLink="/booking" (click)="closeMenu()">
+        Reserva ahora
+      </ion-button>
+    </div>
+
+    <ion-button class="header-menu-toggle" fill="clear" (click)="toggleMenu()" aria-label="Abrir menu">
+      <span class="header-menu-toggle__line"></span>
+      <span class="header-menu-toggle__line"></span>
+      <span class="header-menu-toggle__line"></span>
+    </ion-button>
+  </ion-toolbar>
 
   <div class="header-menu-backdrop" *ngIf="menuOpen" (click)="closeMenu()"></div>
 
-  <nav class="nav-menu">
-    <button class="header-menu-close mobile-only" type="button" (click)="closeMenu()" aria-label="Cerrar menú">
-      ✕
-    </button>
+  <ion-content class="nav-menu" *ngIf="menuOpen">
+    <ion-button class="header-menu-close mobile-only" fill="clear" (click)="closeMenu()" aria-label="Cerrar menu">
+      x
+    </ion-button>
 
-    <ul class="nav-list">
-      <li class="mobile-only">
+    <ion-list class="nav-list">
+      <ion-item class="mobile-only" lines="none">
         <a class="nav-link" routerLink="/booking" (click)="closeMenu()">Reserva ahora</a>
-      </li>
+      </ion-item>
 
-      <li>
+      <ion-item lines="none">
         <a class="nav-link" routerLink="/rooms" (click)="closeMenu()">Habitaciones</a>
-      </li>
+      </ion-item>
 
-      <li class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen">
+      <ion-item class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen" lines="none">
         <div class="dropdown-trigger" style="display: flex; align-items: center;">
           <a class="nav-link" routerLink="/services" (click)="closeMenu()" style="padding-right: 2px;">
             Servicios
           </a>
-          <button class="nav-link" type="button" (click)="toggleServicesDropdown($event)" style="background: transparent; border: none; padding: 0.5rem; cursor: pointer; display: flex; align-items: center;">
-            <span class="dropdown-caret">▾</span>
-          </button>
+          <ion-button class="nav-link" fill="clear" (click)="toggleServicesDropdown($event)" style="padding: 0.5rem; display: flex; align-items: center;">
+            <span class="dropdown-caret">v</span>
+          </ion-button>
         </div>
 
         <ul class="dropdown-menu">
@@ -48,24 +50,24 @@
           <li><a routerLink="/wellness-facilities" (click)="closeMenu()">Bienestar</a></li>
           <li><a routerLink="/activities" (click)="closeMenu()">Actividades</a></li>
         </ul>
-      </li>
+      </ion-item>
 
-      <li>
+      <ion-item lines="none">
         <a class="nav-link" routerLink="/contact" (click)="closeMenu()">Contacto</a>
-      </li>
+      </ion-item>
 
-      <li class="dropdown-item" [class.dropdown-open]="accountDropdownOpen">
+      <ion-item class="dropdown-item" [class.dropdown-open]="accountDropdownOpen" lines="none">
         <div class="dropdown-trigger">
-          <button class="nav-link nav-link--dropdown" type="button" (click)="toggleAccountDropdown($event)">
-            Tu cuenta <span class="dropdown-caret">▾</span>
-          </button>
+          <ion-button class="nav-link nav-link--dropdown" fill="clear" (click)="toggleAccountDropdown($event)">
+            Tu cuenta <span class="dropdown-caret">v</span>
+          </ion-button>
         </div>
 
         <ul class="dropdown-menu dropdown-right">
           @if (!showLogout) {
             <li><a [routerLink]="accountRoute" (click)="closeMenu()">Login</a></li>
             <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
-            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
+            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contrasena</a></li>
           } @else {
             <li><a routerLink="/account" (click)="closeMenu()">Mi cuenta</a></li>
             @if (isAdmin) {
@@ -74,14 +76,12 @@
             <li><a href="#" (click)="logout($event)">Log out</a></li>
           }
         </ul>
-      </li>
-    </ul>
-  </nav>
-</header>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-header>
 
-<div class="container mt-3" *ngIf="flashMessage">
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    {{ flashMessage }}
-    <button type="button" class="btn-close" aria-label="Close" (click)="closeFlash()"></button>
-  </div>
-</div>
+<ion-item class="container mt-3" *ngIf="flashMessage" lines="none">
+  <ion-label>{{ flashMessage }}</ion-label>
+  <ion-button fill="clear" aria-label="Close" (click)="closeFlash()">x</ion-button>
+</ion-item>
