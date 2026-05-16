@@ -1,28 +1,28 @@
 <ion-header class="header" [class.menu-open]="menuOpen">
   <ion-toolbar>
-    <a class="logo-container" routerLink="/" (click)="closeMenu()">
-      <img class="logo-mark logo-mark--image" src="/img/logo.png" alt="Logo Isla Dorada" />
-      <div class="hotel-name">Isla Dorada</div>
-    </a>
+    <div class="header-toolbar-inner">
+      <a class="logo-container" routerLink="/" (click)="closeMenu()">
+        <img class="logo-mark logo-mark--image" src="/img/logo.png" alt="Logo Isla Dorada" />
+        <div class="hotel-name">Isla Dorada</div>
+      </a>
 
-    <div class="main-action-container">
-      <ion-button class="btn btn-primary btn-small" fill="clear" routerLink="/booking" (click)="closeMenu()">
-        Reserva ahora
+      <div class="main-action-container">
+        <ion-button class="btn btn-primary btn-small" fill="clear" routerLink="/booking" (click)="closeMenu()">
+          Reserva ahora
+        </ion-button>
+      </div>
+
+      <ion-button class="header-menu-toggle" fill="clear" slot="end" (click)="toggleMenu()" aria-label="Abrir menu">
+        <ion-icon name="menu-outline"></ion-icon>
       </ion-button>
     </div>
-
-    <ion-button class="header-menu-toggle" fill="clear" (click)="toggleMenu()" aria-label="Abrir menu">
-      <span class="header-menu-toggle__line"></span>
-      <span class="header-menu-toggle__line"></span>
-      <span class="header-menu-toggle__line"></span>
-    </ion-button>
   </ion-toolbar>
 
   <div class="header-menu-backdrop" *ngIf="menuOpen" (click)="closeMenu()"></div>
 
-  <ion-content class="nav-menu" *ngIf="menuOpen">
+  <div class="nav-menu" *ngIf="menuOpen">
     <ion-button class="header-menu-close mobile-only" fill="clear" (click)="closeMenu()" aria-label="Cerrar menu">
-      x
+      X
     </ion-button>
 
     <ion-list class="nav-list">
@@ -40,7 +40,7 @@
             Servicios
           </a>
           <ion-button class="nav-link" fill="clear" (click)="toggleServicesDropdown($event)" style="padding: 0.5rem; display: flex; align-items: center;">
-            <span class="dropdown-caret">v</span>
+            <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-button>
         </div>
 
@@ -59,7 +59,7 @@
       <ion-item class="dropdown-item" [class.dropdown-open]="accountDropdownOpen" lines="none">
         <div class="dropdown-trigger">
           <ion-button class="nav-link nav-link--dropdown" fill="clear" (click)="toggleAccountDropdown($event)">
-            Tu cuenta <span class="dropdown-caret">v</span>
+            Tu cuenta <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-button>
         </div>
 
@@ -78,7 +78,7 @@
         </ul>
       </ion-item>
     </ion-list>
-  </ion-content>
+  </div>
 </ion-header>
 
 <ion-item class="container mt-3" *ngIf="flashMessage" lines="none">

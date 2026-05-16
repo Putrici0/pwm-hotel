@@ -14,8 +14,8 @@
       <a *ngIf="canUseFavorites()" routerLink="/favorites" class="favorites-link">Ver mis favoritos</a>
     </div>
 
-    <ion-list lines="full" *ngIf="dishes$ | async as dishes">
-      <ion-item *ngFor="let dish of dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
+    <ion-list lines="full" *ngIf="vm$ | async as vm">
+      <ion-item *ngFor="let dish of vm.dishes" [routerLink]="['/restaurant', dish.id]" detail="true">
         <ion-label>{{ dish.title }}</ion-label>
         <ion-button
           *ngIf="canUseFavorites()"
@@ -23,7 +23,7 @@
           fill="clear"
           color="danger"
           (click)="toggleFavorite(dish, $event)">
-          <ion-icon [name]="isFavorite(dish) ? 'heart' : 'heart-outline'"></ion-icon>
+          <ion-icon [name]="vm.favoriteIds.has(dish.id) ? 'heart' : 'heart-outline'"></ion-icon>
         </ion-button>
       </ion-item>
     </ion-list>
