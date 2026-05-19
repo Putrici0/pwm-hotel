@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -67,6 +67,7 @@ interface RegisterPageData {
 export class RegisterComponent {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   private readonly defaultRegisterData: RegisterPageData = {
     form: {
@@ -158,14 +159,18 @@ export class RegisterComponent {
       lastName: this.formModel.lastName,
       photoDataUrl: this.imagePreview
     });
-    if (!result.ok) {
-      this.errorMessage = result.message || 'No se pudo registrar el usuario.';
-      this.sending = false;
-      return;
-    }
+    setTimeout(async () => {
+      if (!result.ok) {
+        this.errorMessage = result.message || 'No se pudo registrar el usuario.';
+        this.sending = false;
+        this.cdr.detectChanges();
+        return;
+      }
 
-    sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesi\u00F3n.');
-    await this.router.navigateByUrl('/login');
-    this.sending = false;
+      sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesi\u00F3n.');
+      await this.router.navigateByUrl('/login');
+      this.sending = false;
+      this.cdr.detectChanges();
+    }, 0);
   }
 }

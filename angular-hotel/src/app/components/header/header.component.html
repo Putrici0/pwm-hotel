@@ -18,6 +18,15 @@
     </div>
   </ion-toolbar>
 
+  <ion-toolbar *ngIf="flashMessage" color="success">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 1rem; width: 100%;">
+      <span style="font-weight: 500; font-size: 0.95rem;">{{ flashMessage }}</span>
+      <ion-button fill="clear" color="light" size="small" (click)="closeFlash()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+
   <div class="header-menu-backdrop" *ngIf="menuOpen" (click)="closeMenu()"></div>
 
   <div class="nav-menu" *ngIf="menuOpen">
@@ -35,21 +44,23 @@
       </ion-item>
 
       <ion-item class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen" lines="none">
-        <div class="dropdown-trigger">
-          <a class="nav-link dropdown-link" routerLink="/services" (click)="closeMenu()">
-            Servicios
-          </a>
-          <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleServicesDropdown($event)" aria-label="Abrir submenu de servicios">
-            <ion-icon name="chevron-down-outline"></ion-icon>
-          </ion-button>
-        </div>
+        <div class="dropdown-wrapper" style="width: 100%; display: block;">
+          <div class="dropdown-trigger">
+            <a class="nav-link dropdown-link" routerLink="/services" (click)="closeMenu()">
+              Servicios
+            </a>
+            <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleServicesDropdown($event)" aria-label="Abrir submenu de servicios">
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </ion-button>
+          </div>
 
-        <ul class="dropdown-menu">
-          <li><a routerLink="/restaurant" (click)="closeMenu()">Restauracion</a></li>
-          <li><a routerLink="/favorites" (click)="closeMenu()">Favoritos</a></li>
-          <li><a routerLink="/wellness-facilities" (click)="closeMenu()">Bienestar</a></li>
-          <li><a routerLink="/activities" (click)="closeMenu()">Actividades</a></li>
-        </ul>
+          <ul class="dropdown-menu">
+            <li><a routerLink="/restaurant" (click)="closeMenu()">Restauracion</a></li>
+            <li><a routerLink="/favorites" (click)="closeMenu()">Favoritos</a></li>
+            <li><a routerLink="/wellness-facilities" (click)="closeMenu()">Bienestar</a></li>
+            <li><a routerLink="/activities" (click)="closeMenu()">Actividades</a></li>
+          </ul>
+        </div>
       </ion-item>
 
       <ion-item lines="none">
@@ -57,32 +68,29 @@
       </ion-item>
 
       <ion-item class="dropdown-item" [class.dropdown-open]="accountDropdownOpen" lines="none">
-        <div class="dropdown-trigger">
-          <ion-button class="nav-link nav-link--dropdown" fill="clear" (click)="toggleAccountDropdown($event)">Tu cuenta</ion-button>
-          <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleAccountDropdown($event)" aria-label="Abrir submenu de cuenta">
-            <ion-icon name="chevron-down-outline"></ion-icon>
-          </ion-button>
-        </div>
+        <div class="dropdown-wrapper" style="width: 100%; display: block;">
+          <div class="dropdown-trigger">
+            <button class="nav-link nav-link--dropdown" (click)="toggleAccountDropdown($event)">Tu cuenta</button>
+            <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleAccountDropdown($event)" aria-label="Abrir submenu de cuenta">
+              <ion-icon name="chevron-down-outline"></ion-icon>
+            </ion-button>
+          </div>
 
-        <ul class="dropdown-menu dropdown-right">
-          @if (!showLogout) {
-            <li><a [routerLink]="accountRoute" (click)="closeMenu()">Login</a></li>
-            <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
-            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
-          } @else {
-            <li><a routerLink="/account" (click)="closeMenu()">Mi cuenta</a></li>
-            @if (isAdmin) {
-              <li><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
+          <ul class="dropdown-menu dropdown-right">
+            @if (!showLogout) {
+              <li><a [routerLink]="accountRoute" (click)="closeMenu()">Login</a></li>
+              <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
+              <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
+            } @else {
+              <li><a routerLink="/account" (click)="closeMenu()">Mi cuenta</a></li>
+              @if (isAdmin) {
+                <li><a routerLink="/admin" (click)="closeMenu()">Admin</a></li>
+              }
+              <li><a href="#" (click)="logout($event)">Log out</a></li>
             }
-            <li><a href="#" (click)="logout($event)">Log out</a></li>
-          }
-        </ul>
+          </ul>
+        </div>
       </ion-item>
     </ion-list>
   </div>
 </ion-header>
-
-<ion-item class="container mt-3" *ngIf="flashMessage" lines="none">
-  <ion-label>{{ flashMessage }}</ion-label>
-  <ion-button fill="clear" aria-label="Close" (click)="closeFlash()">x</ion-button>
-</ion-item>
