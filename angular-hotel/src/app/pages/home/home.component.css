@@ -84,6 +84,7 @@
   display: inline-block;
   margin-top: 0.6rem;
   color: var(--mar-navy);
+  --color: var(--mar-navy);
   text-decoration: none;
   font-weight: 700;
 }
@@ -131,9 +132,10 @@
   font-weight: 800;
 }
 
-.card__body a {
+.card__body ion-button {
   display: inline-block;
   margin-top: 0.4rem;
+  --color: var(--arena-hover);
   color: var(--arena-hover);
   text-decoration: none;
   font-weight: 700;
@@ -296,6 +298,7 @@
 
   .split__cta {
     color: #fff;
+    --color: #fff;
     margin-top: 0.35rem;
     text-decoration: underline;
   }

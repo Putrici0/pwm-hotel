@@ -7,12 +7,10 @@
         *ngFor="let room of rooms; let i = index"
         [class]="i % 2 === 0 ? 'text-image-right room-section' : 'text-image-left room-section'"
       >
-        <ion-card-header class="text-image-right__text">
-          <ion-card-title>{{ room.title }}</ion-card-title>
-        </ion-card-header>
-        <ion-card-content class="text-image-right__text">
+        <div class="text-image-right__text">
+          <h2>{{ room.title }}</h2>
           <p [innerHTML]="room.description"></p>
-        </ion-card-content>
+        </div>
         <div class="text-image-right__image" [style.background]="room.imageGradient"></div>
       </ion-card>
     </section>

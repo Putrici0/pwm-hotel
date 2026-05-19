@@ -126,7 +126,7 @@ export class AuthService {
       await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
         photoUrl
       });
-      await signOut(this.auth);
+      void signOut(this.auth).catch(() => {});
       this.clearLocalSession();
       this._loggedUserEmail.next(null); // Asegurar que el email se limpia tras el registro y logout
       return { ok: true };
