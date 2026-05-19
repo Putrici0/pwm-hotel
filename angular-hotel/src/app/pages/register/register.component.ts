@@ -121,9 +121,34 @@ export class RegisterComponent {
 
     this.selectedFileName = file.name;
     const reader = new FileReader();
+    
     this.imagePreview = await new Promise<string>((resolve, reject) => {
-      reader.onload = () => resolve(String(reader.result || ''));
-      reader.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxSize = 500;
+
+          if (width > height && width > maxSize) {
+            height *= maxSize / width;
+            width = maxSize;
+          } else if (height > maxSize) {
+            width *= maxSize / height;
+            height = maxSize;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.7));
+        };
+        img.onerror = () => reject(new Error('No se pudo leer la imagen.'));
+        img.src = String(e.target?.result || '');
+      };
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
       reader.readAsDataURL(file);
     });
   }
@@ -154,11 +179,20 @@ export class RegisterComponent {
       return;
     }
 
-    const result = await this.authService.register(this.formModel.email, this.formModel.password, {
+    // Wrap the registration in a timeout to prevent infinite UI freezes
+    const registerPromise = this.authService.register(this.formModel.email, this.formModel.password, {
       name: this.formModel.name,
       lastName: this.formModel.lastName,
       photoDataUrl: this.imagePreview
     });
+
+    const timeoutPromise = new Promise<{ ok: boolean; message?: string }>((resolve) => {
+      setTimeout(() => {
+        resolve({ ok: false, message: 'La operación está tardando demasiado. Por favor, comprueba tu conexión e inténtalo de nuevo.' });
+      }, 15000);
+    });
+
+    const result = await Promise.race([registerPromise, timeoutPromise]);
     setTimeout(async () => {
       if (!result.ok) {
         this.errorMessage = result.message || 'No se pudo registrar el usuario.';
