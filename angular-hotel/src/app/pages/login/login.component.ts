@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import {
@@ -48,11 +48,11 @@ export class LoginComponent {
 
   readonly loginData = {
     form: {
-      labels: { email: 'Correo electronico', password: 'Contrasena' },
-      placeholders: { email: 'Tu correo', password: 'Tu contrasena' },
-      primaryButtonText: 'Iniciar sesion',
+      labels: { email: 'Correo electr\u00F3nico', password: 'Contrase\u00F1a' },
+      placeholders: { email: 'Tu correo', password: 'Tu contrase\u00F1a' },
+      primaryButtonText: 'Iniciar sesi\u00F3n',
       secondaryButtonText: 'Crear cuenta',
-      forgotPasswordText: 'He olvidado mi contrasena'
+      forgotPasswordText: 'He olvidado mi contrase\u00F1a'
     }
   };
 
@@ -71,33 +71,28 @@ export class LoginComponent {
 
     this.errorMessage = '';
     this.sending = true;
-    this.cdr.detectChanges(); // Pintamos "Validando..."
+    this.cdr.detectChanges();
 
     try {
       const ok = await this.authService.login(this.email, this.password);
 
-      // Usamos setTimeout(..., 0) para meter la actualización en la cola principal del navegador.
-      // Esto obliga a Angular a procesarlo como si hubieras hecho un clic real.
       setTimeout(async () => {
         if (!ok) {
-          this.errorMessage = 'Credenciales incorrectas. Verifica tu contraseña.';
+          this.errorMessage = 'Credenciales incorrectas. Verifica tu contrase\u00F1a.';
           this.sending = false;
-
-          // El martillazo final: le gritamos a Angular que repinte
           this.cdr.detectChanges();
           return;
         }
 
         const destination = this.authService.isAdmin() ? '/admin' : '/account';
-        sessionStorage.setItem('app_flash_success', 'Sesión iniciada correctamente.');
+        sessionStorage.setItem('app_flash_success', 'Sesi\u00F3n iniciada correctamente.');
         await this.router.navigateByUrl(destination);
         this.sending = false;
         this.cdr.detectChanges();
       }, 0);
-
-    } catch (error) {
+    } catch {
       setTimeout(() => {
-        this.errorMessage = 'Error inesperado de conexión.';
+        this.errorMessage = 'Error inesperado de conexi\u00F3n.';
         this.sending = false;
         this.cdr.detectChanges();
       }, 0);

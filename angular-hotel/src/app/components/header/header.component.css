@@ -160,6 +160,7 @@
   font-family: inherit;
   color: var(--arena-sable);
   justify-content: flex-start;
+  text-align: left;
 }
 
 .dropdown-caret {
@@ -178,6 +179,7 @@
   display: flex;
   align-items: center;
   gap: 0.2rem;
+  width: 100%;
 }
 
 .btn {
@@ -242,6 +244,22 @@
   right: 0;
 }
 
+.dropdown-toggle-btn {
+  --padding-start: 0.3rem;
+  --padding-end: 0.3rem;
+  --color: var(--arena-sable);
+  flex: 0 0 auto;
+}
+
+.dropdown-toggle-btn::part(native) {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+}
+
 @media (max-width: 1320px) {
   .header ion-toolbar {
     --padding-start: 0.85rem;
@@ -297,6 +315,12 @@
     padding: 0;
   }
 
+  .nav-menu ion-item {
+    display: block;
+    width: 100%;
+    margin-bottom: 0.55rem;
+  }
+
   .header-menu-close {
     display: inline-grid;
     place-items: center;
@@ -310,17 +334,18 @@
     border-radius: 8px;
     cursor: pointer;
     color: var(--arena-sable);
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 1rem;
     line-height: 1;
+    --color: var(--arena-sable);
+  }
+
+  .header-menu-close ion-icon {
+    font-size: 1.2rem;
+    color: var(--arena-sable);
   }
 
   .nav-list {
     display: block;
-  }
-
-  .nav-list > li {
-    margin-bottom: 0.55rem;
   }
 
   .nav-link,
@@ -330,15 +355,24 @@
     border-radius: 8px;
   }
 
+  .nav-link {
+    display: block;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
   .dropdown-trigger {
     width: 100%;
+    justify-content: space-between;
   }
 
   .dropdown-trigger > .nav-link {
     flex: 1;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    min-width: 0;
+    text-align: left;
   }
 
   .nav-link {
@@ -356,11 +390,14 @@
     overflow: hidden;
     border: 1px solid rgba(216, 179, 106, 0.25);
     background: var(--mar-navy) !important;
+    width: 100%;
   }
 
   .dropdown-menu li a {
     background: var(--mar-navy) !important;
     color: var(--arena-sable) !important;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .dropdown-menu li a:hover {
@@ -371,7 +408,15 @@
   .nav-link--dropdown::part(native) {
     width: 100%;
     text-align: left;
-    white-space: nowrap;
+    white-space: normal;
+    justify-content: flex-start;
+    padding-left: 0;
+  }
+
+  .dropdown-item .nav-link.nav-link--dropdown {
+    margin: 0;
+    --padding-start: 0.55rem;
+    --padding-end: 0.2rem;
   }
 
   .dropdown-item:hover > .dropdown-menu {

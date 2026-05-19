@@ -73,18 +73,18 @@ export class RegisterComponent {
       labels: {
         name: 'Nombre',
         lastName: 'Apellidos',
-        email: 'Correo electronico',
-        password: 'Contrasena',
-        confirmPassword: 'Repite contrasena'
+        email: 'Correo electr\u00F3nico',
+        password: 'Contrase\u00F1a',
+        confirmPassword: 'Repite contrase\u00F1a'
       },
       placeholders: {
         name: 'Tu nombre',
         lastName: 'Tus apellidos',
         email: 'Tu correo',
-        password: 'Tu contrasena',
-        confirmPassword: 'Repite tu contrasena'
+        password: 'Tu contrase\u00F1a',
+        confirmPassword: 'Repite tu contrase\u00F1a'
       },
-      termsText: 'Acepto la politica de privacidad',
+      termsText: 'Acepto la pol\u00EDtica de privacidad',
       submitText: 'Crear cuenta'
     }
   };
@@ -104,6 +104,7 @@ export class RegisterComponent {
   errorMessage = '';
   sending = false;
   imagePreview = '';
+  selectedFileName = 'Ning\u00FAn archivo seleccionado';
 
   constructor() {
     addIcons({ eye, eyeOff });
@@ -113,9 +114,11 @@ export class RegisterComponent {
     const input = event.target as HTMLInputElement;
     const file = input.files?.[0];
     if (!file) {
+      this.selectedFileName = 'Ning\u00FAn archivo seleccionado';
       return;
     }
 
+    this.selectedFileName = file.name;
     const reader = new FileReader();
     this.imagePreview = await new Promise<string>((resolve, reject) => {
       reader.onload = () => resolve(String(reader.result || ''));
@@ -132,7 +135,7 @@ export class RegisterComponent {
     this.errorMessage = '';
     this.sending = true;
     if (this.formModel.password !== this.formModel.confirmPassword) {
-      this.errorMessage = 'Las contrasenas no coinciden.';
+      this.errorMessage = 'Las contrase\u00F1as no coinciden.';
       this.sending = false;
       return;
     }
@@ -140,7 +143,7 @@ export class RegisterComponent {
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[?!*]).{6,}$/;
     if (!passwordRegex.test(this.formModel.password)) {
       this.errorMessage =
-        'La contrasena debe tener al menos 6 caracteres, una mayuscula, un numero y un caracter especial entre ? ! *';
+        'La contrase\u00F1a debe tener al menos 6 caracteres, una may\u00FAscula, un n\u00FAmero y un car\u00E1cter especial entre ? ! *';
       this.sending = false;
       return;
     }
@@ -161,7 +164,7 @@ export class RegisterComponent {
       return;
     }
 
-    sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesion.');
+    sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesi\u00F3n.');
     await this.router.navigateByUrl('/login');
     this.sending = false;
   }

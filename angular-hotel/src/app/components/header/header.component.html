@@ -22,7 +22,7 @@
 
   <div class="nav-menu" *ngIf="menuOpen">
     <ion-button class="header-menu-close mobile-only" fill="clear" (click)="closeMenu()" aria-label="Cerrar menu">
-      X
+      <ion-icon name="close-outline"></ion-icon>
     </ion-button>
 
     <ion-list class="nav-list">
@@ -35,11 +35,11 @@
       </ion-item>
 
       <ion-item class="dropdown-item" [class.dropdown-open]="servicesDropdownOpen" lines="none">
-        <div class="dropdown-trigger" style="display: flex; align-items: center;">
-          <a class="nav-link" routerLink="/services" (click)="closeMenu()" style="padding-right: 2px;">
+        <div class="dropdown-trigger">
+          <a class="nav-link dropdown-link" routerLink="/services" (click)="closeMenu()">
             Servicios
           </a>
-          <ion-button class="nav-link" fill="clear" (click)="toggleServicesDropdown($event)" style="padding: 0.5rem; display: flex; align-items: center;">
+          <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleServicesDropdown($event)" aria-label="Abrir submenu de servicios">
             <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-button>
         </div>
@@ -58,8 +58,9 @@
 
       <ion-item class="dropdown-item" [class.dropdown-open]="accountDropdownOpen" lines="none">
         <div class="dropdown-trigger">
-          <ion-button class="nav-link nav-link--dropdown" fill="clear" (click)="toggleAccountDropdown($event)">
-            Tu cuenta <ion-icon name="chevron-down-outline"></ion-icon>
+          <ion-button class="nav-link nav-link--dropdown" fill="clear" (click)="toggleAccountDropdown($event)">Tu cuenta</ion-button>
+          <ion-button class="dropdown-toggle-btn" fill="clear" (click)="toggleAccountDropdown($event)" aria-label="Abrir submenu de cuenta">
+            <ion-icon name="chevron-down-outline"></ion-icon>
           </ion-button>
         </div>
 
@@ -67,7 +68,7 @@
           @if (!showLogout) {
             <li><a [routerLink]="accountRoute" (click)="closeMenu()">Login</a></li>
             <li><a routerLink="/register" (click)="closeMenu()">Crea tu cuenta</a></li>
-            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contrasena</a></li>
+            <li><a routerLink="/change-password" (click)="closeMenu()">Recupera tu contraseña</a></li>
           } @else {
             <li><a routerLink="/account" (click)="closeMenu()">Mi cuenta</a></li>
             @if (isAdmin) {

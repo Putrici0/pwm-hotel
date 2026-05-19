@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { IonButton, IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonCard, IonCardContent, IonCardTitle, IonContent, IonText } from '@ionic/angular/standalone';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
@@ -22,7 +22,6 @@ interface CardItem {
     IonText,
     IonButton,
     IonCard,
-    IonCardHeader,
     IonCardTitle,
     IonCardContent
   ],

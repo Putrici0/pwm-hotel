@@ -8,8 +8,8 @@
   width: min(520px, 100%);
   background: #fff;
   border: 1px solid #d8dfe2;
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 10px;
+  padding: 1rem 1rem 1.2rem;
 }
 
 ion-toolbar {
@@ -24,15 +24,97 @@ form {
   gap: 0.65rem;
 }
 
+form ion-item {
+  --background: #f7f3e8;
+  --border-color: transparent;
+  --highlight-height: 0;
+  --inner-border-width: 0;
+  --padding-start: 0.75rem;
+  --inner-padding-end: 0.5rem;
+  border: 1px solid #d6c9aa;
+  border-radius: 10px;
+}
+
+form ion-label {
+  margin-top: 0.55rem;
+  margin-bottom: 0.2rem;
+  color: #17345a;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+form ion-input {
+  --background: transparent;
+  --padding-top: 0.35rem;
+  --padding-bottom: 0.55rem;
+  --color: #234063;
+  --placeholder-color: #66778e;
+}
+
+form ion-item ion-button[slot='end'] {
+  --color: #17345a;
+  --padding-start: 0.2rem;
+  --padding-end: 0.2rem;
+  width: 2rem;
+  height: 2rem;
+  min-height: 2rem;
+  margin-top: 1rem;
+  align-self: center;
+}
+
+form ion-item ion-icon {
+  font-size: 1rem;
+}
+
 .image-input-wrap {
   display: grid;
   gap: 0.5rem;
-  padding: 0.35rem 0.1rem;
+  padding: 0.5rem 0.1rem 0.25rem;
+  border: 1px solid #d6c9aa;
+  border-radius: 10px;
+  background: #f7f3e8;
 }
 
 .image-input-wrap label {
   font-weight: 600;
   color: #1b2a2f;
+}
+
+.file-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.6rem;
+}
+
+.file-input-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.file-picker-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #d8ceb7;
+  color: #17345a;
+  border: 1px solid #ccb892;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.file-picker-name {
+  color: #2f4f73;
+  font-size: 0.95rem;
+  line-height: 1.2;
 }
 
 .preview-image {
@@ -52,4 +134,23 @@ form {
 .error-msg {
   display: block;
   font-size: 0.9rem;
+}
+
+@media (max-width: 576px) {
+  .auth-section {
+    padding: 1rem 0.6rem;
+  }
+
+  .auth-card {
+    padding: 0.9rem 0.85rem 1.15rem;
+  }
+
+  .file-picker-row {
+    gap: 0.55rem;
+  }
+
+  .file-picker-btn {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.82rem;
+  }
 }

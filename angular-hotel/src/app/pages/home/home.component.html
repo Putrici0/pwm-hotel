@@ -47,10 +47,8 @@
       <div class="card-grid">
         <ion-card class="card" *ngFor="let item of services">
           <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-          <ion-card-header class="card__body">
-            <ion-card-title>{{ item.title }}</ion-card-title>
-          </ion-card-header>
           <ion-card-content class="card__body">
+            <ion-card-title>{{ item.title }}</ion-card-title>
             <p>{{ item.description }}</p>
             <ion-button *ngIf="item.link" fill="clear" [href]="item.link">Ver mas</ion-button>
           </ion-card-content>
@@ -99,10 +97,8 @@
       <div class="card-grid">
         <ion-card class="card" *ngFor="let item of environmentItems">
           <img [src]="item.imageUrl" [alt]="item.title" referrerpolicy="no-referrer" />
-          <ion-card-header class="card__body">
-            <ion-card-title>{{ item.title }}</ion-card-title>
-          </ion-card-header>
           <ion-card-content class="card__body">
+            <ion-card-title>{{ item.title }}</ion-card-title>
             <p>{{ item.description }}</p>
           </ion-card-content>
         </ion-card>
