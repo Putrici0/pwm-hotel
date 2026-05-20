@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import {
+  IonAlert,
   IonButton,
   IonCheckbox,
   IonContent,
@@ -58,6 +59,7 @@ interface RegisterPageData {
     IonInput,
     IonButton,
     IonCheckbox,
+    IonAlert,
     IonText,
     IonIcon
   ],
@@ -103,6 +105,8 @@ export class RegisterComponent {
   showPassword1 = false;
   showPassword2 = false;
   errorMessage = '';
+  successMessage = '';
+  showSuccessAlert = false;
   sending = false;
   imagePreview = '';
   selectedFileName = 'Ning\u00FAn archivo seleccionado';
@@ -121,7 +125,7 @@ export class RegisterComponent {
 
     this.selectedFileName = file.name;
     const reader = new FileReader();
-    
+
     this.imagePreview = await new Promise<string>((resolve, reject) => {
       reader.onload = (e) => {
         const img = new Image();
@@ -160,6 +164,7 @@ export class RegisterComponent {
 
     this.errorMessage = '';
     this.sending = true;
+
     if (this.formModel.password !== this.formModel.confirmPassword) {
       this.errorMessage = 'Las contrase\u00F1as no coinciden.';
       this.sending = false;
@@ -173,38 +178,38 @@ export class RegisterComponent {
       this.sending = false;
       return;
     }
+
     if (!this.imagePreview) {
       this.errorMessage = 'Debes seleccionar una imagen de perfil.';
       this.sending = false;
       return;
     }
 
-    // Wrap the registration in a timeout to prevent infinite UI freezes
-    const registerPromise = this.authService.register(this.formModel.email, this.formModel.password, {
-      name: this.formModel.name,
-      lastName: this.formModel.lastName,
-      photoDataUrl: this.imagePreview
-    });
+    try {
+      const result = await this.authService.register(this.formModel.email, this.formModel.password, {
+        name: this.formModel.name,
+        lastName: this.formModel.lastName,
+        photoDataUrl: this.imagePreview
+      });
 
-    const timeoutPromise = new Promise<{ ok: boolean; message?: string }>((resolve) => {
-      setTimeout(() => {
-        resolve({ ok: false, message: 'La operación está tardando demasiado. Por favor, comprueba tu conexión e inténtalo de nuevo.' });
-      }, 15000);
-    });
-
-    const result = await Promise.race([registerPromise, timeoutPromise]);
-    setTimeout(async () => {
       if (!result.ok) {
         this.errorMessage = result.message || 'No se pudo registrar el usuario.';
-        this.sending = false;
-        this.cdr.detectChanges();
         return;
       }
 
-      sessionStorage.setItem('app_flash_success', 'Cuenta creada correctamente. Ya puedes iniciar sesi\u00F3n.');
-      await this.router.navigateByUrl('/login');
+      this.successMessage = 'Cuenta creada correctamente. Ya puedes iniciar sesi\u00F3n.';
+      this.showSuccessAlert = true;
+      sessionStorage.setItem('app_flash_success', this.successMessage);
+    } catch {
+      this.errorMessage = 'Error inesperado de conexi\u00F3n.';
+    } finally {
       this.sending = false;
       this.cdr.detectChanges();
-    }, 0);
+    }
+  }
+
+  async onSuccessAlertDismiss(): Promise<void> {
+    this.showSuccessAlert = false;
+    await this.router.navigateByUrl('/login');
   }
 }

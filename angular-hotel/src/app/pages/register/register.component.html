@@ -72,4 +72,12 @@
   <app-footer></app-footer>
 </ion-content>
 
+<ion-alert
+  [isOpen]="showSuccessAlert"
+  header="Registro completado"
+  [message]="successMessage"
+  [buttons]="['Aceptar']"
+  (didDismiss)="onSuccessAlertDismiss()"
+></ion-alert>
+
 

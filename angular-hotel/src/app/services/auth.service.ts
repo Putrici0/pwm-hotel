@@ -12,7 +12,7 @@ import {
 } from '@angular/fire/auth';
 import { Firestore, doc, getDoc, serverTimestamp, setDoc } from '@angular/fire/firestore';
 import { Storage, getDownloadURL, ref, uploadString } from '@angular/fire/storage';
-import { BehaviorSubject, Observable } from 'rxjs'; // Importar BehaviorSubject y Observable
+import { BehaviorSubject, Observable } from 'rxjs';
 
 interface UserAccessDocument {
   email: string;
@@ -40,9 +40,9 @@ export class AuthService {
   private currentRole: 'admin' | 'user' | null = null;
   private roleSyncPromise: Promise<void> | null = null;
 
-  // Nuevo BehaviorSubject para el email del usuario
-  // Inicializamos con el email de localStorage o null si no hay
-  private readonly _loggedUserEmail = new BehaviorSubject<string | null>(localStorage.getItem('loggedUserEmail') || null);
+  private readonly _loggedUserEmail = new BehaviorSubject<string | null>(
+    localStorage.getItem('loggedUserEmail') || null
+  );
   readonly loggedUserEmail$: Observable<string | null> = this._loggedUserEmail.asObservable();
 
   constructor() {
@@ -51,12 +51,12 @@ export class AuthService {
         this.currentRole = null;
         this.roleSyncPromise = null;
         this.clearLocalSession();
-        this._loggedUserEmail.next(null); // Emitir null si no hay usuario
+        this._loggedUserEmail.next(null);
         return;
       }
 
       this.roleSyncPromise = this.syncSessionFromUser(user);
-      this._loggedUserEmail.next(user.email); // Emitir el email del usuario
+      this._loggedUserEmail.next(user.email);
     });
   }
 
@@ -65,7 +65,7 @@ export class AuthService {
       const normalizedEmail = email.trim().toLowerCase();
       const credentials = await signInWithEmailAndPassword(this.auth, normalizedEmail, password);
       await this.syncSessionFromUser(credentials.user);
-      this._loggedUserEmail.next(credentials.user.email); // Emitir el email tras login
+      this._loggedUserEmail.next(credentials.user.email);
       return true;
     } catch {
       return false;
@@ -77,7 +77,7 @@ export class AuthService {
     this.currentRole = null;
     this.roleSyncPromise = null;
     this.clearLocalSession();
-    this._loggedUserEmail.next(null); // Emitir null tras logout
+    this._loggedUserEmail.next(null);
   }
 
   isLoggedIn(): boolean {
@@ -114,21 +114,32 @@ export class AuthService {
   ): Promise<{ ok: boolean; message?: string }> {
     const normalizedEmail = email.trim().toLowerCase();
     try {
-      const credentials = await createUserWithEmailAndPassword(this.auth, normalizedEmail, password);
-      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
-        nombre: profile.name.trim(),
-        apellidos: profile.lastName.trim(),
-        dni: '',
-        nacimiento: '',
-        photoUrl: ''
-      });
-      const photoUrl = await this.uploadProfilePhoto(credentials.user.uid, profile.photoDataUrl);
-      await this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
-        photoUrl
-      });
+      const credentials = await this.withTimeout(
+        createUserWithEmailAndPassword(this.auth, normalizedEmail, password),
+        15000
+      );
+
+      await this.withTimeout(
+        this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, {
+          nombre: profile.name.trim(),
+          apellidos: profile.lastName.trim(),
+          dni: '',
+          nacimiento: '',
+          photoUrl: ''
+        }),
+        10000
+      );
+
+      // Foto/perfil en segundo plano: no bloquea respuesta al usuario.
+      void this.withTimeout(this.uploadProfilePhoto(credentials.user.uid, profile.photoDataUrl), 12000)
+        .then((photoUrl) =>
+          this.ensureUserAccessDocument(credentials.user.uid, normalizedEmail, false, { photoUrl })
+        )
+        .catch(() => {});
+
       void signOut(this.auth).catch(() => {});
       this.clearLocalSession();
-      this._loggedUserEmail.next(null); // Asegurar que el email se limpia tras el registro y logout
+      this._loggedUserEmail.next(null);
       return { ok: true };
     } catch (error: unknown) {
       const code = this.extractErrorCode(error);
@@ -150,6 +161,10 @@ export class AuthService {
 
       if (code === 'unavailable') {
         return { ok: false, message: 'Firestore no disponible temporalmente.' };
+      }
+
+      if (code === 'timeout') {
+        return { ok: false, message: 'El servicio esta tardando demasiado. Intentalo de nuevo.' };
       }
 
       return { ok: false, message: 'No se pudo registrar el usuario.' };
@@ -226,7 +241,7 @@ export class AuthService {
     localStorage.setItem('loggedUserNombre', nombre);
     localStorage.setItem('loggedUserApellidos', apellidos);
     this.currentRole = role;
-    this._loggedUserEmail.next(email); // Asegurar que el email se emite aquí también
+    this._loggedUserEmail.next(email);
   }
 
   private async ensureRoleReady(): Promise<void> {
@@ -281,26 +296,23 @@ export class AuthService {
 
     const userAccessData = userAccessSnapshot.data() as Partial<UserAccessDocument>;
     const isAdmin = userAccessData.isAdmin === true;
-    const storedEmail = typeof userAccessData.email === 'string' ? userAccessData.email.toLowerCase() : normalizedEmail;
+    const storedEmail =
+      typeof userAccessData.email === 'string' ? userAccessData.email.toLowerCase() : normalizedEmail;
 
     const patch: Record<string, unknown> = {};
 
     if (storedEmail !== normalizedEmail) {
       patch['email'] = normalizedEmail;
     }
-
     if (profile?.nombre !== undefined) {
       patch['nombre'] = profile.nombre;
     }
-
     if (profile?.apellidos !== undefined) {
       patch['apellidos'] = profile.apellidos;
     }
-
     if (profile?.dni !== undefined) {
       patch['dni'] = profile.dni;
     }
-
     if (profile?.nacimiento !== undefined) {
       patch['nacimiento'] = profile.nacimiento;
     }
@@ -342,14 +354,28 @@ export class AuthService {
     localStorage.removeItem('loggedUserEmail');
     localStorage.removeItem('loggedUserNombre');
     localStorage.removeItem('loggedUserApellidos');
-    this._loggedUserEmail.next(null); // Emitir null cuando la sesión se limpia
+    this._loggedUserEmail.next(null);
   }
 
   private extractErrorCode(error: unknown): string {
     if (error && typeof error === 'object' && 'code' in error) {
-      return String((error as {code?: string}).code || '');
+      return String((error as { code?: string }).code || '');
     }
-
     return '';
+  }
+
+  private async withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T> {
+    let timeoutId = 0;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = window.setTimeout(() => {
+        reject({ code: 'timeout' });
+      }, timeoutMs);
+    });
+
+    try {
+      return await Promise.race([promise, timeoutPromise]);
+    } finally {
+      window.clearTimeout(timeoutId);
+    }
   }
 }
