@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { combineLatest, map } from 'rxjs';
-import { IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonNote, IonTitle, IonToolbar, IonButtons, IonBackButton } from '@ionic/angular/standalone';
+import { IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonTitle, IonToolbar, IonButtons, IonBackButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { heart } from 'ionicons/icons';
 import { FooterComponent } from '../../components/footer/footer.component';
@@ -25,7 +25,6 @@ import { CommonModule } from '@angular/common';
     IonList,
     IonItem,
     IonLabel,
-    IonNote,
     IonBadge,
     IonIcon,
     IonButtons,
