@@ -6,7 +6,6 @@ import {
   IonHeader,
   IonIcon,
   IonItem,
-  IonLabel,
   IonList,
   IonToolbar
 } from '@ionic/angular/standalone';
@@ -26,8 +25,7 @@ import { AuthService } from '../../services/auth.service';
     IonButton,
     IonIcon,
     IonList,
-    IonItem,
-    IonLabel
+    IonItem
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'

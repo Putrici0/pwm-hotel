@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { map } from 'rxjs';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonContent } from '@ionic/angular/standalone';
+import { IonCard, IonContent } from '@ionic/angular/standalone';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { HeaderComponent } from '../../components/header/header.component';
 import { AdminDataService } from '../../services/admin-data.service';
@@ -15,7 +15,7 @@ interface RoomSection {
 @Component({
   selector: 'app-rooms',
   standalone: true,
-  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonCard, IonCardHeader, IonCardTitle, IonCardContent],
+  imports: [CommonModule, HeaderComponent, FooterComponent, IonContent, IonCard],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.css'
 })
