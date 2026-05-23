@@ -19,12 +19,6 @@ npm run build
 npx cap sync android
 npx cap open android
 ```
-
-Notas:
-- El proyecto ya incluye plataforma Android en `angular-hotel/android`.
-- `webDir` de Capacitor: `dist/angular-hotel/browser`.
-- `appId`: `com.ulpgc.isladorada`.
-
 ## Estructura del codigo del proyecto
 
 La aplicacion esta organizada en `angular-hotel/src/app`.
